@@ -298,6 +298,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
     <button class="export-btn ghost" onclick="ExportModule.spec()" data-i18n="export.copySpec">Copy Spec</button>
     <button class="export-btn ghost" onclick="ExportModule.specFile()" data-i18n="export.saveSpec">Save Spec</button>
     <button class="export-btn" onclick="ExportModule.techpack()" style="background:#B83A2A;color:white;border-color:#B83A2A" data-i18n="export.techpack">Tech Pack</button>
+    <button class="export-btn" onclick="ExportModule.pdf()" style="background:#1a5276;color:white;border-color:#1a5276;margin-top:5px" data-i18n="export.pdf">PDF Tech Pack</button>
   </div>
 </div>
 </div>
@@ -376,7 +377,7 @@ en:{
     crease:'Crease',cr_none:'None',cr_front:'Front Crease',
     fitLabel:'Fit'},
   canvas:{hint:'Drag red handles for symmetric editing. Ctrl+Z to undo'},
-  export:{saveProject:'Save Project',loadProject:'Load Project',copySpec:'Copy Spec',saveSpec:'Save Spec',techpack:'Tech Pack'},
+  export:{saveProject:'Save Project',loadProject:'Load Project',copySpec:'Copy Spec',saveSpec:'Save Spec',techpack:'Tech Pack',pdf:'PDF Tech Pack'},
   slider:{shallow:'Shallow',normal:'Normal',deep:'Deep',
     square:'Square',v:'V',angular:'Angular',round:'Round',uShape:'U',
     narrow:'Narrow',wide:'Wide',boat:'Boat',
@@ -569,7 +570,7 @@ ko:{
     crease:'주름선',cr_none:'없음',cr_front:'앞주름',
     fitLabel:'핏'},
   canvas:{hint:'빨간 핸들을 드래그 → 좌우대칭 실시간 편집 · Ctrl+Z 되돌리기'},
-  export:{saveProject:'프로젝트 저장',loadProject:'프로젝트 불러오기',copySpec:'스펙 복사',saveSpec:'스펙 저장',techpack:'테크팩'},
+  export:{saveProject:'프로젝트 저장',loadProject:'프로젝트 불러오기',copySpec:'스펙 복사',saveSpec:'스펙 저장',techpack:'테크팩',pdf:'PDF 테크팩'},
   slider:{shallow:'얕음',normal:'보통',deep:'깊음',
     square:'스퀘어',v:'V',angular:'각진',round:'라운드',uShape:'U',
     narrow:'좁음',wide:'넓음',boat:'보트',
@@ -4326,6 +4327,222 @@ const ExportModule = {
     };
     img.src=url;
     draw();
+  },
+
+  pdf() {
+    if(typeof jspdf==='undefined'&&typeof window.jspdf==='undefined'){alert('PDF library loading...');return;}
+    const{jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'}); // 297×210mm
+    const W=297,H=210;
+    const ink='#2A2926',accent='#B83A2A',mid='#666',light='#ccc';
+    const gt=S.garmentType;
+    const tpLabel={top:'T-SHIRT',dress:'DRESS',outerwear:'OUTERWEAR',skirt:'SKIRT',pants:'PANTS'}[gt]||'T-SHIRT';
+
+    // ── Helper: SVG → canvas → dataURL ──
+    const svgToImg=(svgEl,cb)=>{
+      const clone=svgEl.cloneNode(true);
+      const hl=clone.querySelector('.handles-layer');if(hl)hl.remove();
+      let str='<svg xmlns="http://www.w3.org/2000/svg" width="320" height="460" viewBox="0 0 320 460">'+clone.innerHTML+'</svg>';
+      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8');
+      const blob=new Blob([str],{type:'image/svg+xml;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const img=new Image();
+      img.onload=()=>{
+        const c=document.createElement('canvas');c.width=640;c.height=920;
+        const ctx=c.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,640,920);
+        ctx.drawImage(img,0,0,640,920);
+        cb(c.toDataURL('image/png'));URL.revokeObjectURL(url);
+      };
+      img.src=url;
+    };
+
+    // ── Helper: draw table row ──
+    const tblRow=(doc,y,cols,widths,opts={})=>{
+      let x=20;
+      cols.forEach((txt,i)=>{
+        const w=widths[i];
+        if(opts.fill) {doc.setFillColor(...(opts.headerFill||[245,243,239]));doc.rect(x,y,w,7,'F');}
+        doc.setDrawColor(200);doc.rect(x,y,w,7);
+        doc.setFontSize(opts.fontSize||7);
+        doc.setTextColor(...(opts.color||[40,40,40]));
+        if(opts.bold) doc.setFont('helvetica','bold'); else doc.setFont('helvetica','normal');
+        doc.text(String(txt),x+w/2,y+5,{align:'center'});
+        x+=w;
+      });
+    };
+
+    // ── Async: render both SVGs then build PDF ──
+    svgToImg(document.getElementById('svgF'),frontImg=>{
+      svgToImg(document.getElementById('svgB'),backImg=>{
+
+        // ═══ PAGE 1: Front/Back drawings ═══
+        // Header bar
+        doc.setFillColor(42,41,38);doc.rect(0,0,W,14,'F');
+        doc.setTextColor(255);doc.setFontSize(14);doc.setFont('helvetica','bold');
+        doc.text('FLAT.',8,10);
+        doc.setFontSize(9);doc.setFont('helvetica','normal');
+        doc.text(tpLabel+' TECH PACK',W-8,10,{align:'right'});
+        doc.text(new Date().toISOString().slice(0,10),W/2,10,{align:'center'});
+
+        // Front/Back images
+        const imgW=90,imgH=130;
+        doc.addImage(frontImg,'PNG',30,22,imgW,imgH);
+        doc.addImage(backImg,'PNG',170,22,imgW,imgH);
+        doc.setFontSize(8);doc.setTextColor(100);
+        doc.text('FRONT',30+imgW/2,22+imgH+6,{align:'center'});
+        doc.text('BACK',170+imgW/2,22+imgH+6,{align:'center'});
+
+        // Footer
+        doc.setFontSize(6);doc.setTextColor(160);
+        doc.text('Generated by FLAT v0.19 — flatsketch.app',W/2,H-5,{align:'center'});
+
+        // ═══ PAGE 2: Spec + Grading ═══
+        doc.addPage('a4','landscape');
+        // Header
+        doc.setFillColor(42,41,38);doc.rect(0,0,W,14,'F');
+        doc.setTextColor(255);doc.setFontSize(12);doc.setFont('helvetica','bold');
+        doc.text('SPECIFICATION',8,10);
+        doc.setFontSize(9);doc.setFont('helvetica','normal');
+        doc.text(tpLabel,W-8,10,{align:'right'});
+
+        // Spec Summary (left side)
+        doc.setFontSize(9);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('SPEC SUMMARY',20,24);
+        doc.setFont('helvetica','normal');doc.setFontSize(7);
+        let sy=30;
+        document.querySelectorAll('#specBody tr').forEach(r=>{
+          const c=r.querySelectorAll('td');
+          if(c.length>=2){
+            doc.setTextColor(100);doc.text(c[0].textContent,22,sy);
+            doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+            doc.text(c[1].textContent,65,sy);
+            doc.setFont('helvetica','normal');
+            sy+=5;
+          }
+        });
+
+        // Graded Spec Table (right side)
+        doc.setFontSize(9);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('GRADED SPEC ('+unitLabel()+')',150,24);
+
+        const szNames=['XS','S','M','L','XL'];
+        const szOff=[-2,-1,0,1,2];
+        const gradeMap={'A':2.5,'B':2.5,'E':1.3,'F':1.3,'I':0.6,'J':1.3,'K':0.6,'M':0.6,'N':0.6,'D':1.3,'C':1.3};
+        const tolMap={'A':1.3,'B':1.3,'E':1.3,'F':1.3,'I':0.6,'J':0.6,'K':0.3,'M':0.3,'N':0.3,'D':0.6,'C':0.6};
+        const colW=[12,35,18,18,18,18,18,14];
+
+        // Table header
+        tblRow(doc,28,['POM','MEASUREMENT',...szNames,'TOL'],colW,{fill:true,bold:true,fontSize:6,headerFill:[42,41,38],color:[255,255,255]});
+
+        // Table data from existing techpack measures
+        let measures=[];
+        const cx2=160;
+        if(gt==='skirt'){
+          const sk=SkirtComp.geometry();
+          measures=[
+            {n:'A',label:'Total Length',cm:Math.round(20+S.skirtLen*0.6)},
+            {n:'B',label:'Waist (half)',cm:Math.round(sk.halfWaist*0.55)},
+            {n:'C',label:'Hip (half)',cm:Math.round(sk.halfHip*0.55)},
+            {n:'D',label:'Hem (half)',cm:Math.round(sk.halfHem*0.55)},
+          ];
+        } else if(gt==='pants'){
+          const pg=PantsComp.geometry();const p=0.55;
+          measures=[
+            {n:'A',label:'Total Length',cm:Math.round((pg.hemY-pg.topY)*p)},
+            {n:'B',label:'Waist (half)',cm:Math.round(pg.halfWaist*p)},
+            {n:'C',label:'Hip (half)',cm:Math.round(pg.halfHip*p)},
+            {n:'D',label:'Rise',cm:Math.round((pg.crotchY-pg.waistY)*p)},
+            {n:'E',label:'Inseam',cm:Math.round((pg.hemY-pg.crotchY)*p)},
+            {n:'F',label:'Leg Opening',cm:Math.round(pg.hemLegW*p)},
+          ];
+        } else {
+          const bodyLenCm=CM_MAP.find(x=>x[0]==='bodyLen')[2](S.bodyLen);
+          const chestCm=CM_MAP.find(x=>x[0]==='chest')[2](S.chest);
+          const slvCm=CM_MAP.find(x=>x[0]==='sleeveLength')[2](S.sleeveLength);
+          measures=[
+            {n:'A',label:'Body Length',cm:Math.round(bodyLenCm)},
+            {n:'B',label:'Shoulder W.',cm:Math.round(36+S.shoulderExtra+(S.fitW-50)*0.12)},
+            {n:'E',label:'Chest (half)',cm:Math.round(chestCm/2)},
+            {n:'F',label:'Sweep (half)',cm:Math.round(chestCm/2+S.hipFlare*0.8)},
+            {n:'A2',label:'Neck Width',cm:Math.round((8+S.neckWidth*0.14)*2)},
+            {n:'N',label:'Neck Drop',cm:Math.round(5+S.neckDepth*0.08)},
+          ];
+          if(S.sleeveLength>2) measures.push({n:'I',label:'Sleeve Length',cm:Math.round(slvCm)});
+          if(S.sleeveLength>2) measures.push({n:'J',label:'Sleeve Width',cm:Math.round(12+S.sleeveWidth*0.18)});
+          measures.push({n:'K',label:'Armhole Depth',cm:Math.round(20+Math.max(0,S.shoulderExtra*0.5))});
+        }
+
+        measures.forEach((m,i)=>{
+          const ry=35+i*7;
+          const gr=gradeMap[m.n]||1.3;
+          const tl=tolMap[m.n]||0.6;
+          const szVals=szOff.map(off=>cmToDisplay(Math.round(m.cm+off*gr)));
+          const isMid=2;
+          const row=[m.n,m.label,...szVals,'\u00B1'+cmToDisplay(tl)];
+          let x=150;
+          colW.forEach((w,ci)=>{
+            doc.setDrawColor(200);
+            const fillC=(ci>=2&&ci<=6&&ci===isMid+2)?[255,245,243]:[255,255,255];
+            doc.setFillColor(...fillC);doc.rect(x,ry,w,7,'FD');
+            doc.setFontSize(6);
+            if(ci===0){doc.setTextColor(184,58,42);doc.setFont('helvetica','bold');}
+            else if(ci===isMid+2){doc.setTextColor(184,58,42);doc.setFont('helvetica','bold');}
+            else {doc.setTextColor(60);doc.setFont('helvetica','normal');}
+            doc.text(String(row[ci]),x+w/2,ry+5,{align:'center'});
+            x+=w;
+          });
+        });
+
+        // Footer
+        doc.setFontSize(6);doc.setTextColor(160);
+        doc.text('Generated by FLAT v0.19 — flatsketch.app',W/2,H-5,{align:'center'});
+
+        // ═══ PAGE 3: Fabric Recommendation ═══
+        doc.addPage('a4','landscape');
+        doc.setFillColor(42,41,38);doc.rect(0,0,W,14,'F');
+        doc.setTextColor(255);doc.setFontSize(12);doc.setFont('helvetica','bold');
+        doc.text('FABRIC RECOMMENDATION',8,10);
+
+        // Get top 4 fabrics
+        const fabDB=FabricModule.DB;
+        const recs=fabDB.map((f,idx)=>({...f,_idx:idx,s:FabricModule.score(f)}))
+          .sort((a,b)=>b.s-a.s).slice(0,4);
+
+        let fy=24;
+        recs.forEach((fab,i)=>{
+          const isTop=i===0;
+          doc.setFillColor(isTop?255:250,isTop?245:249,isTop?243:247);
+          doc.roundedRect(20,fy,120,22,2,2,'F');
+          doc.setDrawColor(isTop?184:200,isTop?58:200,isTop?42:200);
+          doc.roundedRect(20,fy,120,22,2,2,'S');
+
+          doc.setFontSize(9);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+          doc.text((isTop?'\u2605 ':'')+fab.name,24,fy+7);
+          doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(100);
+          doc.text(fab.desc||'',24,fy+13);
+
+          // Tags
+          const tags=[fab.gsm+' g/m\u00B2',fab.weight,fab.season,fab.stretch];
+          let tx=24;
+          tags.forEach(tag=>{
+            const tw=doc.getTextWidth(tag)+4;
+            doc.setFillColor(236,234,228);doc.roundedRect(tx,fy+16,tw,4,1,1,'F');
+            doc.setFontSize(5);doc.setTextColor(80);
+            doc.text(tag,tx+2,fy+19);
+            tx+=tw+2;
+          });
+          fy+=28;
+        });
+
+        // Footer
+        doc.setFontSize(6);doc.setTextColor(160);
+        doc.text('Generated by FLAT v0.19 — flatsketch.app',W/2,H-5,{align:'center'});
+
+        // ── Save ──
+        doc.save('FLAT_techpack_'+tpLabel+'_'+Date.now()+'.pdf');
+      });
+    });
+    draw(); // restore handles
   }
 };
 
@@ -4379,5 +4596,6 @@ document.querySelectorAll('.psec-title').forEach(t=>{
 });
 History.push(); // initial state
 </script>
+<script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 </body>
 </html>
