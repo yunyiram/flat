@@ -76,6 +76,12 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .preset-btn{font-family:'Inter','Noto Sans KR',sans-serif;font-size:10px;padding:4px 10px;border:1px solid var(--accent-light);border-radius:100px;background:transparent;color:var(--accent);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .preset-btn:hover{background:var(--accent);color:#fff;}
 .zoom-ctrl{position:absolute;top:12px;right:12px;display:flex;gap:4px;}
+.cascade-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--accent);background:rgba(255,255,255,0.92);padding:8px 20px;border-radius:100px;border:1.5px solid var(--accent);pointer-events:none;opacity:0;transition:opacity 0.25s;z-index:50;white-space:nowrap;}
+.cascade-label.show{opacity:1;}
+.cascade-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text-mid);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;}
+.cascade-btn:hover{border-color:var(--accent);color:var(--accent);}
+.cascade-btn.playing{border-color:var(--accent);color:var(--accent);animation:cascadePulse 1s ease infinite;}
+@keyframes cascadePulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
 .zoom-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text-mid);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .zoom-btn:hover{border-color:var(--text);color:var(--text);}
 .de-item{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid var(--border-light);border-radius:var(--radius);margin-bottom:4px;font-size:10px;cursor:pointer;transition:all 0.15s;}
@@ -144,8 +150,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
     <div class="preset-row" id="presetRow"></div>
   </div>
   <div class="psec"><div class="psec-title">Neckline</div>
-    <div class="pg"><div class="pg-label" data-i18n="neck.shape">Shape</div><div class="trow" data-p="neckShape"><button class="tb on" data-v="round" data-i18n="neck.round">Round</button><button class="tb" data-v="v" data-i18n="neck.v">V-Neck</button><button class="tb" data-v="deep_v" data-i18n="neck.deep_v">Deep V</button><button class="tb" data-v="u" data-i18n="neck.u">U-Neck</button><button class="tb" data-v="square" data-i18n="neck.square">Square</button><button class="tb" data-v="boat" data-i18n="neck.boat">Boat</button></div></div>
-    <div class="pg"><div class="pg-label" data-i18n="neck.variant">Variant</div><div class="trow" data-p="neckVariant"><button class="tb on" data-v="none" data-i18n="neck.none">None</button><button class="tb" data-v="off_shoulder" data-i18n="neck.off_shoulder">Off-shoulder</button><button class="tb" data-v="halter" data-i18n="neck.halter">Halter</button><button class="tb" data-v="one_shoulder" data-i18n="neck.one_shoulder">One-shoulder</button></div></div>
+    <div class="pg"><div class="pg-label" data-i18n="neck.shape">Shape</div><div class="trow" data-p="neckShape" data-fold="6"><button class="tb on" data-v="round" data-i18n="neck.round">Round</button><button class="tb" data-v="v" data-i18n="neck.v">V-Neck</button><button class="tb" data-v="deep_v" data-i18n="neck.deep_v">Deep V</button><button class="tb" data-v="u" data-i18n="neck.u">U-Neck</button><button class="tb" data-v="square" data-i18n="neck.square">Square</button><button class="tb" data-v="boat" data-i18n="neck.boat">Boat</button><button class="tb" data-v="scoop" data-i18n="neck.scoop">Scoop</button><button class="tb" data-v="straight" data-i18n="neck.straight">Straight</button></div></div>
     <div class="pg"><div class="pg-label" data-i18n="neck.detail">Detail</div><div class="trow" data-p="neckDetail"><button class="tb on" data-v="none" data-i18n="neck.d_none">None</button><button class="tb" data-v="henley" data-i18n="neck.henley">Henley</button><button class="tb" data-v="keyhole" data-i18n="neck.keyhole">Keyhole</button><button class="tb" data-v="drape" data-i18n="neck.drape">Drape</button></div></div>
     <div class="pg"><div class="pg-label" data-i18n="neck.neckType">Neck Type</div><div class="trow" data-p="neckType"><button class="tb on" data-v="finish" data-i18n="neck.finish">Finish</button><button class="tb" data-v="collar" data-i18n="neck.collar">Collar</button><button class="tb" data-v="highneck" data-i18n="neck.highneck">Highneck</button><button class="tb" data-v="hood" data-i18n="neck.hood">Hood</button></div></div>
     <div id="neckSub_finish"><div class="pg"><div class="pg-label" data-i18n="neck.finishLabel">Finish</div><div class="trow" data-p="neckFinish"><button class="tb on" data-v="rib" data-i18n="neck.rib">Rib</button><button class="tb" data-v="binding" data-i18n="neck.binding">Binding</button><button class="tb" data-v="raw" data-i18n="neck.raw">Raw Edge</button></div></div></div>
@@ -160,7 +165,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
     <div class="pg"><div class="pg-label" data-i18n="neck.neckWidth">Neck Width</div><div class="slider-wrap"><input type="range" id="sl_neckWidth" min="0" max="100" value="40"><span class="sval" id="sv_neckWidth">Normal</span></div></div>
   </div>
   <div class="psec"><div class="psec-title">Shoulder</div>
-    <div class="pg"><div class="pg-label" data-i18n="shoulder.label">Shoulder Line</div><div class="trow" data-p="shoulderLine"><button class="tb" data-v="drop" data-i18n="shoulder.drop">Drop</button><button class="tb" data-v="extended" data-i18n="shoulder.extended">Extended</button><button class="tb on" data-v="natural" data-i18n="shoulder.natural">Natural</button><button class="tb" data-v="narrow" data-i18n="shoulder.narrow">Narrow</button></div></div>
+    <div class="pg"><div class="pg-label" data-i18n="shoulder.label">Shoulder Type</div><div class="trow" data-p="shoulderType" data-fold="4"><button class="tb on" data-v="standard" data-i18n="shoulder.standard">Standard</button><button class="tb" data-v="dropped" data-i18n="shoulder.dropped">Dropped</button><button class="tb" data-v="off_shoulder" data-i18n="shoulder.off_shoulder">Off-shoulder</button><button class="tb" data-v="halter" data-i18n="shoulder.halter">Halter</button><button class="tb" data-v="extended" data-i18n="shoulder.extended">Extended</button><button class="tb" data-v="narrow" data-i18n="shoulder.narrow">Narrow</button><button class="tb" data-v="strapless" data-i18n="shoulder.strapless">Strapless</button><button class="tb" data-v="one_shoulder" data-i18n="shoulder.one_shoulder">One-shoulder</button></div></div>
+    <div class="pg" id="strapTypeRow" style="display:none"><div class="pg-label" data-i18n="shoulder.strapType">Strap</div><div class="trow" data-p="strapType"><button class="tb on" data-v="none" data-i18n="shoulder.st_none">None</button><button class="tb" data-v="wide" data-i18n="shoulder.st_wide">Wide</button><button class="tb" data-v="narrow" data-i18n="shoulder.st_narrow">Narrow</button><button class="tb" data-v="spaghetti" data-i18n="shoulder.st_spaghetti">Spaghetti</button><button class="tb" data-v="ribbon" data-i18n="shoulder.st_ribbon">Ribbon</button><button class="tb" data-v="tied" data-i18n="shoulder.st_tied">Tied</button></div></div>
     <div class="pg"><div class="pg-label" data-i18n="shoulder.slope">Shoulder Slope</div><div class="slider-wrap"><input type="range" id="sl_shoulderSlope" min="0" max="100" value="40"><span class="sval" id="sv_shoulderSlope">Normal</span></div></div>
     <div class="pg"><div class="pg-label" data-i18n="shoulder.width">Shoulder Width</div><div class="slider-wrap"><input type="range" id="sl_shoulderExtra" min="-10" max="20" value="0"><span class="sval" id="sv_shoulderExtra">Natural</span></div></div>
   </div>
@@ -280,10 +286,12 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
     <div class="sketch-col"><div class="view-tag">BACK</div><svg id="svgB" width="320" height="460" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg"></svg></div>
   </div>
   <div class="zoom-ctrl">
+    <button class="cascade-btn" id="cascadeBtn" onclick="CascadeVis.toggle()" title="Cascade Demo">▶</button>
     <button class="zoom-btn" onclick="Zoom.in()">+</button>
     <button class="zoom-btn" onclick="Zoom.out()">−</button>
     <button class="zoom-btn" onclick="Zoom.reset()" style="font-size:10px">1:1</button>
   </div>
+  <div class="cascade-label" id="cascadeLabel"></div>
   <div class="canvas-hint" id="canvasHint" data-i18n="canvas.hint">Drag red handles for symmetric editing. Ctrl+Z to undo</div>
 </div>
 
@@ -314,9 +322,9 @@ en:{
   header:{panel:'Panel',direct:'Direct Edit',both:'Both'},
   garment:{top:'Top',dress:'Dress',outerwear:'Outerwear',skirt:'Skirt',pants:'Pants'},
   coord:{label:'Bottom Coord',none:'None',skirt:'+Skirt',pants:'+Pants'},
-  neck:{shape:'Shape',variant:'Variant',detail:'Detail',neckType:'Neck Type',
-    round:'Round',v:'V-Neck',deep_v:'Deep V',u:'U-Neck',square:'Square',boat:'Boat',
-    none:'None',off_shoulder:'Off-shoulder',halter:'Halter',one_shoulder:'One-shoulder',
+  neck:{shape:'Shape',detail:'Detail',neckType:'Neck Type',
+    round:'Round',v:'V-Neck',deep_v:'Deep V',u:'U-Neck',square:'Square',boat:'Boat',scoop:'Scoop',straight:'Straight',
+    none:'None',
     d_none:'None',henley:'Henley',keyhole:'Keyhole',drape:'Drape',
     finish:'Finish',collar:'Collar',highneck:'Highneck',hood:'Hood',
     finishLabel:'Finish',rib:'Rib',binding:'Binding',raw:'Raw Edge',
@@ -327,7 +335,8 @@ en:{
     bow:'Bow',cowl:'Cowl',
     highneckLabel:'Highneck',turtle:'Turtleneck',mock:'Mock Neck',
     neckDepth:'Neck Depth',neckCurve:'Neck Curve',neckWidth:'Neck Width'},
-  shoulder:{label:'Shoulder Line',drop:'Drop',extended:'Extended',natural:'Natural',narrow:'Narrow',
+  shoulder:{label:'Shoulder Type',standard:'Standard',dropped:'Dropped',off_shoulder:'Off-shoulder',halter:'Halter',extended:'Extended',narrow:'Narrow',strapless:'Strapless',one_shoulder:'One-shoulder',
+    strapType:'Strap',st_none:'None',st_wide:'Wide',st_narrow:'Narrow',st_spaghetti:'Spaghetti',st_ribbon:'Ribbon',st_tied:'Tied',
     slope:'Shoulder Slope',width:'Shoulder Width'},
   sleeve:{structure:'Structure',setin:'Set-in',raglan:'Raglan',kimono:'Kimono',
     length:'Length',sleeveless:'Sleeveless',cap:'Cap',short:'Short',elbow:'Elbow',threequarter:'3/4',long:'Long',
@@ -377,7 +386,7 @@ en:{
     hemLabel:'Hem',h_plain:'Plain',h_cuffed:'Turn-up',h_rib:'Rib',h_raw:'Raw Edge',
     crease:'Crease',cr_none:'None',cr_front:'Front Crease',
     fitLabel:'Fit'},
-  canvas:{hint:'Drag red handles for symmetric editing. Ctrl+Z to undo'},
+  canvas:{hint:'Drag red handles for symmetric editing. Ctrl+Z to undo',cascade:'Cascade Demo'},
   export:{saveProject:'Save Project',loadProject:'Load Project',copySpec:'Copy Spec',saveSpec:'Save Spec',techpack:'Tech Pack',pdf:'PDF Tech Pack',factoryLink:'🔗 Factory Link'},
   slider:{shallow:'Shallow',normal:'Normal',deep:'Deep',
     square:'Square',v:'V',angular:'Angular',round:'Round',uShape:'U',
@@ -450,11 +459,12 @@ en:{
     hot:'Hot Pants',shorts:'Shorts',bermuda:'Bermuda',cropP:'Crop',fullLen:'Full Length',
     skinny:'Skinny',slim:'Slim',regular:'Regular',relaxed:'Relaxed',wideP:'Wide'},
   specLabels:{
-    neckShape:{round:'Round',v:'V-Neck',deep_v:'Deep V',u:'U-Neck',square:'Square',boat:'Boat'},
-    neckVariant:{none:'',off_shoulder:'Off-shoulder',halter:'Halter',one_shoulder:'One-shoulder'},
+    neckShape:{round:'Round',v:'V-Neck',deep_v:'Deep V',u:'U-Neck',square:'Square',boat:'Boat',scoop:'Scoop',straight:'Straight'},
+    shoulderType:{standard:'Standard',dropped:'Dropped',off_shoulder:'Off-shoulder',halter:'Halter',extended:'Extended',narrow:'Narrow',strapless:'Strapless',one_shoulder:'One-shoulder'},
+    strapType:{none:'',wide:'Wide',narrow:'Narrow',spaghetti:'Spaghetti',ribbon:'Ribbon',tied:'Tied'},
     neckDetail:{none:'',henley:'Henley',keyhole:'Keyhole',drape:'Drape'},
     neckFinish:{rib:'Rib',binding:'Binding',raw:'Raw Edge',collar:'Shirt Collar',collar_band:'Band Collar',collar_peter:'Peter Pan Collar',collar_china:'China Collar',collar_sailor:'Sailor Collar',collar_notched:'Notched Lapel',collar_shawl:'Shawl Collar',collar_wing:'Wing Collar',collar_peaked:'Peaked Lapel',collar_round:'Round Lapel',collar_mandarin:'Mandarin Collar',collar_funnel:'Funnel Collar',collar_convertible:'Convertible Collar',collar_bow:'Bow Collar',collar_cowl:'Cowl Collar',collar_eton:'Eton Collar',collar_bertha:'Bertha Collar',collar_puritan:'Puritan Collar',turtle:'Turtleneck',mock:'Mock Neck',hood:'Hood'},
-    shoulderLine:{natural:'Natural',drop:'Drop',extended:'Extended',narrow:'Narrow'},
+    shoulderLine:{natural:'Natural',drop:'Drop',extended:'Extended',narrow:'Narrow'}, // legacy for old spec data
     sleeveType:{setin:'Set-in',raglan:'Raglan',kimono:'Kimono'},
     sleeveShape:{straight:'Straight',puff:'Puff',bell:'Bell',bishop:'Bishop',dolman:'Dolman',lantern:'Lantern',peasant:'Peasant',legmutton:'Leg-of-Mutton',pagoda:'Pagoda'},
     sleeveLen:{sleeveless:'Sleeveless',cap:'Cap',short:'Short',elbow:'Elbow',threequarter:'3/4',long:'Long'},
@@ -508,9 +518,9 @@ ko:{
   header:{panel:'패널',direct:'직접 편집',both:'둘 다'},
   garment:{top:'상의',dress:'원피스',outerwear:'아우터',skirt:'스커트',pants:'팬츠'},
   coord:{label:'하의 조합',none:'없음',skirt:'+스커트',pants:'+팬츠'},
-  neck:{shape:'형태',variant:'변형',detail:'디테일',neckType:'넥 타입',
-    round:'라운드',v:'V넥',deep_v:'딥V',u:'U넥',square:'스퀘어',boat:'보트넥',
-    none:'없음',off_shoulder:'오프숄더',halter:'홀터',one_shoulder:'원숄더',
+  neck:{shape:'형태',detail:'디테일',neckType:'넥 타입',
+    round:'라운드',v:'V넥',deep_v:'딥V',u:'U넥',square:'스퀘어',boat:'보트넥',scoop:'스쿱',straight:'스트레이트',
+    none:'없음',
     d_none:'없음',henley:'헨리플래킷',keyhole:'키홀',drape:'드레이프',
     finish:'마감',collar:'칼라',highneck:'하이넥',hood:'후드',
     finishLabel:'마감',rib:'리브',binding:'바이어스',raw:'로우엣지',
@@ -521,7 +531,8 @@ ko:{
     bow:'보우',cowl:'카울',
     highneckLabel:'하이넥',turtle:'터틀넥',mock:'목넥',
     neckDepth:'넥 깊이',neckCurve:'넥 곡률',neckWidth:'넥 폭'},
-  shoulder:{label:'어깨 라인',drop:'드롭',extended:'익스텐디드',natural:'내추럴',narrow:'좁은어깨',
+  shoulder:{label:'어깨 타입',standard:'스탠다드',dropped:'드롭',off_shoulder:'오프숄더',halter:'홀터',extended:'익스텐디드',narrow:'좁은어깨',strapless:'스트랩리스',one_shoulder:'원숄더',
+    strapType:'스트랩',st_none:'없음',st_wide:'와이드',st_narrow:'내로우',st_spaghetti:'스파게티',st_ribbon:'리본',st_tied:'타이드',
     slope:'어깨 경사',width:'어깨 폭'},
   sleeve:{structure:'구조',setin:'셋인',raglan:'래글런',kimono:'기모노',
     length:'기장',sleeveless:'민소매',cap:'캡',short:'반소매',elbow:'5부',threequarter:'7부',long:'긴소매',
@@ -571,7 +582,7 @@ ko:{
     hemLabel:'밑단',h_plain:'접단',h_cuffed:'턴업',h_rib:'리브',h_raw:'로우엣지',
     crease:'주름선',cr_none:'없음',cr_front:'앞주름',
     fitLabel:'핏'},
-  canvas:{hint:'빨간 핸들을 드래그 → 좌우대칭 실시간 편집 · Ctrl+Z 되돌리기'},
+  canvas:{hint:'빨간 핸들을 드래그 → 좌우대칭 실시간 편집 · Ctrl+Z 되돌리기',cascade:'캐스케이드 데모'},
   export:{saveProject:'프로젝트 저장',loadProject:'프로젝트 불러오기',copySpec:'스펙 복사',saveSpec:'스펙 저장',techpack:'테크팩',pdf:'PDF 테크팩',factoryLink:'🔗 공장용 링크'},
   slider:{shallow:'얕음',normal:'보통',deep:'깊음',
     square:'스퀘어',v:'V',angular:'각진',round:'라운드',uShape:'U',
@@ -694,8 +705,8 @@ function setLang(lang){ curLang=lang; document.getElementById('langEn').classLis
 // ───────────────────────────────────────────────────────────────
 const S={
   coordBottom:'none',
-  neckShape:'round',neckVariant:'none',neckDetail:'none',neckFinish:'rib',neckType:'finish',collarGroup:'flat',collarType:'peter',highneckType:'turtle',neckDepth:35,neckCurve:75,neckWidth:40,
-  shoulderLine:'natural',shoulderSlope:40,shoulderExtra:0,
+  neckShape:'round',neckDetail:'none',neckFinish:'rib',neckType:'finish',collarGroup:'flat',collarType:'peter',highneckType:'turtle',neckDepth:35,neckCurve:75,neckWidth:40,
+  shoulderType:'standard',shoulderSlope:40,shoulderExtra:0,strapType:'none',
   sleeveType:'setin',sleeveShape:'straight',sleeveLen:'short',sleeveWidth:45,sleeveCuff:'plain',sleeveLength:32,
   sideSeam:'yes',silhouette:'slight_a',dart:'none',hipFlare:4,
   hemShape:'straight',hemFinish:'folded',
@@ -809,8 +820,8 @@ const History={
   _restore(){
     const snap=JSON.parse(this.stack[this.idx]);
     Object.assign(S,snap);this._last=this.stack[this.idx];
-    // 구 히스토리 역호환
-    if(!S.neckVariant){const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+    migrateState(S);
+    {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
     if(!S.neckType){const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);}
     Object.keys(S).forEach(k=>{syncToggle(k,S[k]);});
     SD.forEach(([id,k,vid,fmt])=>{document.getElementById(id).value=S[k];document.getElementById(vid).textContent=fmt(S[k]);});
@@ -862,7 +873,7 @@ const STYLE_OVERLAYS={
   },
   military:{
     deltas:{shoulderExtra:5,fitW:5},
-    overrides:{pocket:'cargo',pocketY:32,stitchType:'double',hemFinish:'folded',shoulderLine:'extended'}
+    overrides:{pocket:'cargo',pocketY:32,stitchType:'double',hemFinish:'folded',shoulderType:'extended'}
   },
   workwear:{
     deltas:{fitW:10,chest:8},
@@ -966,17 +977,33 @@ function setupFoldable(){
     if(!isDe&&overflow.querySelector('.tb.on')){overflow.classList.add('open');more.classList.add('open');more.textContent='−';}
   });
 }
-const NECK_PRESETS={round:{neckCurve:75,neckWidth:40,neckDepth:35},v:{neckCurve:8,neckWidth:40,neckDepth:35},deep_v:{neckCurve:8,neckWidth:40,neckDepth:70},u:{neckCurve:95,neckWidth:40,neckDepth:40},square:{neckCurve:2,neckWidth:45,neckDepth:35},boat:{neckCurve:85,neckWidth:90,neckDepth:10}};
-const VARIANT_PRESETS={none:{},off_shoulder:{neckCurve:80,neckWidth:100,neckDepth:8},halter:{neckCurve:12,neckWidth:20,neckDepth:60},one_shoulder:{neckCurve:75,neckWidth:40,neckDepth:35}};
+const NECK_PRESETS={round:{neckCurve:75,neckWidth:40,neckDepth:35},v:{neckCurve:8,neckWidth:40,neckDepth:35},deep_v:{neckCurve:8,neckWidth:40,neckDepth:70},u:{neckCurve:95,neckWidth:40,neckDepth:40},square:{neckCurve:2,neckWidth:45,neckDepth:35},boat:{neckCurve:85,neckWidth:90,neckDepth:10},scoop:{neckCurve:85,neckWidth:70,neckDepth:20},straight:{neckCurve:2,neckWidth:65,neckDepth:5}};
+// VARIANT_PRESETS 제거됨 → SHOULDER_PRESETS로 통합
 const DETAIL_PRESETS={none:{},henley:{neckCurve:70,neckWidth:40,neckDepth:45},keyhole:{},drape:{neckCurve:90,neckWidth:65,neckDepth:55}};
 function decomposeNeckShape(ns){
-  if(['off_shoulder','halter'].includes(ns)) return{neckShape:ns==='halter'?'v':'round',neckVariant:ns,neckDetail:'none'};
-  if(ns==='henley') return{neckShape:'round',neckVariant:'none',neckDetail:'henley'};
-  if(ns==='keyhole') return{neckShape:'round',neckVariant:'none',neckDetail:'keyhole'};
-  if(ns==='cowl') return{neckShape:'round',neckVariant:'none',neckDetail:'drape'};
-  return{neckShape:ns,neckVariant:'none',neckDetail:'none'};
+  if(['off_shoulder','halter'].includes(ns)) return{neckShape:ns==='halter'?'v':'round',shoulderType:ns,neckDetail:'none'};
+  if(ns==='henley') return{neckShape:'round',neckDetail:'henley'};
+  if(ns==='keyhole') return{neckShape:'round',neckDetail:'keyhole'};
+  if(ns==='cowl') return{neckShape:'round',neckDetail:'drape'};
+  return{neckShape:ns,neckDetail:'none'};
 }
-const SHOULDER_PRESETS={narrow:{shoulderExtra:-6,shoulderSlope:45},natural:{shoulderExtra:0,shoulderSlope:40},extended:{shoulderExtra:10,shoulderSlope:35},drop:{shoulderExtra:16,shoulderSlope:25}};
+// ── State Migration (구→신 호환) ──
+function migrateState(s){
+  if(s.neckVariant&&s.neckVariant!=='none'){
+    s.shoulderType=s.neckVariant;
+    delete s.neckVariant;
+  }else if(s.shoulderLine){
+    const M={natural:'standard',drop:'dropped',extended:'extended',narrow:'narrow'};
+    s.shoulderType=M[s.shoulderLine]||'standard';
+    delete s.shoulderLine;
+  }
+  if(s.neckVariant) delete s.neckVariant;
+  if(s.shoulderLine) delete s.shoulderLine;
+  if(!s.shoulderType) s.shoulderType='standard';
+  if(!s.strapType) s.strapType='none';
+  return s;
+}
+const SHOULDER_PRESETS={standard:{shoulderExtra:0,shoulderSlope:40},dropped:{shoulderExtra:16,shoulderSlope:25},off_shoulder:{shoulderExtra:4,shoulderSlope:25,neckCurve:80,neckWidth:100,neckDepth:8},halter:{shoulderExtra:-4,shoulderSlope:42,neckCurve:12,neckWidth:20,neckDepth:60},extended:{shoulderExtra:10,shoulderSlope:35},narrow:{shoulderExtra:-6,shoulderSlope:45},strapless:{shoulderExtra:0,shoulderSlope:25,neckCurve:85,neckWidth:100,neckDepth:5},one_shoulder:{shoulderExtra:0,shoulderSlope:40,neckCurve:75,neckWidth:40,neckDepth:35}};
 const SILHOUETTE_PRESETS={tapered:{hipFlare:-6},straight:{hipFlare:0},slight_a:{hipFlare:4},cocoon:{hipFlare:10},a_line:{hipFlare:12}};
 const FIT_PRESETS={skin:{fitW:6},slim:{fitW:26},regular:{fitW:50},relaxed:{fitW:66},oversized:{fitW:86},boxy:{fitW:94}};
 const SLEEVELEN_PRESETS={sleeveless:{sleeveLength:0},cap:{sleeveLength:15},short:{sleeveLength:30},elbow:{sleeveLength:50},threequarter:{sleeveLength:72},long:{sleeveLength:95}};
@@ -985,16 +1012,17 @@ const SKIRTTYPE_PRESETS={pencil:{skirtFlare:0},a_line:{skirtFlare:6},flared:{ski
 const PANTSLEN_PRESETS={hot:{pantsLen:15},short:{pantsLen:28},bermuda:{pantsLen:42},crop:{pantsLen:65},full:{pantsLen:80}};
 const PANTSTYPE_PRESETS={straight:{pantsFlare:0},tapered:{pantsFlare:-5},wide:{pantsFlare:15},skinny:{pantsFlare:-8},baggy:{pantsFlare:8},flared:{pantsFlare:12}};
 const POCKET_Y_PRESETS={none:{pocketY:22},chest_one:{pocketY:22},chest_two:{pocketY:22},patch_round:{pocketY:22},flap:{pocketY:22},welt:{pocketY:35},zip:{pocketY:30},kangaroo:{pocketY:48},jetted:{pocketY:35},cargo:{pocketY:32},seam:{pocketY:35}};
-const BUTTON_PRESETS={neckShape:NECK_PRESETS,neckVariant:VARIANT_PRESETS,neckDetail:DETAIL_PRESETS,shoulderLine:SHOULDER_PRESETS,silhouette:SILHOUETTE_PRESETS,fit:FIT_PRESETS,sleeveLen:SLEEVELEN_PRESETS,pocket:POCKET_Y_PRESETS,skirtLenPreset:SKIRTLEN_PRESETS,skirtType:SKIRTTYPE_PRESETS,pantsLenPreset:PANTSLEN_PRESETS,pantsType:PANTSTYPE_PRESETS};
+const BUTTON_PRESETS={neckShape:NECK_PRESETS,neckDetail:DETAIL_PRESETS,shoulderType:SHOULDER_PRESETS,silhouette:SILHOUETTE_PRESETS,fit:FIT_PRESETS,sleeveLen:SLEEVELEN_PRESETS,pocket:POCKET_Y_PRESETS,skirtLenPreset:SKIRTLEN_PRESETS,skirtType:SKIRTTYPE_PRESETS,pantsLenPreset:PANTSLEN_PRESETS,pantsType:PANTSTYPE_PRESETS};
 
 // ── 넥 형태 × 변형 × 디테일 × 넥 타입/칼라 호환성 ──
 // Shape → 허용 neckType[]
 const NECKTYPE_COMPAT={
   boat:['finish','collar'],
-  // round, v, deep_v, u, square: null = 전부 가능
+  straight:['finish','collar'],
+  // round, v, deep_v, u, square, scoop: null = 전부 가능
 };
-// Variant → 허용 neckType[]
-const VARIANT_NECKTYPE_COMPAT={
+// ShoulderType → 허용 neckType[]
+const SHOULDER_NECKTYPE_COMPAT={
   halter:['finish'],
   off_shoulder:['finish','collar'],
   one_shoulder:['finish'],
@@ -1005,8 +1033,8 @@ const DETAIL_NECKTYPE_COMPAT={
   keyhole:['finish','highneck'],
   // henley, drape, none: null = 전부 가능
 };
-// Variant ↔ Detail 호환성
-const VARIANT_DETAIL_COMPAT={
+// ShoulderType ↔ Detail 호환성
+const SHOULDER_DETAIL_COMPAT={
   halter:['none'],
   off_shoulder:['none','drape'],
   one_shoulder:['none'],
@@ -1020,17 +1048,19 @@ const COLLAR_COMPAT={
   u:{flat:['peter','sailor','bertha','puritan','eton'],stand:[],tailored:[],deco:['bow','cowl']},
   square:{flat:['peter','sailor','bertha','puritan','eton'],stand:['band','china','mandarin','wing'],tailored:['shirt'],deco:['bow','cowl']},
   boat:{flat:['peter','sailor','bertha','puritan'],stand:[],tailored:[],deco:['bow','cowl']},
+  scoop:{flat:['peter','sailor','bertha','puritan','eton'],stand:['band','china','mandarin','funnel','wing'],tailored:['shirt'],deco:['bow','cowl']},
+  straight:{flat:['peter','sailor','bertha','puritan'],stand:['band'],tailored:[],deco:['bow','cowl']},
 };
-// Variant가 칼라 범위를 추가 제한
-const VARIANT_COLLAR_OVERRIDE={
+// ShoulderType이 칼라 범위를 추가 제한
+const SHOULDER_COLLAR_OVERRIDE={
   off_shoulder:{flat:['peter','sailor','bertha','puritan'],stand:[],tailored:[],deco:['cowl']},
   // halter: Level 1에서 칼라 자체 차단
 };
 function updateFinishCompat(){
-  const ns=S.neckShape, nv=S.neckVariant, nd=S.neckDetail;
+  const ns=S.neckShape, nv=S.shoulderType, nd=S.neckDetail;
 
-  // Variant ↔ Detail 호환성
-  const allowedDetails=VARIANT_DETAIL_COMPAT[nv]||null;
+  // ShoulderType ↔ Detail 호환성
+  const allowedDetails=SHOULDER_DETAIL_COMPAT[nv]||null;
   const detailRow=document.querySelector('[data-p="neckDetail"]');
   if(detailRow){
     let detailBlocked=false;
@@ -1049,7 +1079,7 @@ function updateFinishCompat(){
   // Level 1: neckType 버튼 — shape ∩ variant ∩ detail 교집합
   const all=['finish','collar','highneck','hood'];
   const byShape=NECKTYPE_COMPAT[ns]||all;
-  const byVariant=VARIANT_NECKTYPE_COMPAT[nv]||all;
+  const byVariant=SHOULDER_NECKTYPE_COMPAT[nv]||all;
   const byDetail=DETAIL_NECKTYPE_COMPAT[S.neckDetail]||all;
   const allowedTypes=all.filter(t=>byShape.includes(t)&&byVariant.includes(t)&&byDetail.includes(t));
   const typeRow=document.querySelector('[data-p="neckType"]');
@@ -1071,7 +1101,7 @@ function updateFinishCompat(){
   // Level 2: 칼라 세부 타입 — shape compat ∩ variant override
   if(S.neckType==='collar'){
     const baseCompat=COLLAR_COMPAT[ns];
-    const varOverride=VARIANT_COLLAR_OVERRIDE[nv];
+    const varOverride=SHOULDER_COLLAR_OVERRIDE[nv];
     if(baseCompat){
       ['flat','stand','tailored','deco'].forEach(g=>{
         const baseAllowed=baseCompat[g]||[];
@@ -1183,8 +1213,8 @@ function updateClosureCompat(){
   const breastRow=document.querySelector('[data-p="closureStyle"]');
   if(!closureRow||!breastRow)return;
 
-  // 1) halter/off_shoulder → 클로저 전체 차단
-  const blockClosure=['halter','off_shoulder','one_shoulder'].includes(S.neckVariant);
+  // 1) strapless → 클로저 전체 차단, off_shoulder → 프론트만 차단
+  const blockClosure=['strapless'].includes(S.shoulderType);
   ['button','zip','snap','hidden'].forEach(v=>setBtnState(closureRow,v,blockClosure));
   if(blockClosure&&S.closure!=='none') autoSwitch(closureRow,'closure','none','closureOff');
 
@@ -1273,24 +1303,39 @@ function updateGarmentHint(){
   else el.style.display='none';
 }
 
-// ── 넥 변형 작법 호환성 ──
+// ── 어깨 유형 × 소매 호환성 ──
 function updateVariantCompat(){
-  // 홀터/오프숄더/원숄더 → 민소매 강제
-  const forceSleeveless=['halter','off_shoulder','one_shoulder'].includes(S.neckVariant);
-  if(forceSleeveless){
-    const lenRow=document.querySelector('[data-p="sleeveLen"]');
-    if(lenRow) lenRow.querySelectorAll('.tb').forEach(b=>setBtnState2(b,b.dataset.v!=='sleeveless'));
+  const st=S.shoulderType;
+  const lenRow=document.querySelector('[data-p="sleeveLen"]');
+  if(!lenRow)return;
+  if(st==='strapless'){
+    // Hard: sleeveless only
+    lenRow.querySelectorAll('.tb').forEach(b=>setBtnState2(b,b.dataset.v!=='sleeveless'));
     if(S.sleeveLength>2){
-      S.sleeveLength=0;S.sleeveLen='sleeveless';
-      syncToggle('sleeveLen','sleeveless');
+      S.sleeveLength=0;S.sleeveLen='sleeveless';syncToggle('sleeveLen','sleeveless');
+      const sl=document.getElementById('sl_sleeveLength');if(sl)sl.value=0;
+      const sv=document.getElementById('sv_sleeveLength');if(sv)sv.textContent=t('slider','sleeveless');
+      showCompatToast('sleevelessForced');
+    }
+  } else if(st==='halter'){
+    // Soft: sleeveless or cap
+    lenRow.querySelectorAll('.tb').forEach(b=>setBtnState2(b,!['sleeveless','cap'].includes(b.dataset.v)));
+    if(S.sleeveLength>15){
+      S.sleeveLength=0;S.sleeveLen='sleeveless';syncToggle('sleeveLen','sleeveless');
       const sl=document.getElementById('sl_sleeveLength');if(sl)sl.value=0;
       const sv=document.getElementById('sv_sleeveLength');if(sv)sv.textContent=t('slider','sleeveless');
       showCompatToast('sleevelessForced');
     }
   } else {
-    const lenRow=document.querySelector('[data-p="sleeveLen"]');
-    if(lenRow) lenRow.querySelectorAll('.tb').forEach(b=>setBtnState2(b,false));
+    // off_shoulder, one_shoulder, standard, dropped, extended, narrow: ALL sleeves OK
+    lenRow.querySelectorAll('.tb').forEach(b=>setBtnState2(b,false));
   }
+  // strapType: sleeveless일 때만 표시
+  updateStrapTypeVisibility();
+}
+function updateStrapTypeVisibility(){
+  const row=document.getElementById('strapTypeRow');
+  if(row) row.style.display=S.sleeveLength<=2?'':'none';
 }
 
 // ── 전체 호환성 일괄 업데이트 ──
@@ -1315,7 +1360,7 @@ function syncCollarBtns(){
 }
 
 document.querySelectorAll('.trow').forEach(r=>{const p=r.dataset.p;if(!p)return;r.querySelectorAll('.tb:not(.ct)').forEach(b=>{b.addEventListener('click',()=>{if(b.classList.contains('disabled'))return;r.querySelectorAll('.tb:not(.ct)').forEach(x=>x.classList.remove('on'));b.classList.add('on');S[p]=b.dataset.v;const bp=BUTTON_PRESETS[p];if(bp){const np=bp[b.dataset.v];if(np)Object.entries(np).forEach(([k,v])=>{S[k]=v;const d=SD.find(x=>x[1]===k);if(d){document.getElementById(d[0]).value=v;document.getElementById(d[2]).textContent=d[3](v);}});}
-if(p==='neckShape'&&S.neckVariant!=='none'){const vo=VARIANT_PRESETS[S.neckVariant];if(vo)Object.entries(vo).forEach(([k,v])=>{S[k]=v;const d=SD.find(x=>x[1]===k);if(d){document.getElementById(d[0]).value=v;document.getElementById(d[2]).textContent=d[3](v);}});}
+if(p==='neckShape'&&['off_shoulder','halter','one_shoulder','strapless'].includes(S.shoulderType)){const vo=SHOULDER_PRESETS[S.shoulderType];if(vo)Object.entries(vo).forEach(([k,v])=>{if(k==='shoulderExtra'||k==='shoulderSlope')return;S[k]=v;const d=SD.find(x=>x[1]===k);if(d){document.getElementById(d[0]).value=v;document.getElementById(d[2]).textContent=d[3](v);}});}
 if(p==='neckType')updateNeckSubPanels();
 if(p==='collarGroup'){updateCollarGroupVis();const fb=document.querySelector('#cg_'+S.collarGroup+' .tb.ct:not(.disabled)');if(fb){document.querySelectorAll('.tb.ct').forEach(x=>x.classList.remove('on'));fb.classList.add('on');S.collarType=fb.dataset.v;}}
 if(p==='pocket'){const pyr=document.getElementById('pocketYRow');if(pyr)pyr.style.display=S.pocket==='none'?'none':'';const sl=document.getElementById('sl_pocketY');if(sl){sl.value=S.pocketY;document.getElementById('sv_pocketY').textContent=S.pocketY+'%';}}
@@ -1507,8 +1552,9 @@ const BodyComp = {
     const isSl=S.sleeveLength<=2;
 
     // left side (shoulder → armhole → side → hem)
-    const isOffShoulder=S.neckVariant==='off_shoulder';
-    const isHalter=S.neckVariant==='halter';
+    const isOffShoulder=S.shoulderType==='off_shoulder';
+    const isHalter=S.shoulderType==='halter';
+    const isStrapless=S.shoulderType==='strapless';
     let lp='';
     if(isOffShoulder){
       // 오프숄더: 어깨끝점 없음 — 넥라인이 어깨 폭까지 벌어진 후 바디 옆선으로 내려감
@@ -1519,7 +1565,7 @@ const BodyComp = {
       const strapW=6;
       const strapTopY=topY-8;
       lp=`M${cx-strapW},${strapTopY} L${cx-strapW},${topY+4} C${cx-strapW-8},${topY+12} ${cx-halfBody+4},${uaY-20} ${cx-halfBody},${uaY}`;
-    } else if(S.neckVariant==='one_shoulder'){
+    } else if(S.shoulderType==='one_shoulder'){
       // 원숄더: 왼쪽은 오프숄더(드롭), 오른쪽은 일반 어깨선
       const osW=shoulderW+4;
       const dropY=topY+slopeY+4;
@@ -1576,7 +1622,7 @@ const BodyComp = {
       const strapW=6;
       const strapTopY=topY-8;
       ra=`C${cx+halfBody-4},${uaY-20} ${cx+strapW+8},${topY+12} ${cx+strapW},${topY+4} L${cx+strapW},${strapTopY}`;
-    } else if(S.neckVariant==='one_shoulder'){
+    } else if(S.shoulderType==='one_shoulder'){
       // 원숄더: 오른쪽은 일반 민소매 어깨선
       ra=`C${cx+halfBody-1},${uaY-(uaY-sY)*0.15} ${sR-1},${sY+(uaY-sY)*0.3} ${sR},${sY} L${cx+neckW},${topY}`;
     } else if(S.sleeveType==='raglan'&&!isSl) ra=`Q${cx+halfBody+4},${(topY+uaY)/2} ${cx+neckW},${topY}`;
@@ -1606,32 +1652,35 @@ const NeckComp = {
     const ns=S.neckShape;
     let p;
 
-    // 구조변형 (neckVariant) — 프리셋 값만으로 표현 못 하는 형태
-    const nv=S.neckVariant;
-    if(nv==='halter'&&!isBack){
-      // 홀터: 끈 상단을 연결하는 U곡선 (목 뒤에서 연결)
-      const strapW=6;
+    // 구조변형 (shoulderType) — 어깨 구조에 따른 넥라인
+    const STRAP_W={none:0,wide:10,narrow:6,spaghetti:2,ribbon:4,tied:6};
+    const st=S.shoulderType;
+    if(st==='halter'&&!isBack){
+      const strapW=STRAP_W[S.strapType]||6;
       const strapTopY=topY-8;
       p=`M${cx-strapW},${strapTopY} Q${cx},${strapTopY-4} ${cx+strapW},${strapTopY}`;
-    } else if(nv==='halter'&&isBack){
-      // 홀터 뒷면: 목 뒤 연결부
-      const strapW=6;
+    } else if(st==='halter'&&isBack){
+      const strapW=STRAP_W[S.strapType]||6;
       const strapTopY=topY-8;
       p=`M${cx-strapW},${strapTopY} Q${cx},${strapTopY+3} ${cx+strapW},${strapTopY}`;
-    } else if(nv==='one_shoulder'&&!isBack){
-      // 원숄더: 비대칭 — 왼쪽은 어깨 밖까지 드롭, 오른쪽은 일반 넥
+    } else if(st==='one_shoulder'&&!isBack){
       const osW=g.shoulderW+4;
       const slopeOff=S.shoulderSlope*0.28+4;
       const dropY=topY+slopeOff;
       p=`M${cx-osW},${dropY} Q${cx-osW*0.3},${topY+d*0.3} ${cx},${topY+d} Q${cx+neckW*0.6},${topY+d*0.3} ${r},${topY}`;
-    } else if(nv==='off_shoulder'&&!isBack){
-      // 오프숄더: 어깨 폭까지 벌어진 넥라인 — 살짝 드랍
+    } else if(st==='off_shoulder'&&!isBack){
       const osW=g.shoulderW+4;
       const sl=cx-osW, sr=cx+osW;
       const slopeOff=S.shoulderSlope*0.28+4;
       const dropY=topY+slopeOff;
-      const midDrop=dropY-8; // 중앙이 더 올라감 (얕은 U자)
+      const midDrop=dropY-8;
       p=`M${sl},${dropY} C${sl+osW*0.3},${midDrop} ${sr-osW*0.3},${midDrop} ${sr},${dropY}`;
+    } else if(st==='strapless'&&!isBack){
+      const osW=g.shoulderW+2;
+      const sl=cx-osW, sr=cx+osW;
+      const slopeOff=S.shoulderSlope*0.28+2;
+      const dropY=topY+slopeOff;
+      p=`M${sl},${dropY} C${sl+osW*0.3},${dropY-4} ${sr-osW*0.3},${dropY-4} ${sr},${dropY}`;
     } else if(t<0.06){
       // 스퀘어 존
       p=`M${l},${topY} L${l},${topY+d} L${r},${topY+d} L${r},${topY}`;
@@ -3552,9 +3601,9 @@ function renderCoordBottom(svg,yOffset,isBack,type){
 // Donnanno Vol.3 p.15 — Ease by garment type (bust ease cm → fitW mapping)
 // bodysuit -1~2cm=skin, tops 0~1=slim, shirts/dress 4~8=regular, shaped jacket 10~12=relaxed, loose jacket 14~16=oversized
 const GARMENT_DEFAULTS={
-  top:{bodyLen:45,fitW:50,closure:'none',closureStyle:'single',neckShape:'round',neckVariant:'none',neckDetail:'none'},
-  dress:{bodyLen:80,fitW:46,silhouette:'a_line',hipFlare:8,dart:'bust',closure:'none',closureStyle:'single',neckShape:'round',neckVariant:'none',neckDetail:'none'},
-  outerwear:{bodyLen:60,fitW:70,closure:'button',closureStyle:'single',neckShape:'v',neckVariant:'none',neckDetail:'none'}
+  top:{bodyLen:45,fitW:50,closure:'none',closureStyle:'single',neckShape:'round',shoulderType:'standard',neckDetail:'none'},
+  dress:{bodyLen:80,fitW:46,silhouette:'a_line',hipFlare:8,dart:'bust',closure:'none',closureStyle:'single',neckShape:'round',shoulderType:'standard',neckDetail:'none'},
+  outerwear:{bodyLen:60,fitW:70,closure:'button',closureStyle:'single',neckShape:'v',shoulderType:'standard',neckDetail:'none'}
 };
 function setGarmentType(type){
   const isUpper=['top','dress','outerwear'].includes(type);
@@ -4003,9 +4052,9 @@ const SpecModule = {
     const silLabel=S.hipFlare<=-4?L.silhouette.tapered:S.hipFlare<=1?L.silhouette.straight:S.hipFlare<=6?L.silhouette.slight_a:S.hipFlare<=11?L.silhouette.a_line:L.silhouette.cocoon;
     const fitLabel=S.fitW<=12?L.fit.skin:S.fitW<=38?L.fit.slim:S.fitW<=58?L.fit.regular:S.fitW<=76?L.fit.relaxed:S.fitW<=90?L.fit.oversized:L.fit.boxy;
     const rows=[
-      [t('spec','neck'),L.neckShape[S.neckShape]+(L.neckVariant[S.neckVariant]?' · '+L.neckVariant[S.neckVariant]:'')+(L.neckDetail[S.neckDetail]?' · '+L.neckDetail[S.neckDetail]:'')+' ('+t('spec','curveDeg')+S.neckCurve+' '+t('spec','widthDeg')+S.neckWidth+')'],
+      [t('spec','neck'),L.neckShape[S.neckShape]+(S.shoulderType!=='standard'&&L.shoulderType[S.shoulderType]?' · '+L.shoulderType[S.shoulderType]:'')+(L.neckDetail[S.neckDetail]?' · '+L.neckDetail[S.neckDetail]:'')+' ('+t('spec','curveDeg')+S.neckCurve+' '+t('spec','widthDeg')+S.neckWidth+')'],
       [t('spec','neckFinish'),L.neckFinish[effectiveFinish()]],
-      [t('spec','shoulder'),L.shoulderLine[S.shoulderLine]],
+      [t('spec','shoulder'),L.shoulderType[S.shoulderType]||S.shoulderType],
       [t('spec','sleeve'),L.sleeveType[S.sleeveType]+(S.sleeveShape!=='straight'?' · '+L.sleeveShape[S.sleeveShape]:'')+' · '+slvLen+' ('+S.sleeveLength+')'],
       [t('spec','cuff'),L.sleeveCuff[S.sleeveCuff]],[t('spec','sideSeam'),L.sideSeam[S.sideSeam]],
       [t('spec','silhouette'),silLabel+' (flare'+S.hipFlare+')'],[t('spec','dart'),L.dart[S.dart]],
@@ -4126,57 +4175,58 @@ const SpecModule = {
 // ═══════════════════════════════════════════════════════════════
 const PresetModule={
   DB:[
-    {cat:'tops_tees',name:'basic',s:{neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderLine:'natural',shoulderSlope:40,shoulderExtra:0,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',fit:'regular',fitW:50,bodyLen:45,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'oversized',s:{fit:'oversized',fitW:86,shoulderLine:'drop',shoulderExtra:16,sleeveWidth:70,bodyLen:65,chest:70,silhouette:'straight',hipFlare:0,sleeveLen:'short',sleeveLength:32,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderSlope:35,sleeveType:'setin',sleeveCuff:'plain',sideSeam:'yes',dart:'none',hemShape:'straight',hemFinish:'folded',pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'henley',s:{neckShape:'henley',neckFinish:'rib',neckDepth:45,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'raglan',s:{sleeveType:'raglan',sleeveLen:'short',sleeveLength:32,fit:'relaxed',fitW:66,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveWidth:50,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:45,chest:55,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'boxy',s:{fit:'boxy',fitW:94,shoulderLine:'drop',shoulderExtra:16,silhouette:'straight',hipFlare:0,sleeveLen:'short',sleeveLength:32,sleeveWidth:60,bodyLen:40,neckShape:'round',neckFinish:'rib',neckDepth:30,neckCurve:75,neckWidth:40,shoulderSlope:30,sleeveType:'setin',sleeveCuff:'plain',sideSeam:'yes',dart:'none',hemShape:'straight',hemFinish:'folded',chest:60,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'mockNeck',s:{neckFinish:'mock',fit:'slim',fitW:26,sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',neckShape:'round',neckDepth:25,neckCurve:75,neckWidth:40,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:40,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:48,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'longSleeve',s:{sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',fit:'regular',fitW:50,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'knitwear',name:'polo',s:{neckShape:'round',neckFinish:'collar_band',neckDepth:30,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'rib',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:48,chest:52,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'knitwear',name:'turtleneck',s:{neckShape:'round',neckFinish:'turtle',neckDepth:25,neckCurve:75,neckWidth:40,fit:'slim',fitW:26,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:38,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:60,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'knitwear',name:'crewneck',s:{neckShape:'round',neckFinish:'rib',neckDepth:28,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:52,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'knitwear',name:'sweatshirt',s:{neckShape:'round',neckFinish:'rib',neckDepth:30,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderLine:'drop',shoulderExtra:8,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:60,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'knitwear',name:'hoodie',s:{neckShape:'round',neckFinish:'hood',neckDepth:30,neckCurve:75,neckWidth:40,fit:'oversized',fitW:80,shoulderLine:'drop',shoulderExtra:10,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:62,pocket:'kangaroo',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'cropTop',s:{fit:'slim',fitW:26,bodyLen:8,sleeveLen:'sleeveless',sleeveLength:0,neckShape:'round',neckFinish:'binding',neckDepth:40,neckCurve:75,neckWidth:40,shoulderLine:'narrow',shoulderExtra:-6,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'raw',chest:45,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'tankTop',s:{neckShape:'round',neckFinish:'binding',neckDepth:40,neckCurve:80,neckWidth:40,fit:'slim',fitW:30,shoulderLine:'narrow',shoulderExtra:-4,shoulderSlope:42,sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:45,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'camisole',s:{neckShape:'v',neckFinish:'binding',neckDepth:50,neckCurve:60,neckWidth:35,fit:'slim',fitW:24,shoulderLine:'narrow',shoulderExtra:-8,shoulderSlope:45,sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:42,chest:44,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'shirt_blouse',name:'blouse',s:{neckShape:'round',neckFinish:'collar_bow',neckDepth:30,neckCurve:75,neckWidth:40,fit:'slim',fitW:26,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'long',sleeveLength:90,sleeveWidth:40,sleeveCuff:'french',sleeveShape:'bishop',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'bust',hemShape:'shirt_tail',hemFinish:'folded',bodyLen:55,chest:48,pocket:'none',trimming:'none',stitchType:'single',closure:'hidden',closureStyle:'single'}},
-    {cat:'shirt_blouse',name:'bohoBlouse',s:{neckShape:'round',neckFinish:'raw',neckDepth:45,neckCurve:85,neckWidth:55,fit:'relaxed',fitW:66,shoulderLine:'drop',shoulderExtra:8,shoulderSlope:35,sleeveType:'setin',sleeveLen:'long',sleeveLength:85,sleeveWidth:50,sleeveCuff:'plain',sleeveShape:'peasant',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'drawstring',bodyLen:50,chest:55,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'shirt_blouse',name:'oxford',s:{neckShape:'round',neckFinish:'collar',neckDepth:30,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'barrel',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'shirt_tail',hemFinish:'folded',bodyLen:55,chest:52,pocket:'chest_one',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
-    {cat:'shirt_blouse',name:'military',s:{neckShape:'round',neckFinish:'collar',neckDepth:35,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderLine:'extended',shoulderExtra:10,shoulderSlope:38,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:50,sleeveCuff:'rolled',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:55,pocket:'flap',trimming:'none',stitchType:'double',closure:'button',closureStyle:'single'}},
-    {cat:'shirt_blouse',name:'workwear',s:{neckShape:'round',neckFinish:'rib',neckDepth:30,neckCurve:80,neckWidth:40,fit:'relaxed',fitW:66,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:48,sleeveCuff:'rib',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:58,pocket:'chest_two',trimming:'contrast_stitch',stitchType:'double'}},
-    {cat:'dress',name:'volSleeveDress',s:{neckShape:'u',neckFinish:'binding',neckDepth:45,neckCurve:95,neckWidth:50,fit:'regular',fitW:50,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'elbow',sleeveLength:50,sleeveWidth:42,sleeveCuff:'plain',sleeveShape:'lantern',sideSeam:'yes',silhouette:'a_line',hipFlare:8,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:80,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'dress',name:'shirtDress',s:{neckShape:'round',neckFinish:'collar',neckDepth:35,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'rolled',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:8,dart:'waist',hemShape:'shirt_tail',hemFinish:'folded',bodyLen:80,chest:52,pocket:'chest_one',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
-    {cat:'dress',name:'peterPanDress',s:{neckShape:'round',neckFinish:'collar_peter',neckDepth:30,neckCurve:80,neckWidth:40,fit:'regular',fitW:50,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'short',sleeveLength:28,sleeveWidth:42,sleeveCuff:'plain',sleeveShape:'puff',sideSeam:'yes',silhouette:'a_line',hipFlare:10,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:75,chest:48,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'dress',name:'drapeDress',s:{neckShape:'cowl',neckFinish:'collar_cowl',neckDepth:55,neckCurve:90,neckWidth:60,fit:'slim',fitW:30,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:85,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'dress',name:'slipDress',s:{neckShape:'v',neckFinish:'binding',neckDepth:50,neckCurve:65,neckWidth:35,fit:'slim',fitW:24,shoulderLine:'narrow',shoulderExtra:-8,shoulderSlope:45,sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:4,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:90,chest:44,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'outerwear',name:'funnelCoat',s:{neckShape:'round',neckFinish:'collar_funnel',neckDepth:25,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderLine:'natural',shoulderExtra:4,shoulderSlope:38,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:45,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:10,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:85,chest:58,pocket:'welt',trimming:'none',stitchType:'single'}},
-    {cat:'outerwear',name:'blazer',s:{neckShape:'v',neckFinish:'collar_notched',neckDepth:30,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderLine:'natural',shoulderExtra:4,shoulderSlope:38,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:60,chest:54,pocket:'flap',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
-    {cat:'outerwear',name:'bomber',s:{neckShape:'round',neckFinish:'collar_band',neckDepth:28,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderLine:'drop',shoulderExtra:8,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:48,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:48,chest:62,pocket:'welt',trimming:'none',stitchType:'single',closure:'zip',closureStyle:'single'}},
-    {cat:'outerwear',name:'trench',s:{neckShape:'v',neckFinish:'collar_peaked',neckDepth:28,neckCurve:70,neckWidth:40,fit:'relaxed',fitW:66,shoulderLine:'natural',shoulderExtra:6,shoulderSlope:36,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:45,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:6,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:80,chest:60,pocket:'welt',trimming:'none',stitchType:'double',closure:'button',closureStyle:'double'}},
-    {cat:'outerwear',name:'cardigan',s:{neckShape:'v',neckFinish:'collar_round',neckDepth:40,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderLine:'natural',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:52,pocket:'patch',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
-    {cat:'outerwear',name:'zipHoodie',s:{neckShape:'round',neckFinish:'hood',neckDepth:30,neckCurve:75,neckWidth:40,fit:'oversized',fitW:80,shoulderLine:'drop',shoulderExtra:10,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:62,pocket:'kangaroo',trimming:'none',stitchType:'single',closure:'zip',closureStyle:'single'}},
+    {cat:'tops_tees',name:'basic',s:{neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderSlope:40,shoulderExtra:0,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',fit:'regular',fitW:50,bodyLen:45,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'oversized',s:{fit:'oversized',fitW:86,shoulderType:'dropped',shoulderExtra:16,sleeveWidth:70,bodyLen:65,chest:70,silhouette:'straight',hipFlare:0,sleeveLen:'short',sleeveLength:32,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderSlope:35,sleeveType:'setin',sleeveCuff:'plain',sideSeam:'yes',dart:'none',hemShape:'straight',hemFinish:'folded',pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'henley',s:{neckShape:'henley',neckFinish:'rib',neckDepth:45,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'raglan',s:{sleeveType:'raglan',sleeveLen:'short',sleeveLength:32,fit:'relaxed',fitW:66,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveWidth:50,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:45,chest:55,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'boxy',s:{fit:'boxy',fitW:94,shoulderType:'dropped',shoulderExtra:16,silhouette:'straight',hipFlare:0,sleeveLen:'short',sleeveLength:32,sleeveWidth:60,bodyLen:40,neckShape:'round',neckFinish:'rib',neckDepth:30,neckCurve:75,neckWidth:40,shoulderSlope:30,sleeveType:'setin',sleeveCuff:'plain',sideSeam:'yes',dart:'none',hemShape:'straight',hemFinish:'folded',chest:60,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'mockNeck',s:{neckFinish:'mock',fit:'slim',fitW:26,sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',neckShape:'round',neckDepth:25,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:40,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:48,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'longSleeve',s:{sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',fit:'regular',fitW:50,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'knitwear',name:'polo',s:{neckShape:'round',neckFinish:'collar_band',neckDepth:30,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'rib',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:48,chest:52,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'knitwear',name:'turtleneck',s:{neckShape:'round',neckFinish:'turtle',neckDepth:25,neckCurve:75,neckWidth:40,fit:'slim',fitW:26,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:38,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:60,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'knitwear',name:'crewneck',s:{neckShape:'round',neckFinish:'rib',neckDepth:28,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:52,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'knitwear',name:'sweatshirt',s:{neckShape:'round',neckFinish:'rib',neckDepth:30,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'dropped',shoulderExtra:8,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:60,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'knitwear',name:'hoodie',s:{neckShape:'round',neckFinish:'hood',neckDepth:30,neckCurve:75,neckWidth:40,fit:'oversized',fitW:80,shoulderType:'dropped',shoulderExtra:10,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:62,pocket:'kangaroo',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'cropTop',s:{fit:'slim',fitW:26,bodyLen:8,sleeveLen:'sleeveless',sleeveLength:0,neckShape:'round',neckFinish:'binding',neckDepth:40,neckCurve:75,neckWidth:40,shoulderType:'narrow',shoulderExtra:-6,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'raw',chest:45,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'tankTop',s:{neckShape:'round',neckFinish:'binding',neckDepth:40,neckCurve:80,neckWidth:40,fit:'slim',fitW:30,shoulderType:'narrow',shoulderExtra:-4,shoulderSlope:42,sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:45,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'camisole',s:{neckShape:'v',neckFinish:'binding',neckDepth:50,neckCurve:60,neckWidth:35,fit:'slim',fitW:24,shoulderType:'narrow',shoulderExtra:-8,shoulderSlope:45,strapType:'spaghetti',sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:42,chest:44,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'shirt_blouse',name:'blouse',s:{neckShape:'round',neckFinish:'collar_bow',neckDepth:30,neckCurve:75,neckWidth:40,fit:'slim',fitW:26,shoulderType:'standard',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'long',sleeveLength:90,sleeveWidth:40,sleeveCuff:'french',sleeveShape:'bishop',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'bust',hemShape:'shirt_tail',hemFinish:'folded',bodyLen:55,chest:48,pocket:'none',trimming:'none',stitchType:'single',closure:'hidden',closureStyle:'single'}},
+    {cat:'shirt_blouse',name:'bohoBlouse',s:{neckShape:'round',neckFinish:'raw',neckDepth:45,neckCurve:85,neckWidth:55,fit:'relaxed',fitW:66,shoulderType:'dropped',shoulderExtra:8,shoulderSlope:35,sleeveType:'setin',sleeveLen:'long',sleeveLength:85,sleeveWidth:50,sleeveCuff:'plain',sleeveShape:'peasant',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'drawstring',bodyLen:50,chest:55,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'shirt_blouse',name:'oxford',s:{neckShape:'round',neckFinish:'collar',neckDepth:30,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'barrel',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'shirt_tail',hemFinish:'folded',bodyLen:55,chest:52,pocket:'chest_one',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
+    {cat:'shirt_blouse',name:'military',s:{neckShape:'round',neckFinish:'collar',neckDepth:35,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderType:'extended',shoulderExtra:10,shoulderSlope:38,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:50,sleeveCuff:'rolled',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:55,pocket:'flap',trimming:'none',stitchType:'double',closure:'button',closureStyle:'single'}},
+    {cat:'shirt_blouse',name:'workwear',s:{neckShape:'round',neckFinish:'rib',neckDepth:30,neckCurve:80,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:48,sleeveCuff:'rib',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:58,pocket:'chest_two',trimming:'contrast_stitch',stitchType:'double'}},
+    {cat:'dress',name:'volSleeveDress',s:{neckShape:'u',neckFinish:'binding',neckDepth:45,neckCurve:95,neckWidth:50,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'elbow',sleeveLength:50,sleeveWidth:42,sleeveCuff:'plain',sleeveShape:'lantern',sideSeam:'yes',silhouette:'a_line',hipFlare:8,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:80,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'dress',name:'shirtDress',s:{neckShape:'round',neckFinish:'collar',neckDepth:35,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'rolled',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:8,dart:'waist',hemShape:'shirt_tail',hemFinish:'folded',bodyLen:80,chest:52,pocket:'chest_one',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
+    {cat:'dress',name:'peterPanDress',s:{neckShape:'round',neckFinish:'collar_peter',neckDepth:30,neckCurve:80,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'short',sleeveLength:28,sleeveWidth:42,sleeveCuff:'plain',sleeveShape:'puff',sideSeam:'yes',silhouette:'a_line',hipFlare:10,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:75,chest:48,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'dress',name:'drapeDress',s:{neckShape:'cowl',neckFinish:'collar_cowl',neckDepth:55,neckCurve:90,neckWidth:60,fit:'slim',fitW:30,shoulderType:'standard',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:85,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'dress',name:'slipDress',s:{neckShape:'v',neckFinish:'binding',neckDepth:50,neckCurve:65,neckWidth:35,fit:'slim',fitW:24,shoulderType:'narrow',shoulderExtra:-8,shoulderSlope:45,strapType:'spaghetti',sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:4,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:90,chest:44,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'outerwear',name:'funnelCoat',s:{neckShape:'round',neckFinish:'collar_funnel',neckDepth:25,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'standard',shoulderExtra:4,shoulderSlope:38,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:45,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:10,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:85,chest:58,pocket:'welt',trimming:'none',stitchType:'single'}},
+    {cat:'outerwear',name:'blazer',s:{neckShape:'v',neckFinish:'collar_notched',neckDepth:30,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:4,shoulderSlope:38,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:60,chest:54,pocket:'flap',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
+    {cat:'outerwear',name:'bomber',s:{neckShape:'round',neckFinish:'collar_band',neckDepth:28,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'dropped',shoulderExtra:8,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:48,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:48,chest:62,pocket:'welt',trimming:'none',stitchType:'single',closure:'zip',closureStyle:'single'}},
+    {cat:'outerwear',name:'trench',s:{neckShape:'v',neckFinish:'collar_peaked',neckDepth:28,neckCurve:70,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'standard',shoulderExtra:6,shoulderSlope:36,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:45,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:6,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:80,chest:60,pocket:'welt',trimming:'none',stitchType:'double',closure:'button',closureStyle:'double'}},
+    {cat:'outerwear',name:'cardigan',s:{neckShape:'v',neckFinish:'collar_round',neckDepth:40,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:52,pocket:'patch',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
+    {cat:'outerwear',name:'zipHoodie',s:{neckShape:'round',neckFinish:'hood',neckDepth:30,neckCurve:75,neckWidth:40,fit:'oversized',fitW:80,shoulderType:'dropped',shoulderExtra:10,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:62,pocket:'kangaroo',trimming:'none',stitchType:'single',closure:'zip',closureStyle:'single'}},
   ],
   CATS:['tops_tees','knitwear','shirt_blouse','dress','outerwear'],
   apply(idx){
+    const from={};SD.forEach(([id,k])=>{from[k]=S[k];});
     const p=this.DB[idx].s;
-    S.sleeveShape='straight';
-    S.closure='none'; S.closureStyle='single'; // 기본값 리셋
-    // 넥 계층 리셋 (이전 프리셋 잔여 방지)
-    S.neckType='finish';S.collarGroup='flat';S.collarType='peter';S.highneckType='turtle';
-    S.neckVariant='none';S.neckDetail='none';
-    Object.assign(S,p);
-    // 레거시 neckShape → 3단 분리 자동 변환
-    if(!p.neckVariant){const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
-    // 레거시 neckFinish → 계층형 state 자동 변환
-    const d=decomposeNeckFinish(S.neckFinish||'rib');
-    Object.assign(S,d);
-    S.designElements=[]; S.selectedDE=-1; S.styleOverlay='none'; _styleBase=null;
-    Object.keys(S).forEach(k=>syncToggle(k,S[k]));
-    SD.forEach(([id,k,vid,fmt])=>{document.getElementById(id).value=S[k];document.getElementById(vid).textContent=fmt(S[k]);});
-    updateNeckSubPanels(); syncCollarBtns();
-    DesignEl.updateList(); updateAllCompat(); draw();
+    CascadeVis.morphPreset(from,()=>{
+      S.sleeveShape='straight';
+      S.closure='none'; S.closureStyle='single';
+      S.neckType='finish';S.collarGroup='flat';S.collarType='peter';S.highneckType='turtle';
+      S.shoulderType='standard';S.neckDetail='none';
+      Object.assign(S,p);
+      migrateState(S);
+      {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+      const d=decomposeNeckFinish(S.neckFinish||'rib');
+      Object.assign(S,d);
+      S.designElements=[]; S.selectedDE=-1; S.styleOverlay='none'; _styleBase=null;
+      Object.keys(S).forEach(k=>syncToggle(k,S[k]));
+      SD.forEach(([id,k,vid,fmt])=>{document.getElementById(id).value=S[k];document.getElementById(vid).textContent=fmt(S[k]);});
+      updateNeckSubPanels(); syncCollarBtns();
+      DesignEl.updateList(); updateAllCompat(); draw(true);
+    });
   },
   // ── 스커트 프리셋 ──
   SKIRT_DB:[
@@ -4190,11 +4240,13 @@ const PresetModule={
     {name:'wrapSkirt',s:{skirtType:'wrap',skirtLen:55,skirtFlare:5,waistband:'none',skirtDart:'none',skirtSlit:'none',skirtHem:'folded',skirtClosure:'none',skirtFit:50}},
   ],
   applySkirt(idx){
-    const p=this.SKIRT_DB[idx].s;
-    Object.assign(S,p);
-    Object.keys(S).forEach(k=>syncToggle(k,S[k]));
-    SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
-    draw();
+    const from={};SD.forEach(([id,k])=>{from[k]=S[k];});
+    CascadeVis.morphPreset(from,()=>{
+      Object.assign(S,this.SKIRT_DB[idx].s);
+      Object.keys(S).forEach(k=>syncToggle(k,S[k]));
+      SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
+      draw(true);
+    });
   },
   // ── 팬츠 프리셋 ──
   PANTS_DB:[
@@ -4210,11 +4262,13 @@ const PresetModule={
     {name:'baggyP',s:{pantsType:'baggy',pantsLen:78,pantsFlare:8,pantsWaist:'elastic',pantsDart:'none',pantsRise:'high',pantsClosure:'elastic_w',pantsFit:75,pantsPleat:'none',pantsCuff:'rib',pantsCrease:'none'}},
   ],
   applyPants(idx){
-    const p=this.PANTS_DB[idx].s;
-    Object.assign(S,p);
-    Object.keys(S).forEach(k=>syncToggle(k,S[k]));
-    SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
-    draw();
+    const from={};SD.forEach(([id,k])=>{from[k]=S[k];});
+    CascadeVis.morphPreset(from,()=>{
+      Object.assign(S,this.PANTS_DB[idx].s);
+      Object.keys(S).forEach(k=>syncToggle(k,S[k]));
+      SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
+      draw(true);
+    });
   },
   init(){
     const el=document.getElementById('presetRow');
@@ -4317,7 +4371,8 @@ const ExportModule = {
           // 전체 state 복원
           Object.assign(S,state);
           // 역호환: 구 포맷
-          if(!S.neckVariant){const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+          migrateState(S);
+          {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
           if(!S.neckType){const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);}
           // UI 동기화
           setGarmentType(S.garmentType||'top');
@@ -4870,6 +4925,119 @@ document.getElementById('canvasArea').addEventListener('wheel',function(e){
 
 
 // ═══════════════════════════════════════════════════════════════
+// CASCADE VIS — 파라미터 캐스케이드 시각화
+// ═══════════════════════════════════════════════════════════════
+const CascadeVis={
+  rafId:null,playing:false,stepIdx:0,
+  // ── smooth morph between two states ──
+  morph(from,to,duration,onDone){
+    if(this.rafId){cancelAnimationFrame(this.rafId);this.rafId=null;}
+    const start=performance.now();
+    const numKeys=[];
+    Object.keys(to).forEach(k=>{
+      if(typeof to[k]==='number'&&typeof from[k]==='number'&&from[k]!==to[k]) numKeys.push(k);
+    });
+    if(!numKeys.length){if(onDone)onDone();return;}
+    const animate=(now)=>{
+      const p=Math.min((now-start)/duration,1);
+      const ease=p<0.5?2*p*p:-1+(4-2*p)*p;
+      numKeys.forEach(k=>{S[k]=Math.round(from[k]+(to[k]-from[k])*ease);});
+      SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
+      draw(true);
+      if(p<1){this.rafId=requestAnimationFrame(animate);}
+      else{
+        numKeys.forEach(k=>{S[k]=to[k];});
+        SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
+        draw(true);this.rafId=null;if(onDone)onDone();
+      }
+    };
+    this.rafId=requestAnimationFrame(animate);
+  },
+  // ── preset morph (used by PresetModule) ──
+  morphPreset(fromSnap,afterApplyFn){
+    afterApplyFn();
+    const target={};
+    SD.forEach(([id,k])=>{if(typeof S[k]==='number')target[k]=S[k];});
+    // restore numeric from-values for animation
+    SD.forEach(([id,k])=>{if(typeof fromSnap[k]==='number'&&typeof S[k]==='number')S[k]=fromSnap[k];});
+    this.morph(fromSnap,target,350,()=>{History.push();});
+  },
+  // ── demo sequence ──
+  STEPS:[
+    {label:'Basic Tee',preset:0,dur:500,wait:600},
+    {label:'Chest: Slim → Wide',keys:{chest:80,fitW:78},dur:700,wait:400},
+    {label:'Length: Crop → Dress',keys:{bodyLen:88},dur:700,wait:400},
+    {label:'Sleeve: Short → Long',keys:{sleeveLength:95},dur:600,wait:400},
+    {label:'Shoulder: Natural → Drop',keys:{shoulderExtra:16,shoulderSlope:28,shoulderType:'dropped'},dur:600,wait:400},
+    {label:'Silhouette: A-Line',keys:{silhouette:'a_line',hipFlare:10},dur:600,wait:400},
+    {label:'← Reset to Basic',preset:0,dur:600,wait:300},
+    {label:'Oxford Shirt',preset:12,dur:600,wait:800},
+    {label:'Blazer',preset:27,dur:600,wait:800},
+    {label:'Hoodie',preset:25,dur:600,wait:600},
+    {label:'← Back to Basic',preset:0,dur:500,wait:300},
+  ],
+  showLabel(text){
+    const el=document.getElementById('cascadeLabel');
+    el.textContent=text;el.classList.add('show');
+  },
+  hideLabel(){
+    const el=document.getElementById('cascadeLabel');
+    el.classList.remove('show');
+  },
+  playStep(){
+    if(!this.playing||this.stepIdx>=this.STEPS.length){this.stop();return;}
+    const step=this.STEPS[this.stepIdx++];
+    this.showLabel(step.label);
+    const from={...S};
+    if(step.preset!==undefined){
+      // apply preset then morph numerics
+      const p=PresetModule.DB[step.preset].s;
+      const preTarget={...S};
+      // apply structural keys immediately
+      S.sleeveShape='straight';S.closure='none';S.closureStyle='single';
+      S.neckType='finish';S.collarGroup='flat';S.collarType='peter';S.highneckType='turtle';
+      S.shoulderType='standard';S.neckDetail='none';
+      Object.assign(S,p);
+      migrateState(S);{const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+      const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);
+      S.designElements=[];S.selectedDE=-1;S.styleOverlay='none';_styleBase=null;
+      Object.keys(S).forEach(k=>syncToggle(k,S[k]));
+      updateNeckSubPanels();syncCollarBtns();DesignEl.updateList();updateAllCompat();
+    }else if(step.keys){
+      // apply structural string keys immediately
+      Object.keys(step.keys).forEach(k=>{if(typeof step.keys[k]==='string')S[k]=step.keys[k];});
+      Object.keys(step.keys).forEach(k=>syncToggle(k,S[k]));
+      updateAllCompat();
+    }
+    const target={};SD.forEach(([id,k])=>{if(typeof S[k]==='number')target[k]=S[k];});
+    // restore numerics to from-values for smooth morph
+    SD.forEach(([id,k])=>{if(typeof from[k]==='number'&&typeof S[k]==='number')S[k]=from[k];});
+    this.morph(from,target,step.dur,()=>{
+      this._timeout=setTimeout(()=>this.playStep(),step.wait);
+    });
+  },
+  toggle(){
+    if(this.playing){this.stop();}
+    else{this.play();}
+  },
+  play(){
+    this.playing=true;this.stepIdx=0;
+    document.getElementById('cascadeBtn').textContent='■';
+    document.getElementById('cascadeBtn').classList.add('playing');
+    this.playStep();
+  },
+  stop(){
+    this.playing=false;
+    if(this.rafId){cancelAnimationFrame(this.rafId);this.rafId=null;}
+    if(this._timeout){clearTimeout(this._timeout);this._timeout=null;}
+    this.hideLabel();
+    document.getElementById('cascadeBtn').textContent='▶';
+    document.getElementById('cascadeBtn').classList.remove('playing');
+    History.push();
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
 // FACTORY VIEWER — read-only mode via URL parameter
 // ═══════════════════════════════════════════════════════════════
 const FactoryViewer={
@@ -4901,7 +5069,8 @@ const FactoryViewer={
     if(!state)return;
     Object.assign(S,DEFAULT_STATE);
     Object.assign(S,state);
-    if(!S.neckVariant){const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+    migrateState(S);
+    {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
     if(!S.neckType){const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);}
     setGarmentType(S.garmentType||'top');
     Object.keys(S).forEach(k=>syncToggle(k,S[k]));
