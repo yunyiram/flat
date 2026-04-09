@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap">
-<title>FLAT — Garment Flat Drawing Engine v0.22</title>
+<title>FLAT — Garment Flat Drawing Engine v0.23</title>
 <meta name="description" content="Parametric garment flat drawing engine. Design production-ready tech packs with 129 construction rules, 49 presets, and real-time cascade.">
 <meta property="og:title" content="FLAT — Parametric Garment Design Engine">
 <meta property="og:description" content="The only tool where every line is a number. 49 presets, 129 rules, PDF tech packs. Try the live demo.">
@@ -141,7 +141,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
       <button class="mode-btn" id="modeBoth" onclick="setMode('both')" data-i18n="header.both">Both</button>
     </div>
     <div class="mode-toggle"><button class="mode-btn on" id="langEn" onclick="setLang('en')" style="font-size:10px;padding:4px 10px">EN</button><button class="mode-btn" id="langKo" onclick="setLang('ko')" style="font-size:10px;padding:4px 10px">KO</button></div>
-    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.22</span>
+    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.23</span>
   </div>
 </header>
 <div class="app">
@@ -425,6 +425,7 @@ en:{
     kangarooOff:'Kangaroo pocket removed — doesn\'t work with zipper closure.',
     hemReset:'Hemline adjusted — this style works better with a straight hem.',
     kimonoSleeve:'Kimono sleeves need some length — set to cap.',
+    kimonoShoulder:'Kimono sleeves require standard shoulders — switched to set-in.',
     sleevelessForced:'Set to sleeveless — this neckline style requires it.',
     doubleOff:'Switched to single — double breast needs a lapel collar + closure.',
     bodyApplied:'Body measurements applied — sliders adjusted to your size.',
@@ -621,6 +622,7 @@ ko:{
     kangarooOff:'캥거루 해제 — 지퍼 클로저랑 안 맞아요.',
     hemReset:'헴라인 조정 — 이 스타일은 스트레이트가 더 자연스러워요.',
     kimonoSleeve:'기모노 소매는 길이가 필요해요 — 캡으로 설정했어요.',
+    kimonoShoulder:'기모노 소매는 일반 어깨만 가능해요 — 셋인으로 전환했어요.',
     sleevelessForced:'민소매로 변경 — 이 넥라인 스타일이 요구해요.',
     doubleOff:'싱글로 변경 — 더블브레스트는 라펠 칼라+클로저가 필요해요.',
     bodyApplied:'체형 치수가 적용됐어요 — 슬라이더가 맞춤 조정됐습니다.',
@@ -1029,7 +1031,8 @@ const BUTTON_PRESETS={neckShape:NECK_PRESETS,neckDetail:DETAIL_PRESETS,shoulderT
 const NECKTYPE_COMPAT={
   boat:['finish','collar'],
   straight:['finish','collar'],
-  // round, v, deep_v, u, square, scoop: null = 전부 가능
+  square:['finish','collar','highneck'], // hood 차단 — square+hood 물리적 비정상
+  // round, v, deep_v, u, scoop: null = 전부 가능
 };
 // ShoulderType → 허용 neckType[]
 const SHOULDER_NECKTYPE_COMPAT={
@@ -1245,7 +1248,7 @@ function updateClosureCompat(){
 function updateDartCompat(){
   const dartRow=document.querySelector('[data-p="dart"]');
   if(!dartRow)return;
-  const blockDart=S.fitW>=75; // 오버사이즈/박시
+  const blockDart=S.fitW>=75||S.bodyLen<25; // 오버사이즈/박시 OR 크롭
   ['bust','waist','princess'].forEach(v=>setBtnState(dartRow,v,blockDart));
   if(blockDart&&S.dart!=='none') autoSwitch(dartRow,'dart','none','dartOff');
 }
@@ -1277,6 +1280,14 @@ function updateHemCompat(){
 
 // ── 기모노 호환성 ──
 function updateKimonoCompat(){
+  // kimono × off_shoulder/halter/strapless/one_shoulder → setin으로 전환
+  if(S.sleeveType==='kimono'&&['off_shoulder','halter','strapless','one_shoulder'].includes(S.shoulderType)){
+    const stRow=document.querySelector('[data-p="sleeveType"]');
+    if(stRow){
+      S.sleeveType='setin';syncToggle('sleeveType','setin');
+      showCompatToast('kimonoShoulder');
+    }
+  }
   if(S.sleeveType!=='kimono')return;
   // kimono × sleeveless → cap으로 전환
   const lenRow=document.querySelector('[data-p="sleeveLen"]');
@@ -3884,86 +3895,105 @@ function getConstructionNotes(gt){
   // stitch code mapping by user-selected stitch type
   const stitchMap={single:'301',double:'301×2',overlock:'514',flatlock:'607',coverstitch:'406'};
   const mainSt=stitchMap[S.stitchType]||'301';
+  // 현장용어 매핑 — 서울의류협동조합 봉제용어 기준
+  const factoryTerm={
+    // stitch types
+    '301':'본봉','301×2':'쌍침','514':'오바로크','504':'오바로크(3사)','516':'인타록크',
+    '406':'삼봉','607':'오드롬프','602':'삼봉(3침)',
+    // composite
+    '301+514':'본봉+오바','514+301':'오바+상침','406+514':'삼봉+오바',
+    // areas
+    'Neckline':'에리구리','Shoulder':'어깨선','Armhole':'진동','Side seam':'와끼',
+    'Hem':'밑단','Cuff':'소대구찌','Closure':'여밈','Topstitch':'상침',
+    'Waistband':'오비','Inseam':'인심','Crotch':'고마대',
+    // types
+    'Lockstitch':'본봉','Coverstitch':'삼봉','4-thread OL':'오바로크(4사)',
+    '3-thread OL':'오바로크(3사)','Safety stitch':'인타록크','Lock+OL':'본봉+오바',
+    'OL+topstitch':'오바+상침','Main stitch':'기본봉'
+  };
   const notes=[];
   if(gt==='skirt'||gt==='pants'){
     // 하의 공통
     const wb=gt==='skirt'?S.waistband:S.pantsWaist;
-    if(wb==='elastic') notes.push({area:'Waistband',stitch:'406',type:'Coverstitch',spi:10,note:'Elastic casing, 1cm fold'});
-    else notes.push({area:'Waistband',stitch:'301+514',type:'Lock+OL',spi:10,note:'Waistband attach + edge finish'});
-    notes.push({area:'Side seam',stitch:'514',type:'4-thread OL',spi:12,note:'Seam + edge finish'});
+    if(wb==='elastic') notes.push({area:'Waistband',stitch:'406',type:'Coverstitch',spi:10,sa:10,note:'Elastic casing, 1cm fold'});
+    else notes.push({area:'Waistband',stitch:'301+514',type:'Lock+OL',spi:10,sa:10,note:'Waistband attach + edge finish'});
+    notes.push({area:'Side seam',stitch:'514',type:'4-thread OL',spi:12,sa:10,note:'Seam + edge finish'});
     if(gt==='pants'){
-      notes.push({area:'Inseam',stitch:'514',type:'4-thread OL',spi:12,note:'Inseam join'});
-      notes.push({area:'Crotch',stitch:'516',type:'Safety stitch',spi:10,note:'High stress area'});
+      notes.push({area:'Inseam',stitch:'514',type:'4-thread OL',spi:12,sa:10,note:'Inseam join'});
+      notes.push({area:'Crotch',stitch:'516',type:'Safety stitch',spi:10,sa:12,note:'High stress area'});
     }
     const skHem=gt==='skirt'?S.skirtHem:S.pantsCuff;
     if(skHem==='folded'||skHem==='plain'||skHem==='straight')
-      notes.push({area:'Hem',stitch:'406',type:'Coverstitch',spi:10,note:'1cm blind hem fold'});
+      notes.push({area:'Hem',stitch:'406',type:'Coverstitch',spi:10,sa:25,note:'1cm blind hem fold'});
     else if(skHem==='raw'||skHem==='lettuce')
-      notes.push({area:'Hem',stitch:'504',type:'3-thread OL',spi:14,note:'Raw edge / lettuce'});
-    else notes.push({area:'Hem',stitch:'301',type:'Lockstitch',spi:10,note:'Topstitch 0.3cm'});
+      notes.push({area:'Hem',stitch:'504',type:'3-thread OL',spi:14,sa:7,note:'Raw edge / lettuce'});
+    else notes.push({area:'Hem',stitch:'301',type:'Lockstitch',spi:10,sa:25,note:'Topstitch 0.3cm'});
     const cl=gt==='skirt'?S.skirtClosure:S.pantsClosure;
-    if(cl&&cl!=='none') notes.push({area:'Closure',stitch:'301',type:'Lockstitch',spi:10,note:cl+', bartack reinforce'});
+    if(cl&&cl!=='none') notes.push({area:'Closure',stitch:'301',type:'Lockstitch',spi:10,sa:15,note:cl+', bartack reinforce'});
+    notes.forEach(n=>{n.factoryArea=factoryTerm[n.area]||'';n.factoryStitch=factoryTerm[n.stitch]||'';n.factoryType=factoryTerm[n.type]||'';});
     return notes;
   }
   // 상의 (top/dress/outerwear)
   // 1. Neckline
   const nf=effectiveFinish();
   if(nf==='rib'||nf==='mock'||nf==='turtle')
-    notes.push({area:'Neckline',stitch:'406',type:'Coverstitch',spi:12,note:'Rib/knit band attach'});
+    notes.push({area:'Neckline',stitch:'406',type:'Coverstitch',spi:12,sa:7,note:'Rib/knit band attach'});
   else if(nf==='binding')
-    notes.push({area:'Neckline',stitch:'301',type:'Lockstitch',spi:12,note:'Binding fold & topstitch'});
+    notes.push({area:'Neckline',stitch:'301',type:'Lockstitch',spi:12,sa:7,note:'Binding fold & topstitch'});
   else if(nf==='raw')
-    notes.push({area:'Neckline',stitch:'504',type:'3-thread OL',spi:14,note:'Raw edge finish'});
+    notes.push({area:'Neckline',stitch:'504',type:'3-thread OL',spi:14,sa:5,note:'Raw edge finish'});
   else if(nf.startsWith('collar'))
-    notes.push({area:'Neckline',stitch:'301',type:'Lockstitch',spi:10,note:'Collar set, understitch'});
+    notes.push({area:'Neckline',stitch:'301',type:'Lockstitch',spi:10,sa:10,note:'Collar set, understitch'});
   else if(nf==='hood')
-    notes.push({area:'Neckline',stitch:'514+301',type:'OL+topstitch',spi:10,note:'Hood attach + seam tape'});
+    notes.push({area:'Neckline',stitch:'514+301',type:'OL+topstitch',spi:10,sa:10,note:'Hood attach + seam tape'});
   else
-    notes.push({area:'Neckline',stitch:'301',type:'Lockstitch',spi:10,note:'Edge finish'});
+    notes.push({area:'Neckline',stitch:'301',type:'Lockstitch',spi:10,sa:7,note:'Edge finish'});
   // 2. Shoulder
   if(S.sleeveType==='raglan')
-    notes.push({area:'Shoulder',stitch:'514',type:'4-thread OL',spi:12,note:'Raglan seam + topstitch'});
+    notes.push({area:'Shoulder',stitch:'514',type:'4-thread OL',spi:12,sa:10,note:'Raglan seam + topstitch'});
   else
-    notes.push({area:'Shoulder',stitch:'514',type:'4-thread OL',spi:12,note:'Shoulder join'});
+    notes.push({area:'Shoulder',stitch:'514',type:'4-thread OL',spi:12,sa:10,note:'Shoulder join'});
   // 3. Armhole
   if(S.sleeveLength>2)
-    notes.push({area:'Armhole',stitch:'514',type:'4-thread OL',spi:12,note:'Sleeve set-in seam'});
+    notes.push({area:'Armhole',stitch:'514',type:'4-thread OL',spi:12,sa:10,note:'Sleeve set-in seam'});
   else
-    notes.push({area:'Armhole',stitch:'406',type:'Coverstitch',spi:12,note:'Armhole binding/hem'});
+    notes.push({area:'Armhole',stitch:'406',type:'Coverstitch',spi:12,sa:7,note:'Armhole binding/hem'});
   // 4. Side seam
   if(S.sideSeam==='yes')
-    notes.push({area:'Side seam',stitch:'514',type:'4-thread OL',spi:12,note:'Side join + finish'});
+    notes.push({area:'Side seam',stitch:'514',type:'4-thread OL',spi:12,sa:10,note:'Side join + finish'});
   // 5. Sleeve hem/cuff
   if(S.sleeveLength>2){
     if(S.sleeveCuff==='rib'||S.sleeveCuff==='knit')
-      notes.push({area:'Cuff',stitch:'406',type:'Coverstitch',spi:12,note:'Rib cuff attach'});
+      notes.push({area:'Cuff',stitch:'406',type:'Coverstitch',spi:12,sa:10,note:'Rib cuff attach'});
     else if(S.sleeveCuff==='french'||S.sleeveCuff==='barrel')
-      notes.push({area:'Cuff',stitch:'301',type:'Lockstitch',spi:10,note:'Cuff set + buttonhole'});
+      notes.push({area:'Cuff',stitch:'301',type:'Lockstitch',spi:10,sa:10,note:'Cuff set + buttonhole'});
     else
-      notes.push({area:'Cuff',stitch:'406',type:'Coverstitch',spi:10,note:'Sleeve hem fold'});
+      notes.push({area:'Cuff',stitch:'406',type:'Coverstitch',spi:10,sa:25,note:'Sleeve hem fold'});
   }
   // 6. Hem
   if(S.hemFinish==='rib')
-    notes.push({area:'Hem',stitch:'406',type:'Coverstitch',spi:12,note:'Rib band attach'});
+    notes.push({area:'Hem',stitch:'406',type:'Coverstitch',spi:12,sa:10,note:'Rib band attach'});
   else if(S.hemFinish==='raw')
-    notes.push({area:'Hem',stitch:'504',type:'3-thread OL',spi:14,note:'Raw edge finish'});
+    notes.push({area:'Hem',stitch:'504',type:'3-thread OL',spi:14,sa:5,note:'Raw edge finish'});
   else if(S.hemFinish==='folded')
-    notes.push({area:'Hem',stitch:'406',type:'Coverstitch',spi:10,note:'1cm fold + coverstitch'});
+    notes.push({area:'Hem',stitch:'406',type:'Coverstitch',spi:10,sa:25,note:'1cm fold + coverstitch'});
   else if(S.hemFinish==='drawstring')
-    notes.push({area:'Hem',stitch:'301',type:'Lockstitch',spi:10,note:'Casing + drawstring'});
+    notes.push({area:'Hem',stitch:'301',type:'Lockstitch',spi:10,sa:30,note:'Casing + drawstring'});
   else
-    notes.push({area:'Hem',stitch:mainSt,type:'Main stitch',spi:10,note:'Hem finish'});
+    notes.push({area:'Hem',stitch:mainSt,type:'Main stitch',spi:10,sa:25,note:'Hem finish'});
   // 7. Closure
   if(S.closure&&S.closure!=='none'){
     if(S.closure==='zip')
-      notes.push({area:'Closure',stitch:'301',type:'Lockstitch',spi:10,note:'Zipper tape, bartack top/bottom'});
+      notes.push({area:'Closure',stitch:'301',type:'Lockstitch',spi:10,sa:15,note:'Zipper tape, bartack top/bottom'});
     else if(S.closure==='button')
-      notes.push({area:'Closure',stitch:'301',type:'Lockstitch',spi:10,note:'Buttonhole '+S.closureStyle+', bartack'});
+      notes.push({area:'Closure',stitch:'301',type:'Lockstitch',spi:10,sa:15,note:'Buttonhole '+S.closureStyle+', bartack'});
     else
-      notes.push({area:'Closure',stitch:'301',type:'Lockstitch',spi:10,note:S.closure+' attach'});
+      notes.push({area:'Closure',stitch:'301',type:'Lockstitch',spi:10,sa:15,note:S.closure+' attach'});
   }
   // 8. Main stitch note
-  notes.push({area:'Topstitch',stitch:mainSt,type:S.stitchType,spi:S.stitchType==='double'?10:8,note:'All visible topstitch'});
+  notes.push({area:'Topstitch',stitch:mainSt,type:S.stitchType,spi:S.stitchType==='double'?10:8,sa:0,note:'All visible topstitch'});
+  // 현장용어 자동 매핑
+  notes.forEach(n=>{n.factoryArea=factoryTerm[n.area]||'';n.factoryStitch=factoryTerm[n.stitch]||'';n.factoryType=factoryTerm[n.type]||'';});
   return notes;
 }
 
@@ -4362,7 +4392,7 @@ const ExportModule = {
   // ── JSON 프로젝트 저장/불러오기 ──
   saveJSON() {
     const project={
-      version:'0.22',
+      version:'0.23',
       created:new Date().toISOString(),
       state:JSON.parse(JSON.stringify(S))
     };
@@ -4604,7 +4634,7 @@ const ExportModule = {
     });
 
     // 풋터
-    let ftr=`<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="6" fill="#999" font-family="Arial,sans-serif">Generated by FLAT v0.22 — yunyiram.github.io/flat</text>`;
+    let ftr=`<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="6" fill="#999" font-family="Arial,sans-serif">Generated by FLAT v0.23 — yunyiram.github.io/flat</text>`;
 
     // 조합
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
@@ -4751,7 +4781,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 1/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 2: Front/Back drawings + Callouts ═══
@@ -4788,7 +4818,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 2/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 3: Spec + Grading ═══
@@ -4905,8 +4935,9 @@ const ExportModule = {
         const cnY=Math.max(sy+4,130);
         doc.setFontSize(9);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
         doc.text('CONSTRUCTION NOTES',20,cnY);
-        const cnColW=[25,30,20,12,48];
-        const cnHeaders=['STITCH','AREA','TYPE','SPI','NOTE'];
+        const isKo=S.lang==='ko';
+        const cnColW=isKo?[20,24,24,18,10,10,30]:[25,30,20,12,10,38];
+        const cnHeaders=isKo?['STITCH','AREA','현장용어','TYPE','SPI','S/A','NOTE']:['STITCH','AREA','TYPE','SPI','S/A','NOTE'];
         let cnRy=cnY+4;
         // header
         let cnX=20;
@@ -4920,7 +4951,11 @@ const ExportModule = {
         cnPdf.forEach((c,i)=>{
           cnX=20;
           const fill=i%2===0?[255,255,255]:[248,247,244];
-          [c.stitch,c.area,c.type,String(c.spi),c.note].forEach((v,ci)=>{
+          const saStr=c.sa>0?c.sa+'mm':'—';
+          const row=isKo
+            ?[c.stitch,c.area,c.factoryArea||c.area,c.factoryType||c.type,String(c.spi),saStr,c.note]
+            :[c.stitch,c.area,c.type,String(c.spi),saStr,c.note];
+          row.forEach((v,ci)=>{
             doc.setFillColor(...fill);doc.setDrawColor(220);
             doc.rect(cnX,cnRy,cnColW[ci],5.5,'FD');
             doc.setFontSize(5.5);
@@ -4934,7 +4969,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 3/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 4: Fabric Recommendation ═══
@@ -4976,7 +5011,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 4/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 5: POM Diagram ═══
@@ -5052,7 +5087,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 5/5',W-10,H-5,{align:'right'});
 
         // ── Save ──
@@ -5136,13 +5171,16 @@ const ExportModule = {
         ];
         mLines.forEach(([txt,x,y])=>doc.text(txt,x,y));
 
-        // Construction notes in sketch area
+        // Construction notes in sketch area (현장용어 + 시접)
         doc.setFontSize(5);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
         doc.text('* \uC791\uC5C5\uC2DC \uC8FC\uC758\uC0AC\uD56D *',10,dY+94);
         doc.setFont('helvetica','normal');doc.setFontSize(4.5);
-        const cnPdf=getConstructionNotes(gt);
-        cnPdf.slice(0,5).forEach((c,i)=>{
-          doc.text('\u2022 '+c.area+': '+c.stitch+' ('+c.type+', '+c.spi+'SPI)',10,dY+99+i*4);
+        const cnWo=getConstructionNotes(gt);
+        cnWo.slice(0,6).forEach((c,i)=>{
+          const area=c.factoryArea?c.factoryArea+'('+c.area+')':c.area;
+          const type=c.factoryType?c.factoryType:c.type;
+          const sa=c.sa>0?' S/A '+c.sa+'mm':'';
+          doc.text('\u2022 '+area+': '+c.stitch+' '+type+', '+c.spi+'SPI'+sa,10,dY+99+i*3.8);
         });
 
         // ── Right side tables ──
@@ -5265,7 +5303,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(5);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-8,{align:'center'});
+        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-8,{align:'center'});
 
         doc.save('FLAT_workorder_'+tpLabel+'_'+Date.now()+'.pdf');
       });
