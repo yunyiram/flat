@@ -13,4 +13,4 @@ tech pack/
 flat-v4.html
 flat-v5.html
 *.md
-reference_data.md
+!data/README.md
