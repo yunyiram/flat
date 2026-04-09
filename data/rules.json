@@ -1,0 +1,349 @@
+{
+  "version": "0.18",
+  "description": "FLAT garment compatibility rules — domain logic separated from rendering code",
+
+  "necktype_compat": {
+    "description": "Which neckType values are allowed for each neckShape. null = all allowed.",
+    "all_types": ["finish", "collar", "highneck", "hood"],
+    "matrix": {
+      "round": null,
+      "v": null,
+      "deep_v": null,
+      "u": null,
+      "square": null,
+      "boat": ["finish", "collar"]
+    }
+  },
+
+  "variant_necktype_compat": {
+    "description": "Which neckType values are allowed for each neckVariant. null = all allowed.",
+    "matrix": {
+      "none": null,
+      "halter": ["finish"],
+      "off_shoulder": ["finish", "collar"],
+      "one_shoulder": ["finish"]
+    }
+  },
+
+  "detail_necktype_compat": {
+    "description": "Which neckType values are allowed for each neckDetail. null = all allowed.",
+    "matrix": {
+      "none": null,
+      "henley": null,
+      "drape": null,
+      "keyhole": ["finish", "highneck"]
+    }
+  },
+
+  "variant_detail_compat": {
+    "description": "Which neckDetail values are allowed for each neckVariant. null = all allowed.",
+    "matrix": {
+      "none": null,
+      "halter": ["none"],
+      "off_shoulder": ["none", "drape"],
+      "one_shoulder": ["none"]
+    }
+  },
+
+  "collar_compat": {
+    "description": "Which collarType values are allowed for each neckShape, grouped by collarGroup.",
+    "matrix": {
+      "round": {
+        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
+        "stand": ["band", "china", "mandarin", "funnel", "wing"],
+        "tailored": ["shirt"],
+        "deco": ["bow", "cowl"]
+      },
+      "v": {
+        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
+        "stand": ["wing"],
+        "tailored": ["shirt", "notched", "shawl", "peaked", "round", "convertible"],
+        "deco": ["bow", "cowl"]
+      },
+      "deep_v": {
+        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
+        "stand": [],
+        "tailored": ["shirt", "notched", "shawl", "peaked", "round", "convertible"],
+        "deco": ["bow", "cowl"]
+      },
+      "u": {
+        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
+        "stand": [],
+        "tailored": [],
+        "deco": ["bow", "cowl"]
+      },
+      "square": {
+        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
+        "stand": ["band", "china", "mandarin", "wing"],
+        "tailored": ["shirt"],
+        "deco": ["bow", "cowl"]
+      },
+      "boat": {
+        "flat": ["peter", "sailor", "bertha", "puritan"],
+        "stand": [],
+        "tailored": [],
+        "deco": ["bow", "cowl"]
+      }
+    }
+  },
+
+  "variant_collar_override": {
+    "description": "neckVariant that further restricts collar options (intersection with collar_compat). null = no override.",
+    "matrix": {
+      "none": null,
+      "halter": "__blocked__",
+      "off_shoulder": {
+        "flat": ["peter", "sailor", "bertha", "puritan"],
+        "stand": [],
+        "tailored": [],
+        "deco": ["cowl"]
+      },
+      "one_shoulder": "__blocked__"
+    },
+    "_note": "__blocked__ means collar neckType itself is blocked at Level 1 (variant_necktype_compat), so collar never reached."
+  },
+
+  "sleeve_compat": {
+    "description": "Sleeve shape and cuff compatibility based on sleeve length.",
+    "long_only_shapes": ["bell", "bishop", "lantern", "peasant", "legmutton", "pagoda"],
+    "thresholds": {
+      "sleeveless": { "max_length": 2, "description": "All shapes and cuffs blocked" },
+      "short": { "max_length": 20, "description": "Long-only shapes blocked (cap and shorter)" }
+    }
+  },
+
+  "functional_rules": [
+    {
+      "id": "necktype_intersection",
+      "source": "updateFinishCompat",
+      "type": "soft",
+      "description": "Allowed neckType = intersection of neckShape compat, neckVariant compat, and neckDetail compat. If current neckType is blocked, auto-switch to 'finish'.",
+      "condition": "neckType not in (necktype_compat[neckShape] ∩ variant_necktype_compat[neckVariant] ∩ detail_necktype_compat[neckDetail])",
+      "action": "neckType → 'finish'",
+      "message_key": null
+    },
+    {
+      "id": "variant_detail_block",
+      "source": "updateFinishCompat",
+      "type": "soft",
+      "description": "Variant restricts which neckDetail values are allowed. If current detail is blocked, auto-switch to 'none'.",
+      "condition": "neckDetail not in variant_detail_compat[neckVariant]",
+      "action": "neckDetail → 'none'",
+      "message_key": null
+    },
+    {
+      "id": "collar_shape_compat",
+      "source": "updateFinishCompat",
+      "type": "soft",
+      "description": "When neckType='collar', allowed collarTypes = collar_compat[neckShape][collarGroup] ∩ variant_collar_override[neckVariant][collarGroup]. If current collarType is invalid, auto-switch to first valid in same group, or first valid in any group.",
+      "condition": "neckType === 'collar' && collarType not in allowed set",
+      "action": "collarType → first valid option; if no valid in current group, switch collarGroup too",
+      "message_key": null
+    },
+    {
+      "id": "collar_group_disable",
+      "source": "updateFinishCompat",
+      "type": "soft",
+      "description": "If a collarGroup has zero allowed collarTypes for the current neckShape+variant, the entire group button is disabled.",
+      "condition": "allowed collarTypes for group === []",
+      "action": "collarGroup button disabled",
+      "message_key": null
+    },
+    {
+      "id": "variant_sleeveless_force",
+      "source": "updateVariantCompat",
+      "type": "soft",
+      "description": "Halter, off-shoulder, one-shoulder variants force sleeveless. All other sleeve length buttons disabled.",
+      "condition": "neckVariant in ['halter', 'off_shoulder', 'one_shoulder']",
+      "action": "sleeveLength → 0, sleeveLen → 'sleeveless'",
+      "message_key": "sleevelessForced"
+    },
+    {
+      "id": "variant_sleeveless_unlock",
+      "source": "updateVariantCompat",
+      "type": "soft",
+      "description": "When variant is 'none', re-enable all sleeve length buttons.",
+      "condition": "neckVariant === 'none'",
+      "action": "all sleeveLen buttons enabled",
+      "message_key": null
+    },
+    {
+      "id": "sleeve_shape_sleeveless_block",
+      "source": "updateSleeveCompat",
+      "type": "soft",
+      "description": "When sleeveless (length <= 2), all sleeve shapes are disabled. Auto-switch to 'straight'.",
+      "condition": "sleeveLength <= 2",
+      "action": "sleeveShape → 'straight'",
+      "message_key": null
+    },
+    {
+      "id": "sleeve_shape_short_block",
+      "source": "updateSleeveCompat",
+      "type": "soft",
+      "description": "When short sleeves (length <= 20), long-only shapes are disabled. Auto-switch to 'straight' if current shape is blocked.",
+      "condition": "sleeveLength <= 20 && sleeveShape in ['bell','bishop','lantern','peasant','legmutton','pagoda']",
+      "action": "sleeveShape → 'straight'",
+      "message_key": null
+    },
+    {
+      "id": "sleeve_cuff_sleeveless_block",
+      "source": "updateSleeveCompat",
+      "type": "soft",
+      "description": "When sleeveless (length <= 2), all cuff options are disabled. Auto-switch to 'plain'.",
+      "condition": "sleeveLength <= 2",
+      "action": "sleeveCuff → 'plain'",
+      "message_key": null
+    },
+    {
+      "id": "closure_halter_block",
+      "source": "updateClosureCompat",
+      "type": "soft",
+      "description": "Halter/off-shoulder/one-shoulder blocks all closures (button, zip, snap, hidden).",
+      "condition": "neckVariant in ['halter', 'off_shoulder', 'one_shoulder']",
+      "action": "closure → 'none'",
+      "message_key": "closureOff"
+    },
+    {
+      "id": "closure_kangaroo_zip_block",
+      "source": "updateClosureCompat",
+      "type": "soft",
+      "description": "Kangaroo pocket blocks zipper closure.",
+      "condition": "pocket === 'kangaroo'",
+      "action": "closure → 'none' (if currently 'zip')",
+      "blocked_values": ["zip"],
+      "message_key": "closureZipOff"
+    },
+    {
+      "id": "closure_double_breast_requires",
+      "source": "updateClosureCompat",
+      "type": "soft",
+      "description": "Double-breasted requires a lapel collar (notched/peaked/shawl/convertible) AND a closure AND not kimono sleeve type.",
+      "condition": "!(effectiveFinish in ['collar_notched','collar_peaked','collar_shawl','collar_convertible'] && closure !== 'none' && sleeveType !== 'kimono')",
+      "action": "closureStyle → 'single'",
+      "required_collar_types": ["collar_notched", "collar_peaked", "collar_shawl", "collar_convertible"],
+      "message_key": "doubleOff"
+    },
+    {
+      "id": "dart_oversize_block",
+      "source": "updateDartCompat",
+      "type": "soft",
+      "description": "Oversized/boxy fit (fitW >= 75) blocks all dart types.",
+      "condition": "fitW >= 75",
+      "action": "dart → 'none'",
+      "blocked_values": ["bust", "waist", "princess"],
+      "message_key": "dartOff"
+    },
+    {
+      "id": "pocket_crop_block",
+      "source": "updatePocketCompat",
+      "type": "soft",
+      "description": "Crop length (bodyLen < 20) blocks large pocket types.",
+      "condition": "bodyLen < 20",
+      "action": "pocket → 'none'",
+      "blocked_values": ["patch_round", "flap", "welt", "kangaroo", "jetted", "cargo", "seam"],
+      "message_key": "pocketOff"
+    },
+    {
+      "id": "pocket_zip_kangaroo_block",
+      "source": "updatePocketCompat",
+      "type": "soft",
+      "description": "Zip closure blocks kangaroo pocket.",
+      "condition": "closure === 'zip'",
+      "action": "pocket → 'none' (if currently 'kangaroo')",
+      "blocked_values": ["kangaroo"],
+      "message_key": "kangarooOff"
+    },
+    {
+      "id": "hem_crop_block",
+      "source": "updateHemCompat",
+      "type": "soft",
+      "description": "Crop length (bodyLen < 20) blocks side-slit and hi-lo hem shapes.",
+      "condition": "bodyLen < 20",
+      "action": "hemShape → 'straight'",
+      "blocked_values": ["side_slit", "hi_lo"],
+      "message_key": "hemReset"
+    },
+    {
+      "id": "kimono_sleeveless_block",
+      "source": "updateKimonoCompat",
+      "type": "soft",
+      "description": "Kimono sleeve type cannot be sleeveless. Auto-switch to cap length.",
+      "condition": "sleeveType === 'kimono' && (sleeveLength <= 2 || sleeveLen === 'sleeveless')",
+      "action": "sleeveLen → 'cap', sleeveLength → 15",
+      "message_key": "kimonoSleeve"
+    },
+    {
+      "id": "hint_top_dress_length",
+      "source": "updateGarmentHint",
+      "type": "soft",
+      "description": "When garmentType is 'top' and bodyLen >= 70, suggest switching to Dress.",
+      "condition": "garmentType === 'top' && bodyLen >= 70",
+      "action": "show hint",
+      "message_key": "hint.dressLen"
+    },
+    {
+      "id": "hint_top_outer_config",
+      "source": "updateGarmentHint",
+      "type": "soft",
+      "description": "When garmentType is 'top' with oversized fit and tailored collar or closure, suggest switching to Outerwear.",
+      "condition": "garmentType === 'top' && fitW >= 75 && (effectiveFinish in lapel_collars || closure !== 'none')",
+      "action": "show hint",
+      "message_key": "hint.outerConfig"
+    },
+    {
+      "id": "hint_dress_top_length",
+      "source": "updateGarmentHint",
+      "type": "soft",
+      "description": "When garmentType is 'dress' and bodyLen < 55, suggest switching to Top.",
+      "condition": "garmentType === 'dress' && bodyLen < 55",
+      "action": "show hint",
+      "message_key": "hint.topLen"
+    },
+    {
+      "id": "hint_outer_basic_top",
+      "source": "updateGarmentHint",
+      "type": "soft",
+      "description": "When garmentType is 'outerwear' with slim fit, no tailored collar, and no closure, suggest switching to Top.",
+      "condition": "garmentType === 'outerwear' && fitW < 50 && effectiveFinish not in lapel_collars && closure === 'none'",
+      "action": "show hint",
+      "message_key": "hint.basicTop"
+    }
+  ],
+
+  "messages": {
+    "en": {
+      "closureOff": "Closure removed — this neckline looks best without one.",
+      "closureZipOff": "Zipper removed — doesn't pair well with kangaroo pocket. Try buttons?",
+      "dartOff": "Dart removed — oversized fits look great without darts.",
+      "pocketOff": "Pocket removed — too small for this pocket at crop length.",
+      "kangarooOff": "Kangaroo pocket removed — doesn't work with zipper closure.",
+      "hemReset": "Hemline adjusted — this style works better with a straight hem.",
+      "kimonoSleeve": "Kimono sleeves need some length — set to cap.",
+      "sleevelessForced": "Set to sleeveless — this neckline style requires it.",
+      "doubleOff": "Switched to single — double breast needs a lapel collar + closure."
+    },
+    "ko": {
+      "closureOff": "클로저 해제 — 이 넥라인은 그냥이 더 예뻐요.",
+      "closureZipOff": "지퍼 해제 — 캥거루 포켓이랑 안 맞아요. 버튼은 어때요?",
+      "dartOff": "다트 해제 — 오버사이즈 핏은 다트 없이도 잘 어울려요.",
+      "pocketOff": "포켓 해제 — 크롭이라 이 포켓이 안 들어가요.",
+      "kangarooOff": "캥거루 해제 — 지퍼 클로저랑 안 맞아요.",
+      "hemReset": "헴라인 조정 — 이 스타일은 스트레이트가 더 자연스러워요.",
+      "kimonoSleeve": "기모노 소매는 길이가 필요해요 — 캡으로 설정했어요.",
+      "sleevelessForced": "민소매로 변경 — 이 넥라인 스타일이 요구해요.",
+      "doubleOff": "싱글로 변경 — 더블브레스트는 라펠 칼라+클로저가 필요해요."
+    }
+  },
+
+  "update_order": [
+    "updateFinishCompat",
+    "updateVariantCompat",
+    "updateSleeveCompat",
+    "updateClosureCompat",
+    "updateDartCompat",
+    "updatePocketCompat",
+    "updateHemCompat",
+    "updateKimonoCompat",
+    "updateGarmentHint"
+  ]
+}

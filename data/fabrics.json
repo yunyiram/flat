@@ -1,0 +1,945 @@
+{
+  "version": "0.18",
+  "description": "FLAT fabric database — 41 entries, EN/KO, GSM, garment compatibility",
+  "fabrics": [
+    {
+      "id": "f0",
+      "name": {
+        "en": "20s Single Cotton Jersey",
+        "ko": "20수 싱글 코튼 저지"
+      },
+      "desc": {
+        "en": "Basic tee fabric, versatile",
+        "ko": "기본 티셔츠 원단, 범용"
+      },
+      "gsm": "180-200",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f1",
+      "name": {
+        "en": "Combed Cotton Jersey 30s",
+        "ko": "30수 코마 코튼 저지"
+      },
+      "desc": {
+        "en": "Combed yarn, smooth surface",
+        "ko": "세번수 원사, 매끈한 표면"
+      },
+      "gsm": "130-160",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "slim",
+        "skin",
+        "regular"
+      ]
+    },
+    {
+      "id": "f2",
+      "name": {
+        "en": "10s Heavy Cotton Jersey",
+        "ko": "10수 헤비 코튼 저지"
+      },
+      "desc": {
+        "en": "Heavyweight, excellent structure",
+        "ko": "후육지, 구조감 우수"
+      },
+      "gsm": "280-320",
+      "weight": "heavy",
+      "season": "FW",
+      "stretch": "low",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "oversized",
+        "boxy",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f3",
+      "name": {
+        "en": "16s Cotton Jersey",
+        "ko": "16수 코튼 저지"
+      },
+      "desc": {
+        "en": "Mid-heavy, good thickness",
+        "ko": "중후육, 적당한 두께감"
+      },
+      "gsm": "220-250",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed",
+        "oversized"
+      ]
+    },
+    {
+      "id": "f4",
+      "name": {
+        "en": "Slub Cotton Jersey",
+        "ko": "슬럽 코튼 저지"
+      },
+      "desc": {
+        "en": "Irregular yarn, natural texture",
+        "ko": "불규칙 원사, 내추럴 텍스처"
+      },
+      "gsm": "150-180",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f5",
+      "name": {
+        "en": "Organic Cotton Jersey",
+        "ko": "오가닉 코튼 저지"
+      },
+      "desc": {
+        "en": "Organic certified, soft touch",
+        "ko": "무농약 인증, 부드러운 터치"
+      },
+      "gsm": "160-190",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed",
+        "slim"
+      ]
+    },
+    {
+      "id": "f6",
+      "name": {
+        "en": "40s Modal Blend",
+        "ko": "40수 모달 혼방"
+      },
+      "desc": {
+        "en": "Excellent drape and stretch",
+        "ko": "드레이프·신축성 우수"
+      },
+      "gsm": "140-160",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "high",
+      "garment_types": [
+        "tee",
+        "dress"
+      ],
+      "fits": [
+        "slim",
+        "skin"
+      ]
+    },
+    {
+      "id": "f7",
+      "name": {
+        "en": "Tencel Jersey",
+        "ko": "텐셀 저지"
+      },
+      "desc": {
+        "en": "Cool touch, silky, eco-friendly",
+        "ko": "냉감·실키 터치, 친환경"
+      },
+      "gsm": "140-170",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "mid",
+      "garment_types": [
+        "tee",
+        "dress"
+      ],
+      "fits": [
+        "slim",
+        "skin",
+        "regular"
+      ]
+    },
+    {
+      "id": "f8",
+      "name": {
+        "en": "Bamboo Jersey",
+        "ko": "뱀부 저지"
+      },
+      "desc": {
+        "en": "Antibacterial, cool, great for summer",
+        "ko": "항균·냉감, 여름 적합"
+      },
+      "gsm": "150-180",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "slim"
+      ]
+    },
+    {
+      "id": "f9",
+      "name": {
+        "en": "CVC Jersey (Cotton-Poly)",
+        "ko": "CVC 저지 (면폴리)"
+      },
+      "desc": {
+        "en": "Wash stable, cost-effective",
+        "ko": "세탁 안정성, 가성비"
+      },
+      "gsm": "170-200",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f10",
+      "name": {
+        "en": "Spandex Single Jersey",
+        "ko": "스판 싱글 저지"
+      },
+      "desc": {
+        "en": "Spandex blend, great fit",
+        "ko": "스판덱스 혼방, 피트감"
+      },
+      "gsm": "180-210",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "high",
+      "garment_types": [
+        "tee",
+        "dress"
+      ],
+      "fits": [
+        "slim",
+        "skin",
+        "regular"
+      ]
+    },
+    {
+      "id": "f11",
+      "name": {
+        "en": "Mercerized Cotton",
+        "ko": "실켓 코튼"
+      },
+      "desc": {
+        "en": "Mercerized sheen, premium feel",
+        "ko": "머서라이즈 광택, 고급감"
+      },
+      "gsm": "150-180",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "low",
+      "garment_types": [
+        "tee",
+        "shirt"
+      ],
+      "fits": [
+        "slim",
+        "regular"
+      ]
+    },
+    {
+      "id": "f12",
+      "name": {
+        "en": "Double Knit (Interlock)",
+        "ko": "이중지 (더블니트)"
+      },
+      "desc": {
+        "en": "Double face, shape retention",
+        "ko": "양면 조직, 형태 안정"
+      },
+      "gsm": "200-260",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "low",
+      "garment_types": [
+        "tee",
+        "outer"
+      ],
+      "fits": [
+        "regular",
+        "boxy",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f13",
+      "name": {
+        "en": "Pique",
+        "ko": "피케 (카노코)"
+      },
+      "desc": {
+        "en": "Honeycomb weave, polo classic",
+        "ko": "벌집 조직, 폴로 클래식"
+      },
+      "gsm": "180-220",
+      "weight": "mid",
+      "season": "SS",
+      "stretch": "low",
+      "garment_types": [
+        "tee",
+        "shirt"
+      ],
+      "fits": [
+        "regular",
+        "slim"
+      ]
+    },
+    {
+      "id": "f14",
+      "name": {
+        "en": "Waffle Knit",
+        "ko": "와플 니트"
+      },
+      "desc": {
+        "en": "Waffle texture, warmth retention",
+        "ko": "격자 입체 조직, 보온성"
+      },
+      "gsm": "190-240",
+      "weight": "mid",
+      "season": "FW",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f15",
+      "name": {
+        "en": "Interlock Knit",
+        "ko": "인터록 니트"
+      },
+      "desc": {
+        "en": "Double knit, same both sides",
+        "ko": "더블니트, 양면 같은 조직"
+      },
+      "gsm": "180-220",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed",
+        "slim"
+      ]
+    },
+    {
+      "id": "f16",
+      "name": {
+        "en": "Rib Knit",
+        "ko": "리브 니트"
+      },
+      "desc": {
+        "en": "Vertical rib, body-hugging fit",
+        "ko": "세로 골지, 몸판 피트"
+      },
+      "gsm": "200-260",
+      "weight": "mid",
+      "season": "FW",
+      "stretch": "high",
+      "garment_types": [
+        "tee",
+        "dress"
+      ],
+      "fits": [
+        "slim",
+        "skin",
+        "regular"
+      ]
+    },
+    {
+      "id": "f17",
+      "name": {
+        "en": "Ponte Knit",
+        "ko": "폰테 니트"
+      },
+      "desc": {
+        "en": "Thick jersey, structure + stretch",
+        "ko": "두꺼운 저지, 구조감+신축"
+      },
+      "gsm": "250-300",
+      "weight": "mid",
+      "season": "FW",
+      "stretch": "high",
+      "garment_types": [
+        "tee",
+        "dress",
+        "outer"
+      ],
+      "fits": [
+        "slim",
+        "regular"
+      ]
+    },
+    {
+      "id": "f18",
+      "name": {
+        "en": "French Terry",
+        "ko": "프렌치 테리"
+      },
+      "desc": {
+        "en": "Looped back, year-round sweat",
+        "ko": "이면 루프, 사계절 스웨트"
+      },
+      "gsm": "240-300",
+      "weight": "heavy",
+      "season": "all",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed",
+        "oversized"
+      ]
+    },
+    {
+      "id": "f19",
+      "name": {
+        "en": "Loop-back Terry",
+        "ko": "테리 (루프백)"
+      },
+      "desc": {
+        "en": "Loop-back sweat knit",
+        "ko": "이면 루프 스웨트 조직"
+      },
+      "gsm": "250-320",
+      "weight": "heavy",
+      "season": "all",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "oversized",
+        "relaxed",
+        "regular"
+      ]
+    },
+    {
+      "id": "f20",
+      "name": {
+        "en": "Brushed Fleece",
+        "ko": "기모 스웨트"
+      },
+      "desc": {
+        "en": "Inner brushed, maximum warmth",
+        "ko": "내면 기모, 보온 최강"
+      },
+      "gsm": "320-400",
+      "weight": "heavy",
+      "season": "FW",
+      "stretch": "low",
+      "garment_types": [
+        "tee",
+        "outer"
+      ],
+      "fits": [
+        "oversized",
+        "boxy",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f21",
+      "name": {
+        "en": "Linen Jersey",
+        "ko": "리넨 저지"
+      },
+      "desc": {
+        "en": "Dry touch, breathable",
+        "ko": "드라이 터치, 통기성"
+      },
+      "gsm": "130-170",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "none",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed",
+        "oversized"
+      ]
+    },
+    {
+      "id": "f22",
+      "name": {
+        "en": "Linen Blend Jersey",
+        "ko": "리넨 혼방 저지"
+      },
+      "desc": {
+        "en": "Linen-cotton, softer hand",
+        "ko": "리넨+코튼, 촉감 부드러움"
+      },
+      "gsm": "150-190",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "low",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f23",
+      "name": {
+        "en": "Coolmax Jersey",
+        "ko": "쿨맥스 저지"
+      },
+      "desc": {
+        "en": "Moisture-wicking, sport/athleisure",
+        "ko": "흡습속건, 스포츠/애슬레저"
+      },
+      "gsm": "140-170",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "slim",
+        "regular"
+      ]
+    },
+    {
+      "id": "f24",
+      "name": {
+        "en": "Mesh Jersey",
+        "ko": "메쉬 저지"
+      },
+      "desc": {
+        "en": "Maximum breathability, layering",
+        "ko": "통기성 극대화, 레이어링"
+      },
+      "gsm": "100-140",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "mid",
+      "garment_types": [
+        "tee"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f25",
+      "name": {
+        "en": "Cotton Poplin",
+        "ko": "코튼 포플린"
+      },
+      "desc": {
+        "en": "Dense plain weave, dress shirt staple",
+        "ko": "밀도 높은 평직, 드레스셔츠 기본"
+      },
+      "gsm": "100-130",
+      "weight": "light",
+      "season": "all",
+      "stretch": "none",
+      "garment_types": [
+        "shirt",
+        "dress"
+      ],
+      "fits": [
+        "slim",
+        "regular"
+      ]
+    },
+    {
+      "id": "f26",
+      "name": {
+        "en": "Oxford Cloth",
+        "ko": "옥스퍼드 원단"
+      },
+      "desc": {
+        "en": "Basket weave, casual shirt",
+        "ko": "바스켓 조직, 캐주얼 셔츠"
+      },
+      "gsm": "130-170",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "none",
+      "garment_types": [
+        "shirt"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f27",
+      "name": {
+        "en": "Chambray",
+        "ko": "샴브레이"
+      },
+      "desc": {
+        "en": "Yarn-dyed color, denim look",
+        "ko": "경사·위사 색차, 데님 느낌"
+      },
+      "gsm": "110-150",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "none",
+      "garment_types": [
+        "shirt",
+        "dress"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f28",
+      "name": {
+        "en": "Cotton Twill",
+        "ko": "코튼 트윌"
+      },
+      "desc": {
+        "en": "Twill weave, durable",
+        "ko": "능직, 내구성 우수"
+      },
+      "gsm": "150-200",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "none",
+      "garment_types": [
+        "shirt",
+        "outer"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f29",
+      "name": {
+        "en": "Broadcloth",
+        "ko": "브로드클로스"
+      },
+      "desc": {
+        "en": "Fine plain weave, smooth sheen",
+        "ko": "정번 평직, 매끈한 광택"
+      },
+      "gsm": "90-120",
+      "weight": "light",
+      "season": "all",
+      "stretch": "none",
+      "garment_types": [
+        "shirt",
+        "dress"
+      ],
+      "fits": [
+        "slim",
+        "regular"
+      ]
+    },
+    {
+      "id": "f30",
+      "name": {
+        "en": "Linen",
+        "ko": "리넨 원단"
+      },
+      "desc": {
+        "en": "Linen, maximum coolness",
+        "ko": "마직물, 청량감 최강"
+      },
+      "gsm": "130-180",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "none",
+      "garment_types": [
+        "shirt",
+        "dress"
+      ],
+      "fits": [
+        "regular",
+        "relaxed",
+        "oversized"
+      ]
+    },
+    {
+      "id": "f31",
+      "name": {
+        "en": "Cotton Voile",
+        "ko": "코튼 보일"
+      },
+      "desc": {
+        "en": "Sheer plain weave, see-through possible",
+        "ko": "얇은 평직, 시스루 가능"
+      },
+      "gsm": "60-90",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "none",
+      "garment_types": [
+        "shirt",
+        "dress"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f32",
+      "name": {
+        "en": "Satin (Poly)",
+        "ko": "새틴 (폴리)"
+      },
+      "desc": {
+        "en": "Glossy surface, blouse/evening",
+        "ko": "광택 표면, 블라우스·이브닝"
+      },
+      "gsm": "90-130",
+      "weight": "light",
+      "season": "all",
+      "stretch": "low",
+      "garment_types": [
+        "dress",
+        "shirt"
+      ],
+      "fits": [
+        "slim",
+        "regular"
+      ]
+    },
+    {
+      "id": "f33",
+      "name": {
+        "en": "Chiffon",
+        "ko": "쉬폰"
+      },
+      "desc": {
+        "en": "Sheer, layered drape",
+        "ko": "투명 조직, 레이어드·드레이프"
+      },
+      "gsm": "40-70",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "none",
+      "garment_types": [
+        "dress"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f34",
+      "name": {
+        "en": "Georgette",
+        "ko": "조젯"
+      },
+      "desc": {
+        "en": "Slightly crisp sheer, drape",
+        "ko": "살짝 까실한 시스루, 드레이프"
+      },
+      "gsm": "50-90",
+      "weight": "light",
+      "season": "SS",
+      "stretch": "none",
+      "garment_types": [
+        "dress"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f35",
+      "name": {
+        "en": "Crepe",
+        "ko": "크레이프"
+      },
+      "desc": {
+        "en": "Crinkle texture, elegant drape",
+        "ko": "잔주름 질감, 우아한 드레이프"
+      },
+      "gsm": "100-160",
+      "weight": "light",
+      "season": "all",
+      "stretch": "low",
+      "garment_types": [
+        "dress",
+        "shirt"
+      ],
+      "fits": [
+        "slim",
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f36",
+      "name": {
+        "en": "Wool Melton",
+        "ko": "울 멜톤"
+      },
+      "desc": {
+        "en": "Fulled wool, classic coat fabric",
+        "ko": "축융 모직, 코트 대표 소재"
+      },
+      "gsm": "400-600",
+      "weight": "heavy",
+      "season": "FW",
+      "stretch": "none",
+      "garment_types": [
+        "outer"
+      ],
+      "fits": [
+        "regular",
+        "relaxed",
+        "oversized"
+      ]
+    },
+    {
+      "id": "f37",
+      "name": {
+        "en": "Nylon Taslan",
+        "ko": "나일론 태슬란"
+      },
+      "desc": {
+        "en": "Lightweight windproof, bomber/windbreaker",
+        "ko": "경량 방풍, 봄버·윈드브레이커"
+      },
+      "gsm": "80-130",
+      "weight": "light",
+      "season": "all",
+      "stretch": "none",
+      "garment_types": [
+        "outer"
+      ],
+      "fits": [
+        "regular",
+        "relaxed",
+        "oversized"
+      ]
+    },
+    {
+      "id": "f38",
+      "name": {
+        "en": "Gabardine",
+        "ko": "개버딘"
+      },
+      "desc": {
+        "en": "Dense twill, trench classic",
+        "ko": "촘촘한 능직, 트렌치 클래식"
+      },
+      "gsm": "200-280",
+      "weight": "mid",
+      "season": "all",
+      "stretch": "none",
+      "garment_types": [
+        "outer",
+        "shirt"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f39",
+      "name": {
+        "en": "Wool Tweed",
+        "ko": "울 트위드"
+      },
+      "desc": {
+        "en": "Woolen weave, classic jacket",
+        "ko": "방모 조직, 클래식 재킷"
+      },
+      "gsm": "280-400",
+      "weight": "heavy",
+      "season": "FW",
+      "stretch": "none",
+      "garment_types": [
+        "outer"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    },
+    {
+      "id": "f40",
+      "name": {
+        "en": "Corduroy",
+        "ko": "코듀로이"
+      },
+      "desc": {
+        "en": "Corduroy, vertical rib weave",
+        "ko": "골덴, 세로 골 조직"
+      },
+      "gsm": "200-300",
+      "weight": "mid",
+      "season": "FW",
+      "stretch": "none",
+      "garment_types": [
+        "outer",
+        "shirt"
+      ],
+      "fits": [
+        "regular",
+        "relaxed"
+      ]
+    }
+  ]
+}

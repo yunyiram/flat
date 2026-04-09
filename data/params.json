@@ -1,0 +1,561 @@
+{
+  "version": "0.18",
+  "source": "flat-v6.html",
+  "description": "FLAT parametric relationships -- domain knowledge documentation for code-independent preservation. All formulas, ratios, and constants that define garment geometry.",
+
+  "state_defaults": {
+    "description": "Default values for all 51 state parameters (the S object). These define the initial garment when the app loads.",
+    "coordBottom": "none",
+    "neckShape": "round",
+    "neckVariant": "none",
+    "neckDetail": "none",
+    "neckFinish": "rib",
+    "neckType": "finish",
+    "collarGroup": "flat",
+    "collarType": "peter",
+    "highneckType": "turtle",
+    "neckDepth": 35,
+    "neckCurve": 75,
+    "neckWidth": 40,
+    "shoulderLine": "natural",
+    "shoulderSlope": 40,
+    "shoulderExtra": 0,
+    "sleeveType": "setin",
+    "sleeveShape": "straight",
+    "sleeveLen": "short",
+    "sleeveWidth": 45,
+    "sleeveCuff": "plain",
+    "sleeveLength": 32,
+    "sideSeam": "yes",
+    "silhouette": "slight_a",
+    "dart": "none",
+    "hipFlare": 4,
+    "hemShape": "straight",
+    "hemFinish": "folded",
+    "fit": "regular",
+    "bodyLen": 45,
+    "chest": 50,
+    "fitW": 50,
+    "pocket": "none",
+    "pocketY": 22,
+    "trimming": "none",
+    "stitchType": "single",
+    "closure": "none",
+    "closureStyle": "single",
+    "closurePos": "front",
+    "styleOverlay": "none",
+    "designElements": [],
+    "selectedDE": -1,
+    "garmentType": "top",
+    "skirtType": "pencil",
+    "skirtLen": 55,
+    "skirtFlare": 0,
+    "waistband": "straight",
+    "skirtDart": "front_back",
+    "skirtSlit": "none",
+    "skirtHem": "folded",
+    "skirtClosure": "zip_back",
+    "skirtFit": 50,
+    "pantsType": "straight",
+    "pantsLen": 80,
+    "pantsFlare": 0,
+    "pantsWaist": "straight",
+    "pantsDart": "front_back",
+    "pantsRise": "mid",
+    "pantsClosure": "zip_fly",
+    "pantsFit": 50,
+    "pantsPleat": "none",
+    "pantsCuff": "plain",
+    "pantsCrease": "none"
+  },
+
+  "garment_defaults": {
+    "description": "Default overrides applied when switching garment type. Resets key params to category-appropriate values. Source: Donnanno Vol.3 p.15 ease-by-garment mapping.",
+    "top": {
+      "bodyLen": 45,
+      "fitW": 50,
+      "closure": "none",
+      "closureStyle": "single",
+      "neckShape": "round",
+      "neckVariant": "none",
+      "neckDetail": "none"
+    },
+    "dress": {
+      "bodyLen": 80,
+      "fitW": 46,
+      "silhouette": "a_line",
+      "hipFlare": 8,
+      "dart": "bust",
+      "closure": "none",
+      "closureStyle": "single",
+      "neckShape": "round",
+      "neckVariant": "none",
+      "neckDetail": "none"
+    },
+    "outerwear": {
+      "bodyLen": 60,
+      "fitW": 70,
+      "closure": "button",
+      "closureStyle": "single",
+      "neckShape": "v",
+      "neckVariant": "none",
+      "neckDetail": "none"
+    },
+    "_note": "Skirt and pants have no GARMENT_DEFAULTS entry; they use their own state_defaults directly."
+  },
+
+  "collar_params": {
+    "description": "Parametric dimensions for 18 collar types. Functions reference neckWidth(nw) or baseNeckDepth(d). Keys: sh=standHeight, fw=fallWidth, fd=fallDrop, bh=backHeight, lw=lapelWidth, lh=lapelHeight, ch=collarHeight, sw=shawlWidth. Resolve rule: lh/dDepth use baseNeckD; all others use nw.",
+    "stand_collars": {
+      "band": { "sh": 10 },
+      "china": { "sh": "max(16, nw * 0.6)", "gap": 4 },
+      "mandarin": { "sh": "max(10, nw * 0.4)", "gap": 2 },
+      "funnel": { "sh": 20, "flareTop": 5 },
+      "wing": { "sh": 16, "tipW": 9, "tipDrop": 6 }
+    },
+    "flat_collars": {
+      "peter": { "fw": "nw * 0.85", "fd": 22 },
+      "sailor": { "fw": "nw + 18", "fd": 32, "cornerR": 6 },
+      "bertha": { "fw": "nw * 1.3", "fd": 28 },
+      "puritan": { "fw": "nw * 1.3", "fd": 22 },
+      "eton": { "fw": "nw * 0.8", "fd": 10, "sh": 8 }
+    },
+    "tailored_collars": {
+      "shirt": { "sh": 9, "fw": "nw * 0.75", "fd": 14 },
+      "notched": { "lw": "nw * 1.1", "ch": 10, "lh": "d * 1.8" },
+      "shawl": { "lh": "d * 1.8", "sw": "nw * 0.85" },
+      "peaked": { "lw": "nw * 0.85", "ch": 8, "lh": "d * 1.5", "peakH": 12 },
+      "round": { "lw": "nw * 1.0", "ch": 8, "lh": "d * 1.7" },
+      "convertible": { "sh": 8, "fw": "nw * 0.6", "fd": 16 }
+    },
+    "deco_collars": {
+      "bow": { "sh": "max(10, nw * 0.4)", "loopW": "max(22, nw * 0.9)", "loopD": "max(10, nw * 0.4)" },
+      "cowl": { "dDepth": "d * 0.9" }
+    },
+    "collar_groups": {
+      "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
+      "stand": ["band", "china", "mandarin", "funnel", "wing"],
+      "tailored": ["shirt", "notched", "shawl", "peaked", "round", "convertible"],
+      "deco": ["bow", "cowl"]
+    }
+  },
+
+  "cm_mapping": {
+    "description": "Slider value (0-100) to real-world cm conversion formulas. Each entry: [sliderKey, toCm formula, fromCm inverse]. These bridge abstract slider positions to garment measurements.",
+    "chest": {
+      "formula": "78 + v * 0.42",
+      "inverse": "(cm - 78) / 0.42",
+      "unit": "cm",
+      "range_slider": "0-100",
+      "range_cm": "78-120 cm"
+    },
+    "bodyLen": {
+      "formula": "40 + v * 0.45",
+      "inverse": "(cm - 40) / 0.45",
+      "unit": "cm",
+      "range_slider": "0-100",
+      "range_cm": "40-85 cm"
+    },
+    "sleeveLength": {
+      "formula": "v * 0.65",
+      "inverse": "cm / 0.65",
+      "unit": "cm",
+      "range_slider": "0-100",
+      "range_cm": "0-65 cm"
+    },
+    "shoulderExtra": {
+      "formula": "v * 0.5",
+      "inverse": "cm / 0.5",
+      "unit": "cm",
+      "range_slider": "-10 to 20",
+      "range_cm": "-5 to 10 cm"
+    },
+    "neckDepth": {
+      "formula": "3 + v * 0.12",
+      "inverse": "(cm - 3) / 0.12",
+      "unit": "cm",
+      "range_slider": "0-100",
+      "range_cm": "3-15 cm"
+    },
+    "neckWidth": {
+      "formula": "8 + v * 0.14",
+      "inverse": "(cm - 8) / 0.14",
+      "unit": "cm",
+      "range_slider": "0-100",
+      "range_cm": "8-22 cm (half width)"
+    },
+    "fitW": {
+      "formula": "38 + v * 0.24",
+      "inverse": "(cm - 38) / 0.24",
+      "unit": "cm",
+      "range_slider": "0-100",
+      "range_cm": "38-62 cm"
+    },
+    "hipFlare": {
+      "formula": "v * 0.4",
+      "inverse": "cm / 0.4",
+      "unit": "cm",
+      "range_slider": "-10 to 16",
+      "range_cm": "-4 to 6.4 cm"
+    },
+    "_unit_conversion": {
+      "cm_to_inch": "cmVal / 2.54, rounded to 1 decimal",
+      "inch_to_cm": "dispVal * 2.54, rounded to 1 decimal"
+    }
+  },
+
+  "body_geometry": {
+    "description": "How slider values become SVG coordinates in BodyComp.geometry(). These are the core parametric equations that define garment shape.",
+    "fitW_scale": {
+      "formula": "0.75 + S.fitW * 0.005",
+      "note": "Maps fitW slider (0-100) to multiplier (0.75-1.25). Controls overall width proportion."
+    },
+    "chest_scale": {
+      "formula": "0.86 + S.chest * 0.0028",
+      "note": "Maps chest slider (0-100) to multiplier (0.86-1.14). Adds chest-specific width."
+    },
+    "halfBody": {
+      "formula": "55 * fitW_scale * chest_scale",
+      "note": "Half-body width in SVG px. Base 55px scaled by fit and chest."
+    },
+    "shoulderW": {
+      "formula": "shBase * fitW_scale + shoulderExtra",
+      "where": "shBase = 46 + max(0, (fitW_scale - 1.0)) * 80",
+      "note": "Shoulder point distance from center. Base widens when oversized."
+    },
+    "slopeY": {
+      "formula": "S.shoulderSlope * 0.28",
+      "note": "Vertical drop at shoulder end. Slider 0-100 maps to 0-28px drop."
+    },
+    "neckW": {
+      "formula": "10 + S.neckWidth * 0.18",
+      "note": "Neck half-width in SVG px. Slider 0-100 maps to 10-28px."
+    },
+    "baseNeckD": {
+      "formula": "12 + S.neckDepth * 0.38",
+      "note": "Neck depth (front drop) in SVG px. Slider 0-100 maps to 12-50px."
+    },
+    "topY": {
+      "value": 70,
+      "note": "Fixed SVG Y coordinate for top of garment (shoulder line baseline)."
+    },
+    "bodyH": {
+      "formula": "100 + S.bodyLen * 1.8",
+      "note": "Total body height in SVG px. Slider 0-100 maps to 100-280px."
+    },
+    "armholeY": {
+      "formula": "topY + 42 + max(0, S.shoulderExtra * 0.875)",
+      "note": "Underarm Y position. Drops with extended/drop shoulder."
+    },
+    "CX": {
+      "value": 160,
+      "note": "Center X coordinate for all garment drawing. Fixed at 160px."
+    },
+    "waistY": {
+      "formula": "topY + bodyH * 0.45",
+      "note": "Waist Y position, always at 45% of body height."
+    },
+    "cocoon_bulge": {
+      "formula": "(S.hipFlare - 8) * 1.5 when hipFlare >= 8, else 0",
+      "note": "Side seam outward bulge for cocoon silhouette."
+    }
+  },
+
+  "skirt_geometry": {
+    "description": "SkirtComp.geometry() parametric relationships.",
+    "fitScale": {
+      "formula": "0.7 + S.skirtFit * 0.006",
+      "range": "0.7-1.3"
+    },
+    "halfWaist": {
+      "formula": "38 * fitScale"
+    },
+    "halfHip": {
+      "formula": "52 * fitScale"
+    },
+    "hipDrop": {
+      "value": 22,
+      "note": "Fixed waist-to-hip distance in SVG px."
+    },
+    "waistbandHeight": {
+      "none": 0,
+      "yoke": 18,
+      "other": 8
+    },
+    "topY": {
+      "value": 60
+    },
+    "skirtLength_px": {
+      "formula": "S.skirtLen * 3.2",
+      "range": "64-320px (slider 20-100)"
+    },
+    "halfHem_by_type": {
+      "pencil": "halfHip - 3 + flare * 0.3",
+      "a_line": "halfHip + 8 + flare * 0.8",
+      "flared": "halfHip + 20 + flare * 1.2",
+      "circular": "halfHip + 35 + flare * 1.5",
+      "pleated": "halfHip + 5 + flare * 0.6",
+      "wrap": "halfHip + 6 + flare * 0.7"
+    },
+    "px_to_cm": {
+      "value": 0.55,
+      "note": "SVG px to cm approximation for skirt techpack."
+    }
+  },
+
+  "pants_geometry": {
+    "description": "PantsComp.geometry() parametric relationships.",
+    "fitScale": {
+      "formula": "0.7 + S.pantsFit * 0.006",
+      "range": "0.7-1.3"
+    },
+    "halfWaist": {
+      "formula": "38 * fitScale"
+    },
+    "halfHip": {
+      "formula": "54 * fitScale"
+    },
+    "hipDrop": {
+      "value": 22
+    },
+    "riseHeight": {
+      "low": 14,
+      "mid": 20,
+      "high": 28
+    },
+    "waistbandHeight": {
+      "elastic": 10,
+      "other": 8
+    },
+    "topY": {
+      "value": 50
+    },
+    "legLength_px": {
+      "formula": "S.pantsLen * 2.8"
+    },
+    "hemY": {
+      "formula": "crotchY + max(legLen * 0.65, 10)"
+    },
+    "crotchGap": {
+      "formula": "halfHip * 0.12",
+      "note": "10-15% of hip width reference."
+    },
+    "legWidthAtCrotch": {
+      "formula": "halfHip - crotchGap"
+    },
+    "hemLegWidth_by_type": {
+      "base": "legWCrotch * (0.7 + S.pantsFlare * 0.008)",
+      "skinny": "legWCrotch * 0.45",
+      "tapered": "legWCrotch * 0.55",
+      "wide": "legWCrotch * 0.95",
+      "baggy": "legWCrotch * 0.9",
+      "flared": "legWCrotch * 1.0"
+    },
+    "hemInseamGap": {
+      "formula": "crotchGap + max(hemY - crotchY, 0) * 0.008"
+    },
+    "backCrotch": {
+      "formula": "crotchGap * 1.2",
+      "note": "Back panel crotch is 20% wider."
+    },
+    "px_to_cm": {
+      "value": 0.55,
+      "note": "SVG px to cm approximation for pants techpack."
+    }
+  },
+
+  "pom_formulas": {
+    "description": "Point of Measurement cm values derived from slider state. Used in spec sheet and techpack grading. POM codes follow SFD (Standard Flat Drawing) conventions.",
+    "A_bodyLength": {
+      "formula": "40 + S.bodyLen * 0.45",
+      "note": "Same as CM_MAP bodyLen"
+    },
+    "B_shoulderWidth": {
+      "formula": "36 + S.shoulderExtra * 1.0 + (S.fitW - 50) * 0.12",
+      "note": "Full shoulder width. SFD M baseline = 47cm."
+    },
+    "E_chest_half": {
+      "formula": "(78 + S.chest * 0.42) / 2",
+      "note": "Half chest = half of full garment bust"
+    },
+    "F_sweep_half": {
+      "formula": "(78 + S.chest * 0.42) / 2 + S.hipFlare * 0.8",
+      "note": "Bottom sweep = half chest plus hip flare adjustment"
+    },
+    "I_sleeveLength": {
+      "formula": "S.sleeveLength * 0.65",
+      "note": "Same as CM_MAP sleeveLength"
+    },
+    "J_armhole": {
+      "formula": "18 + S.fitW * 0.06",
+      "note": "Armhole circumference approximation"
+    },
+    "K_sleeveOpening": {
+      "formula": "14 + S.sleeveWidth * 0.08",
+      "note": "Sleeve opening width"
+    },
+    "M_neckWidth": {
+      "formula": "(8 + S.neckWidth * 0.14) * 2",
+      "note": "Full neck width = half-width * 2"
+    },
+    "N_neckDrop": {
+      "formula": "5 + S.neckDepth * 0.08",
+      "note": "Front neck drop. SFD M baseline = 10cm."
+    }
+  },
+
+  "grading": {
+    "description": "Size grading amounts per POM. Grade = cm change per size step. Sizes XS/S/M/L/XL use offsets [-2,-1,0,+1,+2]. Formula: baseCm + offset * gradePerSize.",
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "offsets": [-2, -1, 0, 1, 2],
+    "grade_rules": {
+      "A_bodyLength":     { "grade_per_size_cm": 2.5, "tolerance_cm": 1.3 },
+      "B_shoulderWidth":  { "grade_per_size_cm": 2.5, "tolerance_cm": 1.3 },
+      "E_chest_half":     { "grade_per_size_cm": 1.3, "tolerance_cm": 1.3 },
+      "F_sweep_half":     { "grade_per_size_cm": 1.3, "tolerance_cm": 1.3 },
+      "I_sleeveLength":   { "grade_per_size_cm": 0.6, "tolerance_cm": 0.6 },
+      "J_armhole":        { "grade_per_size_cm": 1.3, "tolerance_cm": 0.6 },
+      "K_sleeveOpening":  { "grade_per_size_cm": 0.6, "tolerance_cm": 0.3 },
+      "M_neckWidth":      { "grade_per_size_cm": 0.6, "tolerance_cm": 0.3 },
+      "N_neckDrop":       { "grade_per_size_cm": 0.6, "tolerance_cm": 0.3 }
+    },
+    "techpack_grade_map": {
+      "description": "Grade map used in SVG techpack export (includes skirt/pants POMs too).",
+      "A": 2.5, "B": 2.5, "E": 1.3, "F": 1.3,
+      "I": 0.6, "J": 1.3, "K": 0.6, "M": 0.6, "N": 0.6,
+      "D": 1.3, "C": 1.3
+    }
+  },
+
+  "tolerance": {
+    "description": "Manufacturing tolerance standards by POM code. Two tiers: major measurements (body/chest) at 1.3cm, medium (sleeve/armhole) at 0.6cm, fine (neck/opening) at 0.3cm.",
+    "by_pom": {
+      "A": 1.3, "B": 1.3, "E": 1.3, "F": 1.3,
+      "I": 0.6, "J": 0.6, "K": 0.3, "M": 0.3, "N": 0.3,
+      "D": 0.6, "C": 0.6
+    },
+    "tiers": {
+      "major": { "value_cm": 1.3, "poms": ["A", "B", "E", "F"], "note": "Body length, shoulder, chest, sweep" },
+      "medium": { "value_cm": 0.6, "poms": ["I", "J", "D", "C"], "note": "Sleeve length, armhole, rise, hip" },
+      "fine": { "value_cm": 0.3, "poms": ["K", "M", "N"], "note": "Sleeve opening, neck width, neck drop" }
+    }
+  },
+
+  "extended_ranges": {
+    "description": "Extended slider maximums when limit is unlocked. Normal max is the standard design range; extended allows theatrical/extreme proportions.",
+    "sleeveLength": { "normal": 100, "extended": 160, "note": "Theatrical gathered sleeves" },
+    "bodyLen":      { "normal": 100, "extended": 150, "note": "Extreme length" },
+    "sleeveWidth":  { "normal": 100, "extended": 160, "note": "Extreme balloon" },
+    "fitW":         { "normal": 100, "extended": 140, "note": "Extreme oversize" },
+    "neckDepth":    { "normal": 100, "extended": 130, "note": "Extreme plunge" },
+    "hipFlare":     { "normal": 16,  "extended": 35,  "note": "Extreme flare" },
+    "shoulderExtra":{ "normal": 20,  "extended": 40,  "note": "Extreme drop" },
+    "skirtFlare":   { "normal": 40,  "extended": 70,  "note": "Extreme skirt flare" },
+    "pantsFlare":   { "normal": 30,  "extended": 55,  "note": "Extreme pants flare" }
+  },
+
+  "style_overlays": {
+    "description": "Style overlay delta vectors. Applied on top of current state. Deltas are additive (clamped to min 0); overrides replace the value. Removable -- base values are snapshotted before apply.",
+    "casual": {
+      "deltas": { "fitW": 8, "shoulderSlope": -5 },
+      "overrides": { "dart": "none", "stitchType": "single" }
+    },
+    "formal": {
+      "deltas": { "fitW": -5, "shoulderSlope": 5, "shoulderExtra": -2 },
+      "overrides": { "dart": "bust", "stitchType": "double", "sideSeam": "yes" }
+    },
+    "military": {
+      "deltas": { "shoulderExtra": 5, "fitW": 5 },
+      "overrides": { "pocket": "cargo", "pocketY": 32, "stitchType": "double", "hemFinish": "folded", "shoulderLine": "extended" }
+    },
+    "workwear": {
+      "deltas": { "fitW": 10, "chest": 8 },
+      "overrides": { "pocket": "chest_two", "stitchType": "double", "hemFinish": "folded" }
+    },
+    "sport": {
+      "deltas": { "fitW": 12, "sleeveWidth": 10 },
+      "overrides": { "sleeveType": "raglan", "hemFinish": "rib", "sleeveCuff": "rib", "dart": "none" }
+    },
+    "minimal": {
+      "deltas": {},
+      "overrides": { "pocket": "none", "trimming": "none", "dart": "none", "closure": "none", "neckDetail": "none" }
+    },
+    "romantic": {
+      "deltas": { "neckDepth": 10, "sleeveWidth": 15 },
+      "overrides": { "sleeveShape": "puff", "hemShape": "curved" }
+    }
+  },
+
+  "ease_by_garment": {
+    "description": "Donnanno Vol.3 p.15 ease chart. Added to body bust measurement to get garment bust. Used in applyBodySize() body-size-to-slider mapping.",
+    "bodysuit":  { "bust_ease_cm": "-1 to 2",  "fitW_label": "skin" },
+    "tops":      { "bust_ease_cm": "0 to 1",   "fitW_label": "slim" },
+    "shirts":    { "bust_ease_cm": "4 to 8",   "fitW_label": "regular" },
+    "jackets":   { "bust_ease_cm": "10 to 12", "fitW_label": "relaxed" },
+    "outerwear": { "bust_ease_cm": "16 to 20", "fitW_label": "oversized" },
+    "code_ease_map": {
+      "top": 6,
+      "dress": 6,
+      "outerwear": 14,
+      "skirt": 2,
+      "pants": 2,
+      "default": 6
+    }
+  },
+
+  "line_weights": {
+    "description": "VecFashion 2:1:0.5 ratio for technical flat drawing line hierarchy.",
+    "outline": 1.4,
+    "seam": 0.7,
+    "stitch": 0.35,
+    "stitch_dashes": {
+      "single": "5,4",
+      "double": "3,2",
+      "overlock": "2,2",
+      "flatlock": "6,2",
+      "coverstitch": "4,3"
+    }
+  },
+
+  "slider_semantics": {
+    "description": "Human-readable labels for slider value ranges. Maps numeric ranges to garment terminology.",
+    "neckDepth": { "0-29": "shallow", "30-64": "normal", "65-100": "deep" },
+    "neckCurve": { "0-5": "square", "6-14": "v", "15-49": "angular", "50-79": "round", "80-100": "u-shape" },
+    "neckWidth": { "0-24": "narrow", "25-54": "normal", "55-79": "wide", "80-100": "boat" },
+    "shoulderSlope": { "0-29": "gentle", "30-64": "normal", "65-100": "steep" },
+    "shoulderExtra": { "<-3": "narrow", "-3 to 4": "natural", "5-12": "extended", "13+": "drop" },
+    "sleeveLength": { "0-2": "sleeveless", "3-18": "cap", "19-41": "short", "42-61": "elbow", "62-81": "three-quarter", "82+": "long" },
+    "sleeveWidth": { "0-29": "tight", "30-64": "normal", "65+": "wide" },
+    "hipFlare": { "<-3": "taper", "-3 to 1": "straight", "2-6": "slight A", "7-10": "A/cocoon", "11+": "A-line" },
+    "fitW": { "0-15": "skin", "16-37": "slim", "38-57": "regular", "58-75": "relaxed", "76-89": "oversized", "90+": "boxy" },
+    "bodyLen": { "0-19": "crop", "20-54": "standard", "55-79": "hip", "80+": "long" },
+    "skirtLen": { "0-29": "mini", "30-44": "above knee", "45-59": "knee", "60-79": "midi", "80+": "maxi" },
+    "pantsLen": { "0-19": "hot pants", "20-34": "shorts", "35-49": "bermuda", "50-69": "cropped", "70+": "full length" },
+    "pantsFit": { "0-19": "skinny", "20-39": "slim", "40-59": "regular", "60-79": "relaxed", "80+": "wide" }
+  },
+
+  "body_size_mapping": {
+    "description": "Body measurement (bust/waist/hip in cm) to slider value conversion. Uses Donnanno ease + inverse CM_MAP.",
+    "bust_to_chest_slider": {
+      "formula": "clamp(0, 100, round((bust + ease - 78) / 0.42))",
+      "ease_source": "ease_by_garment.code_ease_map"
+    },
+    "hip_to_flare_slider": {
+      "formula": "clamp(-10, 16, round((hip - bust) * 0.4))",
+      "note": "Hip flare derived from hip-bust difference."
+    }
+  },
+
+  "svg_constants": {
+    "description": "Fixed layout constants for SVG rendering.",
+    "canvas_center_x": 160,
+    "garment_top_y_upper": 70,
+    "garment_top_y_skirt": 60,
+    "garment_top_y_pants": 50,
+    "base_armhole_drop": 42,
+    "waist_position_ratio": 0.45,
+    "techpack_width": 842,
+    "techpack_height": 595,
+    "techpack_format": "A4 landscape (pt)"
+  }
+}
