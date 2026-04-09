@@ -1,5 +1,5 @@
 {
-  "version": "0.18",
+  "version": "0.22",
   "source": "flat-v6.html",
   "description": "FLAT parametric relationships -- domain knowledge documentation for code-independent preservation. All formulas, ratios, and constants that define garment geometry.",
 
@@ -7,7 +7,6 @@
     "description": "Default values for all 51 state parameters (the S object). These define the initial garment when the app loads.",
     "coordBottom": "none",
     "neckShape": "round",
-    "neckVariant": "none",
     "neckDetail": "none",
     "neckFinish": "rib",
     "neckType": "finish",
@@ -17,7 +16,8 @@
     "neckDepth": 35,
     "neckCurve": 75,
     "neckWidth": 40,
-    "shoulderLine": "natural",
+    "shoulderType": "standard",
+    "strapType": "none",
     "shoulderSlope": 40,
     "shoulderExtra": 0,
     "sleeveType": "setin",
@@ -77,7 +77,7 @@
       "closure": "none",
       "closureStyle": "single",
       "neckShape": "round",
-      "neckVariant": "none",
+      "shoulderType": "standard",
       "neckDetail": "none"
     },
     "dress": {
@@ -89,7 +89,7 @@
       "closure": "none",
       "closureStyle": "single",
       "neckShape": "round",
-      "neckVariant": "none",
+      "shoulderType": "standard",
       "neckDetail": "none"
     },
     "outerwear": {
@@ -98,7 +98,7 @@
       "closure": "button",
       "closureStyle": "single",
       "neckShape": "v",
-      "neckVariant": "none",
+      "shoulderType": "standard",
       "neckDetail": "none"
     },
     "_note": "Skirt and pants have no GARMENT_DEFAULTS entry; they use their own state_defaults directly."

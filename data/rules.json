@@ -1,5 +1,5 @@
 {
-  "version": "0.18",
+  "version": "0.22",
   "description": "FLAT garment compatibility rules — domain logic separated from rendering code",
 
   "necktype_compat": {
@@ -16,7 +16,7 @@
   },
 
   "variant_necktype_compat": {
-    "description": "Which neckType values are allowed for each neckVariant. null = all allowed.",
+    "description": "Which neckType values are allowed for each shoulderType. null = all allowed.",
     "matrix": {
       "none": null,
       "halter": ["finish"],
@@ -36,7 +36,7 @@
   },
 
   "variant_detail_compat": {
-    "description": "Which neckDetail values are allowed for each neckVariant. null = all allowed.",
+    "description": "Which neckDetail values are allowed for each shoulderType. null = all allowed.",
     "matrix": {
       "none": null,
       "halter": ["none"],
@@ -88,7 +88,7 @@
   },
 
   "variant_collar_override": {
-    "description": "neckVariant that further restricts collar options (intersection with collar_compat). null = no override.",
+    "description": "shoulderType that further restricts collar options (intersection with collar_compat). null = no override.",
     "matrix": {
       "none": null,
       "halter": "__blocked__",
@@ -117,8 +117,8 @@
       "id": "necktype_intersection",
       "source": "updateFinishCompat",
       "type": "soft",
-      "description": "Allowed neckType = intersection of neckShape compat, neckVariant compat, and neckDetail compat. If current neckType is blocked, auto-switch to 'finish'.",
-      "condition": "neckType not in (necktype_compat[neckShape] ∩ variant_necktype_compat[neckVariant] ∩ detail_necktype_compat[neckDetail])",
+      "description": "Allowed neckType = intersection of neckShape compat, shoulderType compat, and neckDetail compat. If current neckType is blocked, auto-switch to 'finish'.",
+      "condition": "neckType not in (necktype_compat[neckShape] ∩ variant_necktype_compat[shoulderType] ∩ detail_necktype_compat[neckDetail])",
       "action": "neckType → 'finish'",
       "message_key": null
     },
@@ -127,7 +127,7 @@
       "source": "updateFinishCompat",
       "type": "soft",
       "description": "Variant restricts which neckDetail values are allowed. If current detail is blocked, auto-switch to 'none'.",
-      "condition": "neckDetail not in variant_detail_compat[neckVariant]",
+      "condition": "neckDetail not in variant_detail_compat[shoulderType]",
       "action": "neckDetail → 'none'",
       "message_key": null
     },
@@ -135,7 +135,7 @@
       "id": "collar_shape_compat",
       "source": "updateFinishCompat",
       "type": "soft",
-      "description": "When neckType='collar', allowed collarTypes = collar_compat[neckShape][collarGroup] ∩ variant_collar_override[neckVariant][collarGroup]. If current collarType is invalid, auto-switch to first valid in same group, or first valid in any group.",
+      "description": "When neckType='collar', allowed collarTypes = collar_compat[neckShape][collarGroup] ∩ variant_collar_override[shoulderType][collarGroup]. If current collarType is invalid, auto-switch to first valid in same group, or first valid in any group.",
       "condition": "neckType === 'collar' && collarType not in allowed set",
       "action": "collarType → first valid option; if no valid in current group, switch collarGroup too",
       "message_key": null
@@ -154,7 +154,7 @@
       "source": "updateVariantCompat",
       "type": "soft",
       "description": "Halter, off-shoulder, one-shoulder variants force sleeveless. All other sleeve length buttons disabled.",
-      "condition": "neckVariant in ['halter', 'off_shoulder', 'one_shoulder']",
+      "condition": "shoulderType in ['halter', 'off_shoulder', 'one_shoulder']",
       "action": "sleeveLength → 0, sleeveLen → 'sleeveless'",
       "message_key": "sleevelessForced"
     },
@@ -163,7 +163,7 @@
       "source": "updateVariantCompat",
       "type": "soft",
       "description": "When variant is 'none', re-enable all sleeve length buttons.",
-      "condition": "neckVariant === 'none'",
+      "condition": "shoulderType === 'none'",
       "action": "all sleeveLen buttons enabled",
       "message_key": null
     },
@@ -199,7 +199,7 @@
       "source": "updateClosureCompat",
       "type": "soft",
       "description": "Halter/off-shoulder/one-shoulder blocks all closures (button, zip, snap, hidden).",
-      "condition": "neckVariant in ['halter', 'off_shoulder', 'one_shoulder']",
+      "condition": "shoulderType in ['halter', 'off_shoulder', 'one_shoulder']",
       "action": "closure → 'none'",
       "message_key": "closureOff"
     },

@@ -3,9 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLAT — Garment Flat Drawing Engine v0.21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap">
+<title>FLAT — Garment Flat Drawing Engine v0.22</title>
+<meta name="description" content="Parametric garment flat drawing engine. Design production-ready tech packs with 129 construction rules, 49 presets, and real-time cascade.">
+<meta property="og:title" content="FLAT — Parametric Garment Design Engine">
+<meta property="og:description" content="The only tool where every line is a number. 49 presets, 129 rules, PDF tech packs. Try the live demo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yunyiram.github.io/flat/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28' font-family='serif' fill='%23B83A2A'>F</text></svg>">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+/* fonts loaded via <link> in <head> for faster render */
 :root{
   --bg:#F5F3EE;--surface:#FFF;--surface2:#FAFAF7;--border:#E4E0D8;--border-light:#EDEBE6;
   --text:#1C1B18;--text-mid:#4A4740;--text-sub:#8A857C;--accent:#B83A2A;--accent-light:#F0D9D5;
@@ -78,9 +87,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .zoom-ctrl{position:absolute;top:12px;right:12px;display:flex;gap:4px;}
 .cascade-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--accent);background:rgba(255,255,255,0.92);padding:8px 20px;border-radius:100px;border:1.5px solid var(--accent);pointer-events:none;opacity:0;transition:opacity 0.25s;z-index:50;white-space:nowrap;}
 .cascade-label.show{opacity:1;}
-.cascade-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text-mid);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;}
-.cascade-btn:hover{border-color:var(--accent);color:var(--accent);}
-.cascade-btn.playing{border-color:var(--accent);color:var(--accent);animation:cascadePulse 1s ease infinite;}
+.cascade-btn{height:28px;padding:0 12px;border:1.5px solid var(--accent);border-radius:100px;background:var(--surface);color:var(--accent);font-family:'Inter',sans-serif;font-size:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;transition:all 0.2s;}
+.cascade-btn:hover{background:var(--accent);color:#fff;}
+.cascade-btn.playing{background:var(--accent);color:#fff;animation:cascadePulse 1s ease infinite;}
 @keyframes cascadePulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
 .zoom-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text-mid);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .zoom-btn:hover{border-color:var(--text);color:var(--text);}
@@ -132,7 +141,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
       <button class="mode-btn" id="modeBoth" onclick="setMode('both')" data-i18n="header.both">Both</button>
     </div>
     <div class="mode-toggle"><button class="mode-btn on" id="langEn" onclick="setLang('en')" style="font-size:10px;padding:4px 10px">EN</button><button class="mode-btn" id="langKo" onclick="setLang('ko')" style="font-size:10px;padding:4px 10px">KO</button></div>
-    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.21</span>
+    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.22</span>
   </div>
 </header>
 <div class="app">
@@ -286,7 +295,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
     <div class="sketch-col"><div class="view-tag">BACK</div><svg id="svgB" width="320" height="460" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg"></svg></div>
   </div>
   <div class="zoom-ctrl">
-    <button class="cascade-btn" id="cascadeBtn" onclick="CascadeVis.toggle()" title="Cascade Demo">▶</button>
+    <button class="cascade-btn" id="cascadeBtn" onclick="CascadeVis.toggle()" title="Cascade Demo">▶ Cascade</button>
     <button class="zoom-btn" onclick="Zoom.in()">+</button>
     <button class="zoom-btn" onclick="Zoom.out()">−</button>
     <button class="zoom-btn" onclick="Zoom.reset()" style="font-size:10px">1:1</button>
@@ -307,6 +316,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
     <button class="export-btn ghost" onclick="ExportModule.specFile()" data-i18n="export.saveSpec">Save Spec</button>
     <button class="export-btn" onclick="ExportModule.techpack()" style="background:#B83A2A;color:white;border-color:#B83A2A" data-i18n="export.techpack">Tech Pack</button>
     <button class="export-btn" onclick="ExportModule.pdf()" style="background:#1a5276;color:white;border-color:#1a5276;margin-top:5px" data-i18n="export.pdf">PDF Tech Pack</button>
+    <button class="export-btn" onclick="ExportModule.pdfWorkOrder()" style="background:#5B2C6F;color:white;border-color:#5B2C6F;margin-top:3px" data-i18n="export.workOrder">PDF Work Order</button>
     <button class="export-btn" onclick="FactoryViewer.shareLink()" style="background:#1a6b50;color:white;border-color:#1a6b50;margin-top:5px" data-i18n="export.factoryLink">🔗 Factory Link</button>
   </div>
 </div>
@@ -387,7 +397,7 @@ en:{
     crease:'Crease',cr_none:'None',cr_front:'Front Crease',
     fitLabel:'Fit'},
   canvas:{hint:'Drag red handles for symmetric editing. Ctrl+Z to undo',cascade:'Cascade Demo'},
-  export:{saveProject:'Save Project',loadProject:'Load Project',copySpec:'Copy Spec',saveSpec:'Save Spec',techpack:'Tech Pack',pdf:'PDF Tech Pack',factoryLink:'🔗 Factory Link'},
+  export:{saveProject:'Save Project',loadProject:'Load Project',copySpec:'Copy Spec',saveSpec:'Save Spec',techpack:'Tech Pack',pdf:'PDF Tech Pack',workOrder:'PDF Work Order',factoryLink:'🔗 Factory Link'},
   slider:{shallow:'Shallow',normal:'Normal',deep:'Deep',
     square:'Square',v:'V',angular:'Angular',round:'Round',uShape:'U',
     narrow:'Narrow',wide:'Wide',boat:'Boat',
@@ -583,7 +593,7 @@ ko:{
     crease:'주름선',cr_none:'없음',cr_front:'앞주름',
     fitLabel:'핏'},
   canvas:{hint:'빨간 핸들을 드래그 → 좌우대칭 실시간 편집 · Ctrl+Z 되돌리기',cascade:'캐스케이드 데모'},
-  export:{saveProject:'프로젝트 저장',loadProject:'프로젝트 불러오기',copySpec:'스펙 복사',saveSpec:'스펙 저장',techpack:'테크팩',pdf:'PDF 테크팩',factoryLink:'🔗 공장용 링크'},
+  export:{saveProject:'프로젝트 저장',loadProject:'프로젝트 불러오기',copySpec:'스펙 복사',saveSpec:'스펙 저장',techpack:'테크팩',pdf:'PDF 테크팩',workOrder:'PDF 작업지시서',factoryLink:'🔗 공장용 링크'},
   slider:{shallow:'얕음',normal:'보통',deep:'깊음',
     square:'스퀘어',v:'V',angular:'각진',round:'라운드',uShape:'U',
     narrow:'좁음',wide:'넓음',boat:'보트',
@@ -3747,7 +3757,7 @@ const FabricModule = {
     if(nf==='hood'&&S.fitW>=50) return 'outer';
     if(nf==='collar_funnel'&&bl>=55) return 'outer';
     // 아우터: 밴드칼라 + 리브헴 조합 (봄버 등)
-    if(nf==='collar_band'&&S.hemFinish==='rib'&&S.cuffStyle!=='none') return 'outer';
+    if(nf==='collar_band'&&S.hemFinish==='rib'&&S.sleeveCuff!=='none') return 'outer';
     // 드레스: 긴기장
     if(bl>=75) return 'dress';
     // 셔츠: 셔츠 칼라 계열
@@ -4204,7 +4214,7 @@ const PresetModule={
     {cat:'outerwear',name:'blazer',s:{neckShape:'v',neckFinish:'collar_notched',neckDepth:30,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:4,shoulderSlope:38,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:60,chest:54,pocket:'flap',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
     {cat:'outerwear',name:'bomber',s:{neckShape:'round',neckFinish:'collar_band',neckDepth:28,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'dropped',shoulderExtra:8,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:48,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:48,chest:62,pocket:'welt',trimming:'none',stitchType:'single',closure:'zip',closureStyle:'single'}},
     {cat:'outerwear',name:'trench',s:{neckShape:'v',neckFinish:'collar_peaked',neckDepth:28,neckCurve:70,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'standard',shoulderExtra:6,shoulderSlope:36,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:45,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:6,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:80,chest:60,pocket:'welt',trimming:'none',stitchType:'double',closure:'button',closureStyle:'double'}},
-    {cat:'outerwear',name:'cardigan',s:{neckShape:'v',neckFinish:'collar_round',neckDepth:40,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:52,pocket:'patch',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
+    {cat:'outerwear',name:'cardigan',s:{neckShape:'v',neckFinish:'collar_round',neckDepth:40,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:52,pocket:'patch_round',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
     {cat:'outerwear',name:'zipHoodie',s:{neckShape:'round',neckFinish:'hood',neckDepth:30,neckCurve:75,neckWidth:40,fit:'oversized',fitW:80,shoulderType:'dropped',shoulderExtra:10,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:62,pocket:'kangaroo',trimming:'none',stitchType:'single',closure:'zip',closureStyle:'single'}},
   ],
   CATS:['tops_tees','knitwear','shirt_blouse','dress','outerwear'],
@@ -4339,18 +4349,20 @@ const ExportModule = {
   },
 
   spec() {
-    let t='=== FLAT T-SHIRT SPEC ===\n';
+    const gt=S.garmentType;
+    const lbl={top:'T-SHIRT',dress:'DRESS',outerwear:'OUTERWEAR',skirt:'SKIRT',pants:'PANTS'}[gt]||'GARMENT';
+    let txt='=== FLAT '+lbl+' SPEC ===\n';
     document.querySelectorAll('#specBody tr').forEach(r=>{
       const c=r.querySelectorAll('td');
-      t+=c[0].textContent+': '+c[1].textContent+'\n';
+      txt+=c[0].textContent+': '+c[1].textContent+'\n';
     });
-    navigator.clipboard.writeText(t).then(function(){alert('스펙시트 복사 완료');});
+    navigator.clipboard.writeText(txt).then(()=>{alert(t('alert','specCopied'));}).catch(()=>{});
   },
 
   // ── JSON 프로젝트 저장/불러오기 ──
   saveJSON() {
     const project={
-      version:'0.15',
+      version:'0.22',
       created:new Date().toISOString(),
       state:JSON.parse(JSON.stringify(S))
     };
@@ -4389,12 +4401,14 @@ const ExportModule = {
   },
 
   specFile() {
-    let t='=== FLAT T-SHIRT SPEC ===\n';
+    const gt=S.garmentType;
+    const lbl={top:'T-SHIRT',dress:'DRESS',outerwear:'OUTERWEAR',skirt:'SKIRT',pants:'PANTS'}[gt]||'GARMENT';
+    let txt='=== FLAT '+lbl+' SPEC ===\n';
     document.querySelectorAll('#specBody tr').forEach(r=>{
       const c=r.querySelectorAll('td');
-      t+=c[0].textContent+': '+c[1].textContent+'\n';
+      txt+=c[0].textContent+': '+c[1].textContent+'\n';
     });
-    const b=new Blob([t],{type:'text/plain'});
+    const b=new Blob([txt],{type:'text/plain'});
     const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flat_spec_'+Date.now()+'.txt';a.click();
   },
 
@@ -4590,7 +4604,7 @@ const ExportModule = {
     });
 
     // 풋터
-    let ftr=`<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="6" fill="#999" font-family="Arial,sans-serif">Generated by FLAT v0.21 — flatsketch.app</text>`;
+    let ftr=`<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="6" fill="#999" font-family="Arial,sans-serif">Generated by FLAT v0.22 — yunyiram.github.io/flat</text>`;
 
     // 조합
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
@@ -4668,14 +4682,86 @@ const ExportModule = {
     svgToImg(document.getElementById('svgF'),frontImg=>{
       svgToImg(document.getElementById('svgB'),backImg=>{
 
-        // ═══ PAGE 1: Front/Back drawings ═══
+        const today=new Date().toISOString().slice(0,10);
+        const L=LANG[curLang];
+
+        // ═══ PAGE 1: COVER SHEET ═══
         // Header bar
         doc.setFillColor(42,41,38);doc.rect(0,0,W,14,'F');
         doc.setTextColor(255);doc.setFontSize(14);doc.setFont('helvetica','bold');
         doc.text('FLAT.',8,10);
         doc.setFontSize(9);doc.setFont('helvetica','normal');
+        doc.text('TECH PACK — COVER SHEET',W-8,10,{align:'right'});
+
+        // Info grid
+        const infoY=22;
+        const infoFields=[
+          ['STYLE #','FLAT-'+Date.now().toString(36).toUpperCase()],
+          ['ITEM',tpLabel],
+          ['DATE',today],
+          ['SEASON','—'],
+          ['SAMPLE SIZE','M'],
+          ['SIZE RANGE','XS – XL'],
+        ];
+        doc.setFontSize(7);
+        infoFields.forEach((f,i)=>{
+          const col=i%3,row=Math.floor(i/3);
+          const fx=20+col*90,fy=infoY+row*14;
+          doc.setFillColor(245,243,239);doc.rect(fx,fy,85,6,'F');
+          doc.setDrawColor(200);doc.rect(fx,fy,85,6);
+          doc.setTextColor(100);doc.setFont('helvetica','bold');
+          doc.text(f[0],fx+2,fy+4.5);
+          doc.setFillColor(255);doc.rect(fx,fy+6,85,6,'F');
+          doc.setDrawColor(200);doc.rect(fx,fy+6,85,6);
+          doc.setTextColor(42,41,38);doc.setFont('helvetica','normal');
+          doc.text(f[1],fx+2,fy+10.5);
+        });
+
+        // Front/Back previews (small)
+        doc.addImage(frontImg,'PNG',20,56,65,93);
+        doc.addImage(backImg,'PNG',95,56,65,93);
+        doc.setFontSize(7);doc.setTextColor(100);
+        doc.text('FRONT',52,153,{align:'center'});
+        doc.text('BACK',127,153,{align:'center'});
+
+        // Quick Spec (right side of cover)
+        doc.setFontSize(9);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('QUICK SPEC',175,60);
+        doc.setFont('helvetica','normal');doc.setFontSize(7);
+        let qsy=68;
+        const specRows=document.querySelectorAll('#specBody tr');
+        const maxSpec=Math.min(specRows.length,14);
+        for(let i=0;i<maxSpec;i++){
+          const c=specRows[i].querySelectorAll('td');
+          if(c.length>=2){
+            doc.setTextColor(100);doc.text(c[0].textContent,177,qsy);
+            doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+            doc.text(c[1].textContent,230,qsy);
+            doc.setFont('helvetica','normal');
+            qsy+=5.5;
+          }
+        }
+
+        // Revision history placeholder
+        doc.setFontSize(8);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('REVISION HISTORY',175,155);
+        const revColW=[20,25,30,55];
+        tblRow(doc,160,['REV','DATE','BY','NOTES'],revColW,{fill:true,bold:true,fontSize:6,headerFill:[42,41,38],color:[255,255,255]});
+        tblRow(doc,167,['01',today,'Designer','Initial tech pack'],revColW,{fontSize:6});
+
+        // Footer
+        doc.setFontSize(6);doc.setTextColor(160);
+        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Page 1/5',W-10,H-5,{align:'right'});
+
+        // ═══ PAGE 2: Front/Back drawings + Callouts ═══
+        doc.addPage('a4','landscape');
+        doc.setFillColor(42,41,38);doc.rect(0,0,W,14,'F');
+        doc.setTextColor(255);doc.setFontSize(14);doc.setFont('helvetica','bold');
+        doc.text('FLAT.',8,10);
+        doc.setFontSize(9);doc.setFont('helvetica','normal');
         doc.text(tpLabel+' TECH PACK',W-8,10,{align:'right'});
-        doc.text(new Date().toISOString().slice(0,10),W/2,10,{align:'center'});
+        doc.text(today,W/2,10,{align:'center'});
 
         // Front/Back images
         const imgW=90,imgH=130;
@@ -4702,9 +4788,10 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.21 — flatsketch.app',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Page 2/5',W-10,H-5,{align:'right'});
 
-        // ═══ PAGE 2: Spec + Grading ═══
+        // ═══ PAGE 3: Spec + Grading ═══
         doc.addPage('a4','landscape');
         // Header
         doc.setFillColor(42,41,38);doc.rect(0,0,W,14,'F');
@@ -4847,9 +4934,10 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.21 — flatsketch.app',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Page 3/5',W-10,H-5,{align:'right'});
 
-        // ═══ PAGE 3: Fabric Recommendation ═══
+        // ═══ PAGE 4: Fabric Recommendation ═══
         doc.addPage('a4','landscape');
         doc.setFillColor(42,41,38);doc.rect(0,0,W,14,'F');
         doc.setTextColor(255);doc.setFontSize(12);doc.setFont('helvetica','bold');
@@ -4888,13 +4976,301 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.21 — flatsketch.app',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Page 4/5',W-10,H-5,{align:'right'});
+
+        // ═══ PAGE 5: POM Diagram ═══
+        doc.addPage('a4','landscape');
+        doc.setFillColor(42,41,38);doc.rect(0,0,W,14,'F');
+        doc.setTextColor(255);doc.setFontSize(12);doc.setFont('helvetica','bold');
+        doc.text('POM DIAGRAM',8,10);
+        doc.setFontSize(9);doc.setFont('helvetica','normal');
+        doc.text(tpLabel+' — HOW TO MEASURE',W-8,10,{align:'right'});
+
+        // Front sketch large
+        doc.addImage(frontImg,'PNG',20,20,100,144);
+        doc.setFontSize(7);doc.setTextColor(100);
+        doc.text('FRONT VIEW',70,168,{align:'center'});
+
+        // POM reference table (right side)
+        doc.setFontSize(9);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('POINT OF MEASURE REFERENCE',145,24);
+
+        const pomColW=[12,50,70];
+        tblRow(doc,28,['POM','MEASUREMENT','HOW TO MEASURE'],pomColW,{fill:true,bold:true,fontSize:6,headerFill:[42,41,38],color:[255,255,255]});
+
+        const pomGuide={
+          'A':'Measure from HPS to bottom hem along CF',
+          'B':'Measure across shoulder points, seam to seam',
+          'C':'Measure across at natural waist, edge to edge',
+          'D':'Measure from CB neck to bottom hem',
+          'E':'Measure across at 1" below armhole, edge to edge',
+          'F':'Measure across at bottom hem, edge to edge',
+          'G':'Measure 6" down from HPS across front',
+          'H':'Measure 6" down from HPS across back',
+          'I':'Measure from shoulder seam to cuff along outer edge',
+          'J':'Measure armhole straight from shoulder to side seam',
+          'K':'Measure sleeve opening at cuff, edge to edge',
+          'L':'Measure across bicep at 1" below armhole',
+          'M':'Measure across neck opening at widest point',
+          'N':'Measure from HPS to front neck drop',
+          'O':'Measure from HPS to back neck drop',
+          'P':'Measure from front neck to bottom hem',
+          'Q':'Measure armhole along the curved seam',
+        };
+        let pomY=35;
+        measures.forEach((m,i)=>{
+          const guide=pomGuide[m.n]||'—';
+          let pomX=145;
+          const fill=i%2===0?[255,255,255]:[248,247,244];
+          pomColW.forEach((w,ci)=>{
+            doc.setFillColor(...fill);doc.setDrawColor(220);doc.rect(pomX,pomY,w,6,'FD');
+            const vals=[m.n,m.label,guide];
+            if(ci===0){doc.setFontSize(6);doc.setTextColor(184,58,42);doc.setFont('helvetica','bold');}
+            else{doc.setFontSize(5.5);doc.setTextColor(60);doc.setFont('helvetica','normal');}
+            doc.text(vals[ci],pomX+2,pomY+4.5);
+            pomX+=w;
+          });
+          pomY+=6;
+        });
+
+        // Draw measurement indicators on the sketch
+        doc.setDrawColor(184,58,42);doc.setLineWidth(0.3);
+        const skX=20,skY=20,skW=100,skH=144;
+        const cx=skX+skW/2;
+        measures.forEach((m,i)=>{
+          // simple left-side labels with lines
+          const ly=skY+18+i*7.5;
+          if(ly<skY+skH-5){
+            doc.setFillColor(184,58,42);doc.circle(skX-2,ly,2,'F');
+            doc.setTextColor(255);doc.setFontSize(5);doc.setFont('helvetica','bold');
+            doc.text(m.n,skX-2,ly+1.5,{align:'center'});
+            doc.setDrawColor(184,58,42);doc.setLineWidth(0.15);
+            doc.line(skX,ly,skX+6,ly);
+          }
+        });
+
+        // Footer
+        doc.setFontSize(6);doc.setTextColor(160);
+        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Page 5/5',W-10,H-5,{align:'right'});
 
         // ── Save ──
         doc.save('FLAT_techpack_'+tpLabel+'_'+Date.now()+'.pdf');
       });
     });
     draw(); // restore handles
+  },
+
+  // ═══ 작업지시서 (Korean Work Order) — 1-page PDF ═══
+  pdfWorkOrder() {
+    if(typeof jspdf==='undefined'&&typeof window.jspdf==='undefined'){alert('PDF library loading...');return;}
+    const{jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'}); // 210×297mm
+    const W=210,H=297;
+    const ink='#2A2926',accent='#B83A2A';
+    const gt=S.garmentType;
+    const tpLabel={top:'T-SHIRT',dress:'DRESS',outerwear:'OUTERWEAR',skirt:'SKIRT',pants:'PANTS'}[gt]||'T-SHIRT';
+    const today=new Date().toISOString().slice(0,10);
+
+    const svgToImg=(svgEl,cb)=>{
+      const clone=svgEl.cloneNode(true);
+      const hl=clone.querySelector('.handles-layer');if(hl)hl.remove();
+      let str='<svg xmlns="http://www.w3.org/2000/svg" width="320" height="460" viewBox="0 0 320 460">'+clone.innerHTML+'</svg>';
+      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8');
+      const blob=new Blob([str],{type:'image/svg+xml;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const img=new Image();
+      img.onload=()=>{const c=document.createElement('canvas');c.width=640;c.height=920;const ctx=c.getContext('2d');ctx.fillStyle='white';ctx.fillRect(0,0,640,920);ctx.drawImage(img,0,0,640,920);cb(c.toDataURL('image/png'));URL.revokeObjectURL(url);};
+      img.src=url;
+    };
+
+    svgToImg(document.getElementById('svgF'),frontImg=>{
+      svgToImg(document.getElementById('svgB'),backImg=>{
+        // ── Title ──
+        doc.setFontSize(16);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('\uC791\uC5C5\uC9C0\uC2DC\uC11C',W/2,12,{align:'center'});
+        doc.setFontSize(8);doc.setFont('helvetica','normal');
+        doc.text('WORK ORDER',W/2,17,{align:'center'});
+
+        // ── Header info grid ──
+        const hY=22;
+        doc.setDrawColor(150);doc.setLineWidth(0.3);
+        // Row 1
+        const hCols=[[8,42,'STYLE NO.'],[52,42,'ITEM'],[96,42,'DATE'],[140,30,'SIZE'],[172,30,'']];
+        hCols.forEach(([x,w,label])=>{
+          doc.rect(x,hY,w,7);
+          doc.setFontSize(5.5);doc.setTextColor(100);doc.setFont('helvetica','bold');
+          doc.text(label,x+1.5,hY+3);
+        });
+        // Row 1 values
+        doc.setFontSize(7);doc.setTextColor(42,41,38);doc.setFont('helvetica','normal');
+        doc.text('FLAT-'+Date.now().toString(36).toUpperCase().slice(-6),10,hY+6);
+        doc.text(tpLabel,54,hY+6);
+        doc.text(today,98,hY+6);
+        doc.text('XS~XL (M)',142,hY+6);
+
+        // ── DESIGN area (left) — sketches ──
+        const dY=32;
+        doc.setDrawColor(150);doc.rect(8,dY,95,110);
+        doc.setFontSize(6);doc.setTextColor(100);doc.setFont('helvetica','bold');
+        doc.text('DESIGN',10,dY+4);
+
+        doc.addImage(frontImg,'PNG',10,dY+6,40,57);
+        doc.addImage(backImg,'PNG',55,dY+6,40,57);
+        doc.setFontSize(5);doc.setTextColor(100);doc.setFont('helvetica','normal');
+        doc.text('FRONT',30,dY+65,{align:'center'});
+        doc.text('BACK',75,dY+65,{align:'center'});
+
+        // Measurements on sketch area
+        const _bl=CM_MAP.find(x=>x[0]==='bodyLen')[2](S.bodyLen);
+        const _ch=CM_MAP.find(x=>x[0]==='chest')[2](S.chest);
+        const _sl=CM_MAP.find(x=>x[0]==='sleeveLength')[2](S.sleeveLength);
+        const _sw=Math.round(36+S.shoulderExtra+(S.fitW-50)*0.12);
+        doc.setFontSize(5);doc.setTextColor(184,58,42);doc.setFont('helvetica','bold');
+        const mLines=[
+          ['\uAE30\uC7A5 '+Math.round(_bl)+'cm',10,dY+72],
+          ['\uAC00\uC2B4 '+Math.round(_ch/2)+'cm (half)',10,dY+77],
+          ['\uC5B4\uAE68 '+_sw+'cm',10,dY+82],
+          ['\uC18C\uB9E4 '+Math.round(_sl)+'cm',10,dY+87],
+        ];
+        mLines.forEach(([txt,x,y])=>doc.text(txt,x,y));
+
+        // Construction notes in sketch area
+        doc.setFontSize(5);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('* \uC791\uC5C5\uC2DC \uC8FC\uC758\uC0AC\uD56D *',10,dY+94);
+        doc.setFont('helvetica','normal');doc.setFontSize(4.5);
+        const cnPdf=getConstructionNotes(gt);
+        cnPdf.slice(0,5).forEach((c,i)=>{
+          doc.text('\u2022 '+c.area+': '+c.stitch+' ('+c.type+', '+c.spi+'SPI)',10,dY+99+i*4);
+        });
+
+        // ── Right side tables ──
+        const rX=108;
+
+        // 부자재 사양 (BOM)
+        doc.setFontSize(7);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('\uBD80\uC790\uC7AC \uC0AC\uC591',rX,dY+2);
+        const bomY=dY+5;
+        const bomColW=[28,20,15,30];
+        // BOM header
+        let bx=rX;
+        ['\uC790\uC7AC\uBA85','\uADDC\uACA9','\uC694\uCC99','\uBE44\uACE0'].forEach((h,i)=>{
+          doc.setFillColor(42,41,38);doc.rect(bx,bomY,bomColW[i],5,'F');
+          doc.setTextColor(255);doc.setFontSize(5);doc.setFont('helvetica','bold');
+          doc.text(h,bx+bomColW[i]/2,bomY+3.8,{align:'center'});
+          bx+=bomColW[i];
+        });
+        // BOM rows from fabric recommendation
+        const fabDB=FabricModule.DB;
+        const topFab=fabDB.map((f,idx)=>({...f,s:FabricModule.score(f)})).sort((a,b)=>b.s-a.s)[0];
+        const bomRows=[
+          [topFab?topFab.name:'Cotton Jersey',topFab?topFab.gsm+'g/m\u00B2':'180g/m\u00B2','—','\uACB8\uAC10'],
+        ];
+        if(S.sleeveCuff==='rib'||S.hemFinish==='rib') bomRows.push(['1x1 Rib','300g/m\u00B2','—','\uB9AC\uBE0C\uBD80\uBD84']);
+        if(S.closure==='button') bomRows.push(['\uBC84\uD2BC','—',Math.ceil(S.bodyLen/10)+'EA','\uC55E\uC911\uC2EC']);
+        if(S.closure==='zip') bomRows.push(['\uC9C0\uD37C','—','1EA','\uC55E\uC911\uC2EC']);
+
+        bomRows.forEach((row,ri)=>{
+          bx=rX;
+          row.forEach((v,ci)=>{
+            doc.setFillColor(ri%2===0?255:248,ri%2===0?255:247,ri%2===0?255:244);
+            doc.setDrawColor(200);doc.rect(bx,bomY+5+ri*5,bomColW[ci],5,'FD');
+            doc.setFontSize(4.5);doc.setTextColor(42,41,38);doc.setFont('helvetica','normal');
+            doc.text(v,bx+bomColW[ci]/2,bomY+8.8+ri*5,{align:'center'});
+            bx+=bomColW[ci];
+          });
+        });
+
+        // 부위별 사이즈 table
+        const szY=bomY+5+bomRows.length*5+8;
+        doc.setFontSize(7);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('\uBD80\uC704\uBCC4 \uC0AC\uC774\uC988',rX,szY);
+
+        const szNames=['XS','S','M','L','XL'];
+        const szOff2=[-2,-1,0,1,2];
+        const szColW2=[28,10,10,10,10,10,10];
+        // header
+        let sx=rX;
+        ['\uBD80\uC704',...szNames,'TOL'].forEach((h,i)=>{
+          doc.setFillColor(42,41,38);doc.rect(sx,szY+3,szColW2[i],5,'F');
+          doc.setTextColor(255);doc.setFontSize(5);doc.setFont('helvetica','bold');
+          doc.text(h,sx+szColW2[i]/2,szY+6.5,{align:'center'});
+          sx+=szColW2[i];
+        });
+
+        // Get measures (reuse logic)
+        let woMeasures=[];
+        if(gt==='skirt'){
+          const sk=SkirtComp.geometry();
+          woMeasures=[
+            {n:'\uCD1D\uC7A5',cm:Math.round(20+S.skirtLen*0.6),gr:2.5,tl:1.3},
+            {n:'\uD5C8\uB9AC',cm:Math.round(sk.halfWaist*0.55),gr:1.3,tl:1.3},
+            {n:'\uC5C9\uB369\uC774',cm:Math.round(sk.halfHip*0.55),gr:1.3,tl:1.3},
+            {n:'\uBC11\uB2E8',cm:Math.round(sk.halfHem*0.55),gr:1.3,tl:0.6},
+          ];
+        } else if(gt==='pants'){
+          const pg=PantsComp.geometry();const p=0.55;
+          woMeasures=[
+            {n:'\uCD1D\uC7A5',cm:Math.round((pg.hemY-pg.topY)*p),gr:2.5,tl:1.3},
+            {n:'\uD5C8\uB9AC',cm:Math.round(pg.halfWaist*p),gr:1.3,tl:1.3},
+            {n:'\uC5C9\uB369\uC774',cm:Math.round(pg.halfHip*p),gr:1.3,tl:1.3},
+            {n:'\uBC11\uC704',cm:Math.round((pg.crotchY-pg.waistY)*p),gr:1.3,tl:0.6},
+          ];
+        } else {
+          const _bl2=CM_MAP.find(x=>x[0]==='bodyLen')[2](S.bodyLen);
+          const _ch2=CM_MAP.find(x=>x[0]==='chest')[2](S.chest);
+          const _chH2=Math.round(_ch2/2);
+          const _sl2=CM_MAP.find(x=>x[0]==='sleeveLength')[2](S.sleeveLength);
+          woMeasures=[
+            {n:'\uCD1D\uC7A5',cm:Math.round(_bl2),gr:2.5,tl:1.3},
+            {n:'\uC5B4\uAE68',cm:Math.round(36+S.shoulderExtra+(S.fitW-50)*0.12),gr:2.5,tl:1.3},
+            {n:'\uAC00\uC2B4',cm:_chH2,gr:1.3,tl:1.3},
+            {n:'\uBC11\uB2E8',cm:Math.round(_chH2+S.hipFlare*0.8),gr:1.3,tl:1.3},
+            {n:'\uC554\uD640',cm:Math.round(18+S.fitW*0.06),gr:1.3,tl:0.6},
+            ...(_sl2>2?[{n:'\uC18C\uB9E4\uAE30\uC7A5',cm:Math.round(_sl2),gr:0.6,tl:0.6}]:[]),
+            ...(_sl2>2?[{n:'\uC18C\uB9E4\uBD80\uB9AC',cm:Math.round(14+S.sleeveWidth*0.08),gr:0.6,tl:0.3}]:[]),
+          ];
+        }
+
+        woMeasures.forEach((m,i)=>{
+          const ry=szY+8+i*5;
+          sx=rX;
+          const fill=i%2===0?[255,255,255]:[248,247,244];
+          const szVals=szOff2.map(off=>String(Math.round(m.cm+off*(m.gr||1.3))));
+          [m.n,...szVals,'\u00B1'+String(m.tl||0.6)].forEach((v,ci)=>{
+            doc.setFillColor(...fill);doc.setDrawColor(200);
+            doc.rect(sx,ry,szColW2[ci],5,'FD');
+            doc.setFontSize(4.5);
+            if(ci===0){doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');}
+            else if(ci===3){doc.setTextColor(184,58,42);doc.setFont('helvetica','bold');}
+            else{doc.setTextColor(60);doc.setFont('helvetica','normal');}
+            doc.text(v,sx+szColW2[ci]/2,ry+3.8,{align:'center'});
+            sx+=szColW2[ci];
+          });
+        });
+
+        // ── Bottom section: labels & packaging ──
+        const btmY=200;
+        doc.setDrawColor(150);doc.setLineWidth(0.3);
+        doc.line(8,btmY,W-8,btmY);
+        doc.setFontSize(6);doc.setTextColor(42,41,38);doc.setFont('helvetica','bold');
+        doc.text('MAIN LABEL',10,btmY+5);
+        doc.text('CARE LABEL',10,btmY+10);
+        doc.text('\uD63C\uC6A9\uC728',10,btmY+15);
+        doc.setFont('helvetica','normal');doc.setFontSize(5.5);
+        doc.text('\uBC14\uB290\uC9C8 \uC8C4\uC8C5 \uC9C0\uC815',35,btmY+5);
+        doc.text('\uC138\uD0C1 \uD45C\uC2DC — ISO 3758',35,btmY+10);
+        if(topFab&&topFab.desc) doc.text(topFab.desc,35,btmY+15);
+
+        // Footer
+        doc.setFontSize(5);doc.setTextColor(160);
+        doc.text('Generated by FLAT v0.22 — yunyiram.github.io/flat',W/2,H-8,{align:'center'});
+
+        doc.save('FLAT_workorder_'+tpLabel+'_'+Date.now()+'.pdf');
+      });
+    });
+    draw();
   }
 };
 
@@ -4971,9 +5347,9 @@ const CascadeVis={
     {label:'Shoulder: Natural → Drop',keys:{shoulderExtra:16,shoulderSlope:28,shoulderType:'dropped'},dur:600,wait:400},
     {label:'Silhouette: A-Line',keys:{silhouette:'a_line',hipFlare:10},dur:600,wait:400},
     {label:'← Reset to Basic',preset:0,dur:600,wait:300},
-    {label:'Oxford Shirt',preset:12,dur:600,wait:800},
-    {label:'Blazer',preset:27,dur:600,wait:800},
-    {label:'Hoodie',preset:25,dur:600,wait:600},
+    {label:'Oxford Shirt',preset:17,dur:600,wait:800},
+    {label:'Blazer',preset:26,dur:600,wait:800},
+    {label:'Hoodie',preset:11,dur:600,wait:600},
     {label:'← Back to Basic',preset:0,dur:500,wait:300},
   ],
   showLabel(text){
@@ -5022,7 +5398,7 @@ const CascadeVis={
   },
   play(){
     this.playing=true;this.stepIdx=0;
-    document.getElementById('cascadeBtn').textContent='■';
+    document.getElementById('cascadeBtn').innerHTML='■ Stop';
     document.getElementById('cascadeBtn').classList.add('playing');
     this.playStep();
   },
@@ -5031,7 +5407,7 @@ const CascadeVis={
     if(this.rafId){cancelAnimationFrame(this.rafId);this.rafId=null;}
     if(this._timeout){clearTimeout(this._timeout);this._timeout=null;}
     this.hideLabel();
-    document.getElementById('cascadeBtn').textContent='▶';
+    document.getElementById('cascadeBtn').innerHTML='▶ Cascade';
     document.getElementById('cascadeBtn').classList.remove('playing');
     History.push();
   }
