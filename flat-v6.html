@@ -2253,15 +2253,15 @@ const SleeveComp = {
       const endCX=shX+dir*slLen;
       const endCY=sY+(uaY-sY)*0.5+slLen*Math.sin(angleRad);
 
-      // Shape-dependent cuff width
+      // Shape-dependent cuff width — 도식화 실루엣 과장 (패턴이 아닌 완성형 표현)
       let cTop=cuffHalfW, cBot=cuffHalfW;
-      if(shape==='bell') { cTop=cuffHalfW*1.8; cBot=cuffHalfW*1.8; }
-      else if(shape==='bishop') { cTop=cuffHalfW*0.7; cBot=cuffHalfW*0.7; }
-      else if(shape==='dolman') { cTop=cuffHalfW*0.85; cBot=cuffHalfW*0.85; }
-      else if(shape==='lantern') { cTop=cuffHalfW*0.6; cBot=cuffHalfW*0.6; }
-      else if(shape==='peasant') { cTop=cuffHalfW*0.65; cBot=cuffHalfW*0.65; } // 탄성밴드로 좁아짐
-      else if(shape==='legmutton') { cTop=cuffHalfW*0.5; cBot=cuffHalfW*0.5; } // 손목은 타이트
-      else if(shape==='pagoda') { cTop=cuffHalfW*1.6; cBot=cuffHalfW*1.6; } // 소매단 넓게 플레어
+      if(shape==='bell') { cTop=cuffHalfW*2.5; cBot=cuffHalfW*2.5; } // 나팔 — 소매단 확 넓음
+      else if(shape==='bishop') { cTop=cuffHalfW*0.45; cBot=cuffHalfW*0.45; } // 커프에서 확 좁아짐
+      else if(shape==='dolman') { cTop=cuffHalfW*0.75; cBot=cuffHalfW*0.75; }
+      else if(shape==='lantern') { cTop=cuffHalfW*0.4; cBot=cuffHalfW*0.4; } // 양 끝 좁음
+      else if(shape==='peasant') { cTop=cuffHalfW*0.5; cBot=cuffHalfW*0.5; } // 개더링으로 좁아짐
+      else if(shape==='legmutton') { cTop=cuffHalfW*0.4; cBot=cuffHalfW*0.4; } // 손목 타이트
+      else if(shape==='pagoda') { cTop=cuffHalfW*2.2; cBot=cuffHalfW*2.2; } // 플레어 넓게
 
       const endTop=endCY-cTop;
       const endBot=endCY+cBot;
@@ -2274,37 +2274,36 @@ const SleeveComp = {
       if(S.sleeveType==='raglan'){
         const nkX=cx+dir*g.neckW;
         if(shape==='puff'){
-          const bulge=slLen*0.35;
-          p=`M${nkX},${topY} C${nkX+dir*bulge},${topY-ahF*0.6} ${endCX-dir*slLen*0.05},${endTop-ahF*0.4} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.1},${endBot+ahF*0.3} ${armX+dir*ahF*0.3},${uaY-ahF*0.3} ${armX},${uaY}`;
+          const bulge=slLen*0.5;
+          p=`M${nkX},${topY} C${nkX+dir*bulge},${topY-ahF*1.4} ${endCX-dir*slLen*0.15},${endTop-ahF*0.2} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.15},${endBot+ahF*0.3} ${armX+dir*ahF*0.25},${uaY-ahF*0.2} ${armX},${uaY}`;
         } else if(shape==='bell'){
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.4},${topY+ahF*0.3} ${endCX-dir*slLen*0.2},${endTop+ahF*0.4} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.2},${endBot-ahF*0.4} ${armX+dir*ahF*0.3},${uaY-ahF*0.3} ${armX},${uaY}`;
+          const elbX=nkX+dir*slLen*0.5, elbTY=(topY+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
+          p=`M${nkX},${topY} C${nkX+dir*slLen*0.2},${topY+ahF*0.15} ${elbX-dir*slLen*0.05},${elbTY-ahF*0.1} ${elbX},${elbTY} C${elbX+dir*slLen*0.15},${elbTY+ahF*0.6} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.08},${endBot+ahF*0.15} ${elbX+dir*slLen*0.15},${elbBY-ahF*0.6} ${elbX},${elbBY} C${elbX-dir*slLen*0.05},${elbBY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else if(shape==='bishop'){
-          const bOff=armholeH*0.2;
-          const midX=nkX+dir*slLen*0.55, midTopY=topY+(endTop-topY)*0.5-bOff, midBotY=(uaY+endBot)*0.5+bOff;
-          p=`M${nkX},${topY} Q${midX},${midTopY} ${endCX},${endTop} L${endCX},${endBot} Q${midX},${midBotY} ${armX},${uaY}`;
+          const bOff=armholeH*0.55;
+          const mid1X=nkX+dir*slLen*0.35, mid2X=nkX+dir*slLen*0.7;
+          const topBulge=bOff*0.8, botBulge=bOff*0.9;
+          p=`M${nkX},${topY} C${nkX+dir*slLen*0.15},${topY-ahF*0.3} ${mid1X-dir*slLen*0.05},${(topY+endTop)*0.35-topBulge} ${mid1X},${(topY+endTop)*0.4-topBulge} C${mid1X+dir*slLen*0.12},${(topY+endTop)*0.45-topBulge*0.8} ${mid2X-dir*slLen*0.05},${endTop-ahF*0.1} ${endCX},${endTop} L${endCX},${endBot} C${mid2X-dir*slLen*0.05},${endBot+ahF*0.1} ${mid1X+dir*slLen*0.12},${(uaY+endBot)*0.55+botBulge*0.8} ${mid1X},${(uaY+endBot)*0.6+botBulge} C${mid1X-dir*slLen*0.05},${(uaY+endBot)*0.65+botBulge} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
         } else if(shape==='dolman'){
-          // 돌먼: 넓은 암홀에서 시작, 소매단으로 좁아짐 (깊은 언더암 곡선)
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.3},${topY+ahF*0.2} ${endCX-dir*slLen*0.08},${endTop-ahF*0.2} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.15},${endBot+ahF*1.2} ${armX+dir*ahF*0.8},${uaY+ahF*1.5} ${armX},${uaY}`;
+          p=`M${nkX},${topY} C${nkX+dir*slLen*0.12},${topY+ahF*0.1} ${endCX-dir*slLen*0.06},${endTop-ahF*0.1} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.1},${endBot+ahF*2.5} ${armX+dir*ahF*0.3},${uaY+ahF*3.0} ${armX},${uaY}`;
         } else if(shape==='lantern'){
-          // 랜턴: 중간 부풀림 + 양 끝 좁음 (등불 형태)
-          const bulge=armholeH*0.35;
-          const midX=nkX+dir*slLen*0.5, midTY=(topY+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
-          p=`M${nkX},${topY} Q${midX},${midTY} ${endCX},${endTop} L${endCX},${endBot} Q${midX},${midBY} ${armX},${uaY}`;
+          const bulge=armholeH*0.6;
+          const midX=nkX+dir*slLen*0.5;
+          const midTY=(topY+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
+          p=`M${nkX},${topY} C${nkX+dir*slLen*0.1},${topY-ahF*0.3} ${midX-dir*slLen*0.15},${midTY+bulge*0.2} ${midX},${midTY} C${midX+dir*slLen*0.15},${midTY-bulge*0.1} ${endCX-dir*slLen*0.05},${endTop-ahF*0.1} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.05},${endBot+ahF*0.1} ${midX+dir*slLen*0.15},${midBY+bulge*0.1} ${midX},${midBY} C${midX-dir*slLen*0.15},${midBY-bulge*0.2} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else if(shape==='peasant'){
-          // 페전트: 전체적으로 풍성, 커프에서 개더링으로 좁아짐
-          const bulge=armholeH*0.25;
-          const midX=nkX+dir*slLen*0.5, midTY=(topY+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
-          p=`M${nkX},${topY} Q${midX},${midTY} ${endCX},${endTop} L${endCX},${endBot} Q${midX},${midBY} ${armX},${uaY}`;
+          const bulge=armholeH*0.45;
+          const midX=nkX+dir*slLen*0.5;
+          const midTY=(topY+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
+          p=`M${nkX},${topY} C${nkX+dir*slLen*0.15},${topY-ahF*0.5} ${midX-dir*slLen*0.1},${midTY+bulge*0.3} ${midX},${midTY} C${midX+dir*slLen*0.1},${midTY-bulge*0.15} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.08},${endBot+ahF*0.15} ${midX+dir*slLen*0.1},${midBY+bulge*0.15} ${midX},${midBY} C${midX-dir*slLen*0.1},${midBY-bulge*0.3} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else if(shape==='legmutton'){
-          // 레그오브머튼: 어깨~팔꿈치 풍성 → 팔꿈치~손목 타이트
-          const bulge=slLen*0.35;
-          const elbX=nkX+dir*slLen*0.55, elbTY=(topY+endTop)*0.4+topY*0.6-bulge*0.4;
-          p=`M${nkX},${topY} C${nkX+dir*bulge},${topY-ahF*0.8} ${elbX-dir*slLen*0.1},${elbTY} ${elbX},${(topY+endTop)*0.5} C${elbX+dir*slLen*0.05},${(endTop+endCY)*0.6} ${endCX-dir*2},${endTop+2} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*2},${endBot-2} ${elbX+dir*slLen*0.05},${(endBot+endCY)*0.4} ${elbX},${(uaY+endBot)*0.5} C${elbX-dir*slLen*0.1},${(uaY+endBot)*0.5+bulge*0.3} ${armX+dir*ahF*0.2},${uaY-ahF*0.2} ${armX},${uaY}`;
+          const bulge=slLen*0.55;
+          const elbX=nkX+dir*slLen*0.5;
+          const elbTY=(topY+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
+          p=`M${nkX},${topY} C${nkX+dir*bulge},${topY-ahF*1.6} ${elbX-dir*slLen*0.08},${elbTY-ahF*0.3} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.2} ${endCX-dir*2},${endTop+1} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*2},${endBot-1} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.2} ${elbX},${elbBY} C${elbX-dir*slLen*0.08},${elbBY+ahF*0.3} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else if(shape==='pagoda'){
-          // 파고다: 팔꿈치까지 타이트 → 소매단 넓게 벨처럼 플레어
-          const flare=slLen*0.35;
           const elbX=nkX+dir*slLen*0.55, elbTY=(topY+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.3},${topY+ahF*0.2} ${elbX-dir*slLen*0.08},${elbTY-ahF*0.1} ${elbX},${elbTY} C${elbX+dir*slLen*0.08},${elbTY+ahF*0.3} ${endCX-dir*flare*0.5},${endTop-ahF*0.5} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*flare*0.5},${endBot+ahF*0.5} ${elbX+dir*slLen*0.08},${elbBY-ahF*0.3} ${elbX},${elbBY} C${elbX-dir*slLen*0.08},${elbBY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
+          p=`M${nkX},${topY} C${nkX+dir*slLen*0.12},${topY+ahF*0.1} ${elbX-dir*slLen*0.06},${elbTY-ahF*0.08} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.5} ${endCX-dir*slLen*0.15},${endTop-ahF*0.6} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.15},${endBot+ahF*0.6} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.5} ${elbX},${elbBY} C${elbX-dir*slLen*0.06},${elbBY+ahF*0.08} ${armX+dir*ahF*0.15},${uaY-ahF*0.08} ${armX},${uaY}`;
         } else {
           p=`M${nkX},${topY} C${nkX+dir*slLen*0.4},${topY+ahF*0.3} ${endCX-dir*slLen*0.1},${endTop-ahF*0.3} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.1},${endBot+ahF*0.3} ${armX+dir*ahF*0.3},${uaY-ahF*0.3} ${armX},${uaY}`;
         }
@@ -2312,37 +2311,44 @@ const SleeveComp = {
         // setin
         const sy0=sY;
         if(shape==='puff'){
-          const bulge=slLen*0.3;
-          p=`M${shX},${sy0} C${shX+dir*bulge},${sy0-ahF*0.7} ${endCX-dir*slLen*0.05},${endTop-ahF*0.3} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.1},${endBot+ahF*0.2} ${armX+dir*ahF*0.2},${uaY-ahF*0.2} ${armX},${uaY}`;
+          // 퍼프: 어깨캡에서 크게 부풀고 팔꿈치 이후 좁아짐
+          const bulge=slLen*0.5;
+          p=`M${shX},${sy0} C${shX+dir*bulge},${sy0-ahF*1.4} ${endCX-dir*slLen*0.15},${endTop-ahF*0.2} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.15},${endBot+ahF*0.3} ${armX+dir*ahF*0.25},${uaY-ahF*0.2} ${armX},${uaY}`;
         } else if(shape==='bell'){
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.3},${sy0+ahF*0.15} ${endCX-dir*slLen*0.15},${endTop+ahF*0.3} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.15},${endBot-ahF*0.3} ${armX+dir*slLen*0.3},${uaY-ahF*0.15} ${armX},${uaY}`;
+          // 벨: 팔꿈치까지 일자 → 팔꿈치부터 확 퍼짐 (나팔)
+          const elbX=shX+dir*slLen*0.5, elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
+          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0+ahF*0.15} ${elbX-dir*slLen*0.05},${elbTY-ahF*0.1} ${elbX},${elbTY} C${elbX+dir*slLen*0.15},${elbTY+ahF*0.6} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.08},${endBot+ahF*0.15} ${elbX+dir*slLen*0.15},${elbBY-ahF*0.6} ${elbX},${elbBY} C${elbX-dir*slLen*0.05},${elbBY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else if(shape==='bishop'){
-          const bOff=armholeH*0.25;
-          const midX=shX+dir*slLen*0.55, midTY=(sy0+endTop)*0.5-bOff, midBY=(uaY+endBot)*0.5+bOff;
-          p=`M${shX},${sy0} Q${midX},${midTY} ${endCX},${endTop} L${endCX},${endBot} Q${midX},${midBY} ${armX},${uaY}`;
+          // 비숍: 중간 크게 부풀림 → 커프에서 확 좁아짐 (S커브)
+          const bOff=armholeH*0.55;
+          const mid1X=shX+dir*slLen*0.35, mid2X=shX+dir*slLen*0.7;
+          const topBulge=bOff*0.8, botBulge=bOff*0.9;
+          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0-ahF*0.3} ${mid1X-dir*slLen*0.05},${(sy0+endTop)*0.35-topBulge} ${mid1X},${(sy0+endTop)*0.4-topBulge} C${mid1X+dir*slLen*0.12},${(sy0+endTop)*0.45-topBulge*0.8} ${mid2X-dir*slLen*0.05},${endTop-ahF*0.1} ${endCX},${endTop} L${endCX},${endBot} C${mid2X-dir*slLen*0.05},${endBot+ahF*0.1} ${mid1X+dir*slLen*0.12},${(uaY+endBot)*0.55+botBulge*0.8} ${mid1X},${(uaY+endBot)*0.6+botBulge} C${mid1X-dir*slLen*0.05},${(uaY+endBot)*0.65+botBulge} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
         } else if(shape==='dolman'){
-          // 돌먼: 넓은 언더암 곡선 (바디와 넓게 연결)
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0+ahF*0.1} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.15},${endBot+ahF*1.0} ${armX+dir*ahF*0.6},${uaY+ahF*1.5} ${armX},${uaY}`;
+          // 돌먼: 겨드랑이가 허리까지 깊이 내려옴 (바디와 일체형)
+          p=`M${shX},${sy0} C${shX+dir*slLen*0.12},${sy0+ahF*0.1} ${endCX-dir*slLen*0.06},${endTop-ahF*0.1} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.1},${endBot+ahF*2.5} ${armX+dir*ahF*0.3},${uaY+ahF*3.0} ${armX},${uaY}`;
         } else if(shape==='lantern'){
-          // 랜턴: 중간 부풀림 + 양 끝 좁음
-          const bulge=armholeH*0.3;
-          const midX=shX+dir*slLen*0.5, midTY=(sy0+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
-          p=`M${shX},${sy0} Q${midX},${midTY} ${endCX},${endTop} L${endCX},${endBot} Q${midX},${midBY} ${armX},${uaY}`;
+          // 랜턴: 등불 — 양 끝 좁고 중간 둥글게 크게 부풀림
+          const bulge=armholeH*0.6;
+          const midX=shX+dir*slLen*0.5;
+          const midTY=(sy0+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
+          p=`M${shX},${sy0} C${shX+dir*slLen*0.1},${sy0-ahF*0.3} ${midX-dir*slLen*0.15},${midTY+bulge*0.2} ${midX},${midTY} C${midX+dir*slLen*0.15},${midTY-bulge*0.1} ${endCX-dir*slLen*0.05},${endTop-ahF*0.1} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.05},${endBot+ahF*0.1} ${midX+dir*slLen*0.15},${midBY+bulge*0.1} ${midX},${midBY} C${midX-dir*slLen*0.15},${midBY-bulge*0.2} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else if(shape==='peasant'){
-          // 페전트: 전체적으로 풍성한 볼륨, 커프 개더링
-          const bulge=armholeH*0.25;
-          const midX=shX+dir*slLen*0.5, midTY=(sy0+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
-          p=`M${shX},${sy0} Q${midX},${midTY} ${endCX},${endTop} L${endCX},${endBot} Q${midX},${midBY} ${armX},${uaY}`;
+          // 페전트: 전체적으로 풍성 + 커프에서 개더링으로 좁아짐 (bishop보다 균일)
+          const bulge=armholeH*0.45;
+          const midX=shX+dir*slLen*0.5;
+          const midTY=(sy0+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
+          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0-ahF*0.5} ${midX-dir*slLen*0.1},${midTY+bulge*0.3} ${midX},${midTY} C${midX+dir*slLen*0.1},${midTY-bulge*0.15} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.08},${endBot+ahF*0.15} ${midX+dir*slLen*0.1},${midBY+bulge*0.15} ${midX},${midBY} C${midX-dir*slLen*0.1},${midBY-bulge*0.3} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else if(shape==='legmutton'){
-          // 레그오브머튼: 어깨 풍성 → 팔꿈치부터 타이트
-          const bulge=slLen*0.3;
-          const elbX=shX+dir*slLen*0.55;
-          p=`M${shX},${sy0} C${shX+dir*bulge},${sy0-ahF*0.8} ${elbX-dir*slLen*0.1},${(sy0+endTop)*0.4} ${elbX},${(sy0+endTop)*0.5} C${elbX+dir*slLen*0.05},${(endTop+endCY)*0.6} ${endCX-dir*2},${endTop+2} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*2},${endBot-2} ${elbX+dir*slLen*0.05},${(endBot+endCY)*0.4} ${elbX},${(uaY+endBot)*0.5} C${elbX-dir*slLen*0.1},${(uaY+endBot)*0.5+bulge*0.25} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
+          // 레그오브머튼: 어깨~팔꿈치 극적 부풀림 → 팔꿈치 이후 타이트
+          const bulge=slLen*0.55;
+          const elbX=shX+dir*slLen*0.5;
+          const elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
+          p=`M${shX},${sy0} C${shX+dir*bulge},${sy0-ahF*1.6} ${elbX-dir*slLen*0.08},${elbTY-ahF*0.3} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.2} ${endCX-dir*2},${endTop+1} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*2},${endBot-1} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.2} ${elbX},${elbBY} C${elbX-dir*slLen*0.08},${elbBY+ahF*0.3} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else if(shape==='pagoda'){
-          // 파고다: 팔꿈치까지 타이트 → 소매단 넓게 플레어
-          const flare=slLen*0.3;
+          // 파고다: 팔꿈치까지 타이트 → 급격한 플레어 (계단형)
           const elbX=shX+dir*slLen*0.55, elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0+ahF*0.1} ${elbX-dir*slLen*0.08},${elbTY-ahF*0.1} ${elbX},${elbTY} C${elbX+dir*slLen*0.08},${elbTY+ahF*0.3} ${endCX-dir*flare*0.5},${endTop-ahF*0.4} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*flare*0.5},${endBot+ahF*0.4} ${elbX+dir*slLen*0.08},${elbBY-ahF*0.3} ${elbX},${elbBY} C${elbX-dir*slLen*0.08},${elbBY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
+          p=`M${shX},${sy0} C${shX+dir*slLen*0.12},${sy0+ahF*0.1} ${elbX-dir*slLen*0.06},${elbTY-ahF*0.08} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.5} ${endCX-dir*slLen*0.15},${endTop-ahF*0.6} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.15},${endBot+ahF*0.6} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.5} ${elbX},${elbBY} C${elbX-dir*slLen*0.06},${elbBY+ahF*0.08} ${armX+dir*ahF*0.15},${uaY-ahF*0.08} ${armX},${uaY}`;
         } else {
           // straight: natural cap curve + slight cuff angle for short sleeves
           const tilt=slLen<55?Math.min(2,(55-slLen)*0.06):0;
