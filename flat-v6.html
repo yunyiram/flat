@@ -2333,10 +2333,11 @@ const SleeveComp = {
       else if(shape==='pagoda') { cTop=cuffHalfW*2.2; cBot=cuffHalfW*2.2; } // 플레어 넓게
 
       // 소매 끝 앵글: 어깨쪽(top)은 짧고 겨드랑이쪽(bot)은 길게
-      // 해부학: 어깨끝점→손목 < 겨드랑이→손목 (내측이 더 김)
-      const hemAngle=slLen<80?Math.min(0.18,(80-slLen)*0.004):0; // 반팔일수록 앵글 큼
+      // 해부학: 어깨끝점→손목 < 겨드랑이→손목 (내측이 항상 더 김)
+      // 반팔=크게(~18%), 긴소매=작지만 존재(~3%)
+      const hemAngle=Math.max(0.03,Math.min(0.18,(100-slLen)*0.003));
       const topShorten=cTop*hemAngle; // 어깨쪽 소매 짧아짐
-      const botExtend=cBot*hemAngle*1.5; // 겨드랑이쪽 길어짐
+      const botExtend=cBot*hemAngle*1.8; // 겨드랑이쪽 길어짐 (비대칭 강조)
       const endTopX=endCX-dir*topShorten;
       const endBotX=endCX+dir*botExtend;
       const endTop=endCY-cTop;
