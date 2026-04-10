@@ -2335,12 +2335,9 @@ const SleeveComp = {
       // 소매 끝 앵글: 어깨쪽(top)은 짧고 겨드랑이쪽(bot)은 길게
       // 해부학: 어깨끝점→손목 < 겨드랑이→손목 (내측이 항상 더 김)
       // 레퍼런스: 반팔 도식화 소매끝 25-35°, 긴소매 5-10°
-      const hemAngle=Math.max(0.08,Math.min(0.55,(100-slLen)*0.009));
-      // 어깨점이 겨드랑이보다 높으니까 → 펼치면 외측(어깨쪽)이 더 멀리 나감
-      const outerExt=slLen*hemAngle*0.35; // 어깨쪽(상단) 더 길게
-      const innerRet=slLen*hemAngle*0.45; // 겨드랑이쪽(하단) 더 짧게
-      const endTopX=endCX+dir*outerExt;
-      const endBotX=endCX-dir*innerRet;
+      // 소매 끝: 어깨끝점에서 수직 (패턴메이킹 기본 — 소매 방향에 직각으로 커팅)
+      const endTopX=endCX;
+      const endBotX=endCX;
       const endTop=endCY-cTop;
       const endBot=endCY+cBot;
 
