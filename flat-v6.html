@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap">
-<title>FLAT — Garment Flat Drawing Engine v0.24</title>
+<title>FLAT — Garment Flat Drawing Engine v0.25</title>
 <meta name="description" content="Parametric garment flat drawing engine. Design production-ready tech packs with 129 construction rules, 49 presets, and real-time cascade.">
 <meta property="og:title" content="FLAT — Parametric Garment Design Engine">
 <meta property="og:description" content="The only tool where every line is a number. 49 presets, 129 rules, PDF tech packs. Try the live demo.">
@@ -145,7 +145,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
       <button class="mode-btn" id="modeBoth" onclick="setMode('both')" data-i18n="header.both">Both</button>
     </div>
     <div class="mode-toggle"><button class="mode-btn on" id="langEn" onclick="setLang('en')" style="font-size:10px;padding:4px 10px">EN</button><button class="mode-btn" id="langKo" onclick="setLang('ko')" style="font-size:10px;padding:4px 10px">KO</button></div>
-    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.24</span>
+    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.25</span>
   </div>
 </header>
 <div class="app">
@@ -511,7 +511,7 @@ en:{
     pantsCrease:{none:'None',front:'Front Crease'}
   },
   preset:{cats:{tops_tees:'Tops/Tees',knitwear:'Knitwear',shirt_blouse:'Shirt/Blouse',dress:'Dress',outerwear:'Outerwear'},
-    basic:'Basic',oversized:'Oversized',henley:'Henley',raglan:'Raglan',boxy:'Boxy',mockNeck:'Mock Neck',longSleeve:'Long Sleeve',
+    crewTee:'Crew Tee',vNeckTee:'V-Neck Tee',oversized:'Oversized',henley:'Henley',raglan:'Raglan',mockNeck:'Mock Neck',longSleeve:'Long Sleeve',
     polo:'Polo',turtleneck:'Turtleneck',crewneck:'Crewneck Knit',
     sweatshirt:'Sweatshirt',hoodie:'Hoodie Pullover',
     cropTop:'Crop Top',tankTop:'Tank Top',camisole:'Camisole',
@@ -669,7 +669,7 @@ ko:{
     skinny:'스키니',slim:'슬림',regular:'레귤러',relaxed:'릴렉스드',wideP:'와이드'},
   specLabels:null, // ko specLabels는 기존 SpecModule.labels 그대로 사용 (아래에서 자동 설정)
   preset:{cats:{tops_tees:'탑/티셔츠',knitwear:'니트웨어',shirt_blouse:'셔츠/블라우스',dress:'원피스',outerwear:'아우터'},
-    basic:'베이직',oversized:'오버사이즈',henley:'헨리넥',raglan:'래글런',boxy:'박시',mockNeck:'목넥',longSleeve:'긴소매',
+    crewTee:'크루넥 티',vNeckTee:'V넥 티',oversized:'오버사이즈',henley:'헨리넥',raglan:'래글런',mockNeck:'목넥',longSleeve:'긴소매',
     polo:'폴로',turtleneck:'터틀넥',crewneck:'크루넥 니트',
     sweatshirt:'맨투맨',hoodie:'후드풀오버',
     cropTop:'크롭탑',tankTop:'탱크탑',camisole:'캐미솔',
@@ -2146,7 +2146,8 @@ const SleeveComp = {
     const armholeH=uaY-sY;
     const sleeveCapW=armholeH*0.65;
     const taperFactor=0.5+S.sleeveWidth*0.005;
-    const cuffHalfW=sleeveCapW*taperFactor;
+    const lenTaper=Math.min(1,0.55+slLen*0.0065); // short sleeves taper more
+    const cuffHalfW=sleeveCapW*taperFactor*lenTaper;
     const angleRad=0.18+slLen*0.003;
     const clr=isBack?'#444':'var(--ink)';
 
@@ -2249,8 +2250,11 @@ const SleeveComp = {
           const elbX=shX+dir*slLen*0.55, elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
           p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0+ahF*0.1} ${elbX-dir*slLen*0.08},${elbTY-ahF*0.1} ${elbX},${elbTY} C${elbX+dir*slLen*0.08},${elbTY+ahF*0.3} ${endCX-dir*flare*0.5},${endTop-ahF*0.4} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*flare*0.5},${endBot+ahF*0.4} ${elbX+dir*slLen*0.08},${elbBY-ahF*0.3} ${elbX},${elbBY} C${elbX-dir*slLen*0.08},${elbBY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
         } else {
-          // straight: L직선 → C곡선 (smooth sleeve cap)
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0+ahF*0.1} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.1},${endBot+ahF*0.2} ${armX+dir*ahF*0.2},${uaY-ahF*0.2} ${armX},${uaY}`;
+          // straight: natural cap curve + slight cuff angle for short sleeves
+          const tilt=slLen<55?Math.min(2,(55-slLen)*0.06):0;
+          const cpO=Math.max(slLen*0.22,7);
+          const bkCP=Math.max(slLen*0.14,5);
+          p=`M${shX},${sy0} C${shX+dir*cpO},${sy0+ahF*0.3} ${endCX-dir*cpO*0.35},${endTop-ahF*0.15} ${endCX},${endTop} L${endCX+dir*tilt},${endBot} C${endCX+dir*tilt-dir*bkCP},${endBot+ahF*0.35} ${armX+dir*ahF*0.25},${uaY-ahF*0.25} ${armX},${uaY}`;
         }
       }
       o.push(`<path d="${p}" fill="#FAFAF8" stroke="${clr}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
@@ -4251,21 +4255,23 @@ const SpecModule = {
 // ═══════════════════════════════════════════════════════════════
 const PresetModule={
   DB:[
-    {cat:'tops_tees',name:'basic',s:{neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderSlope:40,shoulderExtra:0,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',fit:'regular',fitW:50,bodyLen:45,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'oversized',s:{fit:'oversized',fitW:86,shoulderType:'dropped',shoulderExtra:16,sleeveWidth:70,bodyLen:65,chest:70,silhouette:'straight',hipFlare:0,sleeveLen:'short',sleeveLength:32,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderSlope:35,sleeveType:'setin',sleeveCuff:'plain',sideSeam:'yes',dart:'none',hemShape:'straight',hemFinish:'folded',pocket:'none',trimming:'none',stitchType:'single'}},
+    // ── tops_tees (10): 구조 변형 → 넥 변형 → 비례 변형 → 슬리브리스 → 특수 넥 ──
+    {cat:'tops_tees',name:'crewTee',s:{neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderSlope:40,shoulderExtra:0,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',fit:'regular',fitW:50,bodyLen:45,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'vNeckTee',s:{neckShape:'v',neckFinish:'rib',neckDepth:42,neckCurve:65,neckWidth:40,shoulderType:'standard',shoulderSlope:40,shoulderExtra:0,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',fit:'regular',fitW:50,bodyLen:45,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'tops_tees',name:'henley',s:{neckShape:'henley',neckFinish:'rib',neckDepth:45,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'tops_tees',name:'raglan',s:{sleeveType:'raglan',sleeveLen:'short',sleeveLength:32,fit:'relaxed',fitW:66,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveWidth:50,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:45,chest:55,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'boxy',s:{fit:'boxy',fitW:94,shoulderType:'dropped',shoulderExtra:16,silhouette:'straight',hipFlare:0,sleeveLen:'short',sleeveLength:32,sleeveWidth:60,bodyLen:40,neckShape:'round',neckFinish:'rib',neckDepth:30,neckCurve:75,neckWidth:40,shoulderSlope:30,sleeveType:'setin',sleeveCuff:'plain',sideSeam:'yes',dart:'none',hemShape:'straight',hemFinish:'folded',chest:60,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'mockNeck',s:{neckFinish:'mock',fit:'slim',fitW:26,sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',neckShape:'round',neckDepth:25,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:40,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:48,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'tops_tees',name:'longSleeve',s:{sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',fit:'regular',fitW:50,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'oversized',s:{fit:'oversized',fitW:86,shoulderType:'dropped',shoulderExtra:16,sleeveWidth:70,bodyLen:58,chest:70,silhouette:'straight',hipFlare:0,sleeveLen:'short',sleeveLength:32,neckShape:'round',neckFinish:'rib',neckDepth:35,neckCurve:75,neckWidth:40,shoulderSlope:35,sleeveType:'setin',sleeveCuff:'plain',sideSeam:'yes',dart:'none',hemShape:'straight',hemFinish:'folded',pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'cropTop',s:{fit:'regular',fitW:40,bodyLen:15,sleeveLen:'sleeveless',sleeveLength:0,neckShape:'round',neckFinish:'binding',neckDepth:40,neckCurve:75,neckWidth:40,shoulderType:'narrow',shoulderExtra:-6,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'raw',chest:45,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'tankTop',s:{neckShape:'round',neckFinish:'binding',neckDepth:40,neckCurve:80,neckWidth:40,fit:'regular',fitW:40,shoulderType:'narrow',shoulderExtra:-4,shoulderSlope:42,sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:45,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'camisole',s:{neckShape:'v',neckFinish:'binding',neckDepth:50,neckCurve:60,neckWidth:35,fit:'slim',fitW:24,shoulderType:'narrow',shoulderExtra:-8,shoulderSlope:45,strapType:'spaghetti',sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:42,chest:44,pocket:'none',trimming:'none',stitchType:'single'}},
+    {cat:'tops_tees',name:'mockNeck',s:{neckFinish:'mock',fit:'regular',fitW:42,sleeveLen:'long',sleeveLength:95,sleeveCuff:'rib',neckShape:'round',neckDepth:25,neckCurve:75,neckWidth:40,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveWidth:42,sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:50,chest:50,pocket:'none',trimming:'none',stitchType:'single'}},
+    // ── knitwear (5) ──
     {cat:'knitwear',name:'polo',s:{neckShape:'round',neckFinish:'collar_band',neckDepth:30,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'short',sleeveLength:32,sleeveWidth:45,sleeveCuff:'rib',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:48,chest:52,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'knitwear',name:'turtleneck',s:{neckShape:'round',neckFinish:'turtle',neckDepth:25,neckCurve:75,neckWidth:40,fit:'slim',fitW:26,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:38,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:60,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'knitwear',name:'crewneck',s:{neckShape:'round',neckFinish:'rib',neckDepth:28,neckCurve:75,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:52,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'knitwear',name:'sweatshirt',s:{neckShape:'round',neckFinish:'rib',neckDepth:30,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'dropped',shoulderExtra:8,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:60,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'knitwear',name:'hoodie',s:{neckShape:'round',neckFinish:'hood',neckDepth:30,neckCurve:75,neckWidth:40,fit:'oversized',fitW:80,shoulderType:'dropped',shoulderExtra:10,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:50,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:55,chest:62,pocket:'kangaroo',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'cropTop',s:{fit:'slim',fitW:26,bodyLen:8,sleeveLen:'sleeveless',sleeveLength:0,neckShape:'round',neckFinish:'binding',neckDepth:40,neckCurve:75,neckWidth:40,shoulderType:'narrow',shoulderExtra:-6,shoulderSlope:40,sleeveType:'setin',sleeveWidth:45,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'raw',chest:45,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'tankTop',s:{neckShape:'round',neckFinish:'binding',neckDepth:40,neckCurve:80,neckWidth:40,fit:'slim',fitW:30,shoulderType:'narrow',shoulderExtra:-4,shoulderSlope:42,sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:45,chest:46,pocket:'none',trimming:'none',stitchType:'single'}},
-    {cat:'tops_tees',name:'camisole',s:{neckShape:'v',neckFinish:'binding',neckDepth:50,neckCurve:60,neckWidth:35,fit:'slim',fitW:24,shoulderType:'narrow',shoulderExtra:-8,shoulderSlope:45,strapType:'spaghetti',sleeveType:'setin',sleeveLen:'sleeveless',sleeveLength:0,sleeveWidth:40,sleeveCuff:'plain',sideSeam:'yes',silhouette:'slight_a',hipFlare:2,dart:'bust',hemShape:'straight',hemFinish:'folded',bodyLen:42,chest:44,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'shirt_blouse',name:'blouse',s:{neckShape:'round',neckFinish:'collar_bow',neckDepth:30,neckCurve:75,neckWidth:40,fit:'slim',fitW:26,shoulderType:'standard',shoulderExtra:0,shoulderSlope:42,sleeveType:'setin',sleeveLen:'long',sleeveLength:90,sleeveWidth:40,sleeveCuff:'french',sleeveShape:'bishop',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'bust',hemShape:'shirt_tail',hemFinish:'folded',bodyLen:55,chest:48,pocket:'none',trimming:'none',stitchType:'single',closure:'hidden',closureStyle:'single'}},
     {cat:'shirt_blouse',name:'bohoBlouse',s:{neckShape:'round',neckFinish:'raw',neckDepth:45,neckCurve:85,neckWidth:55,fit:'relaxed',fitW:66,shoulderType:'dropped',shoulderExtra:8,shoulderSlope:35,sleeveType:'setin',sleeveLen:'long',sleeveLength:85,sleeveWidth:50,sleeveCuff:'plain',sleeveShape:'peasant',sideSeam:'yes',silhouette:'slight_a',hipFlare:4,dart:'none',hemShape:'straight',hemFinish:'drawstring',bodyLen:50,chest:55,pocket:'none',trimming:'none',stitchType:'single'}},
     {cat:'shirt_blouse',name:'oxford',s:{neckShape:'round',neckFinish:'collar',neckDepth:30,neckCurve:70,neckWidth:40,fit:'regular',fitW:50,shoulderType:'standard',shoulderExtra:0,shoulderSlope:40,sleeveType:'setin',sleeveLen:'long',sleeveLength:95,sleeveWidth:42,sleeveCuff:'barrel',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'shirt_tail',hemFinish:'folded',bodyLen:55,chest:52,pocket:'chest_one',trimming:'none',stitchType:'single',closure:'button',closureStyle:'single'}},
@@ -4381,7 +4387,7 @@ const ExportModule = {
     const lbl={top:'Top',dress:'Dress',outerwear:'Outerwear',skirt:'Skirt',pants:'Pants'}[gt]||'Garment';
     const c=`<svg xmlns="http://www.w3.org/2000/svg" width="700" height="480" viewBox="0 0 700 480">
 <title>FLAT ${lbl} — ${new Date().toISOString().slice(0,10)}</title>
-<desc>Generated by FLAT v0.24 — yunyiram.github.io/flat</desc>
+<desc>Generated by FLAT v0.25 — yunyiram.github.io/flat</desc>
 <rect width="700" height="480" fill="white"/>
 <g id="Front_View" transform="translate(10,10)">${fi}</g>
 <g id="Back_View" transform="translate(370,10)">${bi}</g>
@@ -4680,7 +4686,7 @@ const ExportModule = {
     });
 
     // 풋터
-    let ftr=`<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="6" fill="#999" font-family="Arial,sans-serif">Generated by FLAT v0.24 — yunyiram.github.io/flat</text>`;
+    let ftr=`<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="6" fill="#999" font-family="Arial,sans-serif">Generated by FLAT v0.25 — yunyiram.github.io/flat</text>`;
 
     // 조합
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
@@ -4827,7 +4833,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.25 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 1/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 2: Front/Back drawings + Callouts ═══
@@ -4864,7 +4870,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.25 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 2/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 3: Spec + Grading ═══
@@ -5015,7 +5021,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.25 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 3/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 4: Fabric Recommendation ═══
@@ -5057,7 +5063,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.25 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 4/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 5: POM Diagram ═══
@@ -5133,7 +5139,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.25 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 5/5',W-10,H-5,{align:'right'});
 
         // ── Save ──
@@ -5349,7 +5355,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(5);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-8,{align:'center'});
+        doc.text('Generated by FLAT v0.25 — yunyiram.github.io/flat',W/2,H-8,{align:'center'});
 
         doc.save('FLAT_workorder_'+tpLabel+'_'+Date.now()+'.pdf');
       });
@@ -5434,7 +5440,7 @@ const CascadeVis={
     {label:'← Reset',sub:'',preset:0,dur:500,wait:300},
     {label:'Oxford Shirt',sub:'칼라 + 버튼 + 포켓 — 프리셋 한 번',preset:17,dur:600,wait:900},
     {label:'Blazer',sub:'노치드 라펠 + 테일러드',preset:26,dur:600,wait:900},
-    {label:'Hoodie',sub:'후드 + 캥거루포켓 + 래글런',preset:11,dur:600,wait:700},
+    {label:'Hoodie',sub:'후드 + 캥거루포켓 + 래글런',preset:14,dur:600,wait:700},
     {label:'← Back to Basic',sub:'',preset:0,dur:500,wait:300},
   ],
   showLabel(text,sub){
