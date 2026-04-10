@@ -1,12 +1,43 @@
 {
-  "version": "0.25",
-  "description": "FLAT garment presets — domain logic separated from rendering code",
-  "top": [
+  "version": "0.26",
+  "categories": [
+    "tshirts",
+    "polo",
+    "shirtsBlouses",
+    "knitwear",
+    "sweatshirts",
+    "dress",
+    "outerwear"
+  ],
+  "categoryLabels": {
+    "en": {
+      "tshirts": "T-Shirts",
+      "polo": "Polo",
+      "shirtsBlouses": "Shirts/Blouses",
+      "knitwear": "Knitwear",
+      "sweatshirts": "Sweatshirts",
+      "dress": "Dress",
+      "outerwear": "Outerwear"
+    },
+    "ko": {
+      "tshirts": "티셔츠",
+      "polo": "폴로",
+      "shirtsBlouses": "셔츠/블라우스",
+      "knitwear": "니트웨어",
+      "sweatshirts": "맨투맨/후디",
+      "dress": "원피스",
+      "outerwear": "아우터"
+    }
+  },
+  "presets": [
     {
-      "cat": "tops_tees",
+      "cat": "tshirts",
       "name": "crewTee",
-      "display": { "en": "Crew Tee", "ko": "크루넥티" },
-      "params": {
+      "label": {
+        "en": "Crew Tee",
+        "ko": "크루넥 티"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "rib",
         "neckDepth": 35,
@@ -36,308 +67,13 @@
       }
     },
     {
-      "cat": "tops_tees",
-      "name": "vNeckTee",
-      "display": { "en": "V-Neck Tee", "ko": "브이넥티" },
-      "params": {
-        "neckShape": "v",
-        "neckFinish": "rib",
-        "neckDepth": 42,
-        "neckCurve": 65,
-        "neckWidth": 40,
-        "shoulderType": "standard",
-        "shoulderSlope": 40,
-        "shoulderExtra": 0,
-        "sleeveType": "setin",
-        "sleeveLen": "short",
-        "sleeveLength": 32,
-        "sleeveWidth": 45,
-        "sleeveCuff": "plain",
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 4,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "fit": "regular",
-        "fitW": 50,
-        "bodyLen": 45,
-        "chest": 50,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "tops_tees",
-      "name": "henley",
-      "display": { "en": "Henley", "ko": "헨리넥" },
-      "params": {
-        "neckShape": "henley",
-        "neckFinish": "rib",
-        "neckDepth": 45,
-        "neckCurve": 70,
-        "neckWidth": 40,
-        "fit": "regular",
-        "fitW": 50,
-        "sleeveLen": "long",
-        "sleeveLength": 95,
-        "sleeveCuff": "rib",
-        "shoulderType": "standard",
-        "shoulderExtra": 0,
-        "shoulderSlope": 40,
-        "sleeveType": "setin",
-        "sleeveWidth": 45,
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 4,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "bodyLen": 50,
-        "chest": 50,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "tops_tees",
-      "name": "raglan",
-      "display": { "en": "Raglan", "ko": "래글런" },
-      "params": {
-        "sleeveType": "raglan",
-        "sleeveLen": "short",
-        "sleeveLength": 32,
-        "fit": "relaxed",
-        "fitW": 66,
-        "neckShape": "round",
-        "neckFinish": "rib",
-        "neckDepth": 35,
-        "neckCurve": 75,
-        "neckWidth": 40,
-        "shoulderType": "standard",
-        "shoulderExtra": 0,
-        "shoulderSlope": 40,
-        "sleeveWidth": 50,
-        "sleeveCuff": "plain",
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 4,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "bodyLen": 45,
-        "chest": 55,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "tops_tees",
-      "name": "longSleeve",
-      "display": { "en": "Long Sleeve", "ko": "긴소매" },
-      "params": {
-        "sleeveLen": "long",
-        "sleeveLength": 95,
-        "sleeveCuff": "rib",
-        "fit": "regular",
-        "fitW": 50,
-        "neckShape": "round",
-        "neckFinish": "rib",
-        "neckDepth": 35,
-        "neckCurve": 75,
-        "neckWidth": 40,
-        "shoulderType": "standard",
-        "shoulderExtra": 0,
-        "shoulderSlope": 40,
-        "sleeveType": "setin",
-        "sleeveWidth": 45,
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 4,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "bodyLen": 50,
-        "chest": 50,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "tops_tees",
-      "name": "oversized",
-      "display": { "en": "Oversized", "ko": "오버사이즈" },
-      "params": {
-        "fit": "oversized",
-        "fitW": 86,
-        "shoulderType": "dropped",
-        "shoulderExtra": 16,
-        "sleeveWidth": 70,
-        "bodyLen": 58,
-        "chest": 70,
-        "silhouette": "straight",
-        "hipFlare": 0,
-        "sleeveLen": "short",
-        "sleeveLength": 32,
-        "neckShape": "round",
-        "neckFinish": "rib",
-        "neckDepth": 35,
-        "neckCurve": 75,
-        "neckWidth": 40,
-        "shoulderSlope": 35,
-        "sleeveType": "setin",
-        "sleeveCuff": "plain",
-        "sideSeam": "yes",
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "tops_tees",
-      "name": "cropTop",
-      "display": { "en": "Crop Top", "ko": "크롭탑" },
-      "params": {
-        "fit": "regular",
-        "fitW": 40,
-        "bodyLen": 15,
-        "sleeveLen": "sleeveless",
-        "sleeveLength": 0,
-        "neckShape": "round",
-        "neckFinish": "binding",
-        "neckDepth": 40,
-        "neckCurve": 75,
-        "neckWidth": 40,
-        "shoulderType": "narrow",
-        "shoulderExtra": -6,
-        "shoulderSlope": 40,
-        "sleeveType": "setin",
-        "sleeveWidth": 45,
-        "sleeveCuff": "plain",
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 4,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "raw",
-        "chest": 45,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "tops_tees",
-      "name": "tankTop",
-      "display": { "en": "Tank Top", "ko": "탱크탑" },
-      "params": {
-        "neckShape": "round",
-        "neckFinish": "binding",
-        "neckDepth": 40,
-        "neckCurve": 80,
-        "neckWidth": 40,
-        "fit": "regular",
-        "fitW": 40,
-        "shoulderType": "narrow",
-        "shoulderExtra": -4,
-        "shoulderSlope": 42,
-        "sleeveType": "setin",
-        "sleeveLen": "sleeveless",
-        "sleeveLength": 0,
-        "sleeveWidth": 40,
-        "sleeveCuff": "plain",
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 2,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "bodyLen": 45,
-        "chest": 46,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "tops_tees",
-      "name": "camisole",
-      "display": { "en": "Camisole", "ko": "캐미솔" },
-      "params": {
-        "neckShape": "v",
-        "neckFinish": "binding",
-        "neckDepth": 50,
-        "neckCurve": 60,
-        "neckWidth": 35,
-        "fit": "slim",
-        "fitW": 24,
-        "shoulderType": "narrow",
-        "strapType": "spaghetti",
-        "shoulderExtra": -8,
-        "shoulderSlope": 45,
-        "sleeveType": "setin",
-        "sleeveLen": "sleeveless",
-        "sleeveLength": 0,
-        "sleeveWidth": 40,
-        "sleeveCuff": "plain",
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 2,
-        "dart": "bust",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "bodyLen": 42,
-        "chest": 44,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "tops_tees",
-      "name": "mockNeck",
-      "display": { "en": "Mock Neck", "ko": "목넥" },
-      "params": {
-        "neckFinish": "mock",
-        "fit": "regular",
-        "fitW": 42,
-        "sleeveLen": "long",
-        "sleeveLength": 95,
-        "sleeveCuff": "rib",
-        "neckShape": "round",
-        "neckDepth": 25,
-        "neckCurve": 75,
-        "neckWidth": 40,
-        "shoulderType": "standard",
-        "shoulderExtra": 0,
-        "shoulderSlope": 40,
-        "sleeveType": "setin",
-        "sleeveWidth": 42,
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 4,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "bodyLen": 50,
-        "chest": 50,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "knitwear",
+      "cat": "polo",
       "name": "polo",
-      "display": { "en": "Polo", "ko": "폴로" },
-      "params": {
+      "label": {
+        "en": "Polo",
+        "ko": "폴로"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "collar_band",
         "neckDepth": 30,
@@ -367,44 +103,52 @@
       }
     },
     {
-      "cat": "knitwear",
-      "name": "turtleneck",
-      "display": { "en": "Turtleneck", "ko": "터틀넥" },
-      "params": {
+      "cat": "shirtsBlouses",
+      "name": "shirt",
+      "label": {
+        "en": "Shirt",
+        "ko": "셔츠"
+      },
+      "s": {
         "neckShape": "round",
-        "neckFinish": "turtle",
-        "neckDepth": 25,
-        "neckCurve": 75,
+        "neckFinish": "collar",
+        "neckDepth": 30,
+        "neckCurve": 70,
         "neckWidth": 40,
-        "fit": "slim",
-        "fitW": 26,
+        "fit": "regular",
+        "fitW": 50,
         "shoulderType": "standard",
         "shoulderExtra": 0,
         "shoulderSlope": 40,
         "sleeveType": "setin",
         "sleeveLen": "long",
         "sleeveLength": 95,
-        "sleeveWidth": 38,
-        "sleeveCuff": "rib",
+        "sleeveWidth": 42,
+        "sleeveCuff": "barrel",
         "sleeveShape": "straight",
         "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 2,
+        "silhouette": "straight",
+        "hipFlare": 0,
         "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "rib",
-        "bodyLen": 60,
-        "chest": 46,
+        "hemShape": "shirt_tail",
+        "hemFinish": "folded",
+        "bodyLen": 55,
+        "chest": 52,
         "pocket": "none",
         "trimming": "none",
-        "stitchType": "single"
+        "stitchType": "single",
+        "closure": "button",
+        "closureStyle": "single"
       }
     },
     {
       "cat": "knitwear",
-      "name": "crewneck",
-      "display": { "en": "Crewneck Knit", "ko": "크루넥 니트" },
-      "params": {
+      "name": "sweater",
+      "label": {
+        "en": "Sweater",
+        "ko": "스웨터"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "rib",
         "neckDepth": 28,
@@ -436,9 +180,54 @@
     },
     {
       "cat": "knitwear",
+      "name": "cardigan",
+      "alsoCat": [
+        "outerwear"
+      ],
+      "label": {
+        "en": "Cardigan",
+        "ko": "카디건"
+      },
+      "s": {
+        "neckShape": "v",
+        "neckFinish": "collar_round",
+        "neckDepth": 40,
+        "neckCurve": 75,
+        "neckWidth": 40,
+        "fit": "regular",
+        "fitW": 50,
+        "shoulderType": "standard",
+        "shoulderExtra": 0,
+        "shoulderSlope": 40,
+        "sleeveType": "setin",
+        "sleeveLen": "long",
+        "sleeveLength": 95,
+        "sleeveWidth": 42,
+        "sleeveCuff": "rib",
+        "sleeveShape": "straight",
+        "sideSeam": "yes",
+        "silhouette": "straight",
+        "hipFlare": 0,
+        "dart": "none",
+        "hemShape": "straight",
+        "hemFinish": "rib",
+        "bodyLen": 55,
+        "chest": 52,
+        "pocket": "patch_round",
+        "trimming": "none",
+        "stitchType": "single",
+        "closure": "button",
+        "closureStyle": "single"
+      }
+    },
+    {
+      "cat": "sweatshirts",
       "name": "sweatshirt",
-      "display": { "en": "Sweatshirt", "ko": "맨투맨" },
-      "params": {
+      "label": {
+        "en": "Sweatshirt",
+        "ko": "맨투맨"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "rib",
         "neckDepth": 30,
@@ -469,10 +258,13 @@
       }
     },
     {
-      "cat": "knitwear",
+      "cat": "sweatshirts",
       "name": "hoodie",
-      "display": { "en": "Hoodie Pullover", "ko": "후드풀오버" },
-      "params": {
+      "label": {
+        "en": "Hoodie",
+        "ko": "후디"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "hood",
         "neckDepth": 30,
@@ -503,184 +295,13 @@
       }
     },
     {
-      "cat": "shirt_blouse",
-      "name": "blouse",
-      "display": { "en": "Blouse", "ko": "블라우스" },
-      "params": {
-        "neckShape": "round",
-        "neckFinish": "collar_bow",
-        "neckDepth": 30,
-        "neckCurve": 75,
-        "neckWidth": 40,
-        "fit": "slim",
-        "fitW": 26,
-        "shoulderType": "standard",
-        "shoulderExtra": 0,
-        "shoulderSlope": 42,
-        "sleeveType": "setin",
-        "sleeveLen": "long",
-        "sleeveLength": 90,
-        "sleeveWidth": 40,
-        "sleeveCuff": "french",
-        "sleeveShape": "bishop",
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 4,
-        "dart": "bust",
-        "hemShape": "shirt_tail",
-        "hemFinish": "folded",
-        "bodyLen": 55,
-        "chest": 48,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single",
-        "closure": "hidden",
-        "closureStyle": "single"
-      }
-    },
-    {
-      "cat": "shirt_blouse",
-      "name": "bohoBlouse",
-      "display": { "en": "Bohemian Blouse", "ko": "보헤미안블라우스" },
-      "params": {
-        "neckShape": "round",
-        "neckFinish": "raw",
-        "neckDepth": 45,
-        "neckCurve": 85,
-        "neckWidth": 55,
-        "fit": "relaxed",
-        "fitW": 66,
-        "shoulderType": "dropped",
-        "shoulderExtra": 8,
-        "shoulderSlope": 35,
-        "sleeveType": "setin",
-        "sleeveLen": "long",
-        "sleeveLength": 85,
-        "sleeveWidth": 50,
-        "sleeveCuff": "plain",
-        "sleeveShape": "peasant",
-        "sideSeam": "yes",
-        "silhouette": "slight_a",
-        "hipFlare": 4,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "drawstring",
-        "bodyLen": 50,
-        "chest": 55,
-        "pocket": "none",
-        "trimming": "none",
-        "stitchType": "single"
-      }
-    },
-    {
-      "cat": "shirt_blouse",
-      "name": "oxford",
-      "display": { "en": "Oxford", "ko": "옥스포드" },
-      "params": {
-        "neckShape": "round",
-        "neckFinish": "collar",
-        "neckDepth": 30,
-        "neckCurve": 70,
-        "neckWidth": 40,
-        "fit": "regular",
-        "fitW": 50,
-        "shoulderType": "standard",
-        "shoulderExtra": 0,
-        "shoulderSlope": 40,
-        "sleeveType": "setin",
-        "sleeveLen": "long",
-        "sleeveLength": 95,
-        "sleeveWidth": 42,
-        "sleeveCuff": "barrel",
-        "sleeveShape": "straight",
-        "sideSeam": "yes",
-        "silhouette": "straight",
-        "hipFlare": 0,
-        "dart": "none",
-        "hemShape": "shirt_tail",
-        "hemFinish": "folded",
-        "bodyLen": 55,
-        "chest": 52,
-        "pocket": "chest_one",
-        "trimming": "none",
-        "stitchType": "single",
-        "closure": "button",
-        "closureStyle": "single"
-      }
-    },
-    {
-      "cat": "shirt_blouse",
-      "name": "military",
-      "display": { "en": "Military", "ko": "밀리터리" },
-      "params": {
-        "neckShape": "round",
-        "neckFinish": "collar",
-        "neckDepth": 35,
-        "neckCurve": 70,
-        "neckWidth": 40,
-        "fit": "regular",
-        "fitW": 50,
-        "shoulderType": "extended",
-        "shoulderExtra": 10,
-        "shoulderSlope": 38,
-        "sleeveType": "setin",
-        "sleeveLen": "short",
-        "sleeveLength": 32,
-        "sleeveWidth": 50,
-        "sleeveCuff": "rolled",
-        "sideSeam": "yes",
-        "silhouette": "straight",
-        "hipFlare": 0,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "folded",
-        "bodyLen": 50,
-        "chest": 55,
-        "pocket": "flap",
-        "trimming": "none",
-        "stitchType": "double",
-        "closure": "button",
-        "closureStyle": "single"
-      }
-    },
-    {
-      "cat": "shirt_blouse",
-      "name": "workwear",
-      "display": { "en": "Workwear", "ko": "워크웨어" },
-      "params": {
-        "neckShape": "round",
-        "neckFinish": "rib",
-        "neckDepth": 30,
-        "neckCurve": 80,
-        "neckWidth": 40,
-        "fit": "relaxed",
-        "fitW": 66,
-        "shoulderType": "standard",
-        "shoulderExtra": 0,
-        "shoulderSlope": 40,
-        "sleeveType": "setin",
-        "sleeveLen": "long",
-        "sleeveLength": 95,
-        "sleeveWidth": 48,
-        "sleeveCuff": "rib",
-        "sideSeam": "yes",
-        "silhouette": "straight",
-        "hipFlare": 0,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "rib",
-        "bodyLen": 55,
-        "chest": 58,
-        "pocket": "chest_two",
-        "trimming": "contrast_stitch",
-        "stitchType": "double"
-      }
-    },
-    {
       "cat": "dress",
       "name": "volSleeveDress",
-      "display": { "en": "Volume Sleeve Dress", "ko": "볼륨소매원피스" },
-      "params": {
+      "label": {
+        "en": "Volume Sleeve Dress",
+        "ko": "볼륨소매원피스"
+      },
+      "s": {
         "neckShape": "u",
         "neckFinish": "binding",
         "neckDepth": 45,
@@ -713,8 +334,11 @@
     {
       "cat": "dress",
       "name": "shirtDress",
-      "display": { "en": "Shirt Dress", "ko": "셔츠원피스" },
-      "params": {
+      "label": {
+        "en": "Shirt Dress",
+        "ko": "셔츠원피스"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "collar",
         "neckDepth": 35,
@@ -749,8 +373,11 @@
     {
       "cat": "dress",
       "name": "peterPanDress",
-      "display": { "en": "Peter Pan Dress", "ko": "피터팬원피스" },
-      "params": {
+      "label": {
+        "en": "Peter Pan Dress",
+        "ko": "피터팬원피스"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "collar_peter",
         "neckDepth": 30,
@@ -783,8 +410,11 @@
     {
       "cat": "dress",
       "name": "drapeDress",
-      "display": { "en": "Drape Dress", "ko": "드레이프원피스" },
-      "params": {
+      "label": {
+        "en": "Drape Dress",
+        "ko": "드레이프원피스"
+      },
+      "s": {
         "neckShape": "cowl",
         "neckFinish": "collar_cowl",
         "neckDepth": 55,
@@ -817,8 +447,11 @@
     {
       "cat": "dress",
       "name": "slipDress",
-      "display": { "en": "Slip Dress", "ko": "슬립드레스" },
-      "params": {
+      "label": {
+        "en": "Slip Dress",
+        "ko": "슬립드레스"
+      },
+      "s": {
         "neckShape": "v",
         "neckFinish": "binding",
         "neckDepth": 50,
@@ -827,9 +460,9 @@
         "fit": "slim",
         "fitW": 24,
         "shoulderType": "narrow",
-        "strapType": "spaghetti",
         "shoulderExtra": -8,
         "shoulderSlope": 45,
+        "strapType": "spaghetti",
         "sleeveType": "setin",
         "sleeveLen": "sleeveless",
         "sleeveLength": 0,
@@ -852,8 +485,11 @@
     {
       "cat": "outerwear",
       "name": "funnelCoat",
-      "display": { "en": "Funnel Coat", "ko": "하이넥코트" },
-      "params": {
+      "label": {
+        "en": "Funnel Coat",
+        "ko": "하이넥코트"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "collar_funnel",
         "neckDepth": 25,
@@ -886,8 +522,11 @@
     {
       "cat": "outerwear",
       "name": "blazer",
-      "display": { "en": "Blazer", "ko": "블레이저" },
-      "params": {
+      "label": {
+        "en": "Blazer",
+        "ko": "블레이저"
+      },
+      "s": {
         "neckShape": "v",
         "neckFinish": "collar_notched",
         "neckDepth": 30,
@@ -922,8 +561,11 @@
     {
       "cat": "outerwear",
       "name": "bomber",
-      "display": { "en": "Bomber", "ko": "봄버" },
-      "params": {
+      "label": {
+        "en": "Bomber",
+        "ko": "봄버"
+      },
+      "s": {
         "neckShape": "round",
         "neckFinish": "collar_band",
         "neckDepth": 28,
@@ -958,8 +600,11 @@
     {
       "cat": "outerwear",
       "name": "trench",
-      "display": { "en": "Trench", "ko": "트렌치" },
-      "params": {
+      "label": {
+        "en": "Trench",
+        "ko": "트렌치"
+      },
+      "s": {
         "neckShape": "v",
         "neckFinish": "collar_peaked",
         "neckDepth": 28,
@@ -990,85 +635,16 @@
         "closure": "button",
         "closureStyle": "double"
       }
-    },
-    {
-      "cat": "outerwear",
-      "name": "cardigan",
-      "display": { "en": "Cardigan", "ko": "카디건" },
-      "params": {
-        "neckShape": "v",
-        "neckFinish": "collar_round",
-        "neckDepth": 40,
-        "neckCurve": 75,
-        "neckWidth": 40,
-        "fit": "regular",
-        "fitW": 50,
-        "shoulderType": "standard",
-        "shoulderExtra": 0,
-        "shoulderSlope": 40,
-        "sleeveType": "setin",
-        "sleeveLen": "long",
-        "sleeveLength": 95,
-        "sleeveWidth": 42,
-        "sleeveCuff": "rib",
-        "sleeveShape": "straight",
-        "sideSeam": "yes",
-        "silhouette": "straight",
-        "hipFlare": 0,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "rib",
-        "bodyLen": 55,
-        "chest": 52,
-        "pocket": "patch_round",
-        "trimming": "none",
-        "stitchType": "single",
-        "closure": "button",
-        "closureStyle": "single"
-      }
-    },
-    {
-      "cat": "outerwear",
-      "name": "zipHoodie",
-      "display": { "en": "Zip Hoodie", "ko": "후드집업" },
-      "params": {
-        "neckShape": "round",
-        "neckFinish": "hood",
-        "neckDepth": 30,
-        "neckCurve": 75,
-        "neckWidth": 40,
-        "fit": "oversized",
-        "fitW": 80,
-        "shoulderType": "dropped",
-        "shoulderExtra": 10,
-        "shoulderSlope": 32,
-        "sleeveType": "raglan",
-        "sleeveLen": "long",
-        "sleeveLength": 95,
-        "sleeveWidth": 50,
-        "sleeveCuff": "rib",
-        "sleeveShape": "straight",
-        "sideSeam": "yes",
-        "silhouette": "straight",
-        "hipFlare": 0,
-        "dart": "none",
-        "hemShape": "straight",
-        "hemFinish": "rib",
-        "bodyLen": 55,
-        "chest": 62,
-        "pocket": "kangaroo",
-        "trimming": "none",
-        "stitchType": "single",
-        "closure": "zip",
-        "closureStyle": "single"
-      }
     }
   ],
-  "skirt": [
+  "skirts": [
     {
       "name": "pencil",
-      "display": { "en": "Pencil", "ko": "펜슬" },
-      "params": {
+      "label": {
+        "en": "Pencil",
+        "ko": "펜슬"
+      },
+      "s": {
         "skirtType": "pencil",
         "skirtLen": 55,
         "skirtFlare": 0,
@@ -1082,8 +658,11 @@
     },
     {
       "name": "aLine",
-      "display": { "en": "A-Line", "ko": "A라인" },
-      "params": {
+      "label": {
+        "en": "A-Line",
+        "ko": "A라인"
+      },
+      "s": {
         "skirtType": "a_line",
         "skirtLen": 55,
         "skirtFlare": 6,
@@ -1097,8 +676,11 @@
     },
     {
       "name": "flared",
-      "display": { "en": "Flared", "ko": "플레어" },
-      "params": {
+      "label": {
+        "en": "Flared",
+        "ko": "플레어"
+      },
+      "s": {
         "skirtType": "flared",
         "skirtLen": 60,
         "skirtFlare": 16,
@@ -1112,8 +694,11 @@
     },
     {
       "name": "circular",
-      "display": { "en": "Circular", "ko": "서큘러" },
-      "params": {
+      "label": {
+        "en": "Circular",
+        "ko": "서큘러"
+      },
+      "s": {
         "skirtType": "circular",
         "skirtLen": 72,
         "skirtFlare": 25,
@@ -1127,8 +712,11 @@
     },
     {
       "name": "pleated",
-      "display": { "en": "Pleated", "ko": "플리츠" },
-      "params": {
+      "label": {
+        "en": "Pleated",
+        "ko": "플리츠"
+      },
+      "s": {
         "skirtType": "pleated",
         "skirtLen": 55,
         "skirtFlare": 4,
@@ -1142,8 +730,11 @@
     },
     {
       "name": "miniSkirt",
-      "display": { "en": "Mini", "ko": "미니" },
-      "params": {
+      "label": {
+        "en": "Mini",
+        "ko": "미니"
+      },
+      "s": {
         "skirtType": "a_line",
         "skirtLen": 28,
         "skirtFlare": 4,
@@ -1157,8 +748,11 @@
     },
     {
       "name": "maxiSkirt",
-      "display": { "en": "Maxi", "ko": "맥시" },
-      "params": {
+      "label": {
+        "en": "Maxi",
+        "ko": "맥시"
+      },
+      "s": {
         "skirtType": "a_line",
         "skirtLen": 92,
         "skirtFlare": 10,
@@ -1172,8 +766,11 @@
     },
     {
       "name": "wrapSkirt",
-      "display": { "en": "Wrap Skirt", "ko": "랩스커트" },
-      "params": {
+      "label": {
+        "en": "Wrap Skirt",
+        "ko": "랩스커트"
+      },
+      "s": {
         "skirtType": "wrap",
         "skirtLen": 55,
         "skirtFlare": 5,
@@ -1189,8 +786,11 @@
   "pants": [
     {
       "name": "slacks",
-      "display": { "en": "Slacks", "ko": "슬랙스" },
-      "params": {
+      "label": {
+        "en": "Slacks",
+        "ko": "슬랙스"
+      },
+      "s": {
         "pantsType": "straight",
         "pantsLen": 80,
         "pantsFlare": 0,
@@ -1206,8 +806,11 @@
     },
     {
       "name": "taperedP",
-      "display": { "en": "Tapered", "ko": "테이퍼드" },
-      "params": {
+      "label": {
+        "en": "Tapered",
+        "ko": "테이퍼드"
+      },
+      "s": {
         "pantsType": "tapered",
         "pantsLen": 80,
         "pantsFlare": -5,
@@ -1223,8 +826,11 @@
     },
     {
       "name": "wideP",
-      "display": { "en": "Wide", "ko": "와이드" },
-      "params": {
+      "label": {
+        "en": "Wide",
+        "ko": "와이드"
+      },
+      "s": {
         "pantsType": "wide",
         "pantsLen": 80,
         "pantsFlare": 15,
@@ -1240,8 +846,11 @@
     },
     {
       "name": "skinnyP",
-      "display": { "en": "Skinny", "ko": "스키니" },
-      "params": {
+      "label": {
+        "en": "Skinny",
+        "ko": "스키니"
+      },
+      "s": {
         "pantsType": "skinny",
         "pantsLen": 80,
         "pantsFlare": -8,
@@ -1257,8 +866,11 @@
     },
     {
       "name": "jogger",
-      "display": { "en": "Jogger", "ko": "조거" },
-      "params": {
+      "label": {
+        "en": "Jogger",
+        "ko": "조거"
+      },
+      "s": {
         "pantsType": "tapered",
         "pantsLen": 75,
         "pantsFlare": -3,
@@ -1274,49 +886,18 @@
     },
     {
       "name": "cargoP",
-      "display": { "en": "Cargo", "ko": "카고" },
-      "params": {
+      "label": {
+        "en": "Cargo",
+        "ko": "카고"
+      },
+      "s": {
         "pantsType": "straight",
         "pantsLen": 80,
-        "pantsFlare": 2,
-        "pantsWaist": "straight",
-        "pantsDart": "none",
-        "pantsRise": "mid",
-        "pantsClosure": "zip_fly",
-        "pantsFit": 60,
-        "pantsPleat": "none",
-        "pantsCuff": "plain",
-        "pantsCrease": "none"
-      }
-    },
-    {
-      "name": "bootcutP",
-      "display": { "en": "Bootcut", "ko": "부츠컷" },
-      "params": {
-        "pantsType": "flared",
-        "pantsLen": 85,
-        "pantsFlare": 12,
-        "pantsWaist": "straight",
-        "pantsDart": "front_back",
-        "pantsRise": "mid",
-        "pantsClosure": "zip_fly",
-        "pantsFit": 45,
-        "pantsPleat": "none",
-        "pantsCuff": "plain",
-        "pantsCrease": "none"
-      }
-    },
-    {
-      "name": "shortPants",
-      "display": { "en": "Shorts", "ko": "숏팬츠" },
-      "params": {
-        "pantsType": "straight",
-        "pantsLen": 28,
         "pantsFlare": 0,
-        "pantsWaist": "elastic",
+        "pantsWaist": "straight",
         "pantsDart": "none",
         "pantsRise": "mid",
-        "pantsClosure": "drawstring",
+        "pantsClosure": "zip_fly",
         "pantsFit": 55,
         "pantsPleat": "none",
         "pantsCuff": "plain",
@@ -1324,9 +905,52 @@
       }
     },
     {
+      "name": "bootcutP",
+      "label": {
+        "en": "Bootcut",
+        "ko": "부츠컷"
+      },
+      "s": {
+        "pantsType": "bootcut",
+        "pantsLen": 82,
+        "pantsFlare": 6,
+        "pantsWaist": "straight",
+        "pantsDart": "front_back",
+        "pantsRise": "mid",
+        "pantsClosure": "zip_fly",
+        "pantsFit": 45,
+        "pantsPleat": "none",
+        "pantsCuff": "plain",
+        "pantsCrease": "front"
+      }
+    },
+    {
+      "name": "shortPants",
+      "label": {
+        "en": "Shorts",
+        "ko": "숏팬츠"
+      },
+      "s": {
+        "pantsType": "straight",
+        "pantsLen": 22,
+        "pantsFlare": 0,
+        "pantsWaist": "straight",
+        "pantsDart": "front",
+        "pantsRise": "mid",
+        "pantsClosure": "zip_fly",
+        "pantsFit": 50,
+        "pantsPleat": "single",
+        "pantsCuff": "plain",
+        "pantsCrease": "front"
+      }
+    },
+    {
       "name": "bermudaP",
-      "display": { "en": "Bermuda", "ko": "버뮤다" },
-      "params": {
+      "label": {
+        "en": "Bermuda",
+        "ko": "버뮤다"
+      },
+      "s": {
         "pantsType": "straight",
         "pantsLen": 42,
         "pantsFlare": 0,
@@ -1342,18 +966,21 @@
     },
     {
       "name": "baggyP",
-      "display": { "en": "Baggy", "ko": "배기" },
-      "params": {
-        "pantsType": "baggy",
-        "pantsLen": 78,
-        "pantsFlare": 8,
+      "label": {
+        "en": "Baggy",
+        "ko": "배기"
+      },
+      "s": {
+        "pantsType": "wide",
+        "pantsLen": 80,
+        "pantsFlare": 12,
         "pantsWaist": "elastic",
         "pantsDart": "none",
         "pantsRise": "high",
-        "pantsClosure": "elastic_w",
+        "pantsClosure": "drawstring",
         "pantsFit": 75,
         "pantsPleat": "none",
-        "pantsCuff": "rib",
+        "pantsCuff": "plain",
         "pantsCrease": "none"
       }
     }

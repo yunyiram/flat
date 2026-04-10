@@ -1,5 +1,5 @@
 {
-  "version": "0.25",
+  "version": "0.26",
   "description": "FLAT garment compatibility rules — domain logic separated from rendering code",
 
   "necktype_compat": {
