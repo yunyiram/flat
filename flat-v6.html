@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap">
-<title>FLAT — Garment Flat Drawing Engine v0.23</title>
+<title>FLAT — Garment Flat Drawing Engine v0.24</title>
 <meta name="description" content="Parametric garment flat drawing engine. Design production-ready tech packs with 129 construction rules, 49 presets, and real-time cascade.">
 <meta property="og:title" content="FLAT — Parametric Garment Design Engine">
 <meta property="og:description" content="The only tool where every line is a number. 49 presets, 129 rules, PDF tech packs. Try the live demo.">
@@ -87,6 +87,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .zoom-ctrl{position:absolute;top:12px;right:12px;display:flex;gap:4px;}
 .cascade-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--accent);background:rgba(255,255,255,0.92);padding:8px 20px;border-radius:100px;border:1.5px solid var(--accent);pointer-events:none;opacity:0;transition:opacity 0.25s;z-index:50;white-space:nowrap;}
 .cascade-label.show{opacity:1;}
+.demo-mode .panel,.demo-mode .rpanel{display:none!important;}
+.demo-mode .canvas{grid-column:1/-1!important;}
+.demo-mode .cascade-label{font-size:20px;padding:14px 36px;border-width:2px;}
+.demo-mode .cascade-label .demo-sub{display:block;font-size:11px;font-weight:400;color:#666;margin-top:4px;}
 .cascade-btn{height:28px;padding:0 12px;border:1.5px solid var(--accent);border-radius:100px;background:var(--surface);color:var(--accent);font-family:'Inter',sans-serif;font-size:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;transition:all 0.2s;}
 .cascade-btn:hover{background:var(--accent);color:#fff;}
 .cascade-btn.playing{background:var(--accent);color:#fff;animation:cascadePulse 1s ease infinite;}
@@ -141,7 +145,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
       <button class="mode-btn" id="modeBoth" onclick="setMode('both')" data-i18n="header.both">Both</button>
     </div>
     <div class="mode-toggle"><button class="mode-btn on" id="langEn" onclick="setLang('en')" style="font-size:10px;padding:4px 10px">EN</button><button class="mode-btn" id="langKo" onclick="setLang('ko')" style="font-size:10px;padding:4px 10px">KO</button></div>
-    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.23</span>
+    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.24</span>
   </div>
 </header>
 <div class="app">
@@ -3151,9 +3155,15 @@ const SkirtComp = {
     const g=this.geometry();
     const{cx,halfWaist,halfHip,hipDrop,wbH,topY,waistY,hipY,hemY,halfHem}=g;
     const o=[];
-    // 배경 + 도트 그리드
+    const side=isBack?'back':'front';
+    // ── Layer: Background ──
+    o.push(`<g id="${side}-background">`);
     o.push(`<rect width="320" height="460" fill="white" rx="6"/>`);
     for(let x=20;x<310;x+=20) for(let y=20;y<450;y+=20) o.push(`<circle cx="${x}" cy="${y}" r="0.2" fill="#EDEBE6"/>`);
+    o.push('</g>');
+
+    // ── Layer: Silhouette ──
+    o.push(`<g id="${side}-silhouette">`);
 
     // ── 웨이스트밴드 ──
     if(S.waistband!=='none'){
@@ -3224,6 +3234,10 @@ const SkirtComp = {
     path+=` C${hR},${hipY-hipDrop*0.3} ${wR+hipCtrl},${waistY+hipDrop*0.4} ${wR},${waistY}`;
     path+=` Z`;
     o.push(`<path d="${path}" fill="#FAFAF8" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+    o.push('</g>');
+
+    // ── Layer: Detail ──
+    o.push(`<g id="${side}-detail">`);
 
     // ── 다트 ──
     if(S.skirtDart!=='none'){
@@ -3318,6 +3332,8 @@ const SkirtComp = {
     o.push(`<polygon points="${cx},${grainTop-2} ${cx-1.5},${grainTop+3} ${cx+1.5},${grainTop+3}" fill="var(--grain)"/>`);
     o.push(`<polygon points="${cx},${grainBot+2} ${cx-1.5},${grainBot-3} ${cx+1.5},${grainBot-3}" fill="var(--grain)"/>`);
 
+    o.push('</g>');
+
     // ── 라벨 ──
     const labelY=Math.min(hemY+18,450);
     o.push(`<text x="${cx}" y="${labelY}" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" letter-spacing="0.12em" fill="var(--grain)">${isBack?'BACK':'FRONT'}</text>`);
@@ -3380,8 +3396,15 @@ const PantsComp = {
     const{cx,halfWaist,halfHip,hipDrop,wbH,topY,waistY,hipY,crotchY,hemY,
           legWCrotch,hemLegW,cGap,hemG}=g;
     const o=[];
+    const side=isBack?'back':'front';
+    // ── Layer: Background ──
+    o.push(`<g id="${side}-background">`);
     o.push(`<rect width="320" height="460" fill="white" rx="6"/>`);
     for(let x=20;x<310;x+=20) for(let y=20;y<450;y+=20) o.push(`<circle cx="${x}" cy="${y}" r="0.2" fill="#EDEBE6"/>`);
+    o.push('</g>');
+
+    // ── Layer: Silhouette ──
+    o.push(`<g id="${side}-silhouette">`);
 
     const ink=isBack?'#444':'var(--ink)';
     // 뒤판 크로치는 약간 더 넓음 (1.2배)
@@ -3434,6 +3457,10 @@ const PantsComp = {
     p+=` Z`;
 
     o.push(`<path d="${p}" fill="#FAFAF8" stroke="${ink}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+    o.push('</g>');
+
+    // ── Layer: Detail ──
+    o.push(`<g id="${side}-detail">`);
 
     // ── 다트 ──
     if(S.pantsDart!=='none'){
@@ -3507,6 +3534,8 @@ const PantsComp = {
     o.push(`<polygon points="${cx},${grainTop-2} ${cx-1.5},${grainTop+3} ${cx+1.5},${grainTop+3}" fill="var(--grain)"/>`);
     o.push(`<polygon points="${cx},${grainBot+2} ${cx-1.5},${grainBot-3} ${cx+1.5},${grainBot-3}" fill="var(--grain)"/>`);
 
+    o.push('</g>');
+
     // ── 라벨 ──
     const labelY=Math.min(hemY+18,450);
     o.push(`<text x="${cx}" y="${labelY}" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" letter-spacing="0.12em" fill="var(--grain)">${isBack?'BACK':'FRONT'}</text>`);
@@ -3543,25 +3572,32 @@ const Zoom={
 // ═══════════════════════════════════════════════════════════════
 function renderOne(svg,isBack){
   const cx=CX,g=BodyComp.geometry(),o=[];
-  // 배경 + 도트 그리드
+  const side=isBack?'back':'front';
+  // ── Layer: Background ──
+  o.push(`<g id="${side}-background">`);
   o.push(`<rect width="320" height="460" fill="white" rx="6"/>`);
   for(let x=20;x<310;x+=20) for(let y=20;y<450;y+=20) o.push(`<circle cx="${x}" cy="${y}" r="0.2" fill="#EDEBE6"/>`);
+  o.push('</g>');
   // 몸판
   const geo=BodyComp.outline(cx,g,isBack);
-  // 소매를 몸판 뒤에 그리되, fill 없이 stroke만 → armhole 접합 깨끗
+  // ── Layer: Silhouette (외곽선 + 소매) ──
+  o.push(`<g id="${side}-silhouette">`);
   SleeveComp.draw(cx,g,geo,o,isBack);
   o.push(`<path d="${geo.path} Z" fill="#FAFAF8" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
-  // 넥라인 + 넥 처리
   const{p:np}=NeckComp.path(cx,g,isBack);
   const ef_=effectiveFinish();
-  // 칼라/하이넥/후드는 자체 외곽선을 그리므로 넥라인 path 숨김 (겹침 방지)
   const hideNeckline=ef_==='turtle'||ef_==='mock'||ef_==='hood'||ef_.startsWith('collar');
   if(!hideNeckline) o.push(`<path d="${np}" fill="none" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linecap="round" stroke-linejoin="round"/>`);
+  o.push('</g>');
+  // ── Layer: Construction (칼라/후드/하이넥/넥처리) ──
+  o.push(`<g id="${side}-construction">`);
   NeckComp.drawFinish(cx,g,o,isBack);
-  // 디테일 (그레인/옆선/헴/다트/포켓/트리밍/넥디테일)
+  o.push('</g>');
+  // ── Layer: Detail (디테일 + 디자인요소) ──
+  o.push(`<g id="${side}-detail">`);
   DetailComp.drawAll(cx,g,geo,o,isBack);
-  // 커스텀 디자인 요소
   DesignEl.render(cx,g,geo,o,isBack);
+  o.push('</g>');
   // SVG 렌더
   svg.innerHTML=o.join('\n');
   // 핸들 (앞면만)
@@ -4340,10 +4376,20 @@ const ExportModule = {
     const f=document.getElementById('svgF'),hl=f.querySelector('.handles-layer');
     if(hl) hl.remove();
     const fi=f.innerHTML,bi=document.getElementById('svgB').innerHTML;
-    const c='<svg xmlns="http://www.w3.org/2000/svg" width="700" height="480" viewBox="0 0 700 480"><rect width="700" height="480" fill="white"/><g transform="translate(10,10)">'+fi+'</g><g transform="translate(370,10)">'+bi+'</g></svg>';
+    // Illustrator 호환 SVG — 레이어 그룹 id로 인식
+    const gt=S.garmentType;
+    const lbl={top:'Top',dress:'Dress',outerwear:'Outerwear',skirt:'Skirt',pants:'Pants'}[gt]||'Garment';
+    const c=`<svg xmlns="http://www.w3.org/2000/svg" width="700" height="480" viewBox="0 0 700 480">
+<title>FLAT ${lbl} — ${new Date().toISOString().slice(0,10)}</title>
+<desc>Generated by FLAT v0.24 — yunyiram.github.io/flat</desc>
+<rect width="700" height="480" fill="white"/>
+<g id="Front_View" transform="translate(10,10)">${fi}</g>
+<g id="Back_View" transform="translate(370,10)">${bi}</g>
+</svg>`;
     const resolved=c.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8');
     const b=new Blob([resolved],{type:'image/svg+xml'});
-    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flat_'+Date.now()+'.svg';a.click();
+    const style=lbl.toLowerCase().replace(/\s/g,'_');
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flat_'+style+'_'+Date.now()+'.svg';a.click();
     draw();
   },
 
@@ -4392,7 +4438,7 @@ const ExportModule = {
   // ── JSON 프로젝트 저장/불러오기 ──
   saveJSON() {
     const project={
-      version:'0.23',
+      version:'0.24',
       created:new Date().toISOString(),
       state:JSON.parse(JSON.stringify(S))
     };
@@ -4634,7 +4680,7 @@ const ExportModule = {
     });
 
     // 풋터
-    let ftr=`<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="6" fill="#999" font-family="Arial,sans-serif">Generated by FLAT v0.23 — yunyiram.github.io/flat</text>`;
+    let ftr=`<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="6" fill="#999" font-family="Arial,sans-serif">Generated by FLAT v0.24 — yunyiram.github.io/flat</text>`;
 
     // 조합
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
@@ -4781,7 +4827,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 1/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 2: Front/Back drawings + Callouts ═══
@@ -4818,7 +4864,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 2/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 3: Spec + Grading ═══
@@ -4969,7 +5015,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 3/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 4: Fabric Recommendation ═══
@@ -5011,7 +5057,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 4/5',W-10,H-5,{align:'right'});
 
         // ═══ PAGE 5: POM Diagram ═══
@@ -5087,7 +5133,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(6);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
+        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-5,{align:'center'});
         doc.text('Page 5/5',W-10,H-5,{align:'right'});
 
         // ── Save ──
@@ -5303,7 +5349,7 @@ const ExportModule = {
 
         // Footer
         doc.setFontSize(5);doc.setTextColor(160);
-        doc.text('Generated by FLAT v0.23 — yunyiram.github.io/flat',W/2,H-8,{align:'center'});
+        doc.text('Generated by FLAT v0.24 — yunyiram.github.io/flat',W/2,H-8,{align:'center'});
 
         doc.save('FLAT_workorder_'+tpLabel+'_'+Date.now()+'.pdf');
       });
@@ -5376,32 +5422,42 @@ const CascadeVis={
     SD.forEach(([id,k])=>{if(typeof fromSnap[k]==='number'&&typeof S[k]==='number')S[k]=fromSnap[k];});
     this.morph(fromSnap,target,350,()=>{History.push();});
   },
+  demoMode:false,
   // ── demo sequence ──
   STEPS:[
-    {label:'Basic Tee',preset:0,dur:500,wait:600},
-    {label:'Chest: Slim → Wide',keys:{chest:80,fitW:78},dur:700,wait:400},
-    {label:'Length: Crop → Dress',keys:{bodyLen:88},dur:700,wait:400},
-    {label:'Sleeve: Short → Long',keys:{sleeveLength:95},dur:600,wait:400},
-    {label:'Shoulder: Natural → Drop',keys:{shoulderExtra:16,shoulderSlope:28,shoulderType:'dropped'},dur:600,wait:400},
-    {label:'Silhouette: A-Line',keys:{silhouette:'a_line',hipFlare:10},dur:600,wait:400},
-    {label:'← Reset to Basic',preset:0,dur:600,wait:300},
-    {label:'Oxford Shirt',preset:17,dur:600,wait:800},
-    {label:'Blazer',preset:26,dur:600,wait:800},
-    {label:'Hoodie',preset:11,dur:600,wait:600},
-    {label:'← Back to Basic',preset:0,dur:500,wait:300},
+    {label:'Basic Tee',sub:'파라메트릭 기본형',preset:0,dur:500,wait:600},
+    {label:'Chest: Slim → Wide',sub:'품 파라미터 하나로',keys:{chest:80,fitW:78},dur:700,wait:400},
+    {label:'Length: Crop → Dress',sub:'기장 슬라이더',keys:{bodyLen:88},dur:700,wait:400},
+    {label:'Sleeve: Short → Long',sub:'소매 기장',keys:{sleeveLength:95},dur:600,wait:400},
+    {label:'Shoulder: Drop',sub:'어깨 구조 전환',keys:{shoulderExtra:16,shoulderSlope:28,shoulderType:'dropped'},dur:600,wait:400},
+    {label:'Silhouette: A-Line',sub:'실루엣 + 힙 플레어',keys:{silhouette:'a_line',hipFlare:10},dur:600,wait:400},
+    {label:'← Reset',sub:'',preset:0,dur:500,wait:300},
+    {label:'Oxford Shirt',sub:'칼라 + 버튼 + 포켓 — 프리셋 한 번',preset:17,dur:600,wait:900},
+    {label:'Blazer',sub:'노치드 라펠 + 테일러드',preset:26,dur:600,wait:900},
+    {label:'Hoodie',sub:'후드 + 캥거루포켓 + 래글런',preset:11,dur:600,wait:700},
+    {label:'← Back to Basic',sub:'',preset:0,dur:500,wait:300},
   ],
-  showLabel(text){
+  showLabel(text,sub){
     const el=document.getElementById('cascadeLabel');
-    el.textContent=text;el.classList.add('show');
+    el.innerHTML=text+(sub?`<span class="demo-sub">${sub}</span>`:'');
+    el.classList.add('show');
   },
   hideLabel(){
     const el=document.getElementById('cascadeLabel');
     el.classList.remove('show');
   },
+  enterDemoMode(){
+    this.demoMode=true;
+    document.body.classList.add('demo-mode');
+  },
+  exitDemoMode(){
+    this.demoMode=false;
+    document.body.classList.remove('demo-mode');
+  },
   playStep(){
     if(!this.playing||this.stepIdx>=this.STEPS.length){this.stop();return;}
     const step=this.STEPS[this.stepIdx++];
-    this.showLabel(step.label);
+    this.showLabel(step.label,step.sub);
     const from={...S};
     if(step.preset!==undefined){
       // apply preset then morph numerics
@@ -5436,6 +5492,7 @@ const CascadeVis={
   },
   play(){
     this.playing=true;this.stepIdx=0;
+    this.enterDemoMode();
     document.getElementById('cascadeBtn').innerHTML='■ Stop';
     document.getElementById('cascadeBtn').classList.add('playing');
     this.playStep();
@@ -5445,6 +5502,7 @@ const CascadeVis={
     if(this.rafId){cancelAnimationFrame(this.rafId);this.rafId=null;}
     if(this._timeout){clearTimeout(this._timeout);this._timeout=null;}
     this.hideLabel();
+    this.exitDemoMode();
     document.getElementById('cascadeBtn').innerHTML='▶ Cascade';
     document.getElementById('cascadeBtn').classList.remove('playing');
     History.push();
@@ -5541,6 +5599,10 @@ document.querySelectorAll('.psec-title').forEach(t=>{
 });
 History.push(); // initial state
 FactoryViewer.check(); // URL param → factory mode
+// ?demo → 자동 데모 시작
+if(new URLSearchParams(location.search).has('demo')){
+  setTimeout(()=>CascadeVis.toggle(),800);
+}
 </script>
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 </body>
