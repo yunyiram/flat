@@ -2240,7 +2240,7 @@ const SleeveComp = {
     const armholeH=uaY-sY;
     const sleeveCapW=armholeH*0.65;
     const taperFactor=0.5+S.sleeveWidth*0.005;
-    const lenTaper=Math.min(1,0.55+slLen*0.0065); // short sleeves taper more
+    const lenTaper=Math.min(1,0.45+slLen*0.006); // short sleeves taper more (32→0.64, 95→1.0)
     const cuffHalfW=sleeveCapW*taperFactor*lenTaper;
     const angleRad=0.18+slLen*0.003;
     const clr=isBack?'#444':'var(--ink)';
@@ -2350,11 +2350,13 @@ const SleeveComp = {
           const elbX=shX+dir*slLen*0.55, elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
           p=`M${shX},${sy0} C${shX+dir*slLen*0.12},${sy0+ahF*0.1} ${elbX-dir*slLen*0.06},${elbTY-ahF*0.08} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.5} ${endCX-dir*slLen*0.15},${endTop-ahF*0.6} ${endCX},${endTop} L${endCX},${endBot} C${endCX-dir*slLen*0.15},${endBot+ahF*0.6} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.5} ${elbX},${elbBY} C${elbX-dir*slLen*0.06},${elbBY+ahF*0.08} ${armX+dir*ahF*0.15},${uaY-ahF*0.08} ${armX},${uaY}`;
         } else {
-          // straight: natural cap curve + slight cuff angle for short sleeves
-          const tilt=slLen<55?Math.min(2,(55-slLen)*0.06):0;
+          // straight: natural cap curve + cuff angle + curved hem for short sleeves
+          const tilt=slLen<60?Math.min(8,(60-slLen)*0.25):0;
           const cpO=Math.max(slLen*0.22,7);
           const bkCP=Math.max(slLen*0.14,5);
-          p=`M${shX},${sy0} C${shX+dir*cpO},${sy0+ahF*0.3} ${endCX-dir*cpO*0.35},${endTop-ahF*0.15} ${endCX},${endTop} L${endCX+dir*tilt},${endBot} C${endCX+dir*tilt-dir*bkCP},${endBot+ahF*0.35} ${armX+dir*ahF*0.25},${uaY-ahF*0.25} ${armX},${uaY}`;
+          // short sleeves: curved cuff line (Q curve) — 안쪽이 더 길고 바깥이 짧음
+          const cuffBow=slLen<60?Math.min(4,(60-slLen)*0.12):0;
+          p=`M${shX},${sy0} C${shX+dir*cpO},${sy0+ahF*0.3} ${endCX-dir*cpO*0.35},${endTop-ahF*0.15} ${endCX},${endTop} Q${endCX+dir*(tilt*0.5)},${endCY+cuffBow} ${endCX+dir*tilt},${endBot} C${endCX+dir*tilt-dir*bkCP},${endBot+ahF*0.35} ${armX+dir*ahF*0.25},${uaY-ahF*0.25} ${armX},${uaY}`;
         }
       }
       o.push(`<path d="${p}" fill="#FAFAF8" stroke="${clr}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
