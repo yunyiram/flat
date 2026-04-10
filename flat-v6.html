@@ -420,7 +420,19 @@ en:{
   hint:{dressLen:'This length works great as a dress! Try switching to Dress.',
     outerConfig:'Looking like outerwear — try the Outerwear category for better defaults.',
     topLen:'Pretty short for a dress — the Top category might fit better.',
-    basicTop:'This is closer to a basic top. Try switching to Top.'},
+    basicTop:'This is closer to a basic top. Try switching to Top.',
+    sleeveSkin:'Sleeve is skin-tight — needs stretch fabric.',
+    sleeveVeryWide:'Very wide sleeve — it will drape like a cape.',
+    sleeveTooWide:'Sleeve is wider than the body — unusual proportion.',
+    fitBodysuit:'Bodysuit-level fit — needs spandex/jersey.',
+    fitTent:'Very loose — will need structure to hold shape.',
+    lenCrop:'Crop length — above navel.',
+    lenTunic:'Tunic length — below the hip.',
+    neckSlip:'Neckline is very wide — may slip off shoulders.',
+    deepV:'Deep V-neck — opens to mid-chest.',
+    slopeDrape:'Very steep shoulder — creates a drape effect.',
+    slopePower:'Almost horizontal shoulder — power shoulder look.',
+    flareExtreme:'Strong flare — very dramatic A-line.'},
   compatMsg:{
     closureOff:'Closure removed — this neckline looks best without one.',
     closureZipOff:'Zipper removed — doesn\'t pair well with kangaroo pocket. Try buttons?',
@@ -617,7 +629,19 @@ ko:{
   hint:{dressLen:'이 기장이면 원피스로도 멋져요! 원피스로 바꿔볼까요?',
     outerConfig:'아우터 느낌이에요 — 아우터 카테고리가 더 잘 맞을 수 있어요.',
     topLen:'원피스치고 짧아요 — 상의 카테고리가 더 맞을 수도!',
-    basicTop:'일반 상의에 가까워요. 상의 카테고리 추천해요.'},
+    basicTop:'일반 상의에 가까워요. 상의 카테고리 추천해요.',
+    sleeveSkin:'소매가 팔에 딱 붙어요 — 스트레치 원단이 필요해요.',
+    sleeveVeryWide:'소매가 매우 넓어요 — 케이프처럼 드레이프돼요.',
+    sleeveTooWide:'소매가 몸통보다 넓어요 — 특수한 비례예요.',
+    fitBodysuit:'바디수트급 핏이에요 — 스판덱스/저지 필수.',
+    fitTent:'매우 루즈해요 — 형태를 잡으려면 구조가 필요해요.',
+    lenCrop:'크롭 기장 — 배꼽 위가 보여요.',
+    lenTunic:'튜닉 기장 — 엉덩이 아래까지요.',
+    neckSlip:'넥라인이 매우 넓어요 — 어깨에서 흘러내릴 수 있어요.',
+    deepV:'딥 V넥 — 가슴 중앙까지 열려요.',
+    slopeDrape:'어깨가 매우 가파라요 — 드레이프 효과가 나요.',
+    slopePower:'어깨가 거의 수평이에요 — 파워숄더 느낌.',
+    flareExtreme:'힙 플레어가 강해요 — 매우 드라마틱한 A라인.'},
   compatMsg:{
     closureOff:'클로저 해제 — 이 넥라인은 그냥이 더 예뻐요.',
     closureZipOff:'지퍼 해제 — 캥거루 포켓이랑 안 맞아요. 버튼은 어때요?',
@@ -1406,15 +1430,39 @@ function updateGarmentHint(){
   const ef=effectiveFinish();
   const gt=S.garmentType;
   const TAILORED_COLLAR=['collar_notched','collar_peaked','collar_shawl','collar_convertible'];
-  // 상의에서 원피스/아우터 기장 감지
+
+  // ── Level 3: 카테고리 전환 제안 ──
   if(gt==='top'&&S.bodyLen>=70) hints.push(t('hint','dressLen'));
   if(gt==='top'&&S.fitW>=75&&(TAILORED_COLLAR.includes(ef)||S.closure!=='none'))
     hints.push(t('hint','outerConfig'));
-  // 원피스에서 상의 기장
   if(gt==='dress'&&S.bodyLen<55) hints.push(t('hint','topLen'));
-  // 아우터에서 일반 핏
   if(gt==='outerwear'&&S.fitW<50&&!TAILORED_COLLAR.includes(ef)&&S.closure==='none')
     hints.push(t('hint','basicTop'));
+
+  // ── Level 2: 파라미터 감각 피드백 ──
+  // 소매 폭 — 팔둘레 감각
+  if(S.sleeveWidth<20&&S.sleeveLength>15) hints.push(t('hint','sleeveSkin'));
+  else if(S.sleeveWidth>80) hints.push(t('hint','sleeveVeryWide'));
+  // 소매 폭 vs 핏 — 소매가 바디보다 넓으면 비정상
+  if(S.sleeveWidth>S.fitW+30&&S.sleeveLength>30) hints.push(t('hint','sleeveTooWide'));
+  // 핏 극단
+  if(S.fitW<=10) hints.push(t('hint','fitBodysuit'));
+  else if(S.fitW>=92) hints.push(t('hint','fitTent'));
+  // 기장 감각 (상의일 때만)
+  if(gt==='top'){
+    if(S.bodyLen>=10&&S.bodyLen<20) hints.push(t('hint','lenCrop'));
+    else if(S.bodyLen>=60&&S.bodyLen<70) hints.push(t('hint','lenTunic'));
+  }
+  // 넥 폭이 어깨에 가까움
+  if(S.neckWidth>75&&!['boat','straight'].includes(S.neckShape)) hints.push(t('hint','neckSlip'));
+  // 딥 V넥
+  if(S.neckDepth>70&&['v','deep_v'].includes(S.neckShape)) hints.push(t('hint','deepV'));
+  // 어깨 기울기 극단
+  if(S.shoulderSlope>80) hints.push(t('hint','slopeDrape'));
+  else if(S.shoulderSlope<15) hints.push(t('hint','slopePower'));
+  // 힙플레어 과다
+  if(S.hipFlare>15) hints.push(t('hint','flareExtreme'));
+
   const el=document.getElementById('garmentHint');
   if(hints.length>0){el.textContent=hints.join(' · ');el.style.display='';}
   else el.style.display='none';
