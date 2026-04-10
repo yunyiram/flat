@@ -1703,7 +1703,11 @@ const BodyComp = {
   },
 
   armholeY(g) {
-    return g.topY+42+Math.max(0,S.shoulderExtra*0.875);
+    // 암홀 깊이: 바디 높이의 25-28% (industry standard: 25-33%)
+    // 기성복 기준 + 핏이 루즈할수록 암홀이 깊어짐
+    const easeBonus=Math.max(0,(S.fitW-50)*0.12); // looser fit = deeper armhole
+    const ahBase=g.slopeY+g.bodyH*0.25+easeBonus; // 어깨점 기준 25% (표준 25-33%)
+    return g.topY+ahBase+Math.max(0,S.shoulderExtra*0.875);
   },
 
   outline(cx,g,isBack) {
