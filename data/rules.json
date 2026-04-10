@@ -1,117 +1,238 @@
 {
   "version": "0.26",
   "description": "FLAT garment compatibility rules — domain logic separated from rendering code",
-
   "necktype_compat": {
     "description": "Which neckType values are allowed for each neckShape. null = all allowed.",
-    "all_types": ["finish", "collar", "highneck", "hood"],
+    "all_types": [
+      "finish",
+      "collar",
+      "highneck",
+      "hood"
+    ],
     "matrix": {
       "round": null,
       "v": null,
       "deep_v": null,
       "u": null,
       "square": null,
-      "boat": ["finish", "collar"]
+      "boat": [
+        "finish",
+        "collar"
+      ]
     }
   },
-
   "variant_necktype_compat": {
     "description": "Which neckType values are allowed for each shoulderType. null = all allowed.",
     "matrix": {
       "none": null,
-      "halter": ["finish"],
-      "off_shoulder": ["finish", "collar"],
-      "one_shoulder": ["finish"]
+      "halter": [
+        "finish"
+      ],
+      "off_shoulder": [
+        "finish",
+        "collar"
+      ],
+      "one_shoulder": [
+        "finish"
+      ]
     }
   },
-
   "detail_necktype_compat": {
     "description": "Which neckType values are allowed for each neckDetail. null = all allowed.",
     "matrix": {
       "none": null,
       "henley": null,
       "drape": null,
-      "keyhole": ["finish", "highneck"]
+      "keyhole": [
+        "finish",
+        "highneck"
+      ]
     }
   },
-
   "variant_detail_compat": {
     "description": "Which neckDetail values are allowed for each shoulderType. null = all allowed.",
     "matrix": {
       "none": null,
-      "halter": ["none"],
-      "off_shoulder": ["none", "drape"],
-      "one_shoulder": ["none"]
+      "halter": [
+        "none"
+      ],
+      "off_shoulder": [
+        "none",
+        "drape"
+      ],
+      "one_shoulder": [
+        "none"
+      ]
     }
   },
-
   "collar_compat": {
     "description": "Which collarType values are allowed for each neckShape, grouped by collarGroup.",
     "matrix": {
       "round": {
-        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
-        "stand": ["band", "china", "mandarin", "funnel", "wing"],
-        "tailored": ["shirt"],
-        "deco": ["bow", "cowl"]
+        "flat": [
+          "peter",
+          "sailor",
+          "bertha",
+          "puritan",
+          "eton"
+        ],
+        "stand": [
+          "band",
+          "china",
+          "mandarin",
+          "funnel",
+          "wing"
+        ],
+        "tailored": [
+          "shirt"
+        ],
+        "deco": [
+          "bow",
+          "cowl"
+        ]
       },
       "v": {
-        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
-        "stand": ["wing"],
-        "tailored": ["shirt", "notched", "shawl", "peaked", "round", "convertible"],
-        "deco": ["bow", "cowl"]
+        "flat": [
+          "peter",
+          "sailor",
+          "bertha",
+          "puritan",
+          "eton"
+        ],
+        "stand": [
+          "wing"
+        ],
+        "tailored": [
+          "shirt",
+          "notched",
+          "shawl",
+          "peaked",
+          "round",
+          "convertible"
+        ],
+        "deco": [
+          "bow",
+          "cowl"
+        ]
       },
       "deep_v": {
-        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
+        "flat": [
+          "peter",
+          "sailor",
+          "bertha",
+          "puritan",
+          "eton"
+        ],
         "stand": [],
-        "tailored": ["shirt", "notched", "shawl", "peaked", "round", "convertible"],
-        "deco": ["bow", "cowl"]
+        "tailored": [
+          "shirt",
+          "notched",
+          "shawl",
+          "peaked",
+          "round",
+          "convertible"
+        ],
+        "deco": [
+          "bow",
+          "cowl"
+        ]
       },
       "u": {
-        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
+        "flat": [
+          "peter",
+          "sailor",
+          "bertha",
+          "puritan",
+          "eton"
+        ],
         "stand": [],
         "tailored": [],
-        "deco": ["bow", "cowl"]
+        "deco": [
+          "bow",
+          "cowl"
+        ]
       },
       "square": {
-        "flat": ["peter", "sailor", "bertha", "puritan", "eton"],
-        "stand": ["band", "china", "mandarin", "wing"],
-        "tailored": ["shirt"],
-        "deco": ["bow", "cowl"]
+        "flat": [
+          "peter",
+          "sailor",
+          "bertha",
+          "puritan",
+          "eton"
+        ],
+        "stand": [
+          "band",
+          "china",
+          "mandarin",
+          "wing"
+        ],
+        "tailored": [
+          "shirt"
+        ],
+        "deco": [
+          "bow",
+          "cowl"
+        ]
       },
       "boat": {
-        "flat": ["peter", "sailor", "bertha", "puritan"],
+        "flat": [
+          "peter",
+          "sailor",
+          "bertha",
+          "puritan"
+        ],
         "stand": [],
         "tailored": [],
-        "deco": ["bow", "cowl"]
+        "deco": [
+          "bow",
+          "cowl"
+        ]
       }
     }
   },
-
   "variant_collar_override": {
     "description": "shoulderType that further restricts collar options (intersection with collar_compat). null = no override.",
     "matrix": {
       "none": null,
       "halter": "__blocked__",
       "off_shoulder": {
-        "flat": ["peter", "sailor", "bertha", "puritan"],
+        "flat": [
+          "peter",
+          "sailor",
+          "bertha",
+          "puritan"
+        ],
         "stand": [],
         "tailored": [],
-        "deco": ["cowl"]
+        "deco": [
+          "cowl"
+        ]
       },
       "one_shoulder": "__blocked__"
     },
     "_note": "__blocked__ means collar neckType itself is blocked at Level 1 (variant_necktype_compat), so collar never reached."
   },
-
   "sleeve_compat": {
     "description": "Sleeve shape and cuff compatibility based on sleeve length.",
-    "long_only_shapes": ["bell", "bishop", "lantern", "peasant", "legmutton", "pagoda"],
+    "long_only_shapes": [
+      "bell",
+      "bishop",
+      "lantern",
+      "peasant",
+      "legmutton",
+      "pagoda"
+    ],
     "thresholds": {
-      "sleeveless": { "max_length": 2, "description": "All shapes and cuffs blocked" },
-      "short": { "max_length": 20, "description": "Long-only shapes blocked (cap and shorter)" }
+      "sleeveless": {
+        "max_length": 2,
+        "description": "All shapes and cuffs blocked"
+      },
+      "short": {
+        "max_length": 20,
+        "description": "Long-only shapes blocked (cap and shorter)"
+      }
     }
   },
-
   "functional_rules": [
     {
       "id": "necktype_intersection",
@@ -210,7 +331,9 @@
       "description": "Kangaroo pocket blocks zipper closure.",
       "condition": "pocket === 'kangaroo'",
       "action": "closure → 'none' (if currently 'zip')",
-      "blocked_values": ["zip"],
+      "blocked_values": [
+        "zip"
+      ],
       "message_key": "closureZipOff"
     },
     {
@@ -220,7 +343,12 @@
       "description": "Double-breasted requires a lapel collar (notched/peaked/shawl/convertible) AND a closure AND not kimono sleeve type.",
       "condition": "!(effectiveFinish in ['collar_notched','collar_peaked','collar_shawl','collar_convertible'] && closure !== 'none' && sleeveType !== 'kimono')",
       "action": "closureStyle → 'single'",
-      "required_collar_types": ["collar_notched", "collar_peaked", "collar_shawl", "collar_convertible"],
+      "required_collar_types": [
+        "collar_notched",
+        "collar_peaked",
+        "collar_shawl",
+        "collar_convertible"
+      ],
       "message_key": "doubleOff"
     },
     {
@@ -230,7 +358,11 @@
       "description": "Oversized/boxy fit (fitW >= 75) blocks all dart types.",
       "condition": "fitW >= 75",
       "action": "dart → 'none'",
-      "blocked_values": ["bust", "waist", "princess"],
+      "blocked_values": [
+        "bust",
+        "waist",
+        "princess"
+      ],
       "message_key": "dartOff"
     },
     {
@@ -240,7 +372,15 @@
       "description": "Crop length (bodyLen < 20) blocks large pocket types.",
       "condition": "bodyLen < 20",
       "action": "pocket → 'none'",
-      "blocked_values": ["patch_round", "flap", "welt", "kangaroo", "jetted", "cargo", "seam"],
+      "blocked_values": [
+        "patch_round",
+        "flap",
+        "welt",
+        "kangaroo",
+        "jetted",
+        "cargo",
+        "seam"
+      ],
       "message_key": "pocketOff"
     },
     {
@@ -250,7 +390,9 @@
       "description": "Zip closure blocks kangaroo pocket.",
       "condition": "closure === 'zip'",
       "action": "pocket → 'none' (if currently 'kangaroo')",
-      "blocked_values": ["kangaroo"],
+      "blocked_values": [
+        "kangaroo"
+      ],
       "message_key": "kangarooOff"
     },
     {
@@ -260,7 +402,10 @@
       "description": "Crop length (bodyLen < 20) blocks side-slit and hi-lo hem shapes.",
       "condition": "bodyLen < 20",
       "action": "hemShape → 'straight'",
-      "blocked_values": ["side_slit", "hi_lo"],
+      "blocked_values": [
+        "side_slit",
+        "hi_lo"
+      ],
       "message_key": "hemReset"
     },
     {
@@ -309,7 +454,6 @@
       "message_key": "hint.basicTop"
     }
   ],
-
   "messages": {
     "en": {
       "closureOff": "Closure removed — this neckline looks best without one.",
@@ -334,7 +478,6 @@
       "doubleOff": "싱글로 변경 — 더블브레스트는 라펠 칼라+클로저가 필요해요."
     }
   },
-
   "update_order": [
     "updateFinishCompat",
     "updateVariantCompat",
@@ -345,5 +488,76 @@
     "updateHemCompat",
     "updateKimonoCompat",
     "updateGarmentHint"
-  ]
+  ],
+  "shoulder_sleeve_block": {
+    "description": "shoulderType values that block certain sleeveType values. Hard rule — physically impossible.",
+    "type": "hard",
+    "matrix": {
+      "halter": [
+        "raglan",
+        "dolman"
+      ],
+      "strapless": [
+        "raglan",
+        "dolman",
+        "kimono"
+      ],
+      "off_shoulder": [
+        "raglan"
+      ],
+      "one_shoulder": [
+        "raglan",
+        "dolman"
+      ]
+    }
+  },
+  "strap_neck_block": {
+    "description": "strapType values that block certain neckShape values. Hard rule — structural conflict.",
+    "type": "hard",
+    "matrix": {
+      "spaghetti": [
+        "boat",
+        "straight"
+      ],
+      "strapless": [
+        "boat",
+        "straight"
+      ]
+    }
+  },
+  "sleeve_cuff_block": {
+    "description": "sleeveType values that block certain sleeveCuff values. Soft rule — unconventional.",
+    "type": "soft",
+    "matrix": {
+      "raglan": [
+        "barrel",
+        "french",
+        "convertible"
+      ]
+    }
+  },
+  "hem_finish_shape_block": {
+    "description": "hemFinish values that block certain hemShape values. Soft rule — aesthetically incompatible.",
+    "type": "soft",
+    "matrix": {
+      "drawstring": [
+        "hi_lo",
+        "side_slit",
+        "shirt_tail"
+      ],
+      "rib": [
+        "shirt_tail"
+      ]
+    }
+  },
+  "double_breast_shoulder_block": {
+    "description": "shoulderType values that block closureStyle=double. Hard rule.",
+    "type": "hard",
+    "values": [
+      "halter",
+      "strapless",
+      "off_shoulder",
+      "one_shoulder"
+    ]
+  }
 }

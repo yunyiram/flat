@@ -433,6 +433,10 @@ en:{
     sleevelessForced:'Set to sleeveless — this neckline style requires it.',
     doubleOff:'Switched to single — double breast needs a lapel collar + closure.',
     bodyApplied:'Body measurements applied — sliders adjusted to your size.',
+    sleeveTypeReset:'Sleeve type switched to set-in — doesn\'t pair with this shoulder style.',
+    neckShapeReset:'Neckline adjusted — this shape doesn\'t work with narrow straps.',
+    cuffReset:'Cuff switched to rib — tailored cuffs need set-in sleeves.',
+    hemReset2:'Hemline adjusted — this finish needs a straight hem.',
   },
   fabric:{detect:'Detected',
     tee:'Top (Knit)',shirt:'Shirt (Woven)',dress:'Dress',outer:'Outerwear',skirt:'Skirt',pants:'Pants',
@@ -625,6 +629,10 @@ ko:{
     kimonoShoulder:'기모노 소매는 일반 어깨만 가능해요 — 셋인으로 전환했어요.',
     sleevelessForced:'민소매로 변경 — 이 넥라인 스타일이 요구해요.',
     doubleOff:'싱글로 변경 — 더블브레스트는 라펠 칼라+클로저가 필요해요.',
+    sleeveTypeReset:'셋인 소매로 전환 — 이 어깨 구조에는 래글런/돌먼이 안 맞아요.',
+    neckShapeReset:'넥라인 조정 — 이 형태는 좁은 스트랩이랑 안 맞아요.',
+    cuffReset:'커프를 리브로 변경 — 배럴/프렌치 커프는 셋인 소매 전용이에요.',
+    hemReset2:'헴라인 조정 — 이 마감에는 스트레이트가 자연스러워요.',
     bodyApplied:'체형 치수가 적용됐어요 — 슬라이더가 맞춤 조정됐습니다.',
   },
   fabric:{detect:'감지',
@@ -1299,6 +1307,98 @@ function updateKimonoCompat(){
   }
 }
 
+// ── shoulderType ↔ sleeveType 양립불가 ──
+const SHOULDER_SLEEVE_BLOCK={
+  halter:['raglan','dolman'],
+  strapless:['raglan','dolman','kimono'],
+  off_shoulder:['raglan'],
+  one_shoulder:['raglan','dolman'],
+};
+function updateShoulderSleeveCompat(){
+  const blocked=SHOULDER_SLEEVE_BLOCK[S.shoulderType]||[];
+  const stRow=document.querySelector('[data-p="sleeveType"]');
+  if(!stRow)return;
+  stRow.querySelectorAll('.tb').forEach(b=>{
+    const v=b.dataset.v;
+    const isBlocked=blocked.includes(v);
+    setBtnState2(b,isBlocked);
+    if(isBlocked&&b.classList.contains('on')){
+      S.sleeveType='setin';syncToggle('sleeveType','setin');
+      showCompatToast('sleeveTypeReset');
+    }
+  });
+}
+
+// ── strapType ↔ neckShape 양립불가 ──
+const STRAP_NECK_BLOCK={
+  spaghetti:['boat','straight'],
+  strapless:['boat','straight'],
+};
+function updateStrapNeckCompat(){
+  const blocked=STRAP_NECK_BLOCK[S.strapType]||[];
+  if(!blocked.length)return;
+  const nsRow=document.querySelector('[data-p="neckShape"]');
+  if(!nsRow)return;
+  nsRow.querySelectorAll('.tb').forEach(b=>{
+    const v=b.dataset.v;
+    const isBlocked=blocked.includes(v);
+    setBtnState2(b,isBlocked);
+    if(isBlocked&&b.classList.contains('on')){
+      S.neckShape='v';syncToggle('neckShape','v');
+      const ds=decomposeNeckShape('v');Object.assign(S,ds);
+      showCompatToast('neckShapeReset');
+    }
+  });
+}
+
+// ── sleeveType ↔ sleeveCuff 호환성 ──
+const SLEEVE_CUFF_BLOCK={
+  raglan:['barrel','french','convertible'], // 테일러드 커프 = 셔츠 구조
+};
+function updateSleeveCuffCompat(){
+  const blocked=SLEEVE_CUFF_BLOCK[S.sleeveType]||[];
+  const cuffRow=document.querySelector('[data-p="sleeveCuff"]');
+  if(!cuffRow||!blocked.length)return;
+  cuffRow.querySelectorAll('.tb').forEach(b=>{
+    const v=b.dataset.v;
+    const isBlocked=blocked.includes(v);
+    setBtnState2(b,isBlocked);
+    if(isBlocked&&b.classList.contains('on')){
+      S.sleeveCuff='rib';syncToggle('sleeveCuff','rib');
+      showCompatToast('cuffReset');
+    }
+  });
+}
+
+// ── closureStyle double ↔ shoulderType 양립불가 ──
+function updateDoubleBreastCompat(){
+  const breastRow=document.querySelector('[data-p="closureStyle"]');
+  if(!breastRow)return;
+  const blockDouble=['halter','strapless','off_shoulder','one_shoulder'].includes(S.shoulderType);
+  setBtnState(breastRow,'double',blockDouble);
+  if(blockDouble&&S.closureStyle==='double') autoSwitch(breastRow,'closureStyle','single','doubleOff');
+}
+
+// ── hemFinish ↔ hemShape 호환성 ──
+const HEM_FINISH_SHAPE_BLOCK={
+  drawstring:['hi_lo','side_slit','shirt_tail'],
+  rib:['shirt_tail'],
+};
+function updateHemFinishShapeCompat(){
+  const blocked=HEM_FINISH_SHAPE_BLOCK[S.hemFinish]||[];
+  const hemRow=document.querySelector('[data-p="hemShape"]');
+  if(!hemRow||!blocked.length)return;
+  hemRow.querySelectorAll('.tb').forEach(b=>{
+    const v=b.dataset.v;
+    const isBlocked=blocked.includes(v);
+    setBtnState2(b,isBlocked);
+    if(isBlocked&&b.classList.contains('on')){
+      S.hemShape='straight';syncToggle('hemShape','straight');
+      showCompatToast('hemReset');
+    }
+  });
+}
+
 // ── 카테고리 침범 알림 ──
 function updateGarmentHint(){
   if(!['top','dress','outerwear'].includes(S.garmentType)){document.getElementById('garmentHint').style.display='none';return;}
@@ -1359,6 +1459,8 @@ function updateStrapTypeVisibility(){
 function updateAllCompat(){
   updateFinishCompat();updateVariantCompat();updateSleeveCompat();
   updateClosureCompat();updateDartCompat();updatePocketCompat();updateHemCompat();updateKimonoCompat();
+  updateShoulderSleeveCompat();updateStrapNeckCompat();updateSleeveCuffCompat();
+  updateDoubleBreastCompat();updateHemFinishShapeCompat();
   updateGarmentHint();
 }
 
