@@ -3905,7 +3905,7 @@ function updatePresetDisplay(type){
   if(!isUpper){row.style.display='none';return;}
   row.style.display='';
   // 카테고리별 프리셋 필터링
-  const catMap={top:['tshirts','polo','shirtsBlouses','knitwear','sweatshirts'],dress:['dress'],outerwear:['outerwear']};
+  const catMap={top:['tshirts','shirtsBlouses','knitwear','sweatshirts','polo'],dress:['dress'],outerwear:['outerwear']};
   const cats=catMap[type]||catMap['top'];
   row.querySelectorAll('.preset-btn').forEach(b=>{
     const cat=b.dataset.cat;
@@ -4457,7 +4457,7 @@ const PresetModule={
     {cat:'outerwear',name:'bomber',s:{neckShape:'round',neckFinish:'collar_band',neckDepth:28,neckCurve:75,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'dropped',shoulderExtra:8,shoulderSlope:32,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:48,sleeveCuff:'rib',sleeveShape:'straight',sideSeam:'yes',silhouette:'straight',hipFlare:0,dart:'none',hemShape:'straight',hemFinish:'rib',bodyLen:48,chest:62,pocket:'welt',trimming:'none',stitchType:'single',closure:'zip',closureStyle:'single'}},
     {cat:'outerwear',name:'trench',s:{neckShape:'v',neckFinish:'collar_peaked',neckDepth:28,neckCurve:70,neckWidth:40,fit:'relaxed',fitW:66,shoulderType:'standard',shoulderExtra:6,shoulderSlope:36,sleeveType:'raglan',sleeveLen:'long',sleeveLength:95,sleeveWidth:45,sleeveCuff:'plain',sleeveShape:'straight',sideSeam:'yes',silhouette:'a_line',hipFlare:6,dart:'none',hemShape:'straight',hemFinish:'folded',bodyLen:80,chest:60,pocket:'welt',trimming:'none',stitchType:'double',closure:'button',closureStyle:'double'}},
   ],
-  CATS:['tshirts','polo','shirtsBlouses','knitwear','sweatshirts','dress','outerwear'],
+  CATS:['tshirts','shirtsBlouses','knitwear','sweatshirts','polo','dress','outerwear'],
   apply(idx){
     const from={};SD.forEach(([id,k])=>{from[k]=S[k];});
     const p=this.DB[idx].s;
