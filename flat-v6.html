@@ -2425,13 +2425,10 @@ const SleeveComp = {
           const elbX=shX+dir*slLen*0.55, elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
           p=`M${shX},${sy0} C${shX+dir*slLen*0.12},${sy0+ahF*0.1} ${elbX-dir*slLen*0.06},${elbTY-ahF*0.08} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.5} ${endCX-dir*slLen*0.15},${endTop-ahF*0.6} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.15},${endBot+ahF*0.6} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.5} ${elbX},${elbBY} C${elbX-dir*slLen*0.06},${elbBY+ahF*0.08} ${armX+dir*ahF*0.15},${uaY-ahF*0.08} ${armX},${uaY}`;
         } else {
-          // straight: natural cap curve + cuff angle + curved hem for short sleeves
-          const tilt=slLen<60?Math.min(8,(60-slLen)*0.25):0;
-          const cpO=Math.max(slLen*0.22,7);
-          const bkCP=Math.max(slLen*0.14,5);
-          // short sleeves: curved cuff line (Q curve) — 안쪽이 더 길고 바깥이 짧음
-          const cuffBow=slLen<60?Math.min(4,(60-slLen)*0.12):0;
-          p=`M${shX},${sy0} C${shX+dir*cpO},${sy0+ahF*0.3} ${endCX-dir*cpO*0.35},${endTop-ahF*0.15} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*bkCP},${endBot+ahF*0.35} ${armX+dir*ahF*0.25},${uaY-ahF*0.25} ${armX},${uaY}`;
+          // straight: 어깨끝점에서 부드러운 슬리브캡 곡선 (바깥+아래 약 45°)
+          const cpO=Math.max(slLen*0.25,8);
+          const bkCP=Math.max(slLen*0.16,6);
+          p=`M${shX},${sy0} C${shX+dir*cpO*0.45},${sy0+ahF*0.5} ${endTopX-dir*cpO*0.3},${endTop-ahF*0.12} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*bkCP},${endBot+ahF*0.4} ${armX+dir*ahF*0.2},${uaY-ahF*0.2} ${armX},${uaY}`;
         }
       }
       o.push(`<path d="${p}" fill="#FAFAF8" stroke="${clr}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
