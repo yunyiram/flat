@@ -2430,10 +2430,12 @@ const SleeveComp = {
           const elbX=shX+dir*slLen*0.55, elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
           p=`M${shX},${sy0} C${shX+dir*slLen*0.12},${sy0+ahF*0.1} ${elbX-dir*slLen*0.06},${elbTY-ahF*0.08} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.5} ${endCX-dir*slLen*0.15},${endTop-ahF*0.6} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.15},${endBot+ahF*0.6} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.5} ${elbX},${elbBY} C${elbX-dir*slLen*0.06},${elbBY+ahF*0.08} ${armX+dir*ahF*0.15},${uaY-ahF*0.08} ${armX},${uaY}`;
         } else {
-          // straight: 어깨끝점에서 부드러운 슬리브캡 곡선 (바깥+아래 약 45°)
+          // straight: 슬리브캡 곡선 → 커프에 수평 도착 (수직 끝선과 90°)
           const cpO=Math.max(slLen*0.25,8);
           const bkCP=Math.max(slLen*0.16,6);
-          p=`M${shX},${sy0} C${shX+dir*cpO*0.45},${sy0+ahF*0.5} ${endTopX-dir*cpO*0.3},${endTop-ahF*0.12} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*bkCP},${endBot+ahF*0.4} ${armX+dir*ahF*0.2},${uaY-ahF*0.2} ${armX},${uaY}`;
+          // cp2: 커프 끝점과 같은 Y (수평 도착) — p.183 레퍼런스 기준
+          // cp3: 커프 끝점과 같은 Y (수평 출발)
+          p=`M${shX},${sy0} C${shX+dir*cpO*0.45},${sy0+ahF*0.5} ${endTopX-dir*cpO*0.4},${endTop} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*bkCP*0.5},${endBot} ${armX+dir*ahF*0.25},${uaY-ahF*0.2} ${armX},${uaY}`;
         }
       }
       o.push(`<path d="${p}" fill="#FAFAF8" stroke="${clr}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
