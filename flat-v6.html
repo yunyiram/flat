@@ -432,7 +432,10 @@ en:{
     deepV:'Deep V-neck — opens to mid-chest.',
     slopeDrape:'Very steep shoulder — creates a drape effect.',
     slopePower:'Almost horizontal shoulder — power shoulder look.',
-    flareExtreme:'Strong flare — very dramatic A-line.'},
+    flareExtreme:'Strong flare — very dramatic A-line.',
+    rtwNeckShoulder:'Beyond RTW — neckline + slope combo may not stay on body.',
+    rtwSleeveWider:'Beyond RTW — sleeve opening wider than shoulder.',
+    rtwCropOversizeSleeveless:'Unusual combo — crop + oversized + sleeveless.'},
   compatMsg:{
     closureOff:'Closure removed — this neckline looks best without one.',
     closureZipOff:'Zipper removed — doesn\'t pair well with kangaroo pocket. Try buttons?',
@@ -641,7 +644,10 @@ ko:{
     deepV:'딥 V넥 — 가슴 중앙까지 열려요.',
     slopeDrape:'어깨가 매우 가파라요 — 드레이프 효과가 나요.',
     slopePower:'어깨가 거의 수평이에요 — 파워숄더 느낌.',
-    flareExtreme:'힙 플레어가 강해요 — 매우 드라마틱한 A라인.'},
+    flareExtreme:'힙 플레어가 강해요 — 매우 드라마틱한 A라인.',
+    rtwNeckShoulder:'기성복 범위 밖 — 이 넥라인+어깨 조합은 몸에 안 걸릴 수 있어요.',
+    rtwSleeveWider:'기성복 범위 밖 — 소매 끝이 어깨보다 넓어요.',
+    rtwCropOversizeSleeveless:'특수한 조합이에요 — 크롭+오버사이즈+민소매.'},
   compatMsg:{
     closureOff:'클로저 해제 — 이 넥라인은 그냥이 더 예뻐요.',
     closureZipOff:'지퍼 해제 — 캥거루 포켓이랑 안 맞아요. 버튼은 어때요?',
@@ -1462,6 +1468,17 @@ function updateGarmentHint(){
   else if(S.shoulderSlope<15) hints.push(t('hint','slopePower'));
   // 힙플레어 과다
   if(S.hipFlare>15) hints.push(t('hint','flareExtreme'));
+
+  // ── 기성복 범주 벗어남 감지 (RTW boundary) ──
+  // 넥+어깨 조합이 물리적으로 착용 불가
+  if(S.neckWidth>70&&S.shoulderSlope>65&&!['boat','straight'].includes(S.neckShape))
+    hints.push(t('hint','rtwNeckShoulder'));
+  // 소매 끝이 어깨보다 넓음 — 구조적으로 특수
+  if(S.sleeveWidth>75&&S.sleeveLength>40&&!['bell','pagoda'].includes(S.sleeveShape))
+    hints.push(t('hint','rtwSleeveWider'));
+  // 극단적 비례 조합 — 크롭+오버사이즈+민소매
+  if(S.bodyLen<20&&S.fitW>75&&S.sleeveLength<=2)
+    hints.push(t('hint','rtwCropOversizeSleeveless'));
 
   const el=document.getElementById('garmentHint');
   if(hints.length>0){el.textContent=hints.join(' · ');el.style.display='';}
