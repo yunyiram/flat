@@ -1,0 +1,189 @@
+{
+  "_version": "1.0",
+  "_doc": "넥 시스템 3축 + 2레이어 — flat_ux_architecture_v1.md 기반",
+  "_axes": "A(neckShape) × B(collarType) × C(openingType) + D(neckFinish) + E(neckDetail)",
+
+  "A_neckShape": {
+    "options": ["round", "v", "square", "scoop", "boat", "sweetheart"],
+    "default": "round",
+    "cascade_from_C": {
+      "wrap": "v",
+      "open_front": "v"
+    },
+    "cascade_from_armCoverage": {
+      "off_shoulder": "boat",
+      "strapless": "square",
+      "one_shoulder": "round"
+    }
+  },
+
+  "B_collarType": {
+    "options": [
+      "none", "band", "shirt", "polo", "camp", "convertible",
+      "notched", "shawl", "peaked", "round_lapel",
+      "hood",
+      "turtle", "mock", "funnel",
+      "cowl",
+      "peter", "sailor", "wing", "eton", "bertha", "puritan",
+      "bow"
+    ],
+    "default": "none",
+    "groups": {
+      "stand":    ["band", "turtle", "mock", "funnel", "wing"],
+      "shirt":    ["shirt", "polo", "camp", "convertible"],
+      "tailored": ["notched", "shawl", "peaked", "round_lapel"],
+      "flat":     ["peter", "sailor", "eton", "bertha", "puritan"],
+      "deco":     ["bow", "cowl"],
+      "cover":    ["hood"]
+    },
+    "gallery_order": [
+      "none", "band", "shirt", "polo", "notched", "shawl", "turtle", "hood",
+      "camp", "convertible", "mock", "funnel", "peaked", "round_lapel",
+      "peter", "sailor", "wing", "cowl",
+      "eton", "bertha", "puritan", "bow"
+    ],
+    "_gallery_note": "상위 8개 = 가장 자주 쓰는 것. 나머지는 '더 보기' 접기."
+  },
+
+  "C_openingType": {
+    "options": [
+      "pullover", "full_button", "half_placket", "full_zip", "half_zip",
+      "quarter_zip", "wrap", "open_front", "snap", "hook", "tie", "lacing"
+    ],
+    "default": "pullover",
+    "forces_A": {
+      "wrap": "v",
+      "open_front": "v"
+    },
+    "implies_closure": {
+      "full_button": {"closure": "button", "closurePos": "front"},
+      "half_placket": {"closure": "button", "closurePos": "front"},
+      "full_zip": {"closure": "zipper", "closurePos": "front"},
+      "half_zip": {"closure": "zipper", "closurePos": "front"},
+      "quarter_zip": {"closure": "zipper", "closurePos": "front"},
+      "snap": {"closure": "snap", "closurePos": "front"},
+      "hook": {"closure": "hidden", "closurePos": "front"},
+      "wrap": {"closure": "wrap", "closurePos": "front"},
+      "tie": {"closure": "wrap", "closurePos": "front"},
+      "lacing": {"closure": "button", "closurePos": "front"}
+    }
+  },
+
+  "D_neckFinish": {
+    "_condition": "B_collarType === 'none'",
+    "options": ["rib", "binding", "raw", "fold", "facing", "self_finish"],
+    "default": "rib"
+  },
+
+  "E_neckDetail": {
+    "options": ["none", "drawstring", "keyhole_front", "keyhole_back", "tie", "lace_up", "button_tab", "grommet"],
+    "default": "none"
+  },
+
+  "compatibility": {
+    "_doc": "B × C 호환성. true = 허용, 미등록 = 허용. false = 금지.",
+    "B_C_blocked": [
+      {"B": "hood",    "C": "wrap",       "reason": "후드+랩 구조 비호환"},
+      {"B": "turtle",  "C": "open_front", "reason": "터틀넥은 닫힌 구조"},
+      {"B": "turtle",  "C": "wrap",       "reason": "터틀넥은 닫힌 구조"},
+      {"B": "funnel",  "C": "open_front", "reason": "퍼널넥은 닫힌 구조"},
+      {"B": "notched", "C": "pullover",   "reason": "노치드는 열림 필수"},
+      {"B": "shawl",   "C": "pullover",   "reason": "숄은 열림 필수"},
+      {"B": "peaked",  "C": "pullover",   "reason": "피크드는 열림 필수"},
+      {"B": "peter",   "C": "full_zip",   "reason": "피터팬+지퍼 비호환"},
+      {"B": "sailor",  "C": "full_zip",   "reason": "세일러+지퍼 비호환"}
+    ],
+    "B_requires_C": {
+      "notched": ["full_button", "open_front", "snap", "hook"],
+      "shawl":   ["full_button", "open_front", "wrap", "tie", "hook"],
+      "peaked":  ["full_button", "open_front", "snap", "hook"],
+      "camp":    ["full_button", "open_front"]
+    },
+    "B_A_preferred": {
+      "notched": ["v"],
+      "shawl":   ["v"],
+      "peaked":  ["v"],
+      "cowl":    ["scoop", "round"],
+      "boat":    ["boat"]
+    }
+  },
+
+  "presets": {
+    "crewTee":    {"A": "round",  "B": "none",    "C": "pullover",    "D": "rib",     "E": "none"},
+    "polo":       {"A": "round",  "B": "polo",    "C": "half_placket","D": null,      "E": "none"},
+    "shirt":      {"A": "round",  "B": "shirt",   "C": "full_button", "D": null,      "E": "none"},
+    "sweater":    {"A": "round",  "B": "none",    "C": "pullover",    "D": "rib",     "E": "none"},
+    "cardigan":   {"A": "v",      "B": "shawl",   "C": "open_front",  "D": null,      "E": "none"},
+    "sweatshirt": {"A": "round",  "B": "none",    "C": "pullover",    "D": "rib",     "E": "none"},
+    "hoodie":     {"A": "round",  "B": "hood",    "C": "pullover",    "D": null,      "E": "drawstring"},
+    "blazer":     {"A": "v",      "B": "notched", "C": "full_button", "D": null,      "E": "none"},
+    "bomber":     {"A": "round",  "B": "band",    "C": "full_zip",    "D": null,      "E": "none"},
+    "henley":     {"A": "round",  "B": "none",    "C": "half_placket","D": "rib",     "E": "none"},
+    "turtleneck": {"A": "round",  "B": "turtle",  "C": "pullover",    "D": null,      "E": "none"},
+    "campShirt":  {"A": "v",      "B": "camp",    "C": "full_button", "D": null,      "E": "none"}
+  },
+
+  "migration": {
+    "_doc": "기존 S 상태 → 신규 3축 매핑",
+    "from_old": {
+      "neckType=finish, neckFinish=rib":     {"B": "none", "D": "rib"},
+      "neckType=finish, neckFinish=binding":  {"B": "none", "D": "binding"},
+      "neckType=finish, neckFinish=raw":      {"B": "none", "D": "raw"},
+      "neckType=collar, collarType=shirt":    {"B": "shirt"},
+      "neckType=collar, collarType=band":     {"B": "band"},
+      "neckType=collar, collarType=china":    {"B": "band", "_note": "china → band + height param"},
+      "neckType=collar, collarType=mandarin": {"B": "band", "_note": "mandarin → band + height param"},
+      "neckType=collar, collarType=peter":    {"B": "peter"},
+      "neckType=collar, collarType=sailor":   {"B": "sailor"},
+      "neckType=collar, collarType=notched":  {"B": "notched"},
+      "neckType=collar, collarType=shawl":    {"B": "shawl"},
+      "neckType=collar, collarType=peaked":   {"B": "peaked"},
+      "neckType=collar, collarType=round":    {"B": "round_lapel"},
+      "neckType=collar, collarType=convertible": {"B": "convertible"},
+      "neckType=collar, collarType=wing":     {"B": "wing"},
+      "neckType=collar, collarType=funnel":   {"B": "funnel"},
+      "neckType=collar, collarType=bow":      {"B": "bow"},
+      "neckType=collar, collarType=cowl":     {"B": "cowl"},
+      "neckType=collar, collarType=bertha":   {"B": "bertha"},
+      "neckType=collar, collarType=puritan":  {"B": "puritan"},
+      "neckType=collar, collarType=eton":     {"B": "eton"},
+      "neckType=highneck, highneckType=turtle": {"B": "turtle"},
+      "neckType=highneck, highneckType=mock":   {"B": "mock"},
+      "neckType=hood":                          {"B": "hood"}
+    },
+    "closure_to_C": {
+      "none":   "pullover",
+      "button": "full_button",
+      "zipper": "full_zip",
+      "snap":   "snap",
+      "hidden": "hook",
+      "wrap":   "wrap"
+    }
+  },
+
+  "rendering_key": {
+    "_doc": "B값 → 기존 effectiveFinish() 렌더링 키 매핑 (엔진 변경 최소화)",
+    "none":        "rib",
+    "band":        "collar_band",
+    "shirt":       "collar",
+    "polo":        "collar_polo",
+    "camp":        "collar_convertible",
+    "convertible": "collar_convertible",
+    "notched":     "collar_notched",
+    "shawl":       "collar_shawl",
+    "peaked":      "collar_peaked",
+    "round_lapel": "collar_round",
+    "hood":        "hood",
+    "turtle":      "turtle",
+    "mock":        "mock",
+    "funnel":      "collar_funnel",
+    "cowl":        "collar_cowl",
+    "peter":       "collar_peter",
+    "sailor":      "collar_sailor",
+    "wing":        "collar_wing",
+    "eton":        "collar_eton",
+    "bertha":      "collar_bertha",
+    "puritan":     "collar_puritan",
+    "bow":         "collar_bow"
+  }
+}

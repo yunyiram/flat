@@ -18,7 +18,7 @@
 :root{
   --bg:#F5F3EE;--surface:#FFF;--surface2:#FAFAF7;--border:#E4E0D8;--border-light:#EDEBE6;
   --text:#1C1B18;--text-mid:#4A4740;--text-sub:#8A857C;--accent:#B83A2A;--accent-light:#F0D9D5;
-  --ink:#2A2926;--stitch:#999590;--grain:#C8C4BB;--tag-bg:#ECEAE4;
+  --ink:#2A2926;--stitch:#999590;--grain:#C8C4BB;--tag-bg:#ECEAE4;--gfill:#FAFAF8;
   --handle:#B83A2A;--handle-hover:#D44A38;--handle-active:#922E20;--guide:rgba(184,58,42,0.25);
   --success:#2D7A4F;--success-bg:#E8F5EE;--radius:8px;
 }
@@ -97,6 +97,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 @keyframes cascadePulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
 .zoom-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text-mid);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .zoom-btn:hover{border-color:var(--text);color:var(--text);}
+.color-bar{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:4px 8px;z-index:20;}
+.color-swatch{width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all 0.15s;flex-shrink:0;}
+.color-swatch:hover{transform:scale(1.15);}
+.color-swatch.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--ink);}
+.color-swatch.line{background:#FAFAF8;border-color:var(--border);}
+.color-swatch.line.on{border-color:var(--ink);}
+.color-custom{width:22px;height:22px;border-radius:50%;border:1px dashed var(--border);cursor:pointer;position:relative;overflow:hidden;flex-shrink:0;}
+.color-custom input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.color-label{font-family:'Inter',sans-serif;font-size:9px;color:var(--text-sub);white-space:nowrap;margin-right:2px;}
 .de-item{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid var(--border-light);border-radius:var(--radius);margin-bottom:4px;font-size:10px;cursor:pointer;transition:all 0.15s;}
 .de-item:hover{border-color:var(--text-mid);}.de-item.sel{border-color:var(--accent);background:var(--accent-light);}
 .de-item .de-label{flex:1;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-mid);}
@@ -133,11 +142,88 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .design-el{cursor:pointer;transition:opacity 0.15s;}.design-el:hover{opacity:0.7;}
 .design-el.selected{filter:drop-shadow(0 0 3px var(--accent));}
 .de-handle{cursor:move;fill:var(--accent);stroke:white;stroke-width:1.5;transition:r 0.1s;}.de-handle:hover{r:5;}
+/* ── Card Feed ── */
+#app-cards{position:fixed;inset:0;z-index:900;background:var(--bg);display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+#app-cards::-webkit-scrollbar{display:none;}
+#app-cards.hidden{display:none;}
+.card{min-width:100vw;height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;box-sizing:border-box;cursor:pointer;position:relative;}
+.card-inner{max-width:520px;width:100%;display:flex;flex-direction:column;align-items:center;gap:20px;}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:4px 12px;border-radius:100px;}
+.card-title{font-family:'Inter','Noto Sans KR',sans-serif;font-size:32px;font-weight:700;color:var(--text);text-align:center;line-height:1.3;letter-spacing:-0.02em;}
+.card-sub{font-family:'Inter','Noto Sans KR',sans-serif;font-size:14px;color:var(--text-sub);text-align:center;line-height:1.6;max-width:360px;}
+.card-preview{width:280px;height:280px;display:flex;align-items:center;justify-content:center;background:var(--surface);border-radius:16px;border:1px solid var(--border-light);overflow:hidden;margin:8px 0;}
+.card-preview svg{width:240px;height:240px;}
+.card-cta{font-family:'Inter','Noto Sans KR',sans-serif;font-size:12px;color:var(--text-sub);margin-top:8px;opacity:0.6;transition:opacity 0.2s;}
+.card:hover .card-cta{opacity:1;}
+.card-dots{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:901;}
+#app-cards.hidden~.card-dots{display:none;}
+.card-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all 0.2s;cursor:pointer;}
+.card-dot.on{background:var(--ink);width:24px;border-radius:4px;}
+.card-nav{font-family:'Inter',sans-serif;font-size:11px;color:var(--text-sub);position:fixed;bottom:32px;z-index:901;}
+.card-nav.prev{left:24px;}.card-nav.next{right:24px;}
+#app-cards.hidden~.card-nav{display:none;}
+.cards-logo{position:fixed;top:24px;left:24px;z-index:901;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.04em;}
+.cards-logo i{color:var(--accent);font-style:normal;}
+#app-cards.hidden~.cards-logo{display:none;}
+.card-enter-btn{font-family:'Inter','Noto Sans KR',sans-serif;font-size:13px;font-weight:500;padding:10px 28px;border-radius:100px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:all 0.2s;margin-top:4px;}
+.card-enter-btn:hover{background:var(--accent);}
+/* Card→Engine transition */
+.app-fade-in{animation:appFadeIn 0.4s ease both;}
+@keyframes appFadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
+<section id="app-cards">
+  <div class="card" data-card="0">
+    <div class="card-inner">
+      <span class="card-tag">Structure</span>
+      <h2 class="card-title">크루넥의 7가지 얼굴</h2>
+      <p class="card-sub">같은 넥라인, 다른 실루엣. 핏과 기장, 소매 하나만 바꿔도 완전히 다른 옷이 된다.</p>
+      <div class="card-preview"><svg id="cardSvg0" viewBox="0 0 320 460"></svg></div>
+      <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
+    </div>
+  </div>
+  <div class="card" data-card="1">
+    <div class="card-inner">
+      <span class="card-tag">Style</span>
+      <h2 class="card-title">미니멀 — 선 하나가 전부일 때</h2>
+      <p class="card-sub">디테일을 전부 빼면 남는 건 비율뿐. 클린핏의 정수.</p>
+      <div class="card-preview"><svg id="cardSvg1" viewBox="0 0 320 460"></svg></div>
+      <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
+    </div>
+  </div>
+  <div class="card" data-card="2">
+    <div class="card-inner">
+      <span class="card-tag">Material</span>
+      <h2 class="card-title">여름, 면 저지 한 장</h2>
+      <p class="card-sub">소재가 형태를 결정한다. 같은 패턴이 원단에 따라 어떻게 달라지는지.</p>
+      <div class="card-preview"><svg id="cardSvg2" viewBox="0 0 320 460"></svg></div>
+      <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
+    </div>
+  </div>
+  <div class="card" data-card="3">
+    <div class="card-inner">
+      <span class="card-tag">Trend</span>
+      <h2 class="card-title">오버사이즈는 끝났을까?</h2>
+      <p class="card-sub">핏 슬라이더 하나로 스키니부터 오버사이즈까지. 트렌드는 숫자로 말한다.</p>
+      <div class="card-preview"><svg id="cardSvg3" viewBox="0 0 320 460"></svg></div>
+      <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
+    </div>
+  </div>
+  <div class="card" data-card="4">
+    <div class="card-inner">
+      <span class="card-tag">Structure</span>
+      <h2 class="card-title">래글런 소매의 3가지 변형</h2>
+      <p class="card-sub">어깨선이 사라지면 실루엣이 바뀐다. 셋인, 래글런, 그리고 그 사이.</p>
+      <div class="card-preview"><svg id="cardSvg4" viewBox="0 0 320 460"></svg></div>
+      <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
+    </div>
+  </div>
+</section>
+<div class="cards-logo">FLAT<i>.</i></div>
+<div class="card-dots" id="cardDots"></div>
 <header>
-  <div class="logo">FLAT<i>.</i></div>
+  <div class="logo" style="cursor:pointer" onclick="CardFeed.show()">FLAT<i>.</i></div>
   <div class="header-r">
     <div class="mode-toggle">
       <button class="mode-btn on" id="modePanel" onclick="setMode('panel')" data-i18n="header.panel">Panel</button>
@@ -165,14 +251,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
   <div class="psec"><div class="psec-title">Neckline</div>
     <div class="pg"><div class="pg-label" data-i18n="neck.shape">Shape</div><div class="trow" data-p="neckShape" data-fold="6"><button class="tb on" data-v="round" data-i18n="neck.round">Round</button><button class="tb" data-v="v" data-i18n="neck.v">V-Neck</button><button class="tb" data-v="deep_v" data-i18n="neck.deep_v">Deep V</button><button class="tb" data-v="u" data-i18n="neck.u">U-Neck</button><button class="tb" data-v="square" data-i18n="neck.square">Square</button><button class="tb" data-v="boat" data-i18n="neck.boat">Boat</button><button class="tb" data-v="scoop" data-i18n="neck.scoop">Scoop</button><button class="tb" data-v="straight" data-i18n="neck.straight">Straight</button></div></div>
     <div class="pg"><div class="pg-label" data-i18n="neck.detail">Detail</div><div class="trow" data-p="neckDetail"><button class="tb on" data-v="none" data-i18n="neck.d_none">None</button><button class="tb" data-v="henley" data-i18n="neck.henley">Henley</button><button class="tb" data-v="keyhole" data-i18n="neck.keyhole">Keyhole</button><button class="tb" data-v="drape" data-i18n="neck.drape">Drape</button></div></div>
-    <div class="pg"><div class="pg-label" data-i18n="neck.neckType">Neck Type</div><div class="trow" data-p="neckType"><button class="tb on" data-v="finish" data-i18n="neck.finish">Finish</button><button class="tb" data-v="collar" data-i18n="neck.collar">Collar</button><button class="tb" data-v="highneck" data-i18n="neck.highneck">Highneck</button><button class="tb" data-v="hood" data-i18n="neck.hood">Hood</button></div></div>
-    <div id="neckSub_finish"><div class="pg"><div class="pg-label" data-i18n="neck.finishLabel">Finish</div><div class="trow" data-p="neckFinish"><button class="tb on" data-v="rib" data-i18n="neck.rib">Rib</button><button class="tb" data-v="binding" data-i18n="neck.binding">Binding</button><button class="tb" data-v="raw" data-i18n="neck.raw">Raw Edge</button></div></div></div>
-    <div id="neckSub_collar" style="display:none"><div class="pg"><div class="pg-label" data-i18n="neck.collarGroup">Collar Group</div><div class="trow" data-p="collarGroup"><button class="tb on" data-v="flat" data-i18n="neck.flat">Flat</button><button class="tb" data-v="stand" data-i18n="neck.stand">Stand</button><button class="tb" data-v="tailored" data-i18n="neck.tailored">Tailored</button><button class="tb" data-v="deco" data-i18n="neck.deco">Deco</button></div></div>
-    <div class="pg"><div class="trow collar-grp" id="cg_flat"><button class="tb ct on" data-v="peter" data-i18n="neck.peter">Peter Pan</button><button class="tb ct" data-v="sailor" data-i18n="neck.sailor">Sailor</button><button class="tb ct" data-v="bertha" data-i18n="neck.bertha">Bertha</button><button class="tb ct" data-v="puritan" data-i18n="neck.puritan">Puritan</button><button class="tb ct" data-v="eton" data-i18n="neck.eton">Eton</button></div>
-    <div class="trow collar-grp" id="cg_stand" style="display:none"><button class="tb ct" data-v="band" data-i18n="neck.band">Band</button><button class="tb ct" data-v="china" data-i18n="neck.china">China</button><button class="tb ct" data-v="mandarin" data-i18n="neck.mandarin">Mandarin</button><button class="tb ct" data-v="funnel" data-i18n="neck.funnel">Funnel</button><button class="tb ct" data-v="wing" data-i18n="neck.wing">Wing</button></div>
-    <div class="trow collar-grp" id="cg_tailored" style="display:none"><button class="tb ct" data-v="shirt" data-i18n="neck.shirt">Shirt</button><button class="tb ct" data-v="notched" data-i18n="neck.notched">Notched</button><button class="tb ct" data-v="shawl" data-i18n="neck.shawl">Shawl</button><button class="tb ct" data-v="peaked" data-i18n="neck.peaked">Peaked</button><button class="tb ct" data-v="round" data-i18n="neck.c_round">Round</button><button class="tb ct" data-v="convertible" data-i18n="neck.convertible">Convertible</button></div>
-    <div class="trow collar-grp" id="cg_deco" style="display:none"><button class="tb ct" data-v="bow" data-i18n="neck.bow">Bow</button><button class="tb ct" data-v="cowl" data-i18n="neck.cowl">Cowl</button></div></div></div>
-    <div id="neckSub_highneck" style="display:none"><div class="pg"><div class="pg-label" data-i18n="neck.highneckLabel">Highneck</div><div class="trow" data-p="highneckType"><button class="tb on" data-v="turtle" data-i18n="neck.turtle">Turtleneck</button><button class="tb" data-v="mock" data-i18n="neck.mock">Mock Neck</button></div></div></div>
+    <div class="pg"><div class="pg-label" data-i18n="neck.collarLabel">Collar</div><div class="trow" data-neck="B" data-fold="8"><button class="tb on" data-v="none" data-i18n="neck.b_none">None</button><button class="tb" data-v="band" data-i18n="neck.band">Band</button><button class="tb" data-v="shirt" data-i18n="neck.shirt">Shirt</button><button class="tb" data-v="polo" data-i18n="neck.polo">Polo</button><button class="tb" data-v="notched" data-i18n="neck.notched">Notched</button><button class="tb" data-v="shawl" data-i18n="neck.shawl">Shawl</button><button class="tb" data-v="turtle" data-i18n="neck.turtle">Turtle</button><button class="tb" data-v="hood" data-i18n="neck.hood">Hood</button><button class="tb" data-v="camp" data-i18n="neck.camp">Camp</button><button class="tb" data-v="convertible" data-i18n="neck.convertible">Convertible</button><button class="tb" data-v="mock" data-i18n="neck.mock">Mock</button><button class="tb" data-v="funnel" data-i18n="neck.funnel">Funnel</button><button class="tb" data-v="peaked" data-i18n="neck.peaked">Peaked</button><button class="tb" data-v="round_lapel" data-i18n="neck.c_round">Round Lapel</button><button class="tb" data-v="peter" data-i18n="neck.peter">Peter Pan</button><button class="tb" data-v="sailor" data-i18n="neck.sailor">Sailor</button><button class="tb" data-v="wing" data-i18n="neck.wing">Wing</button><button class="tb" data-v="cowl" data-i18n="neck.cowl">Cowl</button><button class="tb" data-v="eton" data-i18n="neck.eton">Eton</button><button class="tb" data-v="bertha" data-i18n="neck.bertha">Bertha</button><button class="tb" data-v="puritan" data-i18n="neck.puritan">Puritan</button><button class="tb" data-v="bow" data-i18n="neck.bow">Bow</button></div></div>
+    <div class="pg"><div class="pg-label" data-i18n="neck.openingLabel">Opening</div><div class="trow" data-neck="C" data-fold="6"><button class="tb on" data-v="pullover" data-i18n="neck.pullover">Pullover</button><button class="tb" data-v="full_button" data-i18n="neck.full_button">Full Button</button><button class="tb" data-v="half_placket" data-i18n="neck.half_placket">Half Placket</button><button class="tb" data-v="full_zip" data-i18n="neck.full_zip">Full Zip</button><button class="tb" data-v="wrap" data-i18n="neck.c_wrap">Wrap</button><button class="tb" data-v="open_front" data-i18n="neck.open_front">Open Front</button><button class="tb" data-v="half_zip" data-i18n="neck.half_zip">Half Zip</button><button class="tb" data-v="quarter_zip" data-i18n="neck.quarter_zip">¼ Zip</button><button class="tb" data-v="snap" data-i18n="neck.c_snap">Snap</button><button class="tb" data-v="hook" data-i18n="neck.hook">Hook</button><button class="tb" data-v="tie" data-i18n="neck.c_tie">Tie</button><button class="tb" data-v="lacing" data-i18n="neck.lacing">Lacing</button></div></div>
+    <div id="neckFinishRow"><div class="pg"><div class="pg-label" data-i18n="neck.finishLabel">Finish</div><div class="trow" data-p="neckFinish"><button class="tb on" data-v="rib" data-i18n="neck.rib">Rib</button><button class="tb" data-v="binding" data-i18n="neck.binding">Binding</button><button class="tb" data-v="raw" data-i18n="neck.raw">Raw Edge</button></div></div></div>
     <div class="pg"><div class="pg-label" data-i18n="neck.neckDepth">Neck Depth</div><div class="slider-wrap"><input type="range" id="sl_neckDepth" min="0" max="100" value="35"><span class="sval" id="sv_neckDepth">Normal</span></div></div>
     <div class="pg"><div class="pg-label" data-i18n="neck.neckCurve">Neck Curve</div><div class="slider-wrap"><input type="range" id="sl_neckCurve" min="0" max="100" value="75"><span class="sval" id="sv_neckCurve">Round</span></div></div>
     <div class="pg"><div class="pg-label" data-i18n="neck.neckWidth">Neck Width</div><div class="slider-wrap"><input type="range" id="sl_neckWidth" min="0" max="100" value="40"><span class="sval" id="sv_neckWidth">Normal</span></div></div>
@@ -305,6 +386,20 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
     <button class="zoom-btn" onclick="Zoom.reset()" style="font-size:10px">1:1</button>
   </div>
   <div class="cascade-label" id="cascadeLabel"></div>
+  <div class="color-bar" id="colorBar">
+    <span class="color-label" data-i18n="canvas.colorLabel">Color</span>
+    <div class="color-swatch line on" data-color="" title="Line drawing"></div>
+    <div class="color-swatch" style="background:#2C2C2C" data-color="#2C2C2C" title="Black"></div>
+    <div class="color-swatch" style="background:#1B3A5C" data-color="#1B3A5C" title="Navy"></div>
+    <div class="color-swatch" style="background:#F5F0EB" data-color="#F5F0EB" title="Ivory"></div>
+    <div class="color-swatch" style="background:#C4B5A0" data-color="#C4B5A0" title="Beige"></div>
+    <div class="color-swatch" style="background:#8B8B8B" data-color="#8B8B8B" title="Grey"></div>
+    <div class="color-swatch" style="background:#B83A2A" data-color="#B83A2A" title="Red"></div>
+    <div class="color-swatch" style="background:#3B6B4E" data-color="#3B6B4E" title="Forest"></div>
+    <div class="color-swatch" style="background:#D4A76A" data-color="#D4A76A" title="Camel"></div>
+    <div class="color-swatch" style="background:#E8D5C4" data-color="#E8D5C4" title="Blush"></div>
+    <div class="color-custom" title="Custom color"><input type="color" value="#6688AA" id="customColorPick"></div>
+  </div>
   <div class="canvas-hint" id="canvasHint" data-i18n="canvas.hint">Drag red handles for symmetric editing. Ctrl+Z to undo</div>
 </div>
 
@@ -340,14 +435,17 @@ en:{
     round:'Round',v:'V-Neck',deep_v:'Deep V',u:'U-Neck',square:'Square',boat:'Boat',scoop:'Scoop',straight:'Straight',
     none:'None',
     d_none:'None',henley:'Henley',keyhole:'Keyhole',drape:'Drape',
-    finish:'Finish',collar:'Collar',highneck:'Highneck',hood:'Hood',
+    collarLabel:'Collar',b_none:'None',
+    band:'Band',shirt:'Shirt',polo:'Polo',notched:'Notched',shawl:'Shawl',
+    turtle:'Turtleneck',hood:'Hood',camp:'Camp',convertible:'Convertible',
+    mock:'Mock Neck',funnel:'Funnel',peaked:'Peaked',c_round:'Round Lapel',
+    peter:'Peter Pan',sailor:'Sailor',wing:'Wing',cowl:'Cowl',
+    eton:'Eton',bertha:'Bertha',puritan:'Puritan',bow:'Bow',
+    openingLabel:'Opening',pullover:'Pullover',full_button:'Full Button',
+    half_placket:'Half Placket',full_zip:'Full Zip',c_wrap:'Wrap',
+    open_front:'Open Front',half_zip:'Half Zip',quarter_zip:'¼ Zip',
+    c_snap:'Snap',hook:'Hook',c_tie:'Tie',lacing:'Lacing',
     finishLabel:'Finish',rib:'Rib',binding:'Binding',raw:'Raw Edge',
-    collarGroup:'Collar Group',flat:'Flat',stand:'Stand',tailored:'Tailored',deco:'Deco',
-    peter:'Peter Pan',sailor:'Sailor',bertha:'Bertha',puritan:'Puritan',eton:'Eton',
-    band:'Band',china:'China',mandarin:'Mandarin',funnel:'Funnel',wing:'Wing',
-    shirt:'Shirt',notched:'Notched',shawl:'Shawl',peaked:'Peaked',c_round:'Round',convertible:'Convertible',
-    bow:'Bow',cowl:'Cowl',
-    highneckLabel:'Highneck',turtle:'Turtleneck',mock:'Mock Neck',
     neckDepth:'Neck Depth',neckCurve:'Neck Curve',neckWidth:'Neck Width'},
   shoulder:{label:'Shoulder Type',standard:'Standard',dropped:'Dropped',off_shoulder:'Off-shoulder',halter:'Halter',extended:'Extended',narrow:'Narrow',strapless:'Strapless',one_shoulder:'One-shoulder',
     strapType:'Strap',st_none:'None',st_wide:'Wide',st_narrow:'Narrow',st_spaghetti:'Spaghetti',st_ribbon:'Ribbon',st_tied:'Tied',
@@ -400,7 +498,8 @@ en:{
     hemLabel:'Hem',h_plain:'Plain',h_cuffed:'Turn-up',h_rib:'Rib',h_raw:'Raw Edge',
     crease:'Crease',cr_none:'None',cr_front:'Front Crease',
     fitLabel:'Fit'},
-  canvas:{hint:'Drag red handles for symmetric editing. Ctrl+Z to undo',cascade:'Cascade Demo'},
+  canvas:{hint:'Drag red handles for symmetric editing. Ctrl+Z to undo',cascade:'Cascade Demo',colorLabel:'Color'},
+  card:{explore:'Explore →'},
   export:{saveProject:'Save Project',loadProject:'Load Project',copySpec:'Copy Spec',saveSpec:'Save Spec',techpack:'Tech Pack',pdf:'PDF Tech Pack',workOrder:'PDF Work Order',factoryLink:'🔗 Factory Link'},
   slider:{shallow:'Shallow',normal:'Normal',deep:'Deep',
     square:'Square',v:'V',angular:'Angular',round:'Round',uShape:'U',
@@ -552,14 +651,17 @@ ko:{
     round:'라운드',v:'V넥',deep_v:'딥V',u:'U넥',square:'스퀘어',boat:'보트넥',scoop:'스쿱',straight:'스트레이트',
     none:'없음',
     d_none:'없음',henley:'헨리플래킷',keyhole:'키홀',drape:'드레이프',
-    finish:'마감',collar:'칼라',highneck:'하이넥',hood:'후드',
+    collarLabel:'칼라',b_none:'없음',
+    band:'밴드',shirt:'셔츠',polo:'폴로',notched:'노치드',shawl:'숄',
+    turtle:'터틀넥',hood:'후드',camp:'캠프',convertible:'컨버터블',
+    mock:'목넥',funnel:'퍼넬',peaked:'피크드',c_round:'라운드라펠',
+    peter:'피터팬',sailor:'세일러',wing:'윙',cowl:'카울',
+    eton:'이튼',bertha:'버사',puritan:'퓨리턴',bow:'보우',
+    openingLabel:'여밈',pullover:'풀오버',full_button:'버튼',
+    half_placket:'하프플래킷',full_zip:'풀지퍼',c_wrap:'랩',
+    open_front:'오픈프론트',half_zip:'하프지퍼',quarter_zip:'쿼터지퍼',
+    c_snap:'스냅',hook:'후크',c_tie:'타이',lacing:'레이싱',
     finishLabel:'마감',rib:'리브',binding:'바이어스',raw:'로우엣지',
-    collarGroup:'칼라 분류',flat:'플랫',stand:'스탠드',tailored:'테일러드',deco:'장식',
-    peter:'피터팬',sailor:'세일러',bertha:'버사',puritan:'퓨리턴',eton:'이튼',
-    band:'밴드',china:'차이나',mandarin:'만다린',funnel:'퍼넬',wing:'윙',
-    shirt:'셔츠',notched:'노치드',shawl:'숄',peaked:'피크드',c_round:'라운드',convertible:'컨버터블',
-    bow:'보우',cowl:'카울',
-    highneckLabel:'하이넥',turtle:'터틀넥',mock:'목넥',
     neckDepth:'넥 깊이',neckCurve:'넥 곡률',neckWidth:'넥 폭'},
   shoulder:{label:'어깨 타입',standard:'스탠다드',dropped:'드롭',off_shoulder:'오프숄더',halter:'홀터',extended:'익스텐디드',narrow:'좁은어깨',strapless:'스트랩리스',one_shoulder:'원숄더',
     strapType:'스트랩',st_none:'없음',st_wide:'와이드',st_narrow:'내로우',st_spaghetti:'스파게티',st_ribbon:'리본',st_tied:'타이드',
@@ -612,7 +714,8 @@ ko:{
     hemLabel:'밑단',h_plain:'접단',h_cuffed:'턴업',h_rib:'리브',h_raw:'로우엣지',
     crease:'주름선',cr_none:'없음',cr_front:'앞주름',
     fitLabel:'핏'},
-  canvas:{hint:'빨간 핸들을 드래그 → 좌우대칭 실시간 편집 · Ctrl+Z 되돌리기',cascade:'캐스케이드 데모'},
+  canvas:{hint:'빨간 핸들을 드래그 → 좌우대칭 실시간 편집 · Ctrl+Z 되돌리기',cascade:'캐스케이드 데모',colorLabel:'컬러'},
+  card:{explore:'살펴보기 →'},
   export:{saveProject:'프로젝트 저장',loadProject:'프로젝트 불러오기',copySpec:'스펙 복사',saveSpec:'스펙 저장',techpack:'테크팩',pdf:'PDF 테크팩',workOrder:'PDF 작업지시서',factoryLink:'🔗 공장용 링크'},
   slider:{shallow:'얕음',normal:'보통',deep:'깊음',
     square:'스퀘어',v:'V',angular:'각진',round:'라운드',uShape:'U',
@@ -736,6 +839,13 @@ function applyLang(){
   if(typeof draw==='function') draw();
   // garment hint
   if(typeof updateGarmentHint==='function') updateGarmentHint();
+  // Card feed lang
+  if(typeof CARD_DATA!=='undefined') CARD_DATA.forEach((cd,i)=>{
+    const card=document.querySelector(`.card[data-card="${i}"]`);if(!card)return;
+    const isKo=curLang==='ko';
+    card.querySelector('.card-title').textContent=isKo?cd.title:cd.titleEn;
+    card.querySelector('.card-sub').textContent=isKo?cd.sub:cd.subEn;
+  });
   // html lang 속성
   document.documentElement.lang=curLang==='ko'?'ko':'en';
 }
@@ -771,7 +881,8 @@ const S={
   pantsType:'straight',pantsLen:80,pantsFlare:0,
   pantsWaist:'straight',pantsDart:'front_back',pantsRise:'mid',
   pantsClosure:'zip_fly',pantsFit:50,pantsPleat:'none',
-  pantsCuff:'plain',pantsCrease:'none'
+  pantsCuff:'plain',pantsCrease:'none',
+  fillColor:''
 };
 
 const DEFAULT_STATE=JSON.parse(JSON.stringify(S));
@@ -784,36 +895,39 @@ const STITCH_DASHES={single:'5,4',double:'3,2',overlock:'2,2',flatlock:'6,2',cov
 const COLLAR_GROUPS={
   flat:['peter','sailor','bertha','puritan','eton'],
   stand:['band','china','mandarin','funnel','wing'],
-  tailored:['shirt','notched','shawl','peaked','round','convertible'],
+  shirt:['shirt','convertible'],
+  tailored:['notched','shawl','peaked','round'],
   deco:['bow','cowl']
 };
 
-// ── 칼라 파라미터 레퍼런스 포인트 ──
-// 각 칼라의 핵심 치수를 neckW(넥 반폭), baseNeckD(넥 깊이)에 비례하는 공식으로 정의
-// sh=standHeight, fw=fallWidth, fd=fallDrop, bh=backHeight
+// ── 칼라 파라미터 — collar_geometry_cheatsheet.md 기반 비례 공식 ──
+// neckW는 px 단위 (~17px at M). 치트시트 cm 비율을 px 스케일에 맞춤
+// sh=standHeight, fw=fallWidth, fd=fallDrop
 // lw=lapelWidth, lh=lapelHeight, ch=collarHeight
 const COLLAR_PARAMS={
-  // Stand collars
-  band:    {sh:10},
-  china:   {sh:(nw)=>Math.max(16,nw*0.6), gap:4},
-  mandarin:{sh:(nw)=>Math.max(10,nw*0.4), gap:2},
-  funnel:  {sh:20, flareTop:5},
-  wing:    {sh:16, tipW:9, tipDrop:6},
-  // Flat collars
-  peter:   {fw:(nw)=>nw*0.85, fd:22},
-  sailor:  {fw:(nw)=>nw+18, fd:32, cornerR:6},
-  bertha:  {fw:(nw)=>nw*1.3, fd:28},
-  puritan: {fw:(nw)=>nw*1.3, fd:22},
-  eton:    {fw:(nw)=>nw*0.8, fd:10, sh:8},
-  // Tailored collars
-  shirt:   {sh:9, fw:(nw)=>nw*0.75, fd:14},
-  notched: {lw:(nw)=>nw*1.3, ch:12, lh:(d)=>d*2.0},
+  // Stand-only: standHeight만, fall 없음
+  band:    {sh:(nw)=>nw*0.58},                       // ~10px (치트시트 2.5cm)
+  china:   {sh:(nw)=>nw*0.94, gap:(nw)=>nw*0.23},   // ~16px (치트시트 3.5cm)
+  mandarin:{sh:(nw)=>nw*0.7, gap:(nw)=>nw*0.12},    // ~12px (치트시트 3cm)
+  funnel:  {sh:(nw)=>nw*1.17, flareTop:(nw)=>nw*0.29},// ~20px (치트시트 6cm)
+  wing:    {sh:(nw)=>nw*0.94, tipW:(nw)=>nw*0.53, tipDrop:(nw)=>nw*0.35},
+  // Flat: stand 없음, fall만
+  peter:   {fw:(nw)=>nw*0.85, fd:(nw)=>nw*1.3},     // fallW ~15px, drop ~22px
+  sailor:  {fw:(nw)=>nw*2.05, fd:(nw)=>nw*1.88, cornerR:6},
+  bertha:  {fw:(nw)=>nw*2.2, fd:(nw)=>nw*1.65},
+  puritan: {fw:(nw)=>nw*2.0, fd:(nw)=>nw*1.3},
+  eton:    {fw:(nw)=>nw*0.47, fd:(nw)=>nw*0.59},
+  // Stand+Fall (셔츠 계열) — 치트시트 핵심
+  shirt:   {sh:(nw)=>nw*0.53, fw:(nw)=>nw*0.44, fd:(nw)=>nw*0.82, pointLen:(nw)=>nw*0.29, pointAngle:60, spread:(nw)=>nw*0.47},
+  convertible:{sh:(nw)=>nw*0.47, fw:(nw)=>nw*0.35, fd:(nw)=>nw*0.94},
+  camp:    {sh:(nw)=>nw*0.47, fw:(nw)=>nw*0.35, fd:(nw)=>nw*0.7},
+  // Tailored (라펠 결합)
+  notched: {lw:(nw)=>nw*1.3, ch:(nw)=>nw*0.7, lh:(d)=>d*2.0},
   shawl:   {lh:(d)=>d*1.8, sw:(nw)=>nw*0.85},
-  peaked:  {lw:(nw)=>nw*0.85, ch:8, lh:(d)=>d*1.5, peakH:12},
-  round:   {lw:(nw)=>nw*1.0, ch:8, lh:(d)=>d*1.7},
-  convertible:{sh:8, fw:(nw)=>nw*0.6, fd:16},
+  peaked:  {lw:(nw)=>nw*0.85, ch:(nw)=>nw*0.47, lh:(d)=>d*1.5, peakH:(nw)=>nw*0.7},
+  round:   {lw:(nw)=>nw*1.0, ch:(nw)=>nw*0.47, lh:(d)=>d*1.7},
   // Deco
-  bow:     {sh:(nw)=>Math.max(10,nw*0.4), loopW:(nw)=>Math.max(22,nw*0.9), loopD:(nw)=>Math.max(10,nw*0.4)},
+  bow:     {sh:(nw)=>nw*0.58, loopW:(nw)=>nw*1.3, loopD:(nw)=>nw*0.58},
   cowl:    {dDepth:(d)=>d*0.9}
 };
 // 칼라 파라미터 resolve — 함수값을 실수로 변환
@@ -850,6 +964,106 @@ function decomposeNeckFinish(nf){
   return {neckType:'collar',collarGroup:cg,collarType:ct};
 }
 
+// ── 넥 시스템 3축 브릿지 (UX Architecture v1) ──
+// B값 → 기존 effectiveFinish() 렌더링 키 매핑
+const NECK_B_RENDER={
+  none:null, band:'collar_band', shirt:'collar',
+  polo:'collar_band', camp:'collar_convertible', convertible:'collar_convertible',
+  notched:'collar_notched', shawl:'collar_shawl', peaked:'collar_peaked',
+  round_lapel:'collar_round', hood:'hood', turtle:'turtle', mock:'mock',
+  funnel:'collar_funnel', cowl:'collar_cowl',
+  peter:'collar_peter', sailor:'collar_sailor', wing:'collar_wing',
+  eton:'collar_eton', bertha:'collar_bertha', puritan:'collar_puritan', bow:'collar_bow'
+};
+// B값 그룹 (UI 접기용)
+const NECK_B_GROUPS={
+  stand:['band','turtle','mock','funnel','wing'],
+  shirt:['shirt','polo','camp','convertible'],
+  tailored:['notched','shawl','peaked','round_lapel'],
+  flat:['peter','sailor','eton','bertha','puritan'],
+  deco:['bow','cowl'],
+  cover:['hood']
+};
+// 갤러리 순서 (상위 8 = 빠른 선택)
+const NECK_B_GALLERY=['none','band','shirt','polo','notched','shawl','turtle','hood',
+  'camp','convertible','mock','funnel','peaked','round_lapel',
+  'peter','sailor','wing','cowl','eton','bertha','puritan','bow'];
+
+// 기존 상태 → B값 (read bridge)
+function stateToNeckB(){
+  switch(S.neckType){
+    case 'finish': return 'none';
+    case 'collar':
+      if(S.collarType==='china'||S.collarType==='mandarin') return 'band';
+      if(S.collarType==='round') return 'round_lapel';
+      return S.collarType;
+    case 'highneck': return S.highneckType;
+    case 'hood': return 'hood';
+    default: return 'none';
+  }
+}
+// B값 → 기존 상태 (write bridge)
+function setNeckB(b){
+  if(b==='none'){S.neckType='finish';return;}
+  if(b==='turtle'||b==='mock'){S.neckType='highneck';S.highneckType=b;return;}
+  if(b==='hood'){S.neckType='hood';return;}
+  // collar 계열
+  S.neckType='collar';
+  const ct=(b==='round_lapel')?'round':(b==='polo'?'shirt':b);
+  S.collarType=ct;
+  for(const[g,list] of Object.entries(COLLAR_GROUPS)){
+    if(list.includes(ct)){S.collarGroup=g;break;}
+  }
+  S.neckFinish='collar'+(ct==='shirt'?'':'_'+ct);
+}
+// 기존 closure → C값 (read bridge)
+function stateToNeckC(){
+  if(S.closure==='none'){
+    if(S.neckDetail==='henley') return 'half_placket';
+    return 'pullover';
+  }
+  if(S.closure==='button') return S.closureStyle==='double'?'full_button':'full_button';
+  if(S.closure==='zipper') return 'full_zip';
+  if(S.closure==='snap') return 'snap';
+  if(S.closure==='hidden') return 'hook';
+  if(S.closure==='wrap') return 'wrap';
+  return 'pullover';
+}
+// C값 → 기존 closure (write bridge)
+function setNeckC(c){
+  const map={
+    pullover:{closure:'none'},
+    full_button:{closure:'button',closurePos:'front'},
+    half_placket:{closure:'button',closurePos:'front'},
+    full_zip:{closure:'zipper',closurePos:'front'},
+    half_zip:{closure:'zipper',closurePos:'front'},
+    quarter_zip:{closure:'zipper',closurePos:'front'},
+    snap:{closure:'snap',closurePos:'front'},
+    hook:{closure:'hidden',closurePos:'front'},
+    wrap:{closure:'wrap',closurePos:'front'},
+    open_front:{closure:'none'},
+    tie:{closure:'wrap',closurePos:'front'},
+    lacing:{closure:'button',closurePos:'front'}
+  };
+  if(map[c]) Object.assign(S,map[c]);
+}
+// B × C 호환성
+const NECK_BC_BLOCKED=[
+  ['hood','wrap'],['turtle','open_front'],['turtle','wrap'],
+  ['funnel','open_front'],['notched','pullover'],['shawl','pullover'],
+  ['peaked','pullover'],['peter','full_zip'],['sailor','full_zip']
+];
+function isNeckBCCompat(b,c){return !NECK_BC_BLOCKED.some(([bb,cc])=>bb===b&&cc===c);}
+// C → A 자동 전환 (cascade)
+const NECK_CA_FORCE={wrap:'v',open_front:'v'};
+function applyNeckCascade(){
+  const c=stateToNeckC();
+  if(NECK_CA_FORCE[c]&&S.neckShape!==NECK_CA_FORCE[c]){
+    S.neckShape=NECK_CA_FORCE[c];
+    syncToggle('neckShape',S.neckShape);
+  }
+}
+
 const History={
   stack:[],idx:-1,max:40,_last:'',
   push(){
@@ -871,7 +1085,9 @@ const History={
     if(!S.neckType){const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);}
     Object.keys(S).forEach(k=>{syncToggle(k,S[k]);});
     SD.forEach(([id,k,vid,fmt])=>{document.getElementById(id).value=S[k];document.getElementById(vid).textContent=fmt(S[k]);});
-    updateNeckSubPanels();syncCollarBtns();
+    updateNeckUI();updateNeckBCCompat();
+    document.documentElement.style.setProperty('--gfill',S.fillColor||'#FAFAF8');
+    document.querySelectorAll('#colorBar .color-swatch').forEach(s=>s.classList.toggle('on',s.dataset.color===(S.fillColor||'')));
     draw(true);
   }
 };
@@ -1089,18 +1305,18 @@ const SHOULDER_DETAIL_COMPAT={
 };
 // Shape → collarGroup → 허용 collarType[]
 const COLLAR_COMPAT={
-  round:{flat:['peter','sailor','bertha','puritan','eton'],stand:['band','china','mandarin','funnel','wing'],tailored:['shirt'],deco:['bow','cowl']},
-  v:{flat:['peter','sailor','bertha','puritan','eton'],stand:['wing'],tailored:['shirt','notched','shawl','peaked','round','convertible'],deco:['bow','cowl']},
-  deep_v:{flat:['peter','sailor','bertha','puritan','eton'],stand:[],tailored:['shirt','notched','shawl','peaked','round','convertible'],deco:['bow','cowl']},
-  u:{flat:['peter','sailor','bertha','puritan','eton'],stand:[],tailored:[],deco:['bow','cowl']},
-  square:{flat:['peter','sailor','bertha','puritan','eton'],stand:['band','china','mandarin','wing'],tailored:['shirt'],deco:['bow','cowl']},
-  boat:{flat:['peter','sailor','bertha','puritan'],stand:[],tailored:[],deco:['bow','cowl']},
-  scoop:{flat:['peter','sailor','bertha','puritan','eton'],stand:['band','china','mandarin','funnel','wing'],tailored:['shirt'],deco:['bow','cowl']},
-  straight:{flat:['peter','sailor','bertha','puritan'],stand:['band'],tailored:[],deco:['bow','cowl']},
+  round:{flat:['peter','sailor','bertha','puritan','eton'],stand:['band','china','mandarin','funnel','wing'],shirt:['shirt','convertible'],tailored:[],deco:['bow','cowl']},
+  v:{flat:['peter','sailor','bertha','puritan','eton'],stand:['wing'],shirt:['shirt','convertible'],tailored:['notched','shawl','peaked','round'],deco:['bow','cowl']},
+  deep_v:{flat:['peter','sailor','bertha','puritan','eton'],stand:[],shirt:['shirt','convertible'],tailored:['notched','shawl','peaked','round'],deco:['bow','cowl']},
+  u:{flat:['peter','sailor','bertha','puritan','eton'],stand:[],shirt:[],tailored:[],deco:['bow','cowl']},
+  square:{flat:['peter','sailor','bertha','puritan','eton'],stand:['band','china','mandarin','wing'],shirt:['shirt'],tailored:[],deco:['bow','cowl']},
+  boat:{flat:['peter','sailor','bertha','puritan'],stand:[],shirt:[],tailored:[],deco:['bow','cowl']},
+  scoop:{flat:['peter','sailor','bertha','puritan','eton'],stand:['band','china','mandarin','funnel','wing'],shirt:['shirt','convertible'],tailored:[],deco:['bow','cowl']},
+  straight:{flat:['peter','sailor','bertha','puritan'],stand:['band'],shirt:[],tailored:[],deco:['bow','cowl']},
 };
 // ShoulderType이 칼라 범위를 추가 제한
 const SHOULDER_COLLAR_OVERRIDE={
-  off_shoulder:{flat:['peter','sailor','bertha','puritan'],stand:[],tailored:[],deco:['cowl']},
+  off_shoulder:{flat:['peter','sailor','bertha','puritan'],stand:[],shirt:[],tailored:[],deco:['cowl']},
   // halter: Level 1에서 칼라 자체 차단
 };
 function updateFinishCompat(){
@@ -1123,65 +1339,61 @@ function updateFinishCompat(){
     }
   }
 
-  // Level 1: neckType 버튼 — shape ∩ variant ∩ detail 교집합
-  const all=['finish','collar','highneck','hood'];
-  const byShape=NECKTYPE_COMPAT[ns]||all;
-  const byVariant=SHOULDER_NECKTYPE_COMPAT[nv]||all;
-  const byDetail=DETAIL_NECKTYPE_COMPAT[S.neckDetail]||all;
-  const allowedTypes=all.filter(t=>byShape.includes(t)&&byVariant.includes(t)&&byDetail.includes(t));
-  const typeRow=document.querySelector('[data-p="neckType"]');
-  if(typeRow){
-    let typeBlocked=false;
-    typeRow.querySelectorAll('.tb').forEach(b=>{
-      const blocked=!allowedTypes.includes(b.dataset.v);
-      setBtnState2(b,blocked);
-      if(blocked&&b.classList.contains('on')) typeBlocked=true;
-    });
-    if(typeBlocked){
-      S.neckType='finish';
-      typeRow.querySelectorAll('.tb').forEach(x=>x.classList.remove('on'));
-      typeRow.querySelector('[data-v="finish"]').classList.add('on');
-      updateNeckSubPanels();
-    }
+  // B 갤러리 호환성 — shape × shoulder × detail 제약
+  const allNT=['finish','collar','highneck','hood'];
+  const byShape=NECKTYPE_COMPAT[ns]||allNT;
+  const byVariant=SHOULDER_NECKTYPE_COMPAT[nv]||allNT;
+  const byDetail=DETAIL_NECKTYPE_COMPAT[S.neckDetail]||allNT;
+  const allowedNT=allNT.filter(t=>byShape.includes(t)&&byVariant.includes(t)&&byDetail.includes(t));
+
+  // B값 → 내부 neckType 매핑
+  function bToNeckType(b){
+    if(b==='none') return 'finish';
+    if(b==='turtle'||b==='mock') return 'highneck';
+    if(b==='hood') return 'hood';
+    return 'collar';
+  }
+  // B값 → 기존 collarType 매핑 (COLLAR_COMPAT 테이블 조회용)
+  function bToOldCT(b){
+    if(b==='round_lapel') return 'round';
+    if(b==='polo') return 'shirt'; // polo → shirt 렌더러 (전용 렌더러 전까지)
+    return b;
   }
 
-  // Level 2: 칼라 세부 타입 — shape compat ∩ variant override
-  if(S.neckType==='collar'){
-    const baseCompat=COLLAR_COMPAT[ns];
-    const varOverride=SHOULDER_COLLAR_OVERRIDE[nv];
-    if(baseCompat){
-      ['flat','stand','tailored','deco'].forEach(g=>{
-        const baseAllowed=baseCompat[g]||[];
-        const allowed=varOverride?(varOverride[g]||[]).filter(c=>baseAllowed.includes(c)):baseAllowed;
-        const noCollarInGroup=allowed.length===0;
-        const gBtn=document.querySelector('[data-p="collarGroup"] [data-v="'+g+'"]');
-        if(gBtn) setBtnState2(gBtn,noCollarInGroup);
-        document.querySelectorAll('#cg_'+g+' .tb.ct').forEach(b=>{
-          setBtnState2(b,!allowed.includes(b.dataset.v));
-        });
-      });
-      // 현재 칼라 유효성 확인
-      const curBase=baseCompat[S.collarGroup]||[];
-      const curAllowed=varOverride?(varOverride[S.collarGroup]||[]).filter(c=>curBase.includes(c)):curBase;
-      if(!curAllowed.includes(S.collarType)){
-        if(curAllowed.length>0){
-          S.collarType=curAllowed[0];
-        } else {
-          for(const g of ['flat','stand','tailored','deco']){
-            const gBase=baseCompat[g]||[];
-            const gAllowed=varOverride?(varOverride[g]||[]).filter(c=>gBase.includes(c)):gBase;
-            if(gAllowed.length>0){
-              S.collarGroup=g;S.collarType=gAllowed[0];
-              syncToggle('collarGroup',g);
-              updateCollarGroupVis();
-              break;
-            }
+  const bRow=document.querySelector('[data-neck="B"]');
+  if(bRow){
+    let curBBlocked=false;
+    const curB=stateToNeckB();
+    bRow.querySelectorAll('.tb').forEach(btn=>{
+      const b=btn.dataset.v;
+      const nt=bToNeckType(b);
+      let blocked=!allowedNT.includes(nt);
+      // collar 타입이면 COLLAR_COMPAT도 체크
+      if(!blocked&&nt==='collar'){
+        const ct=bToOldCT(b);
+        const baseCompat=COLLAR_COMPAT[ns];
+        const varOverride=SHOULDER_COLLAR_OVERRIDE[nv];
+        if(baseCompat){
+          let found=false;
+          for(const g of ['flat','stand','shirt','tailored','deco']){
+            const base=baseCompat[g]||[];
+            const allowed=varOverride?(varOverride[g]||[]).filter(c=>base.includes(c)):base;
+            if(allowed.includes(ct)){found=true;break;}
           }
+          if(!found) blocked=true;
         }
-        syncCollarBtns();
       }
+      setBtnState2(btn,blocked);
+      if(blocked&&b===curB) curBBlocked=true;
+    });
+    // 현재 B가 비활성화되면 none으로 폴백
+    if(curBBlocked){
+      setNeckB('none');
+      updateNeckUI();
     }
   }
+  // B×C 호환성도 갱신
+  updateNeckBCCompat();
 }
 function setBtnState2(b,blocked){
   if(blocked){b.classList.add('disabled');b.style.opacity='0.3';b.style.pointerEvents='none';}
@@ -1529,28 +1741,91 @@ function updateAllCompat(){
   updateGarmentHint();
 }
 
-// ── 넥 서브패널 토글 ──
-function updateNeckSubPanels(){
-  ['finish','collar','highneck'].forEach(t=>{const el=document.getElementById('neckSub_'+t);if(el)el.style.display=S.neckType===t?'':'none';});
-  if(S.neckType==='collar') updateCollarGroupVis();
+// ── 넥 3축 UI (Phase 1A-2: 갤러리 + 접힌 축) ──
+function syncNeckB(){
+  const b=stateToNeckB();
+  const row=document.querySelector('[data-neck="B"]');
+  if(!row)return;
+  row.querySelectorAll('.tb').forEach(x=>x.classList.toggle('on',x.dataset.v===b));
+  // auto-expand fold if selected is in overflow
+  const ov=row.querySelector('.fold-overflow');
+  if(ov){
+    const m=row.querySelector('.fold-more');
+    if(ov.querySelector('.tb.on')){ov.classList.add('open');if(m){m.classList.add('open');m.textContent='−';}}
+    else if(!ov.classList.contains('open')){if(m)m.textContent='+'+ov.querySelectorAll('.tb').length;}
+  }
 }
-function updateCollarGroupVis(){
-  ['flat','stand','tailored','deco'].forEach(g=>{const el=document.getElementById('cg_'+g);if(el)el.style.display=S.collarGroup===g?'flex':'none';});
+function syncNeckC(){
+  const c=stateToNeckC();
+  const row=document.querySelector('[data-neck="C"]');
+  if(!row)return;
+  row.querySelectorAll('.tb').forEach(x=>x.classList.toggle('on',x.dataset.v===c));
+  const ov=row.querySelector('.fold-overflow');
+  if(ov){
+    const m=row.querySelector('.fold-more');
+    if(ov.querySelector('.tb.on')){ov.classList.add('open');if(m){m.classList.add('open');m.textContent='−';}}
+    else if(!ov.classList.contains('open')){if(m)m.textContent='+'+ov.querySelectorAll('.tb').length;}
+  }
 }
-function syncCollarBtns(){
-  document.querySelectorAll('.tb.ct').forEach(x=>x.classList.remove('on'));
-  const a=document.querySelector('#cg_'+S.collarGroup+' [data-v="'+S.collarType+'"]');
-  if(a)a.classList.add('on');
+function updateNeckUI(){
+  syncNeckB();syncNeckC();
+  // D (neckFinish) 조건부 표시: B=none 일 때만
+  const fr=document.getElementById('neckFinishRow');
+  if(fr) fr.style.display=stateToNeckB()==='none'?'':'none';
 }
+// B×C compat → 추가 비활성화 (shape compat 이후에 호출, 기존 disabled 유지)
+function updateNeckBCCompat(){
+  const curB=stateToNeckB(), curC=stateToNeckC();
+  // C 버튼: 현재 B와 호환 여부 (전체 리셋 후 적용)
+  const cRow=document.querySelector('[data-neck="C"]');
+  if(cRow) cRow.querySelectorAll('.tb').forEach(btn=>{
+    setBtnState2(btn,!isNeckBCCompat(curB,btn.dataset.v));
+  });
+  // B 버튼: 현재 C와 호환 여부 (추가만 — shape compat이 이미 적용됨)
+  const bRow=document.querySelector('[data-neck="B"]');
+  if(bRow) bRow.querySelectorAll('.tb').forEach(btn=>{
+    if(btn.classList.contains('disabled')) return; // shape compat에서 이미 비활성
+    if(!isNeckBCCompat(btn.dataset.v,curC)) setBtnState2(btn,true);
+  });
+}
+// 레거시 호환 — 기존 호출 포인트용 (3축 UI로 리다이렉트)
+function updateNeckSubPanels(){updateNeckUI();updateNeckBCCompat();}
+function syncCollarBtns(){syncNeckB();syncNeckC();}
 
 document.querySelectorAll('.trow').forEach(r=>{const p=r.dataset.p;if(!p)return;r.querySelectorAll('.tb:not(.ct)').forEach(b=>{b.addEventListener('click',()=>{if(b.classList.contains('disabled'))return;r.querySelectorAll('.tb:not(.ct)').forEach(x=>x.classList.remove('on'));b.classList.add('on');S[p]=b.dataset.v;const bp=BUTTON_PRESETS[p];if(bp){const np=bp[b.dataset.v];if(np)Object.entries(np).forEach(([k,v])=>{S[k]=v;const d=SD.find(x=>x[1]===k);if(d){document.getElementById(d[0]).value=v;document.getElementById(d[2]).textContent=d[3](v);}});}
 if(p==='neckShape'&&['off_shoulder','halter','one_shoulder','strapless'].includes(S.shoulderType)){const vo=SHOULDER_PRESETS[S.shoulderType];if(vo)Object.entries(vo).forEach(([k,v])=>{if(k==='shoulderExtra'||k==='shoulderSlope')return;S[k]=v;const d=SD.find(x=>x[1]===k);if(d){document.getElementById(d[0]).value=v;document.getElementById(d[2]).textContent=d[3](v);}});}
-if(p==='neckType')updateNeckSubPanels();
-if(p==='collarGroup'){updateCollarGroupVis();const fb=document.querySelector('#cg_'+S.collarGroup+' .tb.ct:not(.disabled)');if(fb){document.querySelectorAll('.tb.ct').forEach(x=>x.classList.remove('on'));fb.classList.add('on');S.collarType=fb.dataset.v;}}
+if(p==='neckShape'){updateNeckUI();updateNeckBCCompat();}
+if(p==='neckFinish'&&stateToNeckB()==='none'){/* D 변경 시 effectiveFinish 갱신 */}
 if(p==='pocket'){const pyr=document.getElementById('pocketYRow');if(pyr)pyr.style.display=S.pocket==='none'?'none':'';const sl=document.getElementById('sl_pocketY');if(sl){sl.value=S.pocketY;document.getElementById('sv_pocketY').textContent=S.pocketY+'%';}}
+if(p==='closure'){syncNeckC();updateNeckBCCompat();}
 updateAllCompat();draw();});});});
-// ── 칼라타입 버튼 핸들러 (.ct 클래스) ──
-document.querySelectorAll('.tb.ct').forEach(b=>{b.addEventListener('click',()=>{if(b.classList.contains('disabled'))return;document.querySelectorAll('.tb.ct').forEach(x=>x.classList.remove('on'));b.classList.add('on');S.collarType=b.dataset.v;updateAllCompat();draw();});});
+// ── [B] 칼라 갤러리 핸들러 ──
+document.querySelectorAll('[data-neck="B"] .tb').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(btn.classList.contains('disabled'))return;
+    const b=btn.dataset.v;
+    setNeckB(b);
+    document.querySelectorAll('[data-neck="B"] .tb').forEach(x=>x.classList.remove('on'));
+    btn.classList.add('on');
+    updateNeckUI();applyNeckCascade();updateNeckBCCompat();
+    syncToggle('neckFinish',S.neckFinish);
+    updateAllCompat();draw();
+  });
+});
+// ── [C] 여밈 핸들러 ──
+document.querySelectorAll('[data-neck="C"] .tb').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(btn.classList.contains('disabled'))return;
+    const c=btn.dataset.v;
+    setNeckC(c);
+    document.querySelectorAll('[data-neck="C"] .tb').forEach(x=>x.classList.remove('on'));
+    btn.classList.add('on');
+    applyNeckCascade();updateNeckUI();updateNeckBCCompat();
+    // closure 토글 동기화 (디테일 섹션)
+    syncToggle('closure',S.closure);syncToggle('closurePos',S.closurePos);
+    updateAllCompat();draw();
+  });
+});
 const SD=[
   ['sl_neckDepth','neckDepth','sv_neckDepth',v=>v<30?t('slider','shallow'):v<65?t('slider','normal'):t('slider','deep')],
   ['sl_neckCurve','neckCurve','sv_neckCurve',v=>v<6?t('slider','square'):v<15?t('slider','v'):v<50?t('slider','angular'):v<80?t('slider','round'):t('slider','uShape')],
@@ -1903,11 +2178,11 @@ const NeckComp = {
       const ho=isBack?8:6;
       if(isBack){
         // 뒷면: 대칭 둥근 아치
-        o.push(`<path d="M${l},${topY} C${l-ho},${topY-14} ${l-ho-3},${topY-32} ${cx},${topY-hh} C${r+ho+3},${topY-32} ${r+ho},${topY-14} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} C${l-ho},${topY-14} ${l-ho-3},${topY-32} ${cx},${topY-hh} C${r+ho+3},${topY-32} ${r+ho},${topY-14} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
       } else {
         // 앞면: 뒤쪽이 약간 높고 앞쪽이 열린 형태 (비대칭 볼륨)
         const peakX=cx-2, peakY=topY-hh;
-        o.push(`<path d="M${l},${topY} C${l-ho},${topY-16} ${l-ho-4},${topY-34} ${peakX},${peakY} C${r+ho+2},${topY-30} ${r+ho},${topY-12} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} C${l-ho},${topY-16} ${l-ho-4},${topY-34} ${peakX},${peakY} C${r+ho+2},${topY-30} ${r+ho},${topY-12} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
       }
       // 후드 내부 봉제선 (중심선)
       o.push(`<line x1="${cx}" y1="${topY-4}" x2="${cx}" y2="${topY-hh+6}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2.5" opacity="0.4"/>`);
@@ -1927,50 +2202,71 @@ const NeckComp = {
     if(isCollar){
       const nw=neckW; // 넥 반폭
       if(f==='collar'){
-        // 셔츠카라 — 스탠드(밴드) + 칼라 Fall(깃)
+        // 셔츠카라 — menswear_p040 (Standard 2-piece pointed) + instruction_p44/p52 비례 역산
         const cp=resolveCollarParams('shirt',nw,baseNeckD);
-        const sh=cp.sh, fw=cp.fw, fd=cp.fd;
+        const sh=cp.sh; // stand ~9px
+        const sTop=topY-sh; // stand 상단 (roll line)
         if(!isBack){
-          // 스탠드 밴드 (넥라인 위 직립)
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-2} ${r},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          // 칼라 Fall 좌 — 스탠드 상단에서 바깥+아래로 펼쳐짐
-          o.push(`<path d="M${cx-4},${topY-sh} C${cx-nw*0.5},${topY-sh-6} ${l-fw+6},${topY-sh+2} ${l-fw},${topY-sh+fd*0.5} C${l-fw-2},${topY-sh+fd*0.7} ${l-4},${topY+3} ${l},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-          // 칼라 Fall 우
-          o.push(`<path d="M${cx+4},${topY-sh} C${cx+nw*0.5},${topY-sh-6} ${r+fw-6},${topY-sh+2} ${r+fw},${topY-sh+fd*0.5} C${r+fw+2},${topY-sh+fd*0.7} ${r+4},${topY+3} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-          // 앞여밈선 (center front)
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY-sh}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          // 칼라 팁 포인트 강조
-          o.push(`<circle cx="${l-fw}" cy="${topY-sh+fd*0.5}" r="0.6" fill="var(--ink)"/>`);
-          o.push(`<circle cx="${r+fw}" cy="${topY-sh+fd*0.5}" r="0.6" fill="var(--ink)"/>`);
+          // ── Stand 밴드 ──
+          o.push(`<path d="M${l},${topY} L${l},${sTop} L${r},${sTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${sTop}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          // ── Fall (깃) — 레퍼런스 비례: rise=sh*0.35, tipExt=nw*0.12, tipDrop=sh*0.25 ──
+          // CF에서 비스듬히 올라간 뒤 부드러운 곡선으로 어깨 바깥 포인트까지
+          [-1,1].forEach(d=>{
+            const cfX=cx+d*3;              // CF 갭 (칼라 여밈 열림)
+            const riseH=sh*0.5;            // CF에서 stand 위 올라가는 높이 (menswear_p040 비례)
+            const pkX=cfX+d*3;             // peak: CF에서 비스듬히 바깥
+            const pkY=sTop-riseH;          // peak Y
+            const tipX=cx+d*(nw+nw*0.12);  // 포인트: 어깨 12% 바깥
+            const tipY=sTop+sh*0.25;       // 포인트: stand 아래 (접혀 내려옴)
+            const shX=cx+d*nw;             // 어깨점
+            // 외곽 곡선: peak → tip (cubic bezier)
+            const c1x=pkX+d*nw*0.35, c1y=pkY+riseH*0.1;   // CP1: peak에서 바깥으로 수평 당김
+            const c2x=tipX-d*nw*0.1, c2y=pkY+riseH*0.6;    // CP2: tip 위쪽에서 접근
+            o.push(`<path d="M${cfX},${sTop} L${pkX},${pkY} C${c1x},${c1y} ${c2x},${c2y} ${tipX},${tipY} L${shX},${sTop} Z" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          });
         } else {
-          // 뒷면: 스탠드 + 칼라 외곽 (위로 올라간 반원형)
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-2} ${r},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-5},${topY-sh+1} C${l-6},${topY-sh-8} ${cx},${topY-sh-16} ${r+6},${topY-sh-8} C${r+6},${topY-sh+1} ${r+5},${topY-sh+1} ${r+5},${topY-sh+1}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-          // 뒷 중심선
-          o.push(`<line x1="${cx}" y1="${topY-sh}" x2="${cx}" y2="${topY-sh-12}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
+          // 뒷면: stand + fall 아치
+          const backH=sh*0.85;
+          o.push(`<path d="M${l},${topY} L${l},${sTop} L${r},${sTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-2},${sTop} C${l-3},${sTop-backH*0.6} ${cx},${sTop-backH} ${r+3},${sTop-backH*0.6} L${r+2},${sTop}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<line x1="${cx}" y1="${sTop}" x2="${cx}" y2="${sTop-backH*0.85}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
         }
       }
       else if(f==='collar_band'){
-        // 밴드카라 — 스탠드만 (날개 없음)
+        // 밴드카라 — menswear_p040 "BAND, TAB OR STAND COLLAR" 비례
+        // 스탠드만, 날개 없음. 상단 살짝 곡선.
         const bh=resolveCollarParams('band',nw,baseNeckD).sh;
-        o.push(`<path d="M${l},${topY} L${l},${topY-bh} Q${cx},${topY-bh-3} ${r},${topY-bh} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-        if(!isBack) o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY-bh}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        const bTop=topY-bh;
+        o.push(`<path d="M${l},${topY} L${l},${bTop} Q${cx},${bTop-2} ${r},${bTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        if(!isBack){
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${bTop}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        } else {
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${bTop}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
+        }
       }
       else if(f==='collar_peter'){
-        // 피터팬카라 — Stand 없음, 둥근 Fall이 어깨 위에 눕혀짐
+        // 피터팬카라 — flat collar, stand 없이 넥라인에서 어깨 위에 평평히 놓임
+        // 치트시트: fallWidth 5-7cm, 둥근 외곽, CF 약간 갭
+        const{fw:pw,fd:pd}=resolveCollarParams('peter',nw,baseNeckD);
         if(!isBack){
-          const{fw:pw,fd:pd}=resolveCollarParams('peter',nw,baseNeckD);
-          // 좌: 넥→바깥+아래 둥근 커브 (C커브 접선 연속성 확보)
-          o.push(`<path d="M${cx-3},${topY+4} C${cx-nw*0.35},${topY+pd*0.5} ${l-pw+8},${topY+pd*0.95} ${l-pw},${topY+pd*0.7} C${l-pw-3},${topY+pd*0.45} ${l-pw-1},${topY+pd*0.15} ${l},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-          // 우
-          o.push(`<path d="M${cx+3},${topY+4} C${cx+nw*0.35},${topY+pd*0.5} ${r+pw-8},${topY+pd*0.95} ${r+pw},${topY+pd*0.7} C${r+pw+3},${topY+pd*0.45} ${r+pw+1},${topY+pd*0.15} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-          // 앞 중심 간격
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+5}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.5"/>`);
+          // 각 side: CF에서 시작 → 둥근 곡선으로 어깨 바깥 최저점 → 어깨점 복귀
+          [-1,1].forEach(d=>{
+            const cfX=cx+d*3;           // CF 갭
+            const cfY=topY+3;           // CF에서 살짝 아래 시작
+            const lobeW=pw*0.75;        // 칼라 로브 최대 폭
+            const lobeD=pd*0.55;        // 칼라 로브 최대 깊이
+            const outerX=cx+d*(nw+lobeW*0.3); // 최외곽 X
+            const outerY=topY+lobeD;    // 최외곽 Y (가장 아래)
+            const shX=cx+d*nw;          // 어깨점
+            // CF→최외곽→어깨점: 부드러운 둥근 곡선
+            o.push(`<path d="M${cfX},${cfY} C${cfX+d*nw*0.3},${cfY+lobeD*0.5} ${outerX-d*lobeW*0.15},${outerY} ${outerX},${outerY} C${outerX+d*lobeW*0.1},${outerY-lobeD*0.1} ${shX+d*2},${topY+lobeD*0.25} ${shX},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          });
         } else {
-          // 뒷면: 둥근 외곽
-          const pd=resolveCollarParams('peter',nw,baseNeckD).fd+2; // 뒷면 약간 크게
-          o.push(`<path d="M${l},${topY} C${l-12},${topY+5} ${l-10},${topY+pd-6} ${cx},${topY+pd} C${r+10},${topY+pd-6} ${r+12},${topY+5} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-          o.push(`<path d="M${l+2},${topY+3} C${l+4},${topY-4} ${r-4},${topY-4} ${r-2},${topY+3}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
+          // 뒷면: 연속 둥근 외곽
+          const lobeD=pd*0.55;
+          o.push(`<path d="M${l},${topY} C${l-pw*0.3},${topY+lobeD*0.3} ${l-pw*0.35},${topY+lobeD} ${cx},${topY+lobeD} C${r+pw*0.35},${topY+lobeD} ${r+pw*0.3},${topY+lobeD*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+lobeD*0.8}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
         }
       }
       else if(f==='collar_china'){
@@ -1979,8 +2275,8 @@ const NeckComp = {
         // 스탠드 (곧은 벽 + 상단 모서리만 살짝 라운딩)
         o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch} C${cx-gap},${topY-ch} ${cx-gap},${topY-ch+1} ${cx-gap},${topY-ch+2} M${cx+gap},${topY-ch+2} C${cx+gap},${topY-ch+1} ${cx+gap},${topY-ch} ${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         // 채우기 (갈라진 부분 제외)
-        o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch} L${cx-gap},${topY} Z" fill="#FAFAF8" stroke="none"/>`);
-        o.push(`<path d="M${cx+gap},${topY} L${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY} Z" fill="#FAFAF8" stroke="none"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch} L${cx-gap},${topY} Z" fill="var(--gfill)" stroke="none"/>`);
+        o.push(`<path d="M${cx+gap},${topY} L${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY} Z" fill="var(--gfill)" stroke="none"/>`);
         // 아웃라인 다시
         o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         o.push(`<path d="M${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
@@ -2000,68 +2296,86 @@ const NeckComp = {
         } else {
           // 넓은 사각 뒤판 — C커브 상단 + 라운딩 모서리
           const{fw:sw,fd:sh,cornerR:cr}=resolveCollarParams('sailor',nw,baseNeckD);
-          o.push(`<path d="M${l},${topY} C${l-2},${topY-3} ${cx-sw+2},${topY-5} ${cx-sw},${topY-3} L${cx-sw},${topY+sh-cr} C${cx-sw},${topY+sh-cr+3} ${cx-sw+cr-3},${topY+sh} ${cx-sw+cr},${topY+sh} L${cx+sw-cr},${topY+sh} C${cx+sw-cr+3},${topY+sh} ${cx+sw},${topY+sh-cr+3} ${cx+sw},${topY+sh-cr} L${cx+sw},${topY-3} C${cx+sw-2},${topY-5} ${r+2},${topY-3} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l-2},${topY-3} ${cx-sw+2},${topY-5} ${cx-sw},${topY-3} L${cx-sw},${topY+sh-cr} C${cx-sw},${topY+sh-cr+3} ${cx-sw+cr-3},${topY+sh} ${cx-sw+cr},${topY+sh} L${cx+sw-cr},${topY+sh} C${cx+sw-cr+3},${topY+sh} ${cx+sw},${topY+sh-cr+3} ${cx+sw},${topY+sh-cr} L${cx+sw},${topY-3} C${cx+sw-2},${topY-5} ${r+2},${topY-3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
           // 스트라이프 라인 (수평 2줄)
           o.push(`<line x1="${cx-sw+5}" y1="${topY+sh-5}" x2="${cx+sw-5}" y2="${topY+sh-5}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.45"/>`);
           o.push(`<line x1="${cx-sw+5}" y1="${topY+sh-9}" x2="${cx+sw-5}" y2="${topY+sh-9}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.35"/>`);
         }
       }
       else if(f==='collar_notched'){
-        // 노치드 라펠 — 칼라깃(위) + 고지라인(노치 V갭) + 라펠(아래)
+        // 노치드 라펠 — Szkutnicka p177: 칼라깃 + 날카로운 노치 V + 라펠
         const{lw:lapelW,ch:collarH,lh:lapelH}=resolveCollarParams('notched',nw,baseNeckD);
         if(!isBack){
           [-1,1].forEach(d=>{
-            const nl=cx+d*nw; // neckline edge
-            const gx=nl+d*lapelW*0.45, gy=topY-collarH; // gorge point (노치 상단 — 칼라 끝)
-            const gx2=nl+d*lapelW*0.38, gy2=topY+3; // gorge lower (노치 하단 — 라펠 시작)
-            const lx=nl+d*(lapelW+4), ly=topY+lapelH; // lapel bottom tip
-            // 칼라 깃: 넥→위로 올라감→노치 포인트 (C커브)
-            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.1},${topY-collarH*0.3} ${nl+d*lapelW*0.25},${topY-collarH*0.9} ${gx},${gy}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-            // 노치 V갭: 상단→V 꼭짓점→하단 (C커브로 부드러운 라운딩)
-            const nmx=gx+d*2, nmy=(gy+gy2)*0.5;
-            o.push(`<path d="M${gx},${gy} C${gx+d*0.5},${gy+2} ${nmx},${nmy-2} ${nmx},${nmy} C${nmx},${nmy+2} ${gx2+d*0.5},${gy2-2} ${gx2},${gy2}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-            // 라펠: 노치 하단→바깥+아래→라펠 팁→CF (fill로 바디 위에 얹힘)
-            o.push(`<path d="M${gx2},${gy2} C${nl+d*lapelW*0.8},${topY+lapelH*0.15} ${nl+d*(lapelW+6)},${topY+lapelH*0.5} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.65}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            const nl=cx+d*nw;
+            // 칼라 포인트 (노치 위 — 위+바깥 돌출)
+            const cpx=nl+d*lapelW*0.42, cpy=topY-collarH;
+            // 노치 V 꼭짓점 (칼라와 라펠 사이 날카로운 V)
+            const gnx=nl+d*lapelW*0.30, gny=topY-collarH*0.15;
+            // 라펠 바깥 시작점 (노치 아래, 넥라인 약간 아래)
+            const lsx=nl+d*lapelW*0.50, lsy=topY+4;
+            // 라펠 팁 (가장 바깥+아래)
+            const ltx=nl+d*(lapelW+3), lty=topY+lapelH;
+            // CF 바닥
+            const cfx=cx+d*4, cfy=topY+baseNeckD*0.65;
+            // 라펠 fill (바디 위 덮기)
+            o.push(`<path d="M${lsx},${lsy} C${nl+d*lapelW*0.85},${topY+lapelH*0.1} ${ltx+d*2},${topY+lapelH*0.45} ${ltx},${lty} L${cfx},${cfy} Z" fill="var(--gfill)" stroke="none"/>`);
+            // 칼라 깃: 넥→칼라 포인트 (C커브)
+            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.08},${topY-collarH*0.4} ${cpx-d*lapelW*0.12},${cpy+collarH*0.15} ${cpx},${cpy}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            // 노치 V: 칼라→V꼭짓점→라펠 (날카로운 직선)
+            o.push(`<line x1="${cpx}" y1="${cpy}" x2="${gnx}" y2="${gny}" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            o.push(`<line x1="${gnx}" y1="${gny}" x2="${lsx}" y2="${lsy}" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            // 라펠 바깥 엣지: 시작→팁 (C커브)
+            o.push(`<path d="M${lsx},${lsy} C${nl+d*lapelW*0.85},${topY+lapelH*0.1} ${ltx+d*2},${topY+lapelH*0.45} ${ltx},${lty}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            // 라펠 안쪽 엣지: 팁→CF
+            o.push(`<line x1="${ltx}" y1="${lty}" x2="${cfx}" y2="${cfy}" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
             // 접힘선 (roll line)
-            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.25},${topY+lapelH*0.2} ${nl+d*lapelW*0.15},${topY+lapelH*0.4} ${cx+d*4},${topY+baseNeckD*0.55}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
+            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.2},${topY+lapelH*0.15} ${nl+d*lapelW*0.12},${topY+lapelH*0.35} ${cfx},${topY+baseNeckD*0.55}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
           });
-          // 앞여밈선 (center front)
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
-          const sh=10;
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-3} ${r},${topY-sh-3} ${r},${topY-sh} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-7},${topY-sh+1} C${l-8},${topY-sh-10} ${cx},${topY-sh-18} ${r+8},${topY-sh-10} C${r+7},${topY-sh+1} ${r+7},${topY-sh+1} ${r+7},${topY-sh+1}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          // Szkutnicka p177 back: stand + curved fall
+          const sh=collarH;
+          const fallH=sh*0.85;
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-6},${topY-sh} C${l-7},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+7},${topY-sh-fallH*0.7} L${r+6},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_shawl'){
-        // 숄카라 — 노치 없이 칼라↔라펠 연속 곡선, 보디스 위에 얹힘
+        // 숄카라 — Szkutnicka p178: 노치 없이 연속 S커브, 둥근 라펠
         const{lh:lapelH,sw}=resolveCollarParams('shawl',nw,baseNeckD);
         if(!isBack){
           [-1,1].forEach(d=>{
             const nl=cx+d*nw;
-            // 연속 곡선: 넥→살짝 위(칼라 깃)→바깥으로 둥글게→아래(라펠)→CF
-            o.push(`<path d="M${nl},${topY} C${nl+d*sw*0.3},${topY-10} ${nl+d*sw*0.8},${topY-8} ${nl+d*(sw+3)},${topY+6} C${nl+d*(sw+5)},${topY+lapelH*0.35} ${nl+d*(sw+3)},${topY+lapelH*0.7} ${nl+d*(sw)},${topY+lapelH} C${nl+d*sw*0.4},${topY+lapelH*0.9} ${cx+d*6},${topY+baseNeckD*0.7} ${cx+d*4},${topY+baseNeckD*0.6}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
-            // 접힘선 (roll line)
-            o.push(`<path d="M${nl},${topY} C${nl+d*sw*0.3},${topY+lapelH*0.15} ${nl+d*sw*0.2},${topY+lapelH*0.35} ${cx+d*4},${topY+baseNeckD*0.5}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
+            const cfx=cx+d*4, cfy=topY+baseNeckD*0.6;
+            // 라펠 fill (바디 위 덮기)
+            const peakX=nl+d*(sw+3), peakY=topY+6;
+            const tipX=nl+d*sw, tipY=topY+lapelH;
+            o.push(`<path d="M${nl+d*sw*0.5},${topY+4} C${nl+d*sw*0.8},${topY-2} ${peakX+d*2},${topY+lapelH*0.15} ${peakX},${topY+lapelH*0.35} C${peakX-d*2},${topY+lapelH*0.55} ${tipX+d*3},${topY+lapelH*0.8} ${tipX},${tipY} C${tipX-d*sw*0.4},${tipY-lapelH*0.05} ${cfx+d*2},${cfy+lapelH*0.1} ${cfx},${cfy} Z" fill="var(--gfill)" stroke="none"/>`);
+            // 연속 곡선: 넥→살짝 위(칼라)→둥글게 바깥→아래(라펠)→CF
+            o.push(`<path d="M${nl},${topY} C${nl+d*sw*0.3},${topY-8} ${nl+d*sw*0.75},${topY-6} ${peakX},${peakY} C${peakX+d*2},${topY+lapelH*0.3} ${peakX},${topY+lapelH*0.6} ${tipX},${tipY} C${tipX-d*sw*0.4},${tipY-lapelH*0.05} ${cfx+d*2},${cfy+lapelH*0.1} ${cfx},${cfy}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            // 접힘선
+            o.push(`<path d="M${nl},${topY} C${nl+d*sw*0.25},${topY+lapelH*0.12} ${nl+d*sw*0.15},${topY+lapelH*0.3} ${cfx},${topY+baseNeckD*0.5}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
           });
-          // 앞여밈선
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
-          const sh=10;
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-3} ${r},${topY-sh-3} ${r},${topY-sh} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-5},${topY-sh+1} C${l-6},${topY-sh-12} ${cx},${topY-sh-18} ${r+6},${topY-sh-12} C${r+5},${topY-sh+1} ${r+5},${topY-sh+1} ${r+5},${topY-sh+1}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          // Szkutnicka p178 back: 둥근 칼라 밴드
+          const sh=nw*0.5;
+          const fallH=sh*0.8;
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-5},${topY-sh} C${l-6},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+6},${topY-sh-fallH*0.7} L${r+5},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_wing'){
         // 윙카라 — 높은 스탠드 + 윙팁 (삼각형 접힘)
         const{sh:wh,tipW:ww,tipDrop:wt}=resolveCollarParams('wing',nw,baseNeckD);
         // 스탠드 (C커브 상단)
-        o.push(`<path d="M${l},${topY} L${l},${topY-wh+3} C${l},${topY-wh} ${l+3},${topY-wh} ${l+4},${topY-wh} C${cx-4},${topY-wh-3} ${cx+4},${topY-wh-3} ${r-4},${topY-wh} C${r-3},${topY-wh} ${r},${topY-wh} ${r},${topY-wh+3} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${topY-wh+3} C${l},${topY-wh} ${l+3},${topY-wh} ${l+4},${topY-wh} C${cx-4},${topY-wh-3} ${cx+4},${topY-wh-3} ${r-4},${topY-wh} C${r-3},${topY-wh} ${r},${topY-wh} ${r},${topY-wh+3} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         if(!isBack){
           // 윙팁: 스탠드 상단에서 삼각형으로 바깥-아래 접힘 (C커브)
           [-1,1].forEach(d=>{
             const wx=cx+d*nw;
-            o.push(`<path d="M${wx},${topY-wh} L${wx+d*ww},${topY-wh+wt} C${wx+d*ww*0.6},${topY-wh+wt-1} ${wx+d*2},${topY-wh+2} ${wx},${topY-wh+3}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+            o.push(`<path d="M${wx},${topY-wh} L${wx+d*ww},${topY-wh+wt} C${wx+d*ww*0.6},${topY-wh+wt-1} ${wx+d*2},${topY-wh+2} ${wx},${topY-wh+3}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
           });
           // 중심 앞여밈선
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY-wh}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
@@ -2080,16 +2394,18 @@ const NeckComp = {
             const px=nl+d*(lapelW*0.7), py=topY-collarH-peakH;
             const lx=nl+d*(lapelW+4), ly=topY+lapelH;
             // 칼라깃 C커브 → 피크 C커브(뾰족+자연스러운 전환) → 라펠 C커브
-            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.1},${topY-collarH*0.4} ${nl+d*lapelW*0.2},${topY-collarH*0.95} ${gx},${gy} C${gx+d*lapelW*0.1},${gy-peakH*0.4} ${px-d*3},${py+2} ${px},${py} C${px+d*1.5},${py+peakH*0.3} ${gx+d*5},${gy+8} ${nl+d*lapelW*0.5},${topY+lapelH*0.15} C${nl+d*lapelW*0.9},${topY+lapelH*0.4} ${nl+d*(lapelW+5)},${topY+lapelH*0.65} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.65}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.1},${topY-collarH*0.4} ${nl+d*lapelW*0.2},${topY-collarH*0.95} ${gx},${gy} C${gx+d*lapelW*0.1},${gy-peakH*0.4} ${px-d*3},${py+2} ${px},${py} C${px+d*1.5},${py+peakH*0.3} ${gx+d*5},${gy+8} ${nl+d*lapelW*0.5},${topY+lapelH*0.15} C${nl+d*lapelW*0.9},${topY+lapelH*0.4} ${nl+d*(lapelW+5)},${topY+lapelH*0.65} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.65}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
             // 접힘선 (롤라인)
             o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.25},${topY+lapelH*0.2} ${nl+d*lapelW*0.15},${topY+lapelH*0.4} ${cx+d*4},${topY+baseNeckD*0.55}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
           });
           // 앞여밈선
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
-          const sh=12;
-          o.push(`<path d="M${l},${topY} C${l},${topY-sh*0.3} ${l},${topY-sh*0.7} ${l},${topY-sh} C${l},${topY-sh-4} ${r},${topY-sh-4} ${r},${topY-sh} C${r},${topY-sh*0.7} ${r},${topY-sh*0.3} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-7},${topY-sh+1} C${l-8},${topY-sh-12} ${cx},${topY-sh-20} ${r+8},${topY-sh-12} C${r+7},${topY-sh+1} ${r+7},${topY-sh+1} ${r+7},${topY-sh+1}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          // peaked back: stand + fall (파라미터 기반)
+          const sh=collarH;
+          const fallH=sh*0.9;
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-7},${topY-sh} C${l-8},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+8},${topY-sh-fallH*0.7} L${r+7},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_round'){
@@ -2100,39 +2416,40 @@ const NeckComp = {
             const nl=cx+d*nw;
             const lx=nl+d*(lapelW+3), ly=topY+lapelH;
             // 연속 둥근 곡선: 넥→위→바깥→아래→CF
-            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.3},${topY-collarH} ${nl+d*lapelW*0.7},${topY-collarH+2} ${nl+d*(lapelW+3)},${topY+6} C${nl+d*(lapelW+4)},${topY+lapelH*0.4} ${nl+d*(lapelW+2)},${topY+lapelH*0.7} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.6}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.3},${topY-collarH} ${nl+d*lapelW*0.7},${topY-collarH+2} ${nl+d*(lapelW+3)},${topY+6} C${nl+d*(lapelW+4)},${topY+lapelH*0.4} ${nl+d*(lapelW+2)},${topY+lapelH*0.7} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.6}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
             // 접힘선
             o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.25},${topY+lapelH*0.2} ${nl+d*lapelW*0.15},${topY+lapelH*0.35} ${cx+d*4},${topY+baseNeckD*0.5}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
           });
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
-          const sh=10;
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-3} ${r},${topY-sh-3} ${r},${topY-sh} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-5},${topY-sh+1} C${l-6},${topY-sh-10} ${cx},${topY-sh-16} ${r+6},${topY-sh-10} C${r+5},${topY-sh+1} ${r+5},${topY-sh+1} ${r+5},${topY-sh+1}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          // round back: stand + fall (파라미터 기반)
+          const sh=collarH;
+          const fallH=sh*0.8;
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-5},${topY-sh} C${l-6},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+6},${topY-sh-fallH*0.7} L${r+5},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_mandarin'){
-        // 만다린카라 — 짧고 둥근 스탠드, 좁은 갈라짐, 상단 아치형
+        // 만다린카라 — Szkutnicka p179: 거의 수직 옆면, 균일 높이, 좁은 앞 갈라짐
         const{sh:mh,gap}=resolveCollarParams('mandarin',nw,baseNeckD);
-        // 둥근 아치형 스탠드 (차이나보다 더 둥글게)
-        o.push(`<path d="M${l},${topY} L${l},${topY-mh*0.6} C${l},${topY-mh} ${l+nw*0.2},${topY-mh-3} ${cx-gap},${topY-mh-3} M${cx+gap},${topY-mh-3} C${r-nw*0.2},${topY-mh-3} ${r},${topY-mh} ${r},${topY-mh*0.6} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-        // 채우기
-        o.push(`<path d="M${l},${topY} L${l},${topY-mh*0.6} C${l},${topY-mh} ${l+nw*0.2},${topY-mh-3} ${cx-gap},${topY-mh-3} L${cx-gap},${topY} Z" fill="#FAFAF8" stroke="none"/>`);
-        o.push(`<path d="M${cx+gap},${topY} L${cx+gap},${topY-mh-3} C${r-nw*0.2},${topY-mh-3} ${r},${topY-mh} ${r},${topY-mh*0.6} L${r},${topY} Z" fill="#FAFAF8" stroke="none"/>`);
-        // 아웃라인
-        o.push(`<path d="M${l},${topY} L${l},${topY-mh*0.6} C${l},${topY-mh} ${l+nw*0.2},${topY-mh-3} ${cx-gap},${topY-mh-3}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-        o.push(`<path d="M${cx+gap},${topY-mh-3} C${r-nw*0.2},${topY-mh-3} ${r},${topY-mh} ${r},${topY-mh*0.6} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        const mTop=topY-mh;
+        // 채우기 (양쪽 패널)
+        o.push(`<path d="M${l},${topY} L${l},${mTop+2} C${l},${mTop} ${l+2},${mTop} ${l+3},${mTop} L${cx-gap-1},${mTop} L${cx-gap},${topY} Z" fill="var(--gfill)" stroke="none"/>`);
+        o.push(`<path d="M${cx+gap},${topY} L${cx+gap+1},${mTop} L${r-3},${mTop} C${r-2},${mTop} ${r},${mTop} ${r},${mTop+2} L${r},${topY} Z" fill="var(--gfill)" stroke="none"/>`);
+        // 아웃라인 — 수직 옆면 + 모서리만 살짝 라운딩 + 거의 수평 상단
+        o.push(`<path d="M${l},${topY} L${l},${mTop+2} C${l},${mTop} ${l+2},${mTop} ${l+3},${mTop} L${cx-gap-1},${mTop}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${cx+gap+1},${mTop} L${r-3},${mTop} C${r-2},${mTop} ${r},${mTop} ${r},${mTop+2} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         if(!isBack){
-          // 앞 중심 갈라짐 — 둥근 엣지
-          o.push(`<path d="M${cx-gap},${topY} L${cx-gap},${topY-mh*0.5} C${cx-gap},${topY-mh-1} ${cx-gap+1},${topY-mh-3} ${cx-gap+2},${topY-mh-3}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${cx+gap},${topY} L${cx+gap},${topY-mh*0.5} C${cx+gap},${topY-mh-1} ${cx+gap-1},${topY-mh-3} ${cx+gap-2},${topY-mh-3}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          // 앞 갈라짐 — 좁은 갭, 상단 살짝 둥근 엣지
+          o.push(`<path d="M${cx-gap},${topY} L${cx-gap},${mTop+3} C${cx-gap},${mTop+1} ${cx-gap+1},${mTop} ${cx-gap+2},${mTop}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx+gap},${topY} L${cx+gap},${mTop+3} C${cx+gap},${mTop+1} ${cx+gap-1},${mTop} ${cx+gap-2},${mTop}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
         }
       }
       else if(f==='collar_funnel'){
         // 퍼넬카라 — 목에서 위로 넓어지며 올라감
         const{sh:fh,flareTop}=resolveCollarParams('funnel',nw,baseNeckD);
         // C커브로 부드러운 플레어
-        o.push(`<path d="M${l},${topY} C${l-flareTop*0.3},${topY-fh*0.3} ${l-flareTop},${topY-fh*0.7} ${l-flareTop},${topY-fh} C${cx-nw*0.3},${topY-fh-5} ${cx+nw*0.3},${topY-fh-5} ${r+flareTop},${topY-fh} C${r+flareTop},${topY-fh*0.7} ${r+flareTop*0.3},${topY-fh*0.3} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} C${l-flareTop*0.3},${topY-fh*0.3} ${l-flareTop},${topY-fh*0.7} ${l-flareTop},${topY-fh} C${cx-nw*0.3},${topY-fh-5} ${cx+nw*0.3},${topY-fh-5} ${r+flareTop},${topY-fh} C${r+flareTop},${topY-fh*0.7} ${r+flareTop*0.3},${topY-fh*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         // 상단 접힘선
         o.push(`<path d="M${l-flareTop+2},${topY-fh+4} C${cx-nw*0.2},${topY-fh+2} ${cx+nw*0.2},${topY-fh+2} ${r+flareTop-2},${topY-fh+4}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.45"/>`);
         if(!isBack) o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY-fh}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
@@ -2142,31 +2459,31 @@ const NeckComp = {
         const{sh,fw:tw,fd:td}=resolveCollarParams('convertible',nw,baseNeckD);
         if(!isBack){
           // 스탠드 (열린 — 중심 갈라짐, C커브)
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l+2},${topY-sh-2} ${cx-8},${topY-sh-2} ${cx-5},${topY-sh}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${r},${topY} L${r},${topY-sh} C${r-2},${topY-sh-2} ${cx+8},${topY-sh-2} ${cx+5},${topY-sh}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l+2},${topY-sh-2} ${cx-8},${topY-sh-2} ${cx-5},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${r},${topY} L${r},${topY-sh} C${r-2},${topY-sh-2} ${cx+8},${topY-sh-2} ${cx+5},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
           // 칼라 Fall — C커브로 바깥+아래 눕혀짐
-          o.push(`<path d="M${cx-5},${topY-sh} C${cx-nw*0.4},${topY-sh-4} ${l-tw+6},${topY-sh+td*0.3} ${l-tw},${topY-sh+td*0.6} C${l-tw-2},${topY-sh+td*0.8} ${l-3},${topY+4} ${l},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-          o.push(`<path d="M${cx+5},${topY-sh} C${cx+nw*0.4},${topY-sh-4} ${r+tw-6},${topY-sh+td*0.3} ${r+tw},${topY-sh+td*0.6} C${r+tw+2},${topY-sh+td*0.8} ${r+3},${topY+4} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${cx-5},${topY-sh} C${cx-nw*0.4},${topY-sh-4} ${l-tw+6},${topY-sh+td*0.3} ${l-tw},${topY-sh+td*0.6} C${l-tw-2},${topY-sh+td*0.8} ${l-3},${topY+4} ${l},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${cx+5},${topY-sh} C${cx+nw*0.4},${topY-sh-4} ${r+tw-6},${topY-sh+td*0.3} ${r+tw},${topY-sh+td*0.6} C${r+tw+2},${topY-sh+td*0.8} ${r+3},${topY+4} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
           // 열린 V 라인
           o.push(`<path d="M${cx-5},${topY-sh} C${cx-4},${topY} ${cx-3},${topY+baseNeckD*0.2} ${cx-3},${topY+baseNeckD*0.35}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
           o.push(`<path d="M${cx+5},${topY-sh} C${cx+4},${topY} ${cx+3},${topY+baseNeckD*0.2} ${cx+3},${topY+baseNeckD*0.35}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
         } else {
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-2} ${r},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-6},${topY-sh+1} C${l-7},${topY-sh-8} ${cx},${topY-sh-14} ${r+7},${topY-sh-8} C${r+6},${topY-sh+1} ${r+6},${topY-sh+1} ${r+6},${topY-sh+1}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-2} ${r},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-6},${topY-sh+1} C${l-7},${topY-sh-8} ${cx},${topY-sh-14} ${r+7},${topY-sh-8} C${r+6},${topY-sh+1} ${r+6},${topY-sh+1} ${r+6},${topY-sh+1}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
           o.push(`<line x1="${cx}" y1="${topY-sh}" x2="${cx}" y2="${topY-sh-10}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
         }
       }
       else if(f==='collar_bow'){
         // 보우카라 — 밴드 스탠드 + 큰 리본 타이
         const{sh:bh,loopW:bw_,loopD:bd_}=resolveCollarParams('bow',nw,baseNeckD);
-        o.push(`<path d="M${l},${topY} L${l},${topY-bh+2} C${l},${topY-bh} ${l+3},${topY-bh} ${l+4},${topY-bh} C${cx-3},${topY-bh-3} ${cx+3},${topY-bh-3} ${r-4},${topY-bh} C${r-3},${topY-bh} ${r},${topY-bh} ${r},${topY-bh+2} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${topY-bh+2} C${l},${topY-bh} ${l+3},${topY-bh} ${l+4},${topY-bh} C${cx-3},${topY-bh-3} ${cx+3},${topY-bh-3} ${r-4},${topY-bh} C${r-3},${topY-bh} ${r},${topY-bh} ${r},${topY-bh+2} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         if(!isBack){
           // 리본 루프 (더 크고 풍성하게)
           const bw=bw_, bd=bd_;
           // 왼쪽 루프 — 위로 살짝 기울어진 타원
-          o.push(`<path d="M${cx},${topY-bh} C${cx-bw*0.2},${topY-bh-bd*1.2} ${cx-bw*0.9},${topY-bh-bd*0.7} ${cx-bw},${topY-bh+1} C${cx-bw*0.9},${topY-bh+bd*0.7} ${cx-bw*0.2},${topY-bh+bd*0.8} ${cx},${topY-bh}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx},${topY-bh} C${cx-bw*0.2},${topY-bh-bd*1.2} ${cx-bw*0.9},${topY-bh-bd*0.7} ${cx-bw},${topY-bh+1} C${cx-bw*0.9},${topY-bh+bd*0.7} ${cx-bw*0.2},${topY-bh+bd*0.8} ${cx},${topY-bh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
           // 오른쪽 루프
-          o.push(`<path d="M${cx},${topY-bh} C${cx+bw*0.2},${topY-bh-bd*1.2} ${cx+bw*0.9},${topY-bh-bd*0.7} ${cx+bw},${topY-bh+1} C${cx+bw*0.9},${topY-bh+bd*0.7} ${cx+bw*0.2},${topY-bh+bd*0.8} ${cx},${topY-bh}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx},${topY-bh} C${cx+bw*0.2},${topY-bh-bd*1.2} ${cx+bw*0.9},${topY-bh-bd*0.7} ${cx+bw},${topY-bh+1} C${cx+bw*0.9},${topY-bh+bd*0.7} ${cx+bw*0.2},${topY-bh+bd*0.8} ${cx},${topY-bh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
           // 리본 꼬리 (더 길고 우아하게)
           const tailLen=Math.max(22,bh*2.2);
           o.push(`<path d="M${cx-2},${topY-bh+2} C${cx-4},${topY+tailLen*0.2} ${cx-8},${topY+tailLen*0.6} ${cx-12},${topY+tailLen}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
@@ -2198,14 +2515,14 @@ const NeckComp = {
             const nl=cx+d*nw;
             // 스탠드 + 각진 Fall (피터팬보다 짧고 각짐)
             const tipX=nl+d*ew, tipY=topY+eh*0.3;
-            o.push(`<path d="M${nl},${topY} L${nl+d*2},${topY-standH} L${nl+d*ew*0.5},${topY-standH+1} L${tipX},${tipY} L${tipX-d*ew*0.2},${topY+eh*0.5} C${nl+d*ew*0.3},${topY+eh*0.4} ${nl+d*3},${topY+3} ${nl},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${nl},${topY} L${nl+d*2},${topY-standH} L${nl+d*ew*0.5},${topY-standH+1} L${tipX},${tipY} L${tipX-d*ew*0.2},${topY+eh*0.5} C${nl+d*ew*0.3},${topY+eh*0.4} ${nl+d*3},${topY+3} ${nl},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
           });
           // 앞여밈선
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+standH}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
           // 뒷면: 짧은 스탠드 + 각진 Fall
-          o.push(`<path d="M${l},${topY} L${l},${topY-standH} C${cx-nw*0.3},${topY-standH-2} ${cx+nw*0.3},${topY-standH-2} ${r},${topY-standH} L${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-4},${topY-standH} L${l-6},${topY-standH-6} C${cx-nw*0.2},${topY-standH-12} ${cx+nw*0.2},${topY-standH-12} ${r+6},${topY-standH-6} L${r+4},${topY-standH}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-standH} C${cx-nw*0.3},${topY-standH-2} ${cx+nw*0.3},${topY-standH-2} ${r},${topY-standH} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-4},${topY-standH} L${l-6},${topY-standH-6} C${cx-nw*0.2},${topY-standH-12} ${cx+nw*0.2},${topY-standH-12} ${r+6},${topY-standH-6} L${r+4},${topY-standH}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_bertha'){
@@ -2213,14 +2530,14 @@ const NeckComp = {
         const{fw:bw,fd:bd}=resolveCollarParams('bertha',nw,baseNeckD);
         if(!isBack){
           // 왼쪽 Fall
-          o.push(`<path d="M${cx-3},${topY+4} C${cx-nw*0.5},${topY+bd*0.8} ${l-bw+6},${topY+bd} ${l-bw},${topY+bd*0.5} C${l-bw-3},${topY+bd*0.2} ${l-6},${topY+3} ${l},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+          o.push(`<path d="M${cx-3},${topY+4} C${cx-nw*0.5},${topY+bd*0.8} ${l-bw+6},${topY+bd} ${l-bw},${topY+bd*0.5} C${l-bw-3},${topY+bd*0.2} ${l-6},${topY+3} ${l},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
           // 오른쪽 Fall (미러)
-          o.push(`<path d="M${cx+3},${topY+4} C${cx+nw*0.5},${topY+bd*0.8} ${r+bw-6},${topY+bd} ${r+bw},${topY+bd*0.5} C${r+bw+3},${topY+bd*0.2} ${r+6},${topY+3} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+          o.push(`<path d="M${cx+3},${topY+4} C${cx+nw*0.5},${topY+bd*0.8} ${r+bw-6},${topY+bd} ${r+bw},${topY+bd*0.5} C${r+bw+3},${topY+bd*0.2} ${r+6},${topY+3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
           // 앞여밈선
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+6}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.5"/>`);
         } else {
           // 뒷면: 큰 둥근 칼라
-          o.push(`<path d="M${l},${topY} C${l-bw*0.4},${topY+bd*0.3} ${l-bw*0.5},${topY+bd*0.9} ${cx},${topY+bd+2} C${r+bw*0.5},${topY+bd*0.9} ${r+bw*0.4},${topY+bd*0.3} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l-bw*0.4},${topY+bd*0.3} ${l-bw*0.5},${topY+bd*0.9} ${cx},${topY+bd+2} C${r+bw*0.5},${topY+bd*0.9} ${r+bw*0.4},${topY+bd*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_puritan'){
@@ -2231,11 +2548,11 @@ const NeckComp = {
             const nl=cx+d*nw;
             const tipX=nl+d*pw, tipY=topY+pd;
             // 넥에서 직선적으로 뻗어가며 뾰족한 끝
-            o.push(`<path d="M${cx+d*3},${topY+2} L${cx+d*nw*0.5},${topY+pd*0.35} L${tipX},${tipY} L${tipX-d*4},${tipY-3} L${nl+d*4},${topY+5} C${nl+d*2},${topY+3} ${nl+d*1},${topY+1} ${nl},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${cx+d*3},${topY+2} L${cx+d*nw*0.5},${topY+pd*0.35} L${tipX},${tipY} L${tipX-d*4},${tipY-3} L${nl+d*4},${topY+5} C${nl+d*2},${topY+3} ${nl+d*1},${topY+1} ${nl},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
           });
         } else {
           // 뒷면: 넓고 약간 각진 칼라
-          o.push(`<path d="M${l},${topY} C${l-pw*0.3},${topY+pd*0.2} ${l-pw*0.6},${topY+pd*0.7} ${cx},${topY+pd+2} C${r+pw*0.6},${topY+pd*0.7} ${r+pw*0.3},${topY+pd*0.2} ${r},${topY}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l-pw*0.3},${topY+pd*0.2} ${l-pw*0.6},${topY+pd*0.7} ${cx},${topY+pd+2} C${r+pw*0.6},${topY+pd*0.7} ${r+pw*0.3},${topY+pd*0.2} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
         }
       }
       return;
@@ -2274,7 +2591,7 @@ const NeckComp = {
     if(nd==='henley'){
       const d=baseNeckD;
       // 배경 마스크 — 넥라인 path를 가려서 겹침 방지
-      o.push(`<rect x="${cx-5}" y="${topY+d*0.25}" width="10" height="${d*0.7+14}" fill="#FAFAF8" stroke="none"/>`);
+      o.push(`<rect x="${cx-5}" y="${topY+d*0.25}" width="10" height="${d*0.7+14}" fill="var(--gfill)" stroke="none"/>`);
       o.push(`<line x1="${cx-3.5}" y1="${topY+d*0.3}" x2="${cx-3.5}" y2="${topY+d+12}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
       o.push(`<line x1="${cx+3.5}" y1="${topY+d*0.3}" x2="${cx+3.5}" y2="${topY+d+12}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
       for(let i=0;i<3;i++) o.push(`<circle cx="${cx}" cy="${topY+d*0.5+i*8}" r="1.5" fill="none" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
@@ -2282,7 +2599,7 @@ const NeckComp = {
     if(nd==='keyhole'){
       const d=baseNeckD;
       // 배경 마스크
-      o.push(`<path d="M${cx-5},${topY+d*0.25} L${cx-5.5},${topY+d*0.7} Q${cx},${topY+d*0.85} ${cx+5.5},${topY+d*0.7} L${cx+5},${topY+d*0.25} Z" fill="#FAFAF8" stroke="none"/>`);
+      o.push(`<path d="M${cx-5},${topY+d*0.25} L${cx-5.5},${topY+d*0.7} Q${cx},${topY+d*0.85} ${cx+5.5},${topY+d*0.7} L${cx+5},${topY+d*0.25} Z" fill="var(--gfill)" stroke="none"/>`);
       o.push(`<path d="M${cx-3.5},${topY+d*0.3} L${cx-4},${topY+d*0.65} Q${cx},${topY+d*0.8} ${cx+4},${topY+d*0.65} L${cx+3.5},${topY+d*0.3}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
     }
     if(nd==='drape'){
@@ -2305,174 +2622,155 @@ const SleeveComp = {
     if(S.sleeveLength<=2||S.sleeveType==='kimono') return;
     const{halfBody,topY}=g;
     const{uaY,sL,sR,sY}=geo;
-    // 소매 스케일 보정: 바디(수직)와 소매(수평)의 px/cm 일치시킴
-    // 바디 ~2.4px/cm인데 소매 raw값은 ~1.5px/cm → 약 1.6배 보정 필요
-    // 짧은 소매일수록 보정 크고, 긴 소매는 캔버스 내 수용 위해 축소
     const rawSl=S.sleeveLength;
-    const slScale=1.0+Math.max(0,0.9*(1-rawSl/100)); // 32→1.61, 50→1.45, 72→1.25, 95→1.05
+    const slScale=1.0+Math.max(0,0.9*(1-rawSl/100));
     const slLen=rawSl*slScale;
     const armholeH=uaY-sY;
     const sleeveCapW=armholeH*0.65;
     const taperFactor=0.5+S.sleeveWidth*0.005;
-    const lenTaper=Math.min(1,0.45+slLen*0.006); // short sleeves taper more (32→0.64, 95→1.0)
+    const lenTaper=Math.min(1,0.45+slLen*0.006);
     const cuffHalfW=sleeveCapW*taperFactor*lenTaper;
     const angleRad=0.18+slLen*0.003;
+    const sinA=Math.sin(angleRad), cosA=Math.cos(angleRad);
     const clr=isBack?'#444':'var(--ink)';
-
     const shape=S.sleeveShape||'straight';
 
     [-1,1].forEach(dir=>{
       const shX=dir===-1?sL:sR;
       const armX=cx+dir*halfBody;
-      // 소매 중심축: 어깨끝과 겨드랑이의 중간점에서 출발 (Armstrong p69 grainline 기준)
-      // 이래야 상단/하단 수평거리가 균형 잡힘
-      const sleeveAxisX=(shX+armX)*0.5;
-      const endCX=sleeveAxisX+dir*slLen;
-      const endCY=sY+(uaY-sY)*0.5+slLen*Math.sin(angleRad);
+      const nkX=cx+dir*g.neckW;
+      const isRaglan=S.sleeveType==='raglan';
+      // v0.26s: setin/raglan 통합 — 바깥 솔기 시작점만 다름
+      const oSx=isRaglan?nkX:shX;
+      const oSy=isRaglan?topY:sY;
 
-      // Shape-dependent cuff width — 도식화 실루엣 과장 (패턴이 아닌 완성형 표현)
       let cTop=cuffHalfW, cBot=cuffHalfW;
-      if(shape==='bell') { cTop=cuffHalfW*2.5; cBot=cuffHalfW*2.5; } // 나팔 — 소매단 확 넓음
-      else if(shape==='bishop') { cTop=cuffHalfW*0.45; cBot=cuffHalfW*0.45; } // 커프에서 확 좁아짐
-      else if(shape==='dolman') { cTop=cuffHalfW*0.75; cBot=cuffHalfW*0.75; }
-      else if(shape==='lantern') { cTop=cuffHalfW*0.4; cBot=cuffHalfW*0.4; } // 양 끝 좁음
-      else if(shape==='peasant') { cTop=cuffHalfW*0.5; cBot=cuffHalfW*0.5; } // 개더링으로 좁아짐
-      else if(shape==='legmutton') { cTop=cuffHalfW*0.4; cBot=cuffHalfW*0.4; } // 손목 타이트
-      else if(shape==='pagoda') { cTop=cuffHalfW*2.2; cBot=cuffHalfW*2.2; } // 플레어 넓게
+      if(shape==='bell'){cTop*=2.0;cBot*=2.0;}
+      else if(shape==='bishop'){cTop*=0.45;cBot*=0.45;}
+      else if(shape==='dolman'){cTop*=0.75;cBot*=0.75;}
+      else if(shape==='lantern'){cTop*=0.4;cBot*=0.4;}
+      else if(shape==='peasant'){cTop*=0.5;cBot*=0.5;}
+      else if(shape==='legmutton'){cTop*=0.4;cBot*=0.4;}
+      else if(shape==='pagoda'){cTop*=1.8;cBot*=1.8;}
 
-      // 소매 끝단 테이퍼: straight에서만 적용 (bell/puff 등은 자체 끝단 형태)
-      // 반팔 5-10°, 7부 3-5°, 긴팔 0-2°, 립밴드 커프는 항상 수직
       const hasRigidCuff=S.sleeveCuff==='rib'||S.sleeveCuff==='knit'||S.sleeveCuff==='elastic';
       const useTaper=shape==='straight'&&!hasRigidCuff;
-      const taperDeg=useTaper?Math.max(0,8*(1-rawSl/95)):0; // 32→5.3°, 50→3.8°, 95→0°
+      const taperDeg=useTaper?Math.max(0,8*(1-rawSl/95)):0;
       const taperPx=Math.tan(taperDeg*Math.PI/180)*cTop*2;
-      const endTopX=endCX-dir*taperPx*0.5;
-      const endBotX=endCX+dir*taperPx*0.5;
-      const endTop=endCY-cTop;
-      const endBot=endCY+cBot;
+
+      // v0.26s: 커프 = 소매축에 수직 (바닥에 수직 X)
+      // 해부학: underarm→cuff는 shoulder→cuff보다 ~25% 짧음 (캡높이)
+      const innerShorten=armholeH*0.25;
+      const innerSlLen=slLen-innerShorten;
+      const cuffCY=sY+armholeH*0.5+slLen*sinA;
+      // 커프 끝점: 소매축 수직 성분(sinA) 추가 → 바깥은 더 밖으로, 안쪽은 더 안으로
+      const endTopX=shX+dir*slLen+dir*cTop*sinA-dir*taperPx*0.5;
+      const endTopY=cuffCY-cTop*cosA;
+      const endBotX=armX+dir*innerSlLen-dir*cBot*sinA-dir*taperPx*0.5;
+      const endBotY=cuffCY+cBot*cosA;
+      const endCX=(endTopX+endBotX)/2;
+      const endCY=cuffCY;
+      // 팔꿈치 점 독립 (각 솔기 기준)
+      const oElbX=shX+dir*slLen*0.5;
+      const iElbX=armX+dir*innerSlLen*0.5;
 
       let p='';
-      // 공통 비례 상수 (고정값 대신 소매 길이/암홀 높이에 비례)
-      const ahF=armholeH*0.15; // armhole-based factor for underarm curves
-      const slF=Math.max(slLen*0.12,4); // sleeve-length-based factor
+      const ahF=armholeH*0.15;
 
-      if(S.sleeveType==='raglan'){
-        const nkX=cx+dir*g.neckW;
-        if(shape==='capped'){
-          // raglan capped — 넥→짧은 캡 (curved hemline)
-          const capLen=Math.min(slLen,armholeH*0.5);
-          const capEndX=nkX+dir*capLen;
-          const capMidY=(topY+uaY)*0.5;
-          const capTopY=topY+capLen*0.2;
-          const capBotY=capMidY+capLen*0.3;
-          p=`M${nkX},${topY} C${nkX+dir*capLen*0.4},${topY-ahF*0.2} ${capEndX-dir*capLen*0.15},${capTopY-ahF*0.08} ${capEndX},${capTopY}`
-           +` Q${capEndX+dir*capLen*0.1},${capMidY} ${capEndX},${capBotY}`
-           +` C${capEndX-dir*capLen*0.15},${capBotY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
-        } else if(shape==='puff'){
-          const bulge=slLen*0.5;
-          p=`M${nkX},${topY} C${nkX+dir*bulge},${topY-ahF*1.4} ${endCX-dir*slLen*0.15},${endTop-ahF*0.2} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.15},${endBot+ahF*0.3} ${armX+dir*ahF*0.25},${uaY-ahF*0.2} ${armX},${uaY}`;
-        } else if(shape==='bell'){
-          const elbX=nkX+dir*slLen*0.5, elbTY=(topY+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.2},${topY+ahF*0.15} ${elbX-dir*slLen*0.05},${elbTY-ahF*0.1} ${elbX},${elbTY} C${elbX+dir*slLen*0.15},${elbTY+ahF*0.6} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.08},${endBot+ahF*0.15} ${elbX+dir*slLen*0.15},${elbBY-ahF*0.6} ${elbX},${elbBY} C${elbX-dir*slLen*0.05},${elbBY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
-        } else if(shape==='bishop'){
-          const bOff=armholeH*0.55;
-          const mid1X=nkX+dir*slLen*0.35, mid2X=nkX+dir*slLen*0.7;
-          const topBulge=bOff*0.8, botBulge=bOff*0.9;
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.15},${topY-ahF*0.3} ${mid1X-dir*slLen*0.05},${(topY+endTop)*0.35-topBulge} ${mid1X},${(topY+endTop)*0.4-topBulge} C${mid1X+dir*slLen*0.12},${(topY+endTop)*0.45-topBulge*0.8} ${mid2X-dir*slLen*0.05},${endTop-ahF*0.1} ${endTopX},${endTop} L${endBotX},${endBot} C${mid2X-dir*slLen*0.05},${endBot+ahF*0.1} ${mid1X+dir*slLen*0.12},${(uaY+endBot)*0.55+botBulge*0.8} ${mid1X},${(uaY+endBot)*0.6+botBulge} C${mid1X-dir*slLen*0.05},${(uaY+endBot)*0.65+botBulge} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
-        } else if(shape==='dolman'){
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.12},${topY+ahF*0.1} ${endCX-dir*slLen*0.06},${endTop-ahF*0.1} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.1},${endBot+ahF*2.5} ${armX+dir*ahF*0.3},${uaY+ahF*3.0} ${armX},${uaY}`;
-        } else if(shape==='lantern'){
-          const bulge=armholeH*0.6;
-          const midX=nkX+dir*slLen*0.5;
-          const midTY=(topY+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.1},${topY-ahF*0.3} ${midX-dir*slLen*0.15},${midTY+bulge*0.2} ${midX},${midTY} C${midX+dir*slLen*0.15},${midTY-bulge*0.1} ${endCX-dir*slLen*0.05},${endTop-ahF*0.1} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.05},${endBot+ahF*0.1} ${midX+dir*slLen*0.15},${midBY+bulge*0.1} ${midX},${midBY} C${midX-dir*slLen*0.15},${midBY-bulge*0.2} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
-        } else if(shape==='peasant'){
-          const bulge=armholeH*0.45;
-          const midX=nkX+dir*slLen*0.5;
-          const midTY=(topY+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.15},${topY-ahF*0.5} ${midX-dir*slLen*0.1},${midTY+bulge*0.3} ${midX},${midTY} C${midX+dir*slLen*0.1},${midTY-bulge*0.15} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.08},${endBot+ahF*0.15} ${midX+dir*slLen*0.1},${midBY+bulge*0.15} ${midX},${midBY} C${midX-dir*slLen*0.1},${midBY-bulge*0.3} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
-        } else if(shape==='legmutton'){
-          const bulge=slLen*0.55;
-          const elbX=nkX+dir*slLen*0.5;
-          const elbTY=(topY+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
-          p=`M${nkX},${topY} C${nkX+dir*bulge},${topY-ahF*1.6} ${elbX-dir*slLen*0.08},${elbTY-ahF*0.3} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.2} ${endCX-dir*2},${endTop+1} ${endTopX},${endTop} L${endBotX},${endBot} C${endCX-dir*2},${endBot-1} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.2} ${elbX},${elbBY} C${elbX-dir*slLen*0.08},${elbBY+ahF*0.3} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
-        } else if(shape==='pagoda'){
-          const elbX=nkX+dir*slLen*0.55, elbTY=(topY+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.12},${topY+ahF*0.1} ${elbX-dir*slLen*0.06},${elbTY-ahF*0.08} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.5} ${endCX-dir*slLen*0.15},${endTop-ahF*0.6} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.15},${endBot+ahF*0.6} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.5} ${elbX},${elbBY} C${elbX-dir*slLen*0.06},${elbBY+ahF*0.08} ${armX+dir*ahF*0.15},${uaY-ahF*0.08} ${armX},${uaY}`;
-        } else {
-          p=`M${nkX},${topY} C${nkX+dir*slLen*0.4},${topY+ahF*0.3} ${endCX-dir*slLen*0.1},${endTop-ahF*0.3} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.1},${endBot+ahF*0.3} ${armX+dir*ahF*0.3},${uaY-ahF*0.3} ${armX},${uaY}`;
-        }
+      // === Shape paths: CP는 각 솔기 끝점 기준 (endCX 금지) ===
+      if(shape==='capped'){
+        const capLen=Math.min(slLen,armholeH*0.5);
+        const capEndX=oSx+dir*capLen;
+        const capMidY=(oSy+uaY)*0.5;
+        const capTopY=oSy+capLen*(isRaglan?0.2:0.15);
+        const capBotY=capMidY+capLen*0.3;
+        p=`M${oSx},${oSy} C${oSx+dir*capLen*0.4},${oSy-ahF*0.3} ${capEndX-dir*capLen*0.15},${capTopY-ahF*0.1} ${capEndX},${capTopY}`
+         +` Q${capEndX+dir*capLen*0.1},${capMidY} ${capEndX},${capBotY}`
+         +` C${capEndX-dir*capLen*0.15},${capBotY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
+      } else if(shape==='puff'){
+        const bulge=slLen*0.5;
+        p=`M${oSx},${oSy} C${oSx+dir*bulge},${oSy-ahF*1.4} ${endTopX-dir*slLen*0.15},${endTopY-ahF*0.2} ${endTopX},${endTopY}`
+         +` L${endBotX},${endBotY}`
+         +` C${endBotX-dir*slLen*0.15},${endBotY+ahF*0.3} ${armX+dir*ahF*0.25},${uaY-ahF*0.2} ${armX},${uaY}`;
+      } else if(shape==='bell'){
+        const oElbTY=(oSy+endTopY)*0.5, iElbBY=(uaY+endBotY)*0.5;
+        p=`M${oSx},${oSy} C${oSx+dir*slLen*0.15},${oSy+ahF*0.15} ${oElbX-dir*slLen*0.05},${oElbTY-ahF*0.1} ${oElbX},${oElbTY}`
+         +` C${oElbX+dir*slLen*0.15},${oElbTY+ahF*0.6} ${endTopX-dir*slLen*0.08},${endTopY-ahF*0.15} ${endTopX},${endTopY}`
+         +` L${endBotX},${endBotY}`
+         +` C${endBotX-dir*slLen*0.08},${endBotY+ahF*0.15} ${iElbX+dir*slLen*0.15},${iElbBY-ahF*0.6} ${iElbX},${iElbBY}`
+         +` C${iElbX-dir*slLen*0.05},${iElbBY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
+      } else if(shape==='bishop'){
+        const bOff=armholeH*0.55;
+        const oM1=oSx+dir*slLen*0.35, oM2=oSx+dir*slLen*0.7;
+        const iM1=armX+dir*innerSlLen*0.35, iM2=armX+dir*innerSlLen*0.7;
+        const tB=bOff*0.8, bB=bOff*0.9;
+        p=`M${oSx},${oSy}`
+         +` C${oSx+dir*slLen*0.15},${oSy-ahF*0.3} ${oM1-dir*slLen*0.05},${(oSy+endTopY)*0.35-tB} ${oM1},${(oSy+endTopY)*0.4-tB}`
+         +` C${oM1+dir*slLen*0.12},${(oSy+endTopY)*0.45-tB*0.8} ${oM2-dir*slLen*0.05},${endTopY-ahF*0.1} ${endTopX},${endTopY}`
+         +` L${endBotX},${endBotY}`
+         +` C${iM2-dir*slLen*0.05},${endBotY+ahF*0.1} ${iM1+dir*slLen*0.12},${(uaY+endBotY)*0.55+bB*0.8} ${iM1},${(uaY+endBotY)*0.6+bB}`
+         +` C${iM1-dir*slLen*0.05},${(uaY+endBotY)*0.65+bB} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
+      } else if(shape==='dolman'){
+        p=`M${oSx},${oSy} C${oSx+dir*slLen*0.12},${oSy+ahF*0.1} ${endTopX-dir*slLen*0.06},${endTopY-ahF*0.1} ${endTopX},${endTopY}`
+         +` L${endBotX},${endBotY}`
+         +` C${endBotX-dir*slLen*0.1},${endBotY+ahF*2.5} ${armX+dir*ahF*0.3},${uaY+ahF*3.0} ${armX},${uaY}`;
+      } else if(shape==='lantern'){
+        const bulge=armholeH*0.6;
+        const oMid=oSx+dir*slLen*0.5, iMid=armX+dir*innerSlLen*0.5;
+        const mTY=(oSy+endTopY)*0.5-bulge, mBY=(uaY+endBotY)*0.5+bulge;
+        p=`M${oSx},${oSy} C${oSx+dir*slLen*0.1},${oSy-ahF*0.3} ${oMid-dir*slLen*0.15},${mTY+bulge*0.2} ${oMid},${mTY}`
+         +` C${oMid+dir*slLen*0.15},${mTY-bulge*0.1} ${endTopX-dir*slLen*0.05},${endTopY-ahF*0.1} ${endTopX},${endTopY}`
+         +` L${endBotX},${endBotY}`
+         +` C${endBotX-dir*slLen*0.05},${endBotY+ahF*0.1} ${iMid+dir*slLen*0.15},${mBY+bulge*0.1} ${iMid},${mBY}`
+         +` C${iMid-dir*slLen*0.15},${mBY-bulge*0.2} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
+      } else if(shape==='peasant'){
+        const bulge=armholeH*0.45;
+        const oMid=oSx+dir*slLen*0.5, iMid=armX+dir*innerSlLen*0.5;
+        const mTY=(oSy+endTopY)*0.5-bulge, mBY=(uaY+endBotY)*0.5+bulge;
+        p=`M${oSx},${oSy} C${oSx+dir*slLen*0.15},${oSy-ahF*0.5} ${oMid-dir*slLen*0.1},${mTY+bulge*0.3} ${oMid},${mTY}`
+         +` C${oMid+dir*slLen*0.1},${mTY-bulge*0.15} ${endTopX-dir*slLen*0.08},${endTopY-ahF*0.15} ${endTopX},${endTopY}`
+         +` L${endBotX},${endBotY}`
+         +` C${endBotX-dir*slLen*0.08},${endBotY+ahF*0.15} ${iMid+dir*slLen*0.1},${mBY+bulge*0.15} ${iMid},${mBY}`
+         +` C${iMid-dir*slLen*0.1},${mBY-bulge*0.3} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
+      } else if(shape==='legmutton'){
+        const bulge=slLen*0.55;
+        const oElbTY=(oSy+endTopY)*0.5, iElbBY=(uaY+endBotY)*0.5;
+        p=`M${oSx},${oSy} C${oSx+dir*bulge},${oSy-ahF*1.6} ${oElbX-dir*slLen*0.08},${oElbTY-ahF*0.3} ${oElbX},${oElbTY}`
+         +` C${oElbX+dir*slLen*0.06},${oElbTY+ahF*0.2} ${endTopX-dir*2},${endTopY+1} ${endTopX},${endTopY}`
+         +` L${endBotX},${endBotY}`
+         +` C${endBotX-dir*2},${endBotY-1} ${iElbX+dir*slLen*0.06},${iElbBY-ahF*0.2} ${iElbX},${iElbBY}`
+         +` C${iElbX-dir*slLen*0.08},${iElbBY+ahF*0.3} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
+      } else if(shape==='pagoda'){
+        const pElbO=shX+dir*slLen*0.55, pElbI=armX+dir*innerSlLen*0.55;
+        const oElbTY=(oSy+endTopY)*0.5, iElbBY=(uaY+endBotY)*0.5;
+        p=`M${oSx},${oSy} C${oSx+dir*slLen*0.12},${oSy+ahF*0.1} ${pElbO-dir*slLen*0.06},${oElbTY-ahF*0.08} ${pElbO},${oElbTY}`
+         +` C${pElbO+dir*slLen*0.06},${oElbTY+ahF*0.5} ${endTopX-dir*slLen*0.15},${endTopY-ahF*0.6} ${endTopX},${endTopY}`
+         +` L${endBotX},${endBotY}`
+         +` C${endBotX-dir*slLen*0.15},${endBotY+ahF*0.6} ${pElbI+dir*slLen*0.06},${iElbBY-ahF*0.5} ${pElbI},${iElbBY}`
+         +` C${pElbI-dir*slLen*0.06},${iElbBY+ahF*0.08} ${armX+dir*ahF*0.15},${uaY-ahF*0.08} ${armX},${uaY}`;
       } else {
-        // setin
-        const sy0=sY;
-        if(shape==='capped'){
-          // 캡슬리브: 어깨 위에 짧은 캡 — Armstrong p322 curved hemline
-          // 캡높이에서 ~1" 트림, 밑단이 곡선 (직선이 아님)
-          const capLen=Math.min(slLen,armholeH*0.5); // 캡 길이 제한
-          const capEndX=shX+dir*capLen;
-          const capMidY=(sy0+uaY)*0.5;
-          const capTopY=sy0+capLen*0.15; // 캡 상단 약간 아래
-          const capBotY=capMidY+capLen*0.3; // 캡 하단
-          // curved hemline — 볼록한 반달 형태
-          p=`M${shX},${sy0} C${shX+dir*capLen*0.4},${sy0-ahF*0.3} ${capEndX-dir*capLen*0.15},${capTopY-ahF*0.1} ${capEndX},${capTopY}`
-           +` Q${capEndX+dir*capLen*0.1},${capMidY} ${capEndX},${capBotY}`
-           +` C${capEndX-dir*capLen*0.15},${capBotY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
-        } else if(shape==='puff'){
-          // 퍼프: 어깨캡에서 크게 부풀고 팔꿈치 이후 좁아짐
-          const bulge=slLen*0.5;
-          p=`M${shX},${sy0} C${shX+dir*bulge},${sy0-ahF*1.4} ${endCX-dir*slLen*0.15},${endTop-ahF*0.2} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.15},${endBot+ahF*0.3} ${armX+dir*ahF*0.25},${uaY-ahF*0.2} ${armX},${uaY}`;
-        } else if(shape==='bell'){
-          // 벨: 팔꿈치까지 일자 → 팔꿈치부터 확 퍼짐 (나팔)
-          const elbX=shX+dir*slLen*0.5, elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0+ahF*0.15} ${elbX-dir*slLen*0.05},${elbTY-ahF*0.1} ${elbX},${elbTY} C${elbX+dir*slLen*0.15},${elbTY+ahF*0.6} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.08},${endBot+ahF*0.15} ${elbX+dir*slLen*0.15},${elbBY-ahF*0.6} ${elbX},${elbBY} C${elbX-dir*slLen*0.05},${elbBY+ahF*0.1} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
-        } else if(shape==='bishop'){
-          // 비숍: 중간 크게 부풀림 → 커프에서 확 좁아짐 (S커브)
-          const bOff=armholeH*0.55;
-          const mid1X=shX+dir*slLen*0.35, mid2X=shX+dir*slLen*0.7;
-          const topBulge=bOff*0.8, botBulge=bOff*0.9;
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0-ahF*0.3} ${mid1X-dir*slLen*0.05},${(sy0+endTop)*0.35-topBulge} ${mid1X},${(sy0+endTop)*0.4-topBulge} C${mid1X+dir*slLen*0.12},${(sy0+endTop)*0.45-topBulge*0.8} ${mid2X-dir*slLen*0.05},${endTop-ahF*0.1} ${endTopX},${endTop} L${endBotX},${endBot} C${mid2X-dir*slLen*0.05},${endBot+ahF*0.1} ${mid1X+dir*slLen*0.12},${(uaY+endBot)*0.55+botBulge*0.8} ${mid1X},${(uaY+endBot)*0.6+botBulge} C${mid1X-dir*slLen*0.05},${(uaY+endBot)*0.65+botBulge} ${armX+dir*ahF*0.2},${uaY-ahF*0.15} ${armX},${uaY}`;
-        } else if(shape==='dolman'){
-          // 돌먼: 겨드랑이가 허리까지 깊이 내려옴 (바디와 일체형)
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.12},${sy0+ahF*0.1} ${endCX-dir*slLen*0.06},${endTop-ahF*0.1} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.1},${endBot+ahF*2.5} ${armX+dir*ahF*0.3},${uaY+ahF*3.0} ${armX},${uaY}`;
-        } else if(shape==='lantern'){
-          // 랜턴: 등불 — 양 끝 좁고 중간 둥글게 크게 부풀림
-          const bulge=armholeH*0.6;
-          const midX=shX+dir*slLen*0.5;
-          const midTY=(sy0+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.1},${sy0-ahF*0.3} ${midX-dir*slLen*0.15},${midTY+bulge*0.2} ${midX},${midTY} C${midX+dir*slLen*0.15},${midTY-bulge*0.1} ${endCX-dir*slLen*0.05},${endTop-ahF*0.1} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.05},${endBot+ahF*0.1} ${midX+dir*slLen*0.15},${midBY+bulge*0.1} ${midX},${midBY} C${midX-dir*slLen*0.15},${midBY-bulge*0.2} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
-        } else if(shape==='peasant'){
-          // 페전트: 전체적으로 풍성 + 커프에서 개더링으로 좁아짐 (bishop보다 균일)
-          const bulge=armholeH*0.45;
-          const midX=shX+dir*slLen*0.5;
-          const midTY=(sy0+endTop)*0.5-bulge, midBY=(uaY+endBot)*0.5+bulge;
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.15},${sy0-ahF*0.5} ${midX-dir*slLen*0.1},${midTY+bulge*0.3} ${midX},${midTY} C${midX+dir*slLen*0.1},${midTY-bulge*0.15} ${endCX-dir*slLen*0.08},${endTop-ahF*0.15} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.08},${endBot+ahF*0.15} ${midX+dir*slLen*0.1},${midBY+bulge*0.15} ${midX},${midBY} C${midX-dir*slLen*0.1},${midBY-bulge*0.3} ${armX+dir*ahF*0.15},${uaY-ahF*0.1} ${armX},${uaY}`;
-        } else if(shape==='legmutton'){
-          // 레그오브머튼: 어깨~팔꿈치 극적 부풀림 → 팔꿈치 이후 타이트
-          const bulge=slLen*0.55;
-          const elbX=shX+dir*slLen*0.5;
-          const elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
-          p=`M${shX},${sy0} C${shX+dir*bulge},${sy0-ahF*1.6} ${elbX-dir*slLen*0.08},${elbTY-ahF*0.3} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.2} ${endCX-dir*2},${endTop+1} ${endTopX},${endTop} L${endBotX},${endBot} C${endCX-dir*2},${endBot-1} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.2} ${elbX},${elbBY} C${elbX-dir*slLen*0.08},${elbBY+ahF*0.3} ${armX+dir*ahF*0.2},${uaY-ahF*0.1} ${armX},${uaY}`;
-        } else if(shape==='pagoda'){
-          // 파고다: 팔꿈치까지 타이트 → 급격한 플레어 (계단형)
-          const elbX=shX+dir*slLen*0.55, elbTY=(sy0+endTop)*0.5, elbBY=(uaY+endBot)*0.5;
-          p=`M${shX},${sy0} C${shX+dir*slLen*0.12},${sy0+ahF*0.1} ${elbX-dir*slLen*0.06},${elbTY-ahF*0.08} ${elbX},${elbTY} C${elbX+dir*slLen*0.06},${elbTY+ahF*0.5} ${endCX-dir*slLen*0.15},${endTop-ahF*0.6} ${endTopX},${endTop} L${endBotX},${endBot} C${endBotX-dir*slLen*0.15},${endBot+ahF*0.6} ${elbX+dir*slLen*0.06},${elbBY-ahF*0.5} ${elbX},${elbBY} C${elbX-dir*slLen*0.06},${elbBY+ahF*0.08} ${armX+dir*ahF*0.15},${uaY-ahF*0.08} ${armX},${uaY}`;
+        // straight: raglan은 시작점이 멀어서 더 넓은 CP 필요
+        if(isRaglan){
+          p=`M${oSx},${oSy} C${oSx+dir*slLen*0.4},${oSy+ahF*0.3} ${endTopX-dir*slLen*0.1},${endTopY-ahF*0.3} ${endTopX},${endTopY}`
+           +` L${endBotX},${endBotY}`
+           +` C${endBotX-dir*slLen*0.1},${endBotY+ahF*0.3} ${armX+dir*ahF*0.3},${uaY-ahF*0.3} ${armX},${uaY}`;
         } else {
-          // straight: 슬리브캡 곡선 → 커프에 수평 도착 (수직 끝선과 90°)
-          // v0.26q 기반 단일 bezier — cp는 endCX 기준 (테이퍼 전), 끝점만 테이퍼
           const cpO=Math.max(slLen*0.25,8);
           const bkCP=Math.max(slLen*0.16,6);
-          p=`M${shX},${sy0} C${shX+dir*cpO*0.45},${sy0+ahF*0.5} ${endCX-dir*cpO*0.4},${endTop} ${endTopX},${endTop} L${endBotX},${endBot} C${endCX-dir*bkCP*0.5},${endBot} ${armX+dir*ahF*0.25},${uaY-ahF*0.2} ${armX},${uaY}`;
+          p=`M${oSx},${oSy} C${oSx+dir*cpO*0.45},${oSy+ahF*0.5} ${endTopX-dir*cpO*0.4},${endTopY} ${endTopX},${endTopY}`
+           +` L${endBotX},${endBotY}`
+           +` C${endBotX-dir*bkCP*0.5},${endBotY} ${armX+dir*ahF*0.25},${uaY-ahF*0.2} ${armX},${uaY}`;
         }
       }
-      o.push(`<path d="${p}" fill="#FAFAF8" stroke="${clr}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+      o.push(`<path d="${p}" fill="var(--gfill)" stroke="${clr}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
 
-      // Puff / Peasant gathering marks at cap (개더링 마크)
+      // Puff / Peasant gathering marks at cap
       if(shape==='puff'||shape==='peasant'){
         const gLen=Math.min(slLen*0.4,22);
         for(let i=0;i<6;i++){
           const t=(i+1)/7;
-          const gx=shX+dir*gLen*t;
-          const gy=sY-3+t*4;
+          const gx=oSx+dir*gLen*t;
+          const gy=oSy-3+t*4;
           o.push(`<line x1="${gx}" y1="${gy-3.5}" x2="${gx}" y2="${gy+3.5}" stroke="${clr}" stroke-width="${LW.stitch}" opacity="0.55"/>`);
         }
       }
@@ -2480,28 +2778,27 @@ const SleeveComp = {
       // Bishop / Lantern cuff band
       if(shape==='bishop'||shape==='lantern'){
         const bandW=5*dir;
-        o.push(`<line x1="${endCX}" y1="${endTop}" x2="${endCX}" y2="${endBot}" stroke="${clr}" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${endCX+bandW}" y1="${endTop+1}" x2="${endCX+bandW}" y2="${endBot-1}" stroke="${clr}" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${endCX}" y1="${endTopY}" x2="${endCX}" y2="${endBotY}" stroke="${clr}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${endCX+bandW}" y1="${endTopY+1}" x2="${endCX+bandW}" y2="${endBotY-1}" stroke="${clr}" stroke-width="${LW.stitch}"/>`);
       }
 
       // Peasant cuff gathering + elastic band
       if(shape==='peasant'){
         const bandW=4*dir;
-        o.push(`<line x1="${endCX}" y1="${endTop}" x2="${endCX}" y2="${endBot}" stroke="${clr}" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${endCX+bandW}" y1="${endTop+1}" x2="${endCX+bandW}" y2="${endBot-1}" stroke="${clr}" stroke-width="${LW.stitch}"/>`);
-        // cuff gathering marks
+        o.push(`<line x1="${endCX}" y1="${endTopY}" x2="${endCX}" y2="${endBotY}" stroke="${clr}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${endCX+bandW}" y1="${endTopY+1}" x2="${endCX+bandW}" y2="${endBotY-1}" stroke="${clr}" stroke-width="${LW.stitch}"/>`);
         for(let i=0;i<4;i++){
           const t=(i+1)/5;
-          const gy=endTop+(endBot-endTop)*t;
+          const gy=endTopY+(endBotY-endTopY)*t;
           o.push(`<line x1="${endCX+dir*2}" y1="${gy-2}" x2="${endCX+dir*2}" y2="${gy+2}" stroke="${clr}" stroke-width="${LW.stitch}" opacity="0.45"/>`);
         }
       }
 
-      // Leg-of-Mutton / Pagoda: 팔꿈치 전환선 (형태 변화 경계)
+      // Leg-of-Mutton / Pagoda: elbow transition line
       if((shape==='legmutton'||shape==='pagoda')&&slLen>25){
-        const elbX=shX+dir*slLen*0.55;
-        const elbTY=(sY+endTop)*0.5-3, elbBY=(uaY+endBot)*0.5+3;
-        o.push(`<line x1="${elbX}" y1="${elbTY}" x2="${elbX}" y2="${elbBY}" stroke="${clr}" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.4"/>`);
+        const trElbO=shX+dir*slLen*0.55, trElbI=armX+dir*innerSlLen*0.55;
+        const oElbTY2=(oSy+endTopY)*0.5-3, iElbBY2=(uaY+endBotY)*0.5+3;
+        o.push(`<line x1="${trElbO}" y1="${oElbTY2}" x2="${trElbI}" y2="${iElbBY2}" stroke="${clr}" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.4"/>`);
       }
 
       // Lantern gathering marks (cap + cuff)
@@ -2509,14 +2806,13 @@ const SleeveComp = {
         const gLen=Math.min(slLen*0.35,18);
         for(let i=0;i<5;i++){
           const t=(i+1)/6;
-          const gx=shX+dir*gLen*t;
-          const gy=sY-2+t*3;
+          const gx=oSx+dir*gLen*t;
+          const gy=oSy-2+t*3;
           o.push(`<line x1="${gx}" y1="${gy-3}" x2="${gx}" y2="${gy+3}" stroke="${clr}" stroke-width="${LW.stitch}" opacity="0.5"/>`);
         }
-        // cuff gathering
         for(let i=0;i<4;i++){
           const t=(i+1)/5;
-          const gy=endTop+(endBot-endTop)*t;
+          const gy=endTopY+(endBotY-endTopY)*t;
           o.push(`<line x1="${endCX+dir*2}" y1="${gy-2}" x2="${endCX+dir*2}" y2="${gy+2}" stroke="${clr}" stroke-width="${LW.stitch}" opacity="0.45"/>`);
         }
       }
@@ -2527,61 +2823,52 @@ const SleeveComp = {
         // capped sleeve — curved hemline, no cuff needed (self-faced edge)
       } else if(shape==='bell'){
         // bell has no cuff closure, just hem stitch
-        o.push(`<line x1="${endCX}" y1="${endTop+2}" x2="${endCX}" y2="${endBot-2}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="3,2"/>`);
+        o.push(`<line x1="${endCX}" y1="${endTopY+2}" x2="${endCX}" y2="${endBotY-2}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="3,2"/>`);
       } else if(shape==='bishop'){
         // bishop has band cuff — already drawn above
       } else if(cf==='rib'){
-        o.push(`<line x1="${endCX}" y1="${endTop+2}" x2="${endCX}" y2="${endBot-2}" stroke="${cc}" stroke-width="${LW.stitch}"/>`);
-        o.push(`<line x1="${endCX+dir*3.5}" y1="${endTop+4}" x2="${endCX+dir*3.5}" y2="${endBot-4}" stroke="${cc}" stroke-width="${LW.stitch*0.7}"/>`);
+        o.push(`<line x1="${endCX}" y1="${endTopY+2}" x2="${endCX}" y2="${endBotY-2}" stroke="${cc}" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${endCX+dir*3.5}" y1="${endTopY+4}" x2="${endCX+dir*3.5}" y2="${endBotY-4}" stroke="${cc}" stroke-width="${LW.stitch*0.7}"/>`);
       } else if(cf==='rolled'){
-        o.push(`<line x1="${endCX}" y1="${endTop+2}" x2="${endCX}" y2="${endBot-2}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${endCX+dir*5}" y1="${endTop+4}" x2="${endCX+dir*5}" y2="${endBot-4}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="2,1.5"/>`);
+        o.push(`<line x1="${endCX}" y1="${endTopY+2}" x2="${endCX}" y2="${endBotY-2}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${endCX+dir*5}" y1="${endTopY+4}" x2="${endCX+dir*5}" y2="${endBotY-4}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="2,1.5"/>`);
       } else if(cf==='french'){
-        // French cuff: wide folded-back double band + cufflink mark
         const bw=8*dir;
-        o.push(`<line x1="${endCX}" y1="${endTop}" x2="${endCX}" y2="${endBot}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${endCX+bw*0.5}" y1="${endTop+1}" x2="${endCX+bw*0.5}" y2="${endBot-1}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="2,1.5"/>`);
-        o.push(`<line x1="${endCX+bw}" y1="${endTop+2}" x2="${endCX+bw}" y2="${endBot-2}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
-        // cufflink dot
-        const clY=endCY;
-        o.push(`<circle cx="${endCX+bw*0.75}" cy="${clY}" r="1.2" fill="${cc}"/>`);
+        o.push(`<line x1="${endCX}" y1="${endTopY}" x2="${endCX}" y2="${endBotY}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${endCX+bw*0.5}" y1="${endTopY+1}" x2="${endCX+bw*0.5}" y2="${endBotY-1}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="2,1.5"/>`);
+        o.push(`<line x1="${endCX+bw}" y1="${endTopY+2}" x2="${endCX+bw}" y2="${endBotY-2}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
+        o.push(`<circle cx="${endCX+bw*0.75}" cy="${endCY}" r="1.2" fill="${cc}"/>`);
       } else if(cf==='barrel'){
-        // Barrel cuff: single band with button (classic dress shirt)
         const bw=5*dir;
-        o.push(`<line x1="${endCX}" y1="${endTop}" x2="${endCX}" y2="${endBot}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${endCX+bw}" y1="${endTop+1}" x2="${endCX+bw}" y2="${endBot-1}" stroke="${cc}" stroke-width="${LW.stitch}"/>`);
-        // button
+        o.push(`<line x1="${endCX}" y1="${endTopY}" x2="${endCX}" y2="${endBotY}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${endCX+bw}" y1="${endTopY+1}" x2="${endCX+bw}" y2="${endBotY-1}" stroke="${cc}" stroke-width="${LW.stitch}"/>`);
         o.push(`<circle cx="${endCX+bw*0.5}" cy="${endCY}" r="1.3" fill="none" stroke="${cc}" stroke-width="0.5"/>`);
       } else if(cf==='tab'){
-        // Tab cuff: short tab with button at sleeve end
-        o.push(`<line x1="${endCX}" y1="${endTop+2}" x2="${endCX}" y2="${endBot-2}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="3,2"/>`);
+        o.push(`<line x1="${endCX}" y1="${endTopY+2}" x2="${endCX}" y2="${endBotY-2}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="3,2"/>`);
         const tabW=4*dir, tabH=5;
         const tabY=endCY-tabH/2;
         o.push(`<rect x="${Math.min(endCX,endCX+tabW)}" y="${tabY}" width="${Math.abs(tabW)}" height="${tabH}" fill="none" stroke="${cc}" stroke-width="${LW.stitch}" rx="1"/>`);
         o.push(`<circle cx="${endCX+tabW*0.7}" cy="${endCY}" r="1" fill="${cc}"/>`);
       } else if(cf==='turnup'){
-        // Turn-up cuff: wide fold-back (wider than rolled)
         const tw=7*dir;
-        o.push(`<line x1="${endCX}" y1="${endTop}" x2="${endCX}" y2="${endBot}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${endCX+tw}" y1="${endTop+2}" x2="${endCX+tw}" y2="${endBot-2}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${endCX+tw*0.5}" y1="${endTop+3}" x2="${endCX+tw*0.5}" y2="${endBot-3}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="1.5,1.5"/>`);
+        o.push(`<line x1="${endCX}" y1="${endTopY}" x2="${endCX}" y2="${endBotY}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${endCX+tw}" y1="${endTopY+2}" x2="${endCX+tw}" y2="${endBotY-2}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${endCX+tw*0.5}" y1="${endTopY+3}" x2="${endCX+tw*0.5}" y2="${endBotY-3}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="1.5,1.5"/>`);
       } else if(cf==='knit'){
-        // Knit cuff: wide ribbed band (3 lines + divider marks)
         const kw=6*dir;
-        o.push(`<line x1="${endCX}" y1="${endTop}" x2="${endCX}" y2="${endBot}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${endCX+kw}" y1="${endTop+1}" x2="${endCX+kw}" y2="${endBot-1}" stroke="${cc}" stroke-width="${LW.stitch}"/>`);
-        o.push(`<line x1="${endCX+kw*0.5}" y1="${endTop+2}" x2="${endCX+kw*0.5}" y2="${endBot-2}" stroke="${cc}" stroke-width="${LW.stitch*0.7}"/>`);
-        // horizontal rib dividers
-        const ribN=3, span=endBot-endTop-4;
+        o.push(`<line x1="${endCX}" y1="${endTopY}" x2="${endCX}" y2="${endBotY}" stroke="${cc}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${endCX+kw}" y1="${endTopY+1}" x2="${endCX+kw}" y2="${endBotY-1}" stroke="${cc}" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${endCX+kw*0.5}" y1="${endTopY+2}" x2="${endCX+kw*0.5}" y2="${endBotY-2}" stroke="${cc}" stroke-width="${LW.stitch*0.7}"/>`);
+        const ribN=3, span=endBotY-endTopY-4;
         for(let ri=1;ri<ribN;ri++){
-          const ry=endTop+2+span*ri/ribN;
+          const ry=endTopY+2+span*ri/ribN;
           o.push(`<line x1="${endCX+1*dir}" y1="${ry}" x2="${endCX+kw-1*dir}" y2="${ry}" stroke="${cc}" stroke-width="${LW.stitch*0.5}" opacity="0.4"/>`);
         }
       } else {
-        o.push(`<line x1="${endCX}" y1="${endTop+2}" x2="${endCX}" y2="${endBot-2}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="3,2"/>`);
+        o.push(`<line x1="${endCX}" y1="${endTopY+2}" x2="${endCX}" y2="${endBotY-2}" stroke="${cc}" stroke-width="${LW.stitch}" stroke-dasharray="3,2"/>`);
       }
       // sleeve underarm seam hint
-      const midSX=(shX+armX)/2+dir*3,midSY=(sY+uaY)/2;
+      const midSX=(oSx+armX)/2+dir*3,midSY=(oSy+uaY)/2;
       o.push(`<line x1="${midSX}" y1="${midSY}" x2="${endCX}" y2="${endCY}" stroke="var(--stitch)" stroke-width="${LW.stitch*0.6}" stroke-dasharray="3,3" opacity="0.3"/>`);
     });
   }
@@ -2707,7 +2994,7 @@ const DetailComp = {
     else if(S.pocket==='flap'){
       const px=cx-halfBody*0.45,py=topY+bodyH*pY,w=20,h=22,fh=7;
       o.push(`<rect x="${px}" y="${py}" width="${w}" height="${h}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
-      o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
+      o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
       o.push(`<line x1="${px-1}" y1="${py}" x2="${px+w+1}" y2="${py}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
       o.push(`<line x1="${px+2}" y1="${py-fh+2}" x2="${px+w-2}" y2="${py-fh+2}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="1.5,1.5"/>`);
     }
@@ -2757,7 +3044,7 @@ const DetailComp = {
         o.push(`<line x1="${px+pleat}" y1="${py+2}" x2="${px+pleat}" y2="${py+h-2}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,1.5"/>`);
         o.push(`<line x1="${px+w-pleat}" y1="${py+2}" x2="${px+w-pleat}" y2="${py+h-2}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,1.5"/>`);
         // flap
-        o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="#FAFAF8" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
+        o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
         o.push(`<line x1="${px-1}" y1="${py}" x2="${px+w+1}" y2="${py}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
         // button
         o.push(`<circle cx="${px+w/2}" cy="${py-fh/2}" r="1.2" fill="var(--ink)"/>`);
@@ -3132,7 +3419,7 @@ const DesignEl = {
           const w=de.w||20, h=de.h||22, fh=de.fh||7;
           const drawOne = (px, py) => {
             o.push(`<rect class="${cls}" data-de="${i}" x="${px}" y="${py}" width="${w}" height="${h}" fill="none" stroke="${ink}" stroke-width="${LW.seam}" rx="1" stroke-linejoin="round"/>`);
-            o.push(`<rect data-de="${i}" x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="#FAFAF8" stroke="${ink}" stroke-width="${LW.seam}" rx="1"/>`);
+            o.push(`<rect data-de="${i}" x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="var(--gfill)" stroke="${ink}" stroke-width="${LW.seam}" rx="1"/>`);
             o.push(`<line data-de="${i}" x1="${px-1}" y1="${py}" x2="${px+w+1}" y2="${py}" stroke="${ink}" stroke-width="${LW.outline*0.7}"/>`);
           };
           drawOne(absX, absY);
@@ -3384,13 +3671,13 @@ const SkirtComp = {
       if(S.waistband==='yoke'){
         // 요크: 허리에서 힙까지 곡선
         const yH=wbH;
-        o.push(`<path d="M${wL},${topY} L${wR},${topY} L${wR},${topY+yH} C${wR-5},${topY+yH+4} ${wL+5},${topY+yH+4} ${wL},${topY+yH} Z" fill="#FAFAF8" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${wL},${topY} L${wR},${topY} L${wR},${topY+yH} C${wR-5},${topY+yH+4} ${wL+5},${topY+yH+4} ${wL},${topY+yH} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
       } else if(S.waistband==='contour'){
         // 컨투어: 상단 곡선
-        o.push(`<path d="M${wL},${topY+wbH} L${wL},${topY+2} C${wL},${topY} ${wL+3},${topY} ${wL+4},${topY} L${wR-4},${topY} C${wR-3},${topY} ${wR},${topY} ${wR},${topY+2} L${wR},${topY+wbH} Z" fill="#FAFAF8" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${wL},${topY+wbH} L${wL},${topY+2} C${wL},${topY} ${wL+3},${topY} ${wL+4},${topY} L${wR-4},${topY} C${wR-3},${topY} ${wR},${topY} ${wR},${topY+2} L${wR},${topY+wbH} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
       } else if(S.waistband==='elastic'){
         // 일라스틱: 기본 밴드 + 주름 표시
-        o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="#FAFAF8" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
+        o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
         // 주름 라인
         for(let i=1;i<4;i++){
           const gy=topY+wbH*i/4;
@@ -3398,7 +3685,7 @@ const SkirtComp = {
         }
       } else {
         // straight 기본
-        o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="#FAFAF8" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
+        o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
       }
     }
 
@@ -3446,7 +3733,7 @@ const SkirtComp = {
     // 우측: 힙→허리
     path+=` C${hR},${hipY-hipDrop*0.3} ${wR+hipCtrl},${waistY+hipDrop*0.4} ${wR},${waistY}`;
     path+=` Z`;
-    o.push(`<path d="${path}" fill="#FAFAF8" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+    o.push(`<path d="${path}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
     o.push('</g>');
 
     // ── Layer: Detail ──
@@ -3631,15 +3918,15 @@ const PantsComp = {
 
     // ── 웨이스트밴드 ──
     if(S.pantsWaist==='elastic'){
-      o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="#FAFAF8" stroke="${ink}" stroke-width="${LW.outline}"/>`);
+      o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="var(--gfill)" stroke="${ink}" stroke-width="${LW.outline}"/>`);
       for(let i=1;i<3;i++){
         const gy=topY+wbH*i/3;
         o.push(`<line x1="${wL+4}" y1="${gy}" x2="${wR-4}" y2="${gy}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,3" opacity="0.4"/>`);
       }
     } else if(S.pantsWaist==='contour'){
-      o.push(`<path d="M${wL},${topY+wbH} L${wL},${topY+2} C${wL},${topY} ${wL+3},${topY} ${wL+4},${topY} L${wR-4},${topY} C${wR-3},${topY} ${wR},${topY} ${wR},${topY+2} L${wR},${topY+wbH} Z" fill="#FAFAF8" stroke="${ink}" stroke-width="${LW.outline}"/>`);
+      o.push(`<path d="M${wL},${topY+wbH} L${wL},${topY+2} C${wL},${topY} ${wL+3},${topY} ${wL+4},${topY} L${wR-4},${topY} C${wR-3},${topY} ${wR},${topY} ${wR},${topY+2} L${wR},${topY+wbH} Z" fill="var(--gfill)" stroke="${ink}" stroke-width="${LW.outline}"/>`);
     } else {
-      o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="#FAFAF8" stroke="${ink}" stroke-width="${LW.outline}"/>`);
+      o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="var(--gfill)" stroke="${ink}" stroke-width="${LW.outline}"/>`);
     }
 
     // ── 바지 아웃라인 ──
@@ -3669,7 +3956,7 @@ const PantsComp = {
     p+=` C${hR},${hipY-hipDrop*0.3} ${wR+hipCtrl},${waistY+hipDrop*0.4} ${wR},${waistY}`;
     p+=` Z`;
 
-    o.push(`<path d="${p}" fill="#FAFAF8" stroke="${ink}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+    o.push(`<path d="${p}" fill="var(--gfill)" stroke="${ink}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
     o.push('</g>');
 
     // ── Layer: Detail ──
@@ -3796,7 +4083,7 @@ function renderOne(svg,isBack){
   // ── Layer: Silhouette (외곽선 + 소매) ──
   o.push(`<g id="${side}-silhouette">`);
   SleeveComp.draw(cx,g,geo,o,isBack);
-  o.push(`<path d="${geo.path} Z" fill="#FAFAF8" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+  o.push(`<path d="${geo.path} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
   const{p:np}=NeckComp.path(cx,g,isBack);
   const ef_=effectiveFinish();
   const hideNeckline=ef_==='turtle'||ef_==='mock'||ef_==='hood'||ef_.startsWith('collar');
@@ -4590,7 +4877,7 @@ const ExportModule = {
 <g id="Front_View" transform="translate(10,10)">${fi}</g>
 <g id="Back_View" transform="translate(370,10)">${bi}</g>
 </svg>`;
-    const resolved=c.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8');
+    const resolved=c.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
     const b=new Blob([resolved],{type:'image/svg+xml'});
     const style=lbl.toLowerCase().replace(/\s/g,'_');
     const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flat_'+style+'_'+Date.now()+'.svg';a.click();
@@ -4609,7 +4896,7 @@ const ExportModule = {
       .replace(/var\(--grain\)/g,'#C8C4BB')
       .replace(/var\(--accent\)/g,'#B83A2A')
       .replace(/var\(--handle\)/g,'#B83A2A')
-      .replace(/var\(--border\)/g,'#E4E0D8');
+      .replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
     const blob=new Blob([resolved],{type:'image/svg+xml;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const img=new Image();
@@ -4671,6 +4958,7 @@ const ExportModule = {
           Object.keys(S).forEach(k=>syncToggle(k,S[k]));
           SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
           updateNeckSubPanels();syncCollarBtns();
+          if(S.fillColor) setFillColor(S.fillColor); else setFillColor('');
           updateAllCompat();draw();
           History.push();
         }catch(err){alert('파일 로드 실패: '+err.message);}
@@ -4895,7 +5183,7 @@ const ExportModule = {
       ${tbl}${legend}${ftr}
     </svg>`;
 
-    const resolved=svg.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8');
+    const resolved=svg.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
 
     // SVG → Canvas → PDF-like PNG (고해상도)
     const blob=new Blob([resolved],{type:'image/svg+xml;charset=utf-8'});
@@ -4930,7 +5218,7 @@ const ExportModule = {
       const clone=svgEl.cloneNode(true);
       const hl=clone.querySelector('.handles-layer');if(hl)hl.remove();
       let str='<svg xmlns="http://www.w3.org/2000/svg" width="320" height="460" viewBox="0 0 320 460">'+clone.innerHTML+'</svg>';
-      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8');
+      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
       const blob=new Blob([str],{type:'image/svg+xml;charset=utf-8'});
       const url=URL.createObjectURL(blob);
       const img=new Image();
@@ -5362,7 +5650,7 @@ const ExportModule = {
       const clone=svgEl.cloneNode(true);
       const hl=clone.querySelector('.handles-layer');if(hl)hl.remove();
       let str='<svg xmlns="http://www.w3.org/2000/svg" width="320" height="460" viewBox="0 0 320 460">'+clone.innerHTML+'</svg>';
-      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8');
+      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
       const blob=new Blob([str],{type:'image/svg+xml;charset=utf-8'});
       const url=URL.createObjectURL(blob);
       const img=new Image();
@@ -5751,6 +6039,7 @@ const FactoryViewer={
     setGarmentType(S.garmentType||'top');
     Object.keys(S).forEach(k=>syncToggle(k,S[k]));
     SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
+    if(S.fillColor) document.documentElement.style.setProperty('--gfill',S.fillColor);
     updateNeckSubPanels();syncCollarBtns();updateAllCompat();draw();
     // Hide editing UI
     document.getElementById('panelEl').style.display='none';
@@ -5786,6 +6075,7 @@ PresetModule.init();
 initStyleRow();
 setupFoldable();
 applyExtended();
+updateNeckUI();updateNeckBCCompat();
 updateFinishCompat();
 updateSleeveCompat();
 setMode('both');
@@ -5801,6 +6091,161 @@ document.querySelectorAll('.psec-title').forEach(t=>{
 document.querySelectorAll('.psec-title').forEach(t=>{
   if(t.textContent.trim()==='Design Elements') t.parentElement.classList.add('collapsed');
 });
+// ── Color Palette ──
+function setFillColor(c){
+  S.fillColor=c;
+  const v=c||'#FAFAF8';
+  document.documentElement.style.setProperty('--gfill',v);
+  document.querySelectorAll('#colorBar .color-swatch').forEach(s=>s.classList.toggle('on',s.dataset.color===c));
+  draw();
+}
+document.querySelectorAll('#colorBar .color-swatch').forEach(sw=>{
+  sw.addEventListener('click',()=>setFillColor(sw.dataset.color));
+});
+document.getElementById('customColorPick').addEventListener('input',e=>{
+  const c=e.target.value;
+  e.target.parentElement.style.background=c;
+  document.querySelectorAll('#colorBar .color-swatch').forEach(s=>s.classList.remove('on'));
+  S.fillColor=c;
+  document.documentElement.style.setProperty('--gfill',c);
+  draw();
+});
+
+// ── Card Feed ──
+const CARD_DATA=[
+  {title:'크루넥의 7가지 얼굴',titleEn:'7 Faces of the Crew Neck',tag:'Structure',
+   sub:'같은 넥라인, 다른 실루엣. 핏과 기장, 소매 하나만 바꿔도 완전히 다른 옷이 된다.',
+   subEn:'Same neckline, different silhouettes. Change one parameter and it becomes a different garment.',
+   state:{neckShape:'round',fit:'regular',bodyLen:45,fitW:50,sleeveLength:32,sleeveType:'setin',fillColor:'#1B3A5C'}},
+  {title:'미니멀 — 선 하나가 전부일 때',titleEn:'Minimal — When One Line Is Everything',tag:'Style',
+   sub:'디테일을 전부 빼면 남는 건 비율뿐. 클린핏의 정수.',
+   subEn:'Strip away every detail. What remains is pure proportion.',
+   state:{neckShape:'round',fit:'slim',bodyLen:45,fitW:42,sleeveLength:25,sleeveType:'setin',pocket:'none',dart:'none',closure:'none',fillColor:'#2C2C2C'}},
+  {title:'여름, 면 저지 한 장',titleEn:'Summer — One Layer of Cotton Jersey',tag:'Material',
+   sub:'소재가 형태를 결정한다. 같은 패턴이 원단에 따라 어떻게 달라지는지.',
+   subEn:'Material determines form. See how the same pattern changes with fabric.',
+   state:{neckShape:'round',fit:'regular',bodyLen:40,fitW:48,sleeveLength:18,sleeveType:'setin',fillColor:'#F5F0EB'}},
+  {title:'오버사이즈는 끝났을까?',titleEn:'Is Oversized Over?',tag:'Trend',
+   sub:'핏 슬라이더 하나로 스키니부터 오버사이즈까지. 트렌드는 숫자로 말한다.',
+   subEn:'From skinny to oversized with one slider. Trends speak in numbers.',
+   state:{neckShape:'round',fit:'oversized',bodyLen:58,fitW:75,sleeveLength:40,sleeveType:'setin',shoulderExtra:6,fillColor:'#C4B5A0'}},
+  {title:'래글런 소매의 3가지 변형',titleEn:'3 Variations of Raglan',tag:'Structure',
+   sub:'어깨선이 사라지면 실루엣이 바뀐다. 셋인, 래글런, 그리고 그 사이.',
+   subEn:'When the shoulder seam disappears, the silhouette transforms.',
+   state:{neckShape:'round',fit:'regular',bodyLen:50,fitW:55,sleeveLength:55,sleeveType:'raglan',fillColor:'#3B6B4E'}}
+];
+
+const CardFeed={
+  active:true,
+  init(){
+    // Skip card feed if URL has params (factory, demo)
+    const params=new URLSearchParams(location.search);
+    if(params.has('factory')||params.has('demo')){this.hide();return;}
+    // Render mini previews
+    this.renderPreviews();
+    // Dots
+    this.initDots();
+    // Scroll → dot sync
+    const cards=document.getElementById('app-cards');
+    cards.addEventListener('scroll',()=>this.syncDots());
+    // Click → enter engine
+    document.querySelectorAll('.card-enter-btn').forEach(btn=>{
+      btn.addEventListener('click',(e)=>{
+        e.stopPropagation();
+        const idx=+btn.closest('.card').dataset.card;
+        this.enter(idx);
+      });
+    });
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click',()=>this.enter(+card.dataset.card));
+    });
+    // Hide engine
+    document.querySelector('header').style.display='none';
+    document.querySelector('.app').style.display='none';
+  },
+  renderPreviews(){
+    const saved=JSON.parse(JSON.stringify(S));
+    CARD_DATA.forEach((cd,i)=>{
+      Object.assign(S,DEFAULT_STATE);
+      Object.assign(S,cd.state);
+      {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+      const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);
+      const svg=document.getElementById('cardSvg'+i);
+      if(!svg)return;
+      const cx=160,g=BodyComp.geometry(),o=[];
+      const geo=BodyComp.outline(cx,g,false);
+      SleeveComp.draw(cx,g,geo,o,false);
+      o.push(`<path d="${geo.path} Z" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+      const{p:np}=NeckComp.path(cx,g,false);
+      const ef_=effectiveFinish();
+      const hideNeckline=ef_==='turtle'||ef_==='mock'||ef_==='hood'||ef_.startsWith('collar');
+      if(!hideNeckline) o.push(`<path d="${np}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linecap="round"/>`);
+      NeckComp.drawFinish(cx,g,o,false);
+      const fillClr=cd.state.fillColor||'#FAFAF8';
+      svg.innerHTML=o.join('\n').replace(/var\(--gfill\)/g,fillClr);
+    });
+    // Restore state
+    Object.assign(S,saved);
+  },
+  initDots(){
+    const dots=document.getElementById('cardDots');
+    CARD_DATA.forEach((_,i)=>{
+      const d=document.createElement('div');
+      d.className='card-dot'+(i===0?' on':'');
+      d.addEventListener('click',()=>{
+        document.getElementById('app-cards').scrollTo({left:i*window.innerWidth,behavior:'smooth'});
+      });
+      dots.appendChild(d);
+    });
+  },
+  syncDots(){
+    const cards=document.getElementById('app-cards');
+    const idx=Math.round(cards.scrollLeft/window.innerWidth);
+    document.querySelectorAll('.card-dot').forEach((d,i)=>d.classList.toggle('on',i===idx));
+  },
+  enter(idx){
+    const cd=CARD_DATA[idx];
+    if(!cd)return;
+    // Apply card preset
+    Object.assign(S,DEFAULT_STATE);
+    Object.assign(S,cd.state);
+    migrateState(S);
+    {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+    const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);
+    if(S.fillColor) setFillColor(S.fillColor); else setFillColor('');
+    setGarmentType(S.garmentType||'top');
+    Object.keys(S).forEach(k=>syncToggle(k,S[k]));
+    SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
+    updateNeckSubPanels();syncCollarBtns();
+    updateAllCompat();draw();
+    History.push();
+    // Transition
+    this.hide();
+  },
+  hide(){
+    this.active=false;
+    document.getElementById('app-cards').classList.add('hidden');
+    document.getElementById('cardDots').style.display='none';
+    document.querySelector('.cards-logo').style.display='none';
+    document.querySelector('header').style.display='';
+    const app=document.querySelector('.app');
+    app.style.display='';
+    app.classList.add('app-fade-in');
+    setTimeout(()=>app.classList.remove('app-fade-in'),500);
+  },
+  show(){
+    this.active=true;
+    document.getElementById('app-cards').classList.remove('hidden');
+    document.getElementById('cardDots').style.display='';
+    document.querySelector('.cards-logo').style.display='';
+    document.querySelector('header').style.display='none';
+    document.querySelector('.app').style.display='none';
+    this.renderPreviews();
+    this.syncDots();
+  }
+};
+CardFeed.init();
+
 History.push(); // initial state
 FactoryViewer.check(); // URL param → factory mode
 // ?demo → 자동 데모 시작
