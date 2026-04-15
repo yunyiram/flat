@@ -2535,7 +2535,7 @@ const NeckComp = {
           o.push(`<path d="M${cx-2},${topY-bh+2} C${cx-4},${topY+tailLen*0.2} ${cx-8},${topY+tailLen*0.6} ${cx-12},${topY+tailLen}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           o.push(`<path d="M${cx+2},${topY-bh+2} C${cx+4},${topY+tailLen*0.2} ${cx+8},${topY+tailLen*0.6} ${cx+12},${topY+tailLen}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           // 매듭 중심 (더 뚜렷하게)
-          o.push(`<ellipse cx="${cx}" cy="${topY-bh}" rx="3.5" ry="3" fill="var(--ink)" opacity="0.4"/>`);
+          o.push(`<ellipse cx="${cx}" cy="${topY-bh}" rx="3.5" ry="3" fill="var(--gstroke)" opacity="0.4"/>`);
         }
       }
       else if(f==='collar_cowl'){
@@ -2678,7 +2678,7 @@ const SleeveComp = {
     const cuffHalfW=sleeveCapW*taperFactor*lenTaper;
     const angleRad=0.18+slLen*0.003;
     const sinA=Math.sin(angleRad), cosA=Math.cos(angleRad);
-    const clr=isBack?'#444':'var(--ink)';
+    const clr=isBack?'#444':'var(--gstroke)';
     const shape=S.sleeveShape||'straight';
 
     [-1,1].forEach(dir=>{
@@ -3059,7 +3059,7 @@ const DetailComp = {
         const x2=px+Math.cos(angle)*zl*d,y2=py+Math.sin(angle)*zl;
         o.push(`<line x1="${px}" y1="${py}" x2="${x2}" y2="${y2}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         const mx=(px+x2)/2,my=(py+y2)/2;
-        o.push(`<rect x="${mx-1.5}" y="${my-1.5}" width="3" height="3" fill="var(--ink)" rx="0.5"/>`);
+        o.push(`<rect x="${mx-1.5}" y="${my-1.5}" width="3" height="3" fill="var(--gstroke)" rx="0.5"/>`);
         const dx=x2-px,dy=y2-py,len=Math.sqrt(dx*dx+dy*dy);
         for(let i=3;i<len-3;i+=3){
           const tx=px+dx*i/len,ty=py+dy*i/len;
@@ -3093,7 +3093,7 @@ const DetailComp = {
         o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}" rx="1"/>`);
         o.push(`<line x1="${px-1}" y1="${py}" x2="${px+w+1}" y2="${py}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         // button
-        o.push(`<circle cx="${px+w/2}" cy="${py-fh/2}" r="1.2" fill="var(--ink)"/>`);
+        o.push(`<circle cx="${px+w/2}" cy="${py-fh/2}" r="1.2" fill="var(--gstroke)"/>`);
       });
     }
     else if(S.pocket==='seam'){
@@ -3175,10 +3175,10 @@ const DetailComp = {
         const sy=startY+gap*i;
         const sx=isDouble&&pos!=='side'?drawX-dOff:drawX;
         o.push(`<circle cx="${sx}" cy="${sy}" r="2" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
-        o.push(`<circle cx="${sx}" cy="${sy}" r="0.8" fill="var(--ink)"/>`);
+        o.push(`<circle cx="${sx}" cy="${sy}" r="0.8" fill="var(--gstroke)"/>`);
         if(isDouble&&pos!=='side'){
           o.push(`<circle cx="${drawX+dOff}" cy="${sy}" r="2" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
-          o.push(`<circle cx="${drawX+dOff}" cy="${sy}" r="0.8" fill="var(--ink)"/>`);
+          o.push(`<circle cx="${drawX+dOff}" cy="${sy}" r="0.8" fill="var(--gstroke)"/>`);
         }
       }
     }
@@ -3413,7 +3413,7 @@ const DesignEl = {
       const {topY, halfBody, bodyH} = g;
       const {botY, hipHalf} = geo;
       const hL = cx - hipHalf + 3, hR = cx + hipHalf - 3;
-      const ink = isBack ? '#444' : 'var(--ink)';
+      const ink = isBack ? '#444' : 'var(--gstroke)';
       const stitch = isBack ? '#666' : 'var(--stitch)';
       // face 속성으로 앞/뒤 필터링
       const face = de.face || 'front';
@@ -3717,13 +3717,13 @@ const SkirtComp = {
       if(S.waistband==='yoke'){
         // 요크: 허리에서 힙까지 곡선
         const yH=wbH;
-        o.push(`<path d="M${wL},${topY} L${wR},${topY} L${wR},${topY+yH} C${wR-5},${topY+yH+4} ${wL+5},${topY+yH+4} ${wL},${topY+yH} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${wL},${topY} L${wR},${topY} L${wR},${topY+yH} C${wR-5},${topY+yH+4} ${wL+5},${topY+yH+4} ${wL},${topY+yH} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.outline}"/>`);
       } else if(S.waistband==='contour'){
         // 컨투어: 상단 곡선
-        o.push(`<path d="M${wL},${topY+wbH} L${wL},${topY+2} C${wL},${topY} ${wL+3},${topY} ${wL+4},${topY} L${wR-4},${topY} C${wR-3},${topY} ${wR},${topY} ${wR},${topY+2} L${wR},${topY+wbH} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${wL},${topY+wbH} L${wL},${topY+2} C${wL},${topY} ${wL+3},${topY} ${wL+4},${topY} L${wR-4},${topY} C${wR-3},${topY} ${wR},${topY} ${wR},${topY+2} L${wR},${topY+wbH} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.outline}"/>`);
       } else if(S.waistband==='elastic'){
         // 일라스틱: 기본 밴드 + 주름 표시
-        o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
+        o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.outline}"/>`);
         // 주름 라인
         for(let i=1;i<4;i++){
           const gy=topY+wbH*i/4;
@@ -3731,7 +3731,7 @@ const SkirtComp = {
         }
       } else {
         // straight 기본
-        o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}"/>`);
+        o.push(`<rect x="${wL}" y="${topY}" width="${halfWaist*2}" height="${wbH}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.outline}"/>`);
       }
     }
 
@@ -3779,7 +3779,7 @@ const SkirtComp = {
     // 우측: 힙→허리
     path+=` C${hR},${hipY-hipDrop*0.3} ${wR+hipCtrl},${waistY+hipDrop*0.4} ${wR},${waistY}`;
     path+=` Z`;
-    o.push(`<path d="${path}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+    o.push(`<path d="${path}" fill="var(--gfill)" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
     o.push('</g>');
 
     // ── Layer: Detail ──
@@ -3789,7 +3789,7 @@ const SkirtComp = {
     if(S.skirtDart!=='none'){
       const dartH=hipDrop*0.85;
       const drawDart=(dx)=>{
-        o.push(`<path d="M${cx+dx-3},${waistY} L${cx+dx},${waistY+dartH} L${cx+dx+3},${waistY}" fill="none" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.seam}"/>`);
+        o.push(`<path d="M${cx+dx-3},${waistY} L${cx+dx},${waistY+dartH} L${cx+dx+3},${waistY}" fill="none" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.seam}"/>`);
       };
       if(!isBack||(isBack&&S.skirtDart==='front_back')){
         drawDart(-halfWaist*0.4);
@@ -3824,19 +3824,19 @@ const SkirtComp = {
     if(S.skirtSlit!=='none'){
       const slitH=Math.min((hemY-hipY)*0.45, 40);
       if(S.skirtSlit==='center_back'&&isBack){
-        o.push(`<line x1="${cx}" y1="${hemY}" x2="${cx}" y2="${hemY-slitH}" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${cx}" y1="${hemY}" x2="${cx}" y2="${hemY-slitH}" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.seam}"/>`);
       }
       if(S.skirtSlit==='front'&&!isBack){
         o.push(`<line x1="${cx}" y1="${hemY}" x2="${cx}" y2="${hemY-slitH}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
       }
       if(S.skirtSlit==='side'){
-        o.push(`<line x1="${cx+halfHem}" y1="${hemY}" x2="${cx+halfHip}" y2="${hemY-slitH}" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${cx+halfHem}" y1="${hemY}" x2="${cx+halfHip}" y2="${hemY-slitH}" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.seam}"/>`);
       }
     }
 
     // ── 클로저 ──
     if(S.skirtClosure!=='none'&&S.skirtClosure!=='elastic_w'){
-      const closureStroke=isBack?'#444':'var(--ink)';
+      const closureStroke=isBack?'#444':'var(--gstroke)';
       if(S.skirtClosure==='zip_back'&&isBack){
         // 뒤중심 지퍼
         const zipTop=waistY;
@@ -3952,7 +3952,7 @@ const PantsComp = {
     // ── Layer: Silhouette ──
     o.push(`<g id="${side}-silhouette">`);
 
-    const ink=isBack?'#444':'var(--ink)';
+    const ink=isBack?'#444':'var(--gstroke)';
     // 뒤판 크로치는 약간 더 넓음 (1.2배)
     const cG=isBack?cGap*1.2:cGap;
     const wL=cx-halfWaist, wR=cx+halfWaist;
@@ -4129,11 +4129,11 @@ function renderOne(svg,isBack){
   // ── Layer: Silhouette (외곽선 + 소매) ──
   o.push(`<g id="${side}-silhouette">`);
   SleeveComp.draw(cx,g,geo,o,isBack);
-  o.push(`<path d="${geo.path} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+  o.push(`<path d="${geo.path} Z" fill="var(--gfill)" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
   const{p:np}=NeckComp.path(cx,g,isBack);
   const ef_=effectiveFinish();
   const hideNeckline=ef_==='turtle'||ef_==='mock'||ef_==='hood'||ef_.startsWith('collar');
-  if(!hideNeckline) o.push(`<path d="${np}" fill="none" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.outline}" stroke-linecap="round" stroke-linejoin="round"/>`);
+  if(!hideNeckline) o.push(`<path d="${np}" fill="none" stroke="${isBack?'#444':'var(--gstroke)'}" stroke-width="${LW.outline}" stroke-linecap="round" stroke-linejoin="round"/>`);
   o.push('</g>');
   // ── Layer: Construction (칼라/후드/하이넥/넥처리) ──
   o.push(`<g id="${side}-construction">`);
@@ -6269,9 +6269,12 @@ const CardFeed={
     document.querySelectorAll('.card-dot').forEach((d,i)=>d.classList.toggle('on',i===idx));
   },
   _pendingCard:null,
+  _busy:false,
   enter(idx){
+    if(this._busy)return;
     const cd=CARD_DATA[idx];
     if(!cd)return;
+    this._busy=true;
     this._pendingCard=idx;
     // Pre-apply state (engine ready behind the scenes)
     Object.assign(S,DEFAULT_STATE);
@@ -6303,6 +6306,7 @@ const CardFeed={
       cardsEl.classList.remove('tracing-out');
       cardEl.classList.remove('tracing');
       dotsEl.style.cssText='display:none';
+      this._busy=false;
     },700);
     this.active=false;
   },
@@ -6381,7 +6385,8 @@ const CardFeed={
     document.querySelector('.app').style.display='';
   },
   show(){
-    this.active=true;
+    if(this._busy)return;
+    this.active=true;this._busy=true;
     const hdr=document.querySelector('header');
     const app=document.querySelector('.app');
     // Hide variants if visible
@@ -6401,7 +6406,7 @@ const CardFeed={
       document.querySelector('.cards-logo').style.display='';
       this.renderPreviews();
       this.syncDots();
-      setTimeout(()=>cardsEl.classList.remove('cards-in'),500);
+      setTimeout(()=>{cardsEl.classList.remove('cards-in');this._busy=false;},500);
     },300);
   }
 };
