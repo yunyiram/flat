@@ -190,6 +190,8 @@ header.engine-in{animation:engineHeaderIn 0.35s ease 0.2s both;}
 /* ── Color Variants Screen ── */
 #app-variants{position:fixed;inset:0;z-index:895;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;}
 #app-variants.hidden{display:none;}
+.variants-back{position:absolute;top:24px;left:24px;font-family:'Inter','Noto Sans KR',sans-serif;font-size:12px;color:var(--text-sub);background:none;border:none;cursor:pointer;padding:4px 8px;transition:color 0.15s;letter-spacing:0.01em;}
+.variants-back:hover{color:var(--text);}
 .variants-title{font-family:'Inter','Noto Sans KR',sans-serif;font-size:14px;font-weight:400;color:var(--text-sub);letter-spacing:0.02em;}
 .variants-row{display:flex;gap:28px;align-items:center;}
 .variant-card{cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;transition:transform 0.2s ease;}
@@ -227,6 +229,25 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
 .app.engine-out{animation:engineFadeOut 0.3s ease both;}
 @keyframes cardsFadeIn{from{opacity:0;transform:scale(1.02);}to{opacity:1;transform:scale(1);}}
 #app-cards.cards-in{animation:cardsFadeIn 0.35s ease 0.15s both;}
+/* ── Card Feed Responsive ── */
+@media(max-width:600px){
+  .card-title{font-size:24px;}
+  .card-sub{font-size:13px;}
+  .card-preview{width:240px;height:300px;}
+  .card-preview svg{width:210px;height:260px;}
+  .card-inner{gap:12px;}
+  .variants-row{gap:12px;flex-wrap:wrap;justify-content:center;}
+  .variant-preview{width:160px;height:200px;}
+  .variant-preview svg{width:140px;height:180px;}
+  .chat-bubble{bottom:40px;max-width:360px;}
+}
+@media(max-height:700px){
+  .card{padding:24px;}
+  .card-preview{width:240px;height:280px;}
+  .card-preview svg{width:210px;height:240px;}
+  .card-inner{gap:10px;}
+  .card-title{font-size:26px;}
+}
 </style>
 </head>
 <body>
@@ -283,6 +304,7 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
   </div>
 </section>
 <section id="app-variants" class="hidden">
+  <button class="variants-back" onclick="CardFeed.backToCards()" data-i18n="variants.back">← Back</button>
   <div class="variants-title" data-i18n="variants.pick">Pick a colorway</div>
   <div class="variants-row">
     <div class="variant-card" data-vidx="0"><div class="variant-preview"><svg id="varSvg0" viewBox="25 15 270 290"></svg></div><div class="variant-dot"></div></div>
@@ -575,7 +597,7 @@ en:{
     crease:'Crease',cr_none:'None',cr_front:'Front Crease',
     fitLabel:'Fit'},
   canvas:{hint:'Drag red handles for symmetric editing. Ctrl+Z to undo',cascade:'Cascade Demo',colorLabel:'Color'},
-  card:{explore:'Explore →'},variants:{pick:'Pick a colorway'},
+  card:{explore:'Explore →'},variants:{pick:'Pick a colorway',back:'← Back'},
   export:{saveProject:'Save Project',loadProject:'Load Project',copySpec:'Copy Spec',saveSpec:'Save Spec',techpack:'Tech Pack',pdf:'PDF Tech Pack',workOrder:'PDF Work Order',factoryLink:'🔗 Factory Link'},
   slider:{shallow:'Shallow',normal:'Normal',deep:'Deep',
     square:'Square',v:'V',angular:'Angular',round:'Round',uShape:'U',
@@ -791,7 +813,7 @@ ko:{
     crease:'주름선',cr_none:'없음',cr_front:'앞주름',
     fitLabel:'핏'},
   canvas:{hint:'빨간 핸들을 드래그 → 좌우대칭 실시간 편집 · Ctrl+Z 되돌리기',cascade:'캐스케이드 데모',colorLabel:'컬러'},
-  card:{explore:'살펴보기 →'},variants:{pick:'컬러를 골라보세요'},
+  card:{explore:'살펴보기 →'},variants:{pick:'컬러를 골라보세요',back:'← 돌아가기'},
   export:{saveProject:'프로젝트 저장',loadProject:'프로젝트 불러오기',copySpec:'스펙 복사',saveSpec:'스펙 저장',techpack:'테크팩',pdf:'PDF 테크팩',workOrder:'PDF 작업지시서',factoryLink:'🔗 공장용 링크'},
   slider:{shallow:'얕음',normal:'보통',deep:'깊음',
     square:'스퀘어',v:'V',angular:'각진',round:'라운드',uShape:'U',
@@ -6407,6 +6429,25 @@ const CardFeed={
         // Start conversation mode
         ConvMode.start();
       },500);
+    },300);
+  },
+  backToCards(){
+    // Variants → Cards (without engine transition)
+    const varEl=document.getElementById('app-variants');
+    varEl.style.transition='opacity 0.3s ease';
+    varEl.style.opacity='0';
+    setTimeout(()=>{
+      varEl.classList.add('hidden');
+      varEl.classList.remove('variants-in');
+      varEl.style.cssText='';
+      const cardsEl=document.getElementById('app-cards');
+      cardsEl.classList.remove('hidden');
+      cardsEl.classList.add('cards-in');
+      document.getElementById('cardDots').style.cssText='';
+      document.querySelector('.cards-logo').style.cssText='';
+      this.active=true;
+      this.syncDots();
+      setTimeout(()=>{cardsEl.classList.remove('cards-in');},500);
     },300);
   },
   hide(){
