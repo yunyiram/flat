@@ -6491,7 +6491,7 @@ CardFeed.init();
 const CONV_STEPS=[
   {zone:'sleeve',
    msg:()=>curLang==='ko'
-     ?`좋아요! <b>${S.fillColor?'컬러':''}크루넥</b>에서 시작할게요. 소매를 바꿔볼까요?`
+     ?`좋아요! <b>이 크루넥</b>에서 시작할게요. 소매를 바꿔볼까요?`
      :`Great! Starting with this <b>crew neck</b>. Want to try different sleeves?`,
    acts:[
      {label:()=>curLang==='ko'?'반팔':'Short',fn:()=>{slSet('sleeveLength',20);draw();}},
