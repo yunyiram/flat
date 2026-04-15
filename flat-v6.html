@@ -147,32 +147,36 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 #app-cards::-webkit-scrollbar{display:none;}
 #app-cards.hidden{display:none;}
 .card{min-width:100vw;height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;box-sizing:border-box;cursor:pointer;position:relative;}
-.card-inner{max-width:520px;width:100%;display:flex;flex-direction:column;align-items:center;gap:20px;}
+.card-num{position:absolute;top:28px;right:32px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--border);letter-spacing:0.06em;}
+.card-preview{transition:transform 0.3s ease,box-shadow 0.3s ease;}
+.card:hover .card-preview{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.06);}
+.card-inner{max-width:520px;width:100%;display:flex;flex-direction:column;align-items:center;gap:16px;}
 .card-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:4px 12px;border-radius:100px;}
 .card-title{font-family:'Inter','Noto Sans KR',sans-serif;font-size:32px;font-weight:700;color:var(--text);text-align:center;line-height:1.3;letter-spacing:-0.02em;}
 .card-sub{font-family:'Inter','Noto Sans KR',sans-serif;font-size:14px;color:var(--text-sub);text-align:center;line-height:1.6;max-width:360px;}
-.card-preview{width:280px;height:280px;display:flex;align-items:center;justify-content:center;background:var(--surface);border-radius:16px;border:1px solid var(--border-light);overflow:hidden;margin:8px 0;}
-.card-preview svg{width:240px;height:240px;}
-.card-cta{font-family:'Inter','Noto Sans KR',sans-serif;font-size:12px;color:var(--text-sub);margin-top:8px;opacity:0.6;transition:opacity 0.2s;}
-.card:hover .card-cta{opacity:1;}
+.card-preview{width:300px;height:360px;display:flex;align-items:center;justify-content:center;background:var(--surface);border-radius:16px;border:1px solid var(--border-light);overflow:hidden;margin:4px 0;}
+.card-preview svg{width:260px;height:320px;}
+.card-cta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-sub);margin-top:4px;opacity:0;letter-spacing:0.08em;transition:opacity 0.3s;}
+.card:hover .card-cta{opacity:0.5;}
 .card-dots{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:901;}
 #app-cards.hidden~.card-dots{display:none;}
-.card-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all 0.2s;cursor:pointer;}
-.card-dot.on{background:var(--ink);width:24px;border-radius:4px;}
+.card-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all 0.25s;cursor:pointer;}
+.card-dot.on{background:var(--text);width:20px;border-radius:3px;}
 .card-nav{font-family:'Inter',sans-serif;font-size:11px;color:var(--text-sub);position:fixed;bottom:32px;z-index:901;}
 .card-nav.prev{left:24px;}.card-nav.next{right:24px;}
 #app-cards.hidden~.card-nav{display:none;}
-.cards-logo{position:fixed;top:24px;left:24px;z-index:901;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.04em;}
-.cards-logo i{color:var(--accent);font-style:normal;}
+.cards-logo{position:fixed;top:24px;left:24px;z-index:901;font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);letter-spacing:0.06em;}
+.cards-logo i{color:var(--accent);font-style:italic;}
 #app-cards.hidden~.cards-logo{display:none;}
-.card-enter-btn{font-family:'Inter','Noto Sans KR',sans-serif;font-size:13px;font-weight:500;padding:10px 28px;border-radius:100px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:all 0.2s;margin-top:4px;}
-.card-enter-btn:hover{background:var(--accent);}
+.card-enter-btn{font-family:'Inter','Noto Sans KR',sans-serif;font-size:13px;font-weight:500;padding:10px 32px;border-radius:100px;border:1.5px solid var(--border);background:transparent;color:var(--text-mid);cursor:pointer;transition:all 0.25s;margin-top:4px;letter-spacing:0.01em;}
+.card-enter-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
 /* ── Tracing Paper Transition ── */
 .card.tracing .card-tag,
 .card.tracing .card-title,
 .card.tracing .card-sub,
 .card.tracing .card-enter-btn,
-.card.tracing .card-cta{opacity:0;transition:opacity 0.25s ease;}
+.card.tracing .card-cta,
+.card.tracing .card-num{opacity:0;transition:opacity 0.25s ease;}
 .card.tracing .card-preview{transition:transform 0.5s cubic-bezier(.4,0,.2,1) 0.08s,opacity 0.35s ease 0.2s;transform:scale(1.12);opacity:0;}
 #app-cards.tracing-out{pointer-events:none;transition:opacity 0.35s ease 0.25s;opacity:0;}
 @keyframes engineHeaderIn{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);}}
@@ -186,13 +190,13 @@ header.engine-in{animation:engineHeaderIn 0.35s ease 0.2s both;}
 /* ── Color Variants Screen ── */
 #app-variants{position:fixed;inset:0;z-index:895;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;}
 #app-variants.hidden{display:none;}
-.variants-title{font-family:'Inter','Noto Sans KR',sans-serif;font-size:15px;font-weight:500;color:var(--text-mid);letter-spacing:-0.01em;}
+.variants-title{font-family:'Inter','Noto Sans KR',sans-serif;font-size:14px;font-weight:400;color:var(--text-sub);letter-spacing:0.02em;}
 .variants-row{display:flex;gap:28px;align-items:center;}
 .variant-card{cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;transition:transform 0.2s ease;}
 .variant-card:hover{transform:translateY(-6px);}
-.variant-preview{width:200px;height:240px;display:flex;align-items:center;justify-content:center;background:var(--surface);border-radius:12px;border:2px solid var(--border-light);overflow:hidden;transition:border-color 0.2s;}
+.variant-preview{width:220px;height:280px;display:flex;align-items:center;justify-content:center;background:var(--surface);border-radius:14px;border:2px solid var(--border-light);overflow:hidden;transition:border-color 0.2s;}
 .variant-card:hover .variant-preview{border-color:var(--accent);}
-.variant-preview svg{width:170px;height:210px;}
+.variant-preview svg{width:190px;height:240px;}
 .variant-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);transition:transform 0.2s;}
 .variant-card:hover .variant-dot{transform:scale(1.3);border-color:var(--accent);}
 @keyframes variantsIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
@@ -201,10 +205,10 @@ header.engine-in{animation:engineHeaderIn 0.35s ease 0.2s both;}
 #app-variants.variants-in .variant-card:nth-child(2){animation:variantsIn 0.35s ease 0.15s both;}
 #app-variants.variants-in .variant-card:nth-child(3){animation:variantsIn 0.35s ease 0.25s both;}
 /* ── Conversation Mode ── */
-.chat-bubble{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:100;max-width:460px;width:90%;display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 20px;box-shadow:0 4px 24px rgba(0,0,0,0.08);animation:chatIn 0.35s ease both;}
+.chat-bubble{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:100;max-width:460px;width:90%;display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--accent);border-radius:16px;padding:18px 22px;box-shadow:0 4px 24px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);animation:chatIn 0.35s ease both;}
 .chat-bubble.hidden{display:none;}
 @keyframes chatIn{from{opacity:0;transform:translateX(-50%) translateY(20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
-.chat-msg{font-size:13px;color:var(--text);line-height:1.6;}
+.chat-msg{font-size:13px;color:var(--text);line-height:1.65;letter-spacing:-0.01em;}
 .chat-msg b{color:var(--accent);font-weight:600;}
 .chat-actions{display:flex;flex-wrap:wrap;gap:6px;}
 .chat-act{font-family:'Inter','Noto Sans KR',sans-serif;font-size:11px;padding:6px 14px;border:1px solid var(--border);border-radius:100px;background:transparent;color:var(--text-mid);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
@@ -228,47 +232,52 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
 <body>
 <section id="app-cards">
   <div class="card" data-card="0">
+    <span class="card-num">01 / 05</span>
     <div class="card-inner">
       <span class="card-tag">Structure</span>
       <h2 class="card-title">크루넥의 7가지 얼굴</h2>
       <p class="card-sub">같은 넥라인, 다른 실루엣. 핏과 기장, 소매 하나만 바꿔도 완전히 다른 옷이 된다.</p>
-      <div class="card-preview"><svg id="cardSvg0" viewBox="0 0 320 460"></svg></div>
+      <div class="card-preview"><svg id="cardSvg0" viewBox="25 15 270 290"></svg></div>
       <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
     </div>
   </div>
   <div class="card" data-card="1">
+    <span class="card-num">02 / 05</span>
     <div class="card-inner">
       <span class="card-tag">Style</span>
       <h2 class="card-title">미니멀 — 선 하나가 전부일 때</h2>
       <p class="card-sub">디테일을 전부 빼면 남는 건 비율뿐. 클린핏의 정수.</p>
-      <div class="card-preview"><svg id="cardSvg1" viewBox="0 0 320 460"></svg></div>
+      <div class="card-preview"><svg id="cardSvg1" viewBox="25 15 270 290"></svg></div>
       <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
     </div>
   </div>
   <div class="card" data-card="2">
+    <span class="card-num">03 / 05</span>
     <div class="card-inner">
       <span class="card-tag">Material</span>
       <h2 class="card-title">여름, 면 저지 한 장</h2>
       <p class="card-sub">소재가 형태를 결정한다. 같은 패턴이 원단에 따라 어떻게 달라지는지.</p>
-      <div class="card-preview"><svg id="cardSvg2" viewBox="0 0 320 460"></svg></div>
+      <div class="card-preview"><svg id="cardSvg2" viewBox="25 15 270 290"></svg></div>
       <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
     </div>
   </div>
   <div class="card" data-card="3">
+    <span class="card-num">04 / 05</span>
     <div class="card-inner">
       <span class="card-tag">Trend</span>
       <h2 class="card-title">오버사이즈는 끝났을까?</h2>
       <p class="card-sub">핏 슬라이더 하나로 스키니부터 오버사이즈까지. 트렌드는 숫자로 말한다.</p>
-      <div class="card-preview"><svg id="cardSvg3" viewBox="0 0 320 460"></svg></div>
+      <div class="card-preview"><svg id="cardSvg3" viewBox="25 15 270 290"></svg></div>
       <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
     </div>
   </div>
   <div class="card" data-card="4">
+    <span class="card-num">05 / 05</span>
     <div class="card-inner">
       <span class="card-tag">Structure</span>
       <h2 class="card-title">래글런 소매의 3가지 변형</h2>
       <p class="card-sub">어깨선이 사라지면 실루엣이 바뀐다. 셋인, 래글런, 그리고 그 사이.</p>
-      <div class="card-preview"><svg id="cardSvg4" viewBox="0 0 320 460"></svg></div>
+      <div class="card-preview"><svg id="cardSvg4" viewBox="25 15 270 290"></svg></div>
       <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
     </div>
   </div>
@@ -276,9 +285,9 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
 <section id="app-variants" class="hidden">
   <div class="variants-title" data-i18n="variants.pick">Pick a colorway</div>
   <div class="variants-row">
-    <div class="variant-card" data-vidx="0"><div class="variant-preview"><svg id="varSvg0" viewBox="0 0 320 460"></svg></div><div class="variant-dot"></div></div>
-    <div class="variant-card" data-vidx="1"><div class="variant-preview"><svg id="varSvg1" viewBox="0 0 320 460"></svg></div><div class="variant-dot"></div></div>
-    <div class="variant-card" data-vidx="2"><div class="variant-preview"><svg id="varSvg2" viewBox="0 0 320 460"></svg></div><div class="variant-dot"></div></div>
+    <div class="variant-card" data-vidx="0"><div class="variant-preview"><svg id="varSvg0" viewBox="25 15 270 290"></svg></div><div class="variant-dot"></div></div>
+    <div class="variant-card" data-vidx="1"><div class="variant-preview"><svg id="varSvg1" viewBox="25 15 270 290"></svg></div><div class="variant-dot"></div></div>
+    <div class="variant-card" data-vidx="2"><div class="variant-preview"><svg id="varSvg2" viewBox="25 15 270 290"></svg></div><div class="variant-dot"></div></div>
   </div>
 </section>
 <div class="cards-logo">FLAT<i>.</i></div>
