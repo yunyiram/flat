@@ -5966,8 +5966,9 @@ document.addEventListener('keydown',function(e){
     if((e.key==='Delete'||e.key==='Backspace')&&S.selectedDE>=0){
       e.preventDefault(); DesignEl.remove(S.selectedDE);
     }
-    if(e.key==='Escape'&&S.selectedDE>=0){
-      S.selectedDE=-1; DesignEl.updateList(); draw();
+    if(e.key==='Escape'){
+      if(S.selectedDE>=0){S.selectedDE=-1; DesignEl.updateList(); draw();}
+      else if(typeof CardFeed!=='undefined'&&!CardFeed.active){CardFeed.show();}
     }
   }
 });
@@ -6276,6 +6277,19 @@ const CardFeed={
     // Variant cards → engine
     document.querySelectorAll('.variant-card').forEach(vc=>{
       vc.addEventListener('click',()=>this.pickVariant(+vc.dataset.vidx));
+    });
+    // Keyboard nav
+    document.addEventListener('keydown',(e)=>{
+      if(!this.active)return;
+      const cards=document.getElementById('app-cards');
+      const idx=Math.round(cards.scrollLeft/window.innerWidth);
+      if(e.key==='ArrowRight'&&idx<CARD_DATA.length-1){
+        cards.scrollTo({left:(idx+1)*window.innerWidth,behavior:'smooth'});
+      }else if(e.key==='ArrowLeft'&&idx>0){
+        cards.scrollTo({left:(idx-1)*window.innerWidth,behavior:'smooth'});
+      }else if(e.key==='Enter'){
+        this.enter(idx);
+      }
     });
     // Hide engine
     document.querySelector('header').style.display='none';
