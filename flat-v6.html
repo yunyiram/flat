@@ -200,6 +200,23 @@ header.engine-in{animation:engineHeaderIn 0.35s ease 0.2s both;}
 #app-variants.variants-in .variant-card:nth-child(1){animation:variantsIn 0.35s ease 0.05s both;}
 #app-variants.variants-in .variant-card:nth-child(2){animation:variantsIn 0.35s ease 0.15s both;}
 #app-variants.variants-in .variant-card:nth-child(3){animation:variantsIn 0.35s ease 0.25s both;}
+/* ── Conversation Mode ── */
+.chat-bubble{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:100;max-width:460px;width:90%;display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 20px;box-shadow:0 4px 24px rgba(0,0,0,0.08);animation:chatIn 0.35s ease both;}
+.chat-bubble.hidden{display:none;}
+@keyframes chatIn{from{opacity:0;transform:translateX(-50%) translateY(20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+.chat-msg{font-size:13px;color:var(--text);line-height:1.6;}
+.chat-msg b{color:var(--accent);font-weight:600;}
+.chat-actions{display:flex;flex-wrap:wrap;gap:6px;}
+.chat-act{font-family:'Inter','Noto Sans KR',sans-serif;font-size:11px;padding:6px 14px;border:1px solid var(--border);border-radius:100px;background:transparent;color:var(--text-mid);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.chat-act:hover{border-color:var(--accent);color:var(--accent);}
+.chat-act.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.chat-act.primary:hover{background:var(--handle-hover);}
+.chat-dismiss{position:absolute;top:8px;right:12px;font-size:14px;color:var(--text-sub);cursor:pointer;background:none;border:none;opacity:0.5;transition:opacity 0.15s;}
+.chat-dismiss:hover{opacity:1;}
+.chat-step{display:flex;gap:4px;margin-top:2px;}
+.chat-dot{width:6px;height:6px;border-radius:50%;background:var(--border);}
+.chat-dot.done{background:var(--accent);}
+.chat-dot.now{background:var(--accent);box-shadow:0 0 0 2px var(--accent-light);}
 /* Engine→Card return */
 @keyframes engineFadeOut{to{opacity:0;transform:scale(0.98);}}
 header.engine-out{animation:engineFadeOut 0.3s ease both;}
@@ -445,6 +462,12 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
     <div class="color-custom" title="Custom color"><input type="color" value="#6688AA" id="customColorPick"></div>
   </div>
   <div class="canvas-hint" id="canvasHint" data-i18n="canvas.hint">Drag red handles for symmetric editing. Ctrl+Z to undo</div>
+</div>
+<div class="chat-bubble hidden" id="chatBubble">
+  <button class="chat-dismiss" onclick="ConvMode.dismiss()">×</button>
+  <div class="chat-msg" id="chatMsg"></div>
+  <div class="chat-actions" id="chatActions"></div>
+  <div class="chat-step" id="chatStep"></div>
 </div>
 
 <div class="rpanel">
@@ -6372,6 +6395,8 @@ const CardFeed={
       setTimeout(()=>{
         hdr.classList.remove('engine-in');
         app.classList.remove('engine-in');
+        // Start conversation mode
+        ConvMode.start();
       },500);
     },300);
   },
@@ -6411,6 +6436,107 @@ const CardFeed={
   }
 };
 CardFeed.init();
+
+// ── Conversation Mode ──
+const CONV_STEPS=[
+  {zone:'sleeve',
+   msg:()=>curLang==='ko'
+     ?`좋아요! <b>${S.fillColor?'컬러':''}크루넥</b>에서 시작할게요. 소매를 바꿔볼까요?`
+     :`Great! Starting with this <b>crew neck</b>. Want to try different sleeves?`,
+   acts:[
+     {label:()=>curLang==='ko'?'반팔':'Short',fn:()=>{slSet('sleeveLength',20);draw();}},
+     {label:()=>curLang==='ko'?'긴팔':'Long',fn:()=>{slSet('sleeveLength',55);draw();}},
+     {label:()=>curLang==='ko'?'래글런':'Raglan',fn:()=>{S.sleeveType='raglan';syncToggle('sleeveType','raglan');draw();}},
+     {label:()=>curLang==='ko'?'이대로 좋아요':'Keep this',primary:true}
+   ]},
+  {zone:'fit',
+   msg:()=>curLang==='ko'
+     ?'핏은 어떤 느낌이에요?'
+     :'How about the fit?',
+   acts:[
+     {label:()=>curLang==='ko'?'슬림하게':'Slim',fn:()=>{S.fit='slim';slSet('fitW',42);syncToggle('fit','slim');draw();}},
+     {label:()=>curLang==='ko'?'여유있게':'Relaxed',fn:()=>{S.fit='relaxed';slSet('fitW',60);syncToggle('fit','relaxed');draw();}},
+     {label:()=>curLang==='ko'?'오버사이즈':'Oversized',fn:()=>{S.fit='oversized';slSet('fitW',75);syncToggle('fit','oversized');draw();}},
+     {label:()=>curLang==='ko'?'이대로':'Keep this',primary:true}
+   ]},
+  {zone:'length',
+   msg:()=>curLang==='ko'
+     ?'기장은요? 지금은 <b>'+S.bodyLen+'cm</b>예요.'
+     :'What about length? Currently <b>'+S.bodyLen+'cm</b>.',
+   acts:[
+     {label:()=>curLang==='ko'?'크롭':'Crop',fn:()=>{slSet('bodyLen',18);draw();}},
+     {label:()=>curLang==='ko'?'일반':'Regular',fn:()=>{slSet('bodyLen',45);draw();}},
+     {label:()=>curLang==='ko'?'롱':'Long',fn:()=>{slSet('bodyLen',58);draw();}},
+     {label:()=>curLang==='ko'?'이대로':'Keep this',primary:true}
+   ]},
+  {zone:'done',
+   msg:()=>curLang==='ko'
+     ?'거의 다 됐어요! 오른쪽 패널에서 <b>스펙</b>과 <b>원단 추천</b>을 확인하고, <b>PDF 테크팩</b>을 내보낼 수 있어요.'
+     :'Almost done! Check the <b>spec</b> and <b>fabric recommendation</b> on the right panel. Export a <b>PDF tech pack</b> when ready.',
+   acts:[
+     {label:()=>curLang==='ko'?'알겠어요!':'Got it!',primary:true}
+   ]}
+];
+
+function slSet(k,v){S[k]=v;const sd=SD.find(s=>s[1]===k);if(sd){const el=document.getElementById(sd[0]);if(el){el.value=v;document.getElementById(sd[2]).textContent=sd[3](v);}}}
+
+const ConvMode={
+  step:-1,
+  active:false,
+  start(){
+    this.step=-1;this.active=true;
+    setTimeout(()=>this.next(),600);
+  },
+  next(){
+    this.step++;
+    if(this.step>=CONV_STEPS.length){this.end();return;}
+    const s=CONV_STEPS[this.step];
+    const bubble=document.getElementById('chatBubble');
+    const msgEl=document.getElementById('chatMsg');
+    const actEl=document.getElementById('chatActions');
+    const stepEl=document.getElementById('chatStep');
+    // Message
+    msgEl.innerHTML=s.msg();
+    // Actions
+    actEl.innerHTML='';
+    s.acts.forEach(a=>{
+      const btn=document.createElement('button');
+      btn.className='chat-act'+(a.primary?' primary':'');
+      btn.textContent=a.label();
+      btn.addEventListener('click',()=>{
+        if(a.fn) a.fn();
+        History.push();
+        this.next();
+      });
+      actEl.appendChild(btn);
+    });
+    // Step dots
+    stepEl.innerHTML='';
+    CONV_STEPS.forEach((_,i)=>{
+      const d=document.createElement('div');
+      d.className='chat-dot'+(i<this.step?' done':'')+(i===this.step?' now':'');
+      stepEl.appendChild(d);
+    });
+    // Show with animation
+    bubble.classList.remove('hidden');
+    bubble.style.animation='none';
+    bubble.offsetHeight; // reflow
+    bubble.style.animation='chatIn 0.35s ease both';
+  },
+  dismiss(){
+    document.getElementById('chatBubble').classList.add('hidden');
+    // Skip to next after brief pause
+    if(this.step<CONV_STEPS.length-1){
+      setTimeout(()=>this.next(),800);
+    } else {
+      this.end();
+    }
+  },
+  end(){
+    this.active=false;
+    document.getElementById('chatBubble').classList.add('hidden');
+  }
+};
 
 History.push(); // initial state
 FactoryViewer.check(); // URL param → factory mode
