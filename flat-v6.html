@@ -12,14 +12,14 @@
 <meta property="og:description" content="The only tool where every line is a number. 49 presets, 129 rules, PDF tech packs. Try the live demo.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yunyiram.github.io/flat/">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28' font-family='serif' fill='%23B83A2A'>F</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28' font-family='serif' fill='%234A9DE8'>F</text></svg>">
 <style>
 /* fonts loaded via <link> in <head> for faster render */
 :root{
   --bg:#F5F3EE;--surface:#FFF;--surface2:#FAFAF7;--border:#E4E0D8;--border-light:#EDEBE6;
-  --text:#1C1B18;--text-mid:#4A4740;--text-sub:#8A857C;--accent:#B83A2A;--accent-light:#F0D9D5;
-  --ink:#2A2926;--stitch:#999590;--grain:#C8C4BB;--tag-bg:#ECEAE4;--gfill:#FAFAF8;
-  --handle:#B83A2A;--handle-hover:#D44A38;--handle-active:#922E20;--guide:rgba(184,58,42,0.25);
+  --text:#1C1B18;--text-mid:#4A4740;--text-sub:#8A857C;--accent:#4A9DE8;--accent-light:#E8F3FC;
+  --ink:#2A2926;--gstroke:#2A2926;--stitch:#999590;--grain:#C8C4BB;--tag-bg:#ECEAE4;--gfill:#FAFAF8;
+  --handle:#4A9DE8;--handle-hover:#6BB4F0;--handle-active:#3580C4;--guide:rgba(74,157,232,0.25);
   --success:#2D7A4F;--success-bg:#E8F5EE;--radius:8px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -167,9 +167,45 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 #app-cards.hidden~.cards-logo{display:none;}
 .card-enter-btn{font-family:'Inter','Noto Sans KR',sans-serif;font-size:13px;font-weight:500;padding:10px 28px;border-radius:100px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:all 0.2s;margin-top:4px;}
 .card-enter-btn:hover{background:var(--accent);}
-/* Card→Engine transition */
-.app-fade-in{animation:appFadeIn 0.4s ease both;}
-@keyframes appFadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+/* ── Tracing Paper Transition ── */
+.card.tracing .card-tag,
+.card.tracing .card-title,
+.card.tracing .card-sub,
+.card.tracing .card-enter-btn,
+.card.tracing .card-cta{opacity:0;transition:opacity 0.25s ease;}
+.card.tracing .card-preview{transition:transform 0.5s cubic-bezier(.4,0,.2,1) 0.08s,opacity 0.35s ease 0.2s;transform:scale(1.12);opacity:0;}
+#app-cards.tracing-out{pointer-events:none;transition:opacity 0.35s ease 0.25s;opacity:0;}
+@keyframes engineHeaderIn{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes enginePanelL{from{opacity:0;transform:translateX(-24px);}to{opacity:1;transform:translateX(0);}}
+@keyframes enginePanelR{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:translateX(0);}}
+@keyframes engineCanvas{from{opacity:0;transform:scale(0.97);}to{opacity:1;transform:scale(1);}}
+header.engine-in{animation:engineHeaderIn 0.35s ease 0.2s both;}
+.app.engine-in>.panel{animation:enginePanelL 0.35s ease 0.25s both;}
+.app.engine-in>.rpanel{animation:enginePanelR 0.35s ease 0.25s both;}
+.app.engine-in>.canvas{animation:engineCanvas 0.4s ease 0.15s both;}
+/* ── Color Variants Screen ── */
+#app-variants{position:fixed;inset:0;z-index:895;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;}
+#app-variants.hidden{display:none;}
+.variants-title{font-family:'Inter','Noto Sans KR',sans-serif;font-size:15px;font-weight:500;color:var(--text-mid);letter-spacing:-0.01em;}
+.variants-row{display:flex;gap:28px;align-items:center;}
+.variant-card{cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;transition:transform 0.2s ease;}
+.variant-card:hover{transform:translateY(-6px);}
+.variant-preview{width:200px;height:240px;display:flex;align-items:center;justify-content:center;background:var(--surface);border-radius:12px;border:2px solid var(--border-light);overflow:hidden;transition:border-color 0.2s;}
+.variant-card:hover .variant-preview{border-color:var(--accent);}
+.variant-preview svg{width:170px;height:210px;}
+.variant-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);transition:transform 0.2s;}
+.variant-card:hover .variant-dot{transform:scale(1.3);border-color:var(--accent);}
+@keyframes variantsIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+#app-variants.variants-in{animation:variantsIn 0.4s ease both;}
+#app-variants.variants-in .variant-card:nth-child(1){animation:variantsIn 0.35s ease 0.05s both;}
+#app-variants.variants-in .variant-card:nth-child(2){animation:variantsIn 0.35s ease 0.15s both;}
+#app-variants.variants-in .variant-card:nth-child(3){animation:variantsIn 0.35s ease 0.25s both;}
+/* Engine→Card return */
+@keyframes engineFadeOut{to{opacity:0;transform:scale(0.98);}}
+header.engine-out{animation:engineFadeOut 0.3s ease both;}
+.app.engine-out{animation:engineFadeOut 0.3s ease both;}
+@keyframes cardsFadeIn{from{opacity:0;transform:scale(1.02);}to{opacity:1;transform:scale(1);}}
+#app-cards.cards-in{animation:cardsFadeIn 0.35s ease 0.15s both;}
 </style>
 </head>
 <body>
@@ -218,6 +254,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
       <div class="card-preview"><svg id="cardSvg4" viewBox="0 0 320 460"></svg></div>
       <button class="card-enter-btn" data-i18n="card.explore">Explore →</button>
     </div>
+  </div>
+</section>
+<section id="app-variants" class="hidden">
+  <div class="variants-title" data-i18n="variants.pick">Pick a colorway</div>
+  <div class="variants-row">
+    <div class="variant-card" data-vidx="0"><div class="variant-preview"><svg id="varSvg0" viewBox="0 0 320 460"></svg></div><div class="variant-dot"></div></div>
+    <div class="variant-card" data-vidx="1"><div class="variant-preview"><svg id="varSvg1" viewBox="0 0 320 460"></svg></div><div class="variant-dot"></div></div>
+    <div class="variant-card" data-vidx="2"><div class="variant-preview"><svg id="varSvg2" viewBox="0 0 320 460"></svg></div><div class="variant-dot"></div></div>
   </div>
 </section>
 <div class="cards-logo">FLAT<i>.</i></div>
@@ -499,7 +543,7 @@ en:{
     crease:'Crease',cr_none:'None',cr_front:'Front Crease',
     fitLabel:'Fit'},
   canvas:{hint:'Drag red handles for symmetric editing. Ctrl+Z to undo',cascade:'Cascade Demo',colorLabel:'Color'},
-  card:{explore:'Explore →'},
+  card:{explore:'Explore →'},variants:{pick:'Pick a colorway'},
   export:{saveProject:'Save Project',loadProject:'Load Project',copySpec:'Copy Spec',saveSpec:'Save Spec',techpack:'Tech Pack',pdf:'PDF Tech Pack',workOrder:'PDF Work Order',factoryLink:'🔗 Factory Link'},
   slider:{shallow:'Shallow',normal:'Normal',deep:'Deep',
     square:'Square',v:'V',angular:'Angular',round:'Round',uShape:'U',
@@ -715,7 +759,7 @@ ko:{
     crease:'주름선',cr_none:'없음',cr_front:'앞주름',
     fitLabel:'핏'},
   canvas:{hint:'빨간 핸들을 드래그 → 좌우대칭 실시간 편집 · Ctrl+Z 되돌리기',cascade:'캐스케이드 데모',colorLabel:'컬러'},
-  card:{explore:'살펴보기 →'},
+  card:{explore:'살펴보기 →'},variants:{pick:'컬러를 골라보세요'},
   export:{saveProject:'프로젝트 저장',loadProject:'프로젝트 불러오기',copySpec:'스펙 복사',saveSpec:'스펙 저장',techpack:'테크팩',pdf:'PDF 테크팩',workOrder:'PDF 작업지시서',factoryLink:'🔗 공장용 링크'},
   slider:{shallow:'얕음',normal:'보통',deep:'깊음',
     square:'스퀘어',v:'V',angular:'각진',round:'라운드',uShape:'U',
@@ -1087,6 +1131,8 @@ const History={
     SD.forEach(([id,k,vid,fmt])=>{document.getElementById(id).value=S[k];document.getElementById(vid).textContent=fmt(S[k]);});
     updateNeckUI();updateNeckBCCompat();
     document.documentElement.style.setProperty('--gfill',S.fillColor||'#FAFAF8');
+    const isDk=S.fillColor&&hexLuminance(S.fillColor)<100;
+    document.documentElement.style.setProperty('--gstroke',isDk?'#D0CEC8':'#2A2926');
     document.querySelectorAll('#colorBar .color-swatch').forEach(s=>s.classList.toggle('on',s.dataset.color===(S.fillColor||'')));
     draw(true);
   }
@@ -2167,7 +2213,7 @@ const NeckComp = {
     // 터틀넥 / 목넥
     if(f==='turtle'||f==='mock'){
       const h=f==='turtle'?24:14;
-      o.push(`<path d="M${l},${topY} L${l},${topY-h} Q${cx},${topY-h-3} ${r},${topY-h} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+      o.push(`<path d="M${l},${topY} L${l},${topY-h} Q${cx},${topY-h-3} ${r},${topY-h} L${r},${topY}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
       if(f==='turtle') o.push(`<path d="M${l+2},${topY-h*0.55} Q${cx},${topY-h*0.55+3} ${r-2},${topY-h*0.55}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2"/>`);
       return;
     }
@@ -2178,11 +2224,11 @@ const NeckComp = {
       const ho=isBack?8:6;
       if(isBack){
         // 뒷면: 대칭 둥근 아치
-        o.push(`<path d="M${l},${topY} C${l-ho},${topY-14} ${l-ho-3},${topY-32} ${cx},${topY-hh} C${r+ho+3},${topY-32} ${r+ho},${topY-14} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} C${l-ho},${topY-14} ${l-ho-3},${topY-32} ${cx},${topY-hh} C${r+ho+3},${topY-32} ${r+ho},${topY-14} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
       } else {
         // 앞면: 뒤쪽이 약간 높고 앞쪽이 열린 형태 (비대칭 볼륨)
         const peakX=cx-2, peakY=topY-hh;
-        o.push(`<path d="M${l},${topY} C${l-ho},${topY-16} ${l-ho-4},${topY-34} ${peakX},${peakY} C${r+ho+2},${topY-30} ${r+ho},${topY-12} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} C${l-ho},${topY-16} ${l-ho-4},${topY-34} ${peakX},${peakY} C${r+ho+2},${topY-30} ${r+ho},${topY-12} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
       }
       // 후드 내부 봉제선 (중심선)
       o.push(`<line x1="${cx}" y1="${topY-4}" x2="${cx}" y2="${topY-hh+6}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2.5" opacity="0.4"/>`);
@@ -2191,8 +2237,8 @@ const NeckComp = {
       o.push(`<path d="M${r-2},${topY-1} C${r+2},${topY-12} ${cx+neckW*0.35},${topY-hh+16} ${cx},${topY-hh+10}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2.5" opacity="0.35"/>`);
       // 드로스트링 (앞면만)
       if(!isBack){
-        o.push(`<path d="M${cx-6},${topY-1} Q${cx-9},${topY+7} ${cx-14},${topY+12}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-        o.push(`<path d="M${cx+6},${topY-1} Q${cx+9},${topY+7} ${cx+14},${topY+12}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<path d="M${cx-6},${topY-1} Q${cx-9},${topY+7} ${cx-14},${topY+12}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+        o.push(`<path d="M${cx+6},${topY-1} Q${cx+9},${topY+7} ${cx+14},${topY+12}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
       }
       return;
     }
@@ -2208,8 +2254,8 @@ const NeckComp = {
         const sTop=topY-sh; // stand 상단 (roll line)
         if(!isBack){
           // ── Stand 밴드 ──
-          o.push(`<path d="M${l},${topY} L${l},${sTop} L${r},${sTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${sTop}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${sTop} L${r},${sTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${sTop}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           // ── Fall (깃) — 레퍼런스 비례: rise=sh*0.35, tipExt=nw*0.12, tipDrop=sh*0.25 ──
           // CF에서 비스듬히 올라간 뒤 부드러운 곡선으로 어깨 바깥 포인트까지
           [-1,1].forEach(d=>{
@@ -2223,13 +2269,13 @@ const NeckComp = {
             // 외곽 곡선: peak → tip (cubic bezier)
             const c1x=pkX+d*nw*0.35, c1y=pkY+riseH*0.1;   // CP1: peak에서 바깥으로 수평 당김
             const c2x=tipX-d*nw*0.1, c2y=pkY+riseH*0.6;    // CP2: tip 위쪽에서 접근
-            o.push(`<path d="M${cfX},${sTop} L${pkX},${pkY} C${c1x},${c1y} ${c2x},${c2y} ${tipX},${tipY} L${shX},${sTop} Z" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            o.push(`<path d="M${cfX},${sTop} L${pkX},${pkY} C${c1x},${c1y} ${c2x},${c2y} ${tipX},${tipY} L${shX},${sTop} Z" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           });
         } else {
           // 뒷면: stand + fall 아치
           const backH=sh*0.85;
-          o.push(`<path d="M${l},${topY} L${l},${sTop} L${r},${sTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-2},${sTop} C${l-3},${sTop-backH*0.6} ${cx},${sTop-backH} ${r+3},${sTop-backH*0.6} L${r+2},${sTop}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${sTop} L${r},${sTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-2},${sTop} C${l-3},${sTop-backH*0.6} ${cx},${sTop-backH} ${r+3},${sTop-backH*0.6} L${r+2},${sTop}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           o.push(`<line x1="${cx}" y1="${sTop}" x2="${cx}" y2="${sTop-backH*0.85}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
         }
       }
@@ -2238,9 +2284,9 @@ const NeckComp = {
         // 스탠드만, 날개 없음. 상단 살짝 곡선.
         const bh=resolveCollarParams('band',nw,baseNeckD).sh;
         const bTop=topY-bh;
-        o.push(`<path d="M${l},${topY} L${l},${bTop} Q${cx},${bTop-2} ${r},${bTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${bTop} Q${cx},${bTop-2} ${r},${bTop} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         if(!isBack){
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${bTop}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${bTop}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         } else {
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${bTop}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
         }
@@ -2260,12 +2306,12 @@ const NeckComp = {
             const outerY=topY+lobeD;    // 최외곽 Y (가장 아래)
             const shX=cx+d*nw;          // 어깨점
             // CF→최외곽→어깨점: 부드러운 둥근 곡선
-            o.push(`<path d="M${cfX},${cfY} C${cfX+d*nw*0.3},${cfY+lobeD*0.5} ${outerX-d*lobeW*0.15},${outerY} ${outerX},${outerY} C${outerX+d*lobeW*0.1},${outerY-lobeD*0.1} ${shX+d*2},${topY+lobeD*0.25} ${shX},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            o.push(`<path d="M${cfX},${cfY} C${cfX+d*nw*0.3},${cfY+lobeD*0.5} ${outerX-d*lobeW*0.15},${outerY} ${outerX},${outerY} C${outerX+d*lobeW*0.1},${outerY-lobeD*0.1} ${shX+d*2},${topY+lobeD*0.25} ${shX},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           });
         } else {
           // 뒷면: 연속 둥근 외곽
           const lobeD=pd*0.55;
-          o.push(`<path d="M${l},${topY} C${l-pw*0.3},${topY+lobeD*0.3} ${l-pw*0.35},${topY+lobeD} ${cx},${topY+lobeD} C${r+pw*0.35},${topY+lobeD} ${r+pw*0.3},${topY+lobeD*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l-pw*0.3},${topY+lobeD*0.3} ${l-pw*0.35},${topY+lobeD} ${cx},${topY+lobeD} C${r+pw*0.35},${topY+lobeD} ${r+pw*0.3},${topY+lobeD*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+lobeD*0.8}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
         }
       }
@@ -2273,30 +2319,30 @@ const NeckComp = {
         // 차이나카라 — 높고 곧은 스탠드, 앞 중심 넓은 갈라짐, 상단 살짝만 둥글림
         const{sh:ch,gap}=resolveCollarParams('china',nw,baseNeckD);
         // 스탠드 (곧은 벽 + 상단 모서리만 살짝 라운딩)
-        o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch} C${cx-gap},${topY-ch} ${cx-gap},${topY-ch+1} ${cx-gap},${topY-ch+2} M${cx+gap},${topY-ch+2} C${cx+gap},${topY-ch+1} ${cx+gap},${topY-ch} ${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch} C${cx-gap},${topY-ch} ${cx-gap},${topY-ch+1} ${cx-gap},${topY-ch+2} M${cx+gap},${topY-ch+2} C${cx+gap},${topY-ch+1} ${cx+gap},${topY-ch} ${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         // 채우기 (갈라진 부분 제외)
         o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch} L${cx-gap},${topY} Z" fill="var(--gfill)" stroke="none"/>`);
         o.push(`<path d="M${cx+gap},${topY} L${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY} Z" fill="var(--gfill)" stroke="none"/>`);
         // 아웃라인 다시
-        o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-        o.push(`<path d="M${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${topY-ch+2} C${l},${topY-ch} ${l+2},${topY-ch} ${l+3},${topY-ch} L${cx-gap-1},${topY-ch}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${cx+gap+1},${topY-ch} L${r-3},${topY-ch} C${r-2},${topY-ch} ${r},${topY-ch} ${r},${topY-ch+2} L${r},${topY}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         if(!isBack){
           // 앞 중심 갈라짐 — 곡선 엣지
-          o.push(`<path d="M${cx-gap},${topY} L${cx-gap},${topY-ch+4} C${cx-gap},${topY-ch+1} ${cx-gap+1},${topY-ch} ${cx-gap+2},${topY-ch}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${cx+gap},${topY} L${cx+gap},${topY-ch+4} C${cx+gap},${topY-ch+1} ${cx+gap-1},${topY-ch} ${cx+gap-2},${topY-ch}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx-gap},${topY} L${cx-gap},${topY-ch+4} C${cx-gap},${topY-ch+1} ${cx-gap+1},${topY-ch} ${cx-gap+2},${topY-ch}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx+gap},${topY} L${cx+gap},${topY-ch+4} C${cx+gap},${topY-ch+1} ${cx+gap-1},${topY-ch} ${cx+gap-2},${topY-ch}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         }
       }
       else if(f==='collar_sailor'){
         // 세일러카라 — V자 앞판 + 넓은 뒤판 사각 카라
         if(!isBack){
           // 앞판 V — C커브로 부드럽게
-          o.push(`<path d="M${l},${topY} C${l+2},${topY+3} ${cx-nw*0.3},${topY+baseNeckD*0.7} ${cx},${topY+baseNeckD*0.95} C${cx+nw*0.3},${topY+baseNeckD*0.7} ${r-2},${topY+3} ${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l+2},${topY+3} ${cx-nw*0.3},${topY+baseNeckD*0.7} ${cx},${topY+baseNeckD*0.95} C${cx+nw*0.3},${topY+baseNeckD*0.7} ${r-2},${topY+3} ${r},${topY}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           // V 장식 스트라이프 라인
           o.push(`<path d="M${l+4},${topY+4} C${l+6},${topY+6} ${cx-nw*0.25},${topY+baseNeckD*0.6} ${cx},${topY+baseNeckD*0.8} C${cx+nw*0.25},${topY+baseNeckD*0.6} ${r-6},${topY+6} ${r-4},${topY+4}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.45"/>`);
         } else {
           // 넓은 사각 뒤판 — C커브 상단 + 라운딩 모서리
           const{fw:sw,fd:sh,cornerR:cr}=resolveCollarParams('sailor',nw,baseNeckD);
-          o.push(`<path d="M${l},${topY} C${l-2},${topY-3} ${cx-sw+2},${topY-5} ${cx-sw},${topY-3} L${cx-sw},${topY+sh-cr} C${cx-sw},${topY+sh-cr+3} ${cx-sw+cr-3},${topY+sh} ${cx-sw+cr},${topY+sh} L${cx+sw-cr},${topY+sh} C${cx+sw-cr+3},${topY+sh} ${cx+sw},${topY+sh-cr+3} ${cx+sw},${topY+sh-cr} L${cx+sw},${topY-3} C${cx+sw-2},${topY-5} ${r+2},${topY-3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l-2},${topY-3} ${cx-sw+2},${topY-5} ${cx-sw},${topY-3} L${cx-sw},${topY+sh-cr} C${cx-sw},${topY+sh-cr+3} ${cx-sw+cr-3},${topY+sh} ${cx-sw+cr},${topY+sh} L${cx+sw-cr},${topY+sh} C${cx+sw-cr+3},${topY+sh} ${cx+sw},${topY+sh-cr+3} ${cx+sw},${topY+sh-cr} L${cx+sw},${topY-3} C${cx+sw-2},${topY-5} ${r+2},${topY-3} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           // 스트라이프 라인 (수평 2줄)
           o.push(`<line x1="${cx-sw+5}" y1="${topY+sh-5}" x2="${cx+sw-5}" y2="${topY+sh-5}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.45"/>`);
           o.push(`<line x1="${cx-sw+5}" y1="${topY+sh-9}" x2="${cx+sw-5}" y2="${topY+sh-9}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.35"/>`);
@@ -2321,24 +2367,24 @@ const NeckComp = {
             // 라펠 fill (바디 위 덮기)
             o.push(`<path d="M${lsx},${lsy} C${nl+d*lapelW*0.85},${topY+lapelH*0.1} ${ltx+d*2},${topY+lapelH*0.45} ${ltx},${lty} L${cfx},${cfy} Z" fill="var(--gfill)" stroke="none"/>`);
             // 칼라 깃: 넥→칼라 포인트 (C커브)
-            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.08},${topY-collarH*0.4} ${cpx-d*lapelW*0.12},${cpy+collarH*0.15} ${cpx},${cpy}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.08},${topY-collarH*0.4} ${cpx-d*lapelW*0.12},${cpy+collarH*0.15} ${cpx},${cpy}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
             // 노치 V: 칼라→V꼭짓점→라펠 (날카로운 직선)
-            o.push(`<line x1="${cpx}" y1="${cpy}" x2="${gnx}" y2="${gny}" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-            o.push(`<line x1="${gnx}" y1="${gny}" x2="${lsx}" y2="${lsy}" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            o.push(`<line x1="${cpx}" y1="${cpy}" x2="${gnx}" y2="${gny}" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
+            o.push(`<line x1="${gnx}" y1="${gny}" x2="${lsx}" y2="${lsy}" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
             // 라펠 바깥 엣지: 시작→팁 (C커브)
-            o.push(`<path d="M${lsx},${lsy} C${nl+d*lapelW*0.85},${topY+lapelH*0.1} ${ltx+d*2},${topY+lapelH*0.45} ${ltx},${lty}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            o.push(`<path d="M${lsx},${lsy} C${nl+d*lapelW*0.85},${topY+lapelH*0.1} ${ltx+d*2},${topY+lapelH*0.45} ${ltx},${lty}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
             // 라펠 안쪽 엣지: 팁→CF
-            o.push(`<line x1="${ltx}" y1="${lty}" x2="${cfx}" y2="${cfy}" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+            o.push(`<line x1="${ltx}" y1="${lty}" x2="${cfx}" y2="${cfy}" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
             // 접힘선 (roll line)
             o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.2},${topY+lapelH*0.15} ${nl+d*lapelW*0.12},${topY+lapelH*0.35} ${cfx},${topY+baseNeckD*0.55}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
           });
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--gstroke)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
           // Szkutnicka p177 back: stand + curved fall
           const sh=collarH;
           const fallH=sh*0.85;
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-6},${topY-sh} C${l-7},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+7},${topY-sh-fallH*0.7} L${r+6},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-6},${topY-sh} C${l-7},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+7},${topY-sh-fallH*0.7} L${r+6},${topY-sh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_shawl'){
@@ -2353,32 +2399,32 @@ const NeckComp = {
             const tipX=nl+d*sw, tipY=topY+lapelH;
             o.push(`<path d="M${nl+d*sw*0.5},${topY+4} C${nl+d*sw*0.8},${topY-2} ${peakX+d*2},${topY+lapelH*0.15} ${peakX},${topY+lapelH*0.35} C${peakX-d*2},${topY+lapelH*0.55} ${tipX+d*3},${topY+lapelH*0.8} ${tipX},${tipY} C${tipX-d*sw*0.4},${tipY-lapelH*0.05} ${cfx+d*2},${cfy+lapelH*0.1} ${cfx},${cfy} Z" fill="var(--gfill)" stroke="none"/>`);
             // 연속 곡선: 넥→살짝 위(칼라)→둥글게 바깥→아래(라펠)→CF
-            o.push(`<path d="M${nl},${topY} C${nl+d*sw*0.3},${topY-8} ${nl+d*sw*0.75},${topY-6} ${peakX},${peakY} C${peakX+d*2},${topY+lapelH*0.3} ${peakX},${topY+lapelH*0.6} ${tipX},${tipY} C${tipX-d*sw*0.4},${tipY-lapelH*0.05} ${cfx+d*2},${cfy+lapelH*0.1} ${cfx},${cfy}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${nl},${topY} C${nl+d*sw*0.3},${topY-8} ${nl+d*sw*0.75},${topY-6} ${peakX},${peakY} C${peakX+d*2},${topY+lapelH*0.3} ${peakX},${topY+lapelH*0.6} ${tipX},${tipY} C${tipX-d*sw*0.4},${tipY-lapelH*0.05} ${cfx+d*2},${cfy+lapelH*0.1} ${cfx},${cfy}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
             // 접힘선
             o.push(`<path d="M${nl},${topY} C${nl+d*sw*0.25},${topY+lapelH*0.12} ${nl+d*sw*0.15},${topY+lapelH*0.3} ${cfx},${topY+baseNeckD*0.5}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
           });
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--gstroke)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
           // Szkutnicka p178 back: 둥근 칼라 밴드
           const sh=nw*0.5;
           const fallH=sh*0.8;
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-5},${topY-sh} C${l-6},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+6},${topY-sh-fallH*0.7} L${r+5},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-5},${topY-sh} C${l-6},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+6},${topY-sh-fallH*0.7} L${r+5},${topY-sh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_wing'){
         // 윙카라 — 높은 스탠드 + 윙팁 (삼각형 접힘)
         const{sh:wh,tipW:ww,tipDrop:wt}=resolveCollarParams('wing',nw,baseNeckD);
         // 스탠드 (C커브 상단)
-        o.push(`<path d="M${l},${topY} L${l},${topY-wh+3} C${l},${topY-wh} ${l+3},${topY-wh} ${l+4},${topY-wh} C${cx-4},${topY-wh-3} ${cx+4},${topY-wh-3} ${r-4},${topY-wh} C${r-3},${topY-wh} ${r},${topY-wh} ${r},${topY-wh+3} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${topY-wh+3} C${l},${topY-wh} ${l+3},${topY-wh} ${l+4},${topY-wh} C${cx-4},${topY-wh-3} ${cx+4},${topY-wh-3} ${r-4},${topY-wh} C${r-3},${topY-wh} ${r},${topY-wh} ${r},${topY-wh+3} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         if(!isBack){
           // 윙팁: 스탠드 상단에서 삼각형으로 바깥-아래 접힘 (C커브)
           [-1,1].forEach(d=>{
             const wx=cx+d*nw;
-            o.push(`<path d="M${wx},${topY-wh} L${wx+d*ww},${topY-wh+wt} C${wx+d*ww*0.6},${topY-wh+wt-1} ${wx+d*2},${topY-wh+2} ${wx},${topY-wh+3}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+            o.push(`<path d="M${wx},${topY-wh} L${wx+d*ww},${topY-wh+wt} C${wx+d*ww*0.6},${topY-wh+wt-1} ${wx+d*2},${topY-wh+2} ${wx},${topY-wh+3}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           });
           // 중심 앞여밈선
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY-wh}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY-wh}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         } else {
           o.push(`<line x1="${cx}" y1="${topY-wh}" x2="${cx}" y2="${topY-wh-8}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
         }
@@ -2394,18 +2440,18 @@ const NeckComp = {
             const px=nl+d*(lapelW*0.7), py=topY-collarH-peakH;
             const lx=nl+d*(lapelW+4), ly=topY+lapelH;
             // 칼라깃 C커브 → 피크 C커브(뾰족+자연스러운 전환) → 라펠 C커브
-            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.1},${topY-collarH*0.4} ${nl+d*lapelW*0.2},${topY-collarH*0.95} ${gx},${gy} C${gx+d*lapelW*0.1},${gy-peakH*0.4} ${px-d*3},${py+2} ${px},${py} C${px+d*1.5},${py+peakH*0.3} ${gx+d*5},${gy+8} ${nl+d*lapelW*0.5},${topY+lapelH*0.15} C${nl+d*lapelW*0.9},${topY+lapelH*0.4} ${nl+d*(lapelW+5)},${topY+lapelH*0.65} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.65}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.1},${topY-collarH*0.4} ${nl+d*lapelW*0.2},${topY-collarH*0.95} ${gx},${gy} C${gx+d*lapelW*0.1},${gy-peakH*0.4} ${px-d*3},${py+2} ${px},${py} C${px+d*1.5},${py+peakH*0.3} ${gx+d*5},${gy+8} ${nl+d*lapelW*0.5},${topY+lapelH*0.15} C${nl+d*lapelW*0.9},${topY+lapelH*0.4} ${nl+d*(lapelW+5)},${topY+lapelH*0.65} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.65}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
             // 접힘선 (롤라인)
             o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.25},${topY+lapelH*0.2} ${nl+d*lapelW*0.15},${topY+lapelH*0.4} ${cx+d*4},${topY+baseNeckD*0.55}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
           });
           // 앞여밈선
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--gstroke)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
           // peaked back: stand + fall (파라미터 기반)
           const sh=collarH;
           const fallH=sh*0.9;
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-7},${topY-sh} C${l-8},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+8},${topY-sh-fallH*0.7} L${r+7},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-7},${topY-sh} C${l-8},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+8},${topY-sh-fallH*0.7} L${r+7},${topY-sh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_round'){
@@ -2416,17 +2462,17 @@ const NeckComp = {
             const nl=cx+d*nw;
             const lx=nl+d*(lapelW+3), ly=topY+lapelH;
             // 연속 둥근 곡선: 넥→위→바깥→아래→CF
-            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.3},${topY-collarH} ${nl+d*lapelW*0.7},${topY-collarH+2} ${nl+d*(lapelW+3)},${topY+6} C${nl+d*(lapelW+4)},${topY+lapelH*0.4} ${nl+d*(lapelW+2)},${topY+lapelH*0.7} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.6}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.3},${topY-collarH} ${nl+d*lapelW*0.7},${topY-collarH+2} ${nl+d*(lapelW+3)},${topY+6} C${nl+d*(lapelW+4)},${topY+lapelH*0.4} ${nl+d*(lapelW+2)},${topY+lapelH*0.7} ${lx},${ly} L${cx+d*4},${topY+baseNeckD*0.6}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
             // 접힘선
             o.push(`<path d="M${nl},${topY} C${nl+d*lapelW*0.25},${topY+lapelH*0.2} ${nl+d*lapelW*0.15},${topY+lapelH*0.35} ${cx+d*4},${topY+baseNeckD*0.5}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="4,3" opacity="0.45"/>`);
           });
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+baseNeckD*0.8}" stroke="var(--gstroke)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
           // round back: stand + fall (파라미터 기반)
           const sh=collarH;
           const fallH=sh*0.8;
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-5},${topY-sh} C${l-6},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+6},${topY-sh-fallH*0.7} L${r+5},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} Q${cx},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-5},${topY-sh} C${l-6},${topY-sh-fallH*0.7} ${cx},${topY-sh-fallH} ${r+6},${topY-sh-fallH*0.7} L${r+5},${topY-sh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_mandarin'){
@@ -2437,57 +2483,57 @@ const NeckComp = {
         o.push(`<path d="M${l},${topY} L${l},${mTop+2} C${l},${mTop} ${l+2},${mTop} ${l+3},${mTop} L${cx-gap-1},${mTop} L${cx-gap},${topY} Z" fill="var(--gfill)" stroke="none"/>`);
         o.push(`<path d="M${cx+gap},${topY} L${cx+gap+1},${mTop} L${r-3},${mTop} C${r-2},${mTop} ${r},${mTop} ${r},${mTop+2} L${r},${topY} Z" fill="var(--gfill)" stroke="none"/>`);
         // 아웃라인 — 수직 옆면 + 모서리만 살짝 라운딩 + 거의 수평 상단
-        o.push(`<path d="M${l},${topY} L${l},${mTop+2} C${l},${mTop} ${l+2},${mTop} ${l+3},${mTop} L${cx-gap-1},${mTop}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-        o.push(`<path d="M${cx+gap+1},${mTop} L${r-3},${mTop} C${r-2},${mTop} ${r},${mTop} ${r},${mTop+2} L${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${mTop+2} C${l},${mTop} ${l+2},${mTop} ${l+3},${mTop} L${cx-gap-1},${mTop}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${cx+gap+1},${mTop} L${r-3},${mTop} C${r-2},${mTop} ${r},${mTop} ${r},${mTop+2} L${r},${topY}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         if(!isBack){
           // 앞 갈라짐 — 좁은 갭, 상단 살짝 둥근 엣지
-          o.push(`<path d="M${cx-gap},${topY} L${cx-gap},${mTop+3} C${cx-gap},${mTop+1} ${cx-gap+1},${mTop} ${cx-gap+2},${mTop}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${cx+gap},${topY} L${cx+gap},${mTop+3} C${cx+gap},${mTop+1} ${cx+gap-1},${mTop} ${cx+gap-2},${mTop}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx-gap},${topY} L${cx-gap},${mTop+3} C${cx-gap},${mTop+1} ${cx-gap+1},${mTop} ${cx-gap+2},${mTop}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx+gap},${topY} L${cx+gap},${mTop+3} C${cx+gap},${mTop+1} ${cx+gap-1},${mTop} ${cx+gap-2},${mTop}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         }
       }
       else if(f==='collar_funnel'){
         // 퍼넬카라 — 목에서 위로 넓어지며 올라감
         const{sh:fh,flareTop}=resolveCollarParams('funnel',nw,baseNeckD);
         // C커브로 부드러운 플레어
-        o.push(`<path d="M${l},${topY} C${l-flareTop*0.3},${topY-fh*0.3} ${l-flareTop},${topY-fh*0.7} ${l-flareTop},${topY-fh} C${cx-nw*0.3},${topY-fh-5} ${cx+nw*0.3},${topY-fh-5} ${r+flareTop},${topY-fh} C${r+flareTop},${topY-fh*0.7} ${r+flareTop*0.3},${topY-fh*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} C${l-flareTop*0.3},${topY-fh*0.3} ${l-flareTop},${topY-fh*0.7} ${l-flareTop},${topY-fh} C${cx-nw*0.3},${topY-fh-5} ${cx+nw*0.3},${topY-fh-5} ${r+flareTop},${topY-fh} C${r+flareTop},${topY-fh*0.7} ${r+flareTop*0.3},${topY-fh*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         // 상단 접힘선
         o.push(`<path d="M${l-flareTop+2},${topY-fh+4} C${cx-nw*0.2},${topY-fh+2} ${cx+nw*0.2},${topY-fh+2} ${r+flareTop-2},${topY-fh+4}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="3,2" opacity="0.45"/>`);
-        if(!isBack) o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY-fh}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        if(!isBack) o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY-fh}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
       }
       else if(f==='collar_convertible'){
         // 컨버터블카라 — 셔츠카라 열린 상태, 칼라 깃이 라펠처럼 눕혀짐
         const{sh,fw:tw,fd:td}=resolveCollarParams('convertible',nw,baseNeckD);
         if(!isBack){
           // 스탠드 (열린 — 중심 갈라짐, C커브)
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l+2},${topY-sh-2} ${cx-8},${topY-sh-2} ${cx-5},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${r},${topY} L${r},${topY-sh} C${r-2},${topY-sh-2} ${cx+8},${topY-sh-2} ${cx+5},${topY-sh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l+2},${topY-sh-2} ${cx-8},${topY-sh-2} ${cx-5},${topY-sh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${r},${topY} L${r},${topY-sh} C${r-2},${topY-sh-2} ${cx+8},${topY-sh-2} ${cx+5},${topY-sh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           // 칼라 Fall — C커브로 바깥+아래 눕혀짐
-          o.push(`<path d="M${cx-5},${topY-sh} C${cx-nw*0.4},${topY-sh-4} ${l-tw+6},${topY-sh+td*0.3} ${l-tw},${topY-sh+td*0.6} C${l-tw-2},${topY-sh+td*0.8} ${l-3},${topY+4} ${l},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
-          o.push(`<path d="M${cx+5},${topY-sh} C${cx+nw*0.4},${topY-sh-4} ${r+tw-6},${topY-sh+td*0.3} ${r+tw},${topY-sh+td*0.6} C${r+tw+2},${topY-sh+td*0.8} ${r+3},${topY+4} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${cx-5},${topY-sh} C${cx-nw*0.4},${topY-sh-4} ${l-tw+6},${topY-sh+td*0.3} ${l-tw},${topY-sh+td*0.6} C${l-tw-2},${topY-sh+td*0.8} ${l-3},${topY+4} ${l},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${cx+5},${topY-sh} C${cx+nw*0.4},${topY-sh-4} ${r+tw-6},${topY-sh+td*0.3} ${r+tw},${topY-sh+td*0.6} C${r+tw+2},${topY-sh+td*0.8} ${r+3},${topY+4} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           // 열린 V 라인
-          o.push(`<path d="M${cx-5},${topY-sh} C${cx-4},${topY} ${cx-3},${topY+baseNeckD*0.2} ${cx-3},${topY+baseNeckD*0.35}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${cx+5},${topY-sh} C${cx+4},${topY} ${cx+3},${topY+baseNeckD*0.2} ${cx+3},${topY+baseNeckD*0.35}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx-5},${topY-sh} C${cx-4},${topY} ${cx-3},${topY+baseNeckD*0.2} ${cx-3},${topY+baseNeckD*0.35}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx+5},${topY-sh} C${cx+4},${topY} ${cx+3},${topY+baseNeckD*0.2} ${cx+3},${topY+baseNeckD*0.35}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         } else {
-          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-2} ${r},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-6},${topY-sh+1} C${l-7},${topY-sh-8} ${cx},${topY-sh-14} ${r+7},${topY-sh-8} C${r+6},${topY-sh+1} ${r+6},${topY-sh+1} ${r+6},${topY-sh+1}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-sh} C${l},${topY-sh-2} ${r},${topY-sh-2} ${r},${topY-sh} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-6},${topY-sh+1} C${l-7},${topY-sh-8} ${cx},${topY-sh-14} ${r+7},${topY-sh-8} C${r+6},${topY-sh+1} ${r+6},${topY-sh+1} ${r+6},${topY-sh+1}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           o.push(`<line x1="${cx}" y1="${topY-sh}" x2="${cx}" y2="${topY-sh-10}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,2" opacity="0.5"/>`);
         }
       }
       else if(f==='collar_bow'){
         // 보우카라 — 밴드 스탠드 + 큰 리본 타이
         const{sh:bh,loopW:bw_,loopD:bd_}=resolveCollarParams('bow',nw,baseNeckD);
-        o.push(`<path d="M${l},${topY} L${l},${topY-bh+2} C${l},${topY-bh} ${l+3},${topY-bh} ${l+4},${topY-bh} C${cx-3},${topY-bh-3} ${cx+3},${topY-bh-3} ${r-4},${topY-bh} C${r-3},${topY-bh} ${r},${topY-bh} ${r},${topY-bh+2} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+        o.push(`<path d="M${l},${topY} L${l},${topY-bh+2} C${l},${topY-bh} ${l+3},${topY-bh} ${l+4},${topY-bh} C${cx-3},${topY-bh-3} ${cx+3},${topY-bh-3} ${r-4},${topY-bh} C${r-3},${topY-bh} ${r},${topY-bh} ${r},${topY-bh+2} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         if(!isBack){
           // 리본 루프 (더 크고 풍성하게)
           const bw=bw_, bd=bd_;
           // 왼쪽 루프 — 위로 살짝 기울어진 타원
-          o.push(`<path d="M${cx},${topY-bh} C${cx-bw*0.2},${topY-bh-bd*1.2} ${cx-bw*0.9},${topY-bh-bd*0.7} ${cx-bw},${topY-bh+1} C${cx-bw*0.9},${topY-bh+bd*0.7} ${cx-bw*0.2},${topY-bh+bd*0.8} ${cx},${topY-bh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx},${topY-bh} C${cx-bw*0.2},${topY-bh-bd*1.2} ${cx-bw*0.9},${topY-bh-bd*0.7} ${cx-bw},${topY-bh+1} C${cx-bw*0.9},${topY-bh+bd*0.7} ${cx-bw*0.2},${topY-bh+bd*0.8} ${cx},${topY-bh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           // 오른쪽 루프
-          o.push(`<path d="M${cx},${topY-bh} C${cx+bw*0.2},${topY-bh-bd*1.2} ${cx+bw*0.9},${topY-bh-bd*0.7} ${cx+bw},${topY-bh+1} C${cx+bw*0.9},${topY-bh+bd*0.7} ${cx+bw*0.2},${topY-bh+bd*0.8} ${cx},${topY-bh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx},${topY-bh} C${cx+bw*0.2},${topY-bh-bd*1.2} ${cx+bw*0.9},${topY-bh-bd*0.7} ${cx+bw},${topY-bh+1} C${cx+bw*0.9},${topY-bh+bd*0.7} ${cx+bw*0.2},${topY-bh+bd*0.8} ${cx},${topY-bh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           // 리본 꼬리 (더 길고 우아하게)
           const tailLen=Math.max(22,bh*2.2);
-          o.push(`<path d="M${cx-2},${topY-bh+2} C${cx-4},${topY+tailLen*0.2} ${cx-8},${topY+tailLen*0.6} ${cx-12},${topY+tailLen}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${cx+2},${topY-bh+2} C${cx+4},${topY+tailLen*0.2} ${cx+8},${topY+tailLen*0.6} ${cx+12},${topY+tailLen}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx-2},${topY-bh+2} C${cx-4},${topY+tailLen*0.2} ${cx-8},${topY+tailLen*0.6} ${cx-12},${topY+tailLen}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${cx+2},${topY-bh+2} C${cx+4},${topY+tailLen*0.2} ${cx+8},${topY+tailLen*0.6} ${cx+12},${topY+tailLen}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           // 매듭 중심 (더 뚜렷하게)
           o.push(`<ellipse cx="${cx}" cy="${topY-bh}" rx="3.5" ry="3" fill="var(--ink)" opacity="0.4"/>`);
         }
@@ -2497,14 +2543,14 @@ const NeckComp = {
         if(!isBack){
           const dDepth=resolveCollarParams('cowl',nw,baseNeckD).dDepth;
           // 메인 드레이프 (가장 바깥 — outline)
-          o.push(`<path d="M${l},${topY} C${l+nw*0.2},${topY+dDepth*0.6} ${cx-nw*0.3},${topY+dDepth} ${cx},${topY+dDepth*0.85} C${cx+nw*0.3},${topY+dDepth} ${r-nw*0.2},${topY+dDepth*0.6} ${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l+nw*0.2},${topY+dDepth*0.6} ${cx-nw*0.3},${topY+dDepth} ${cx},${topY+dDepth*0.85} C${cx+nw*0.3},${topY+dDepth} ${r-nw*0.2},${topY+dDepth*0.6} ${r},${topY}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
           // 안쪽 드레이프 겹침 2줄
           for(let i=1;i<=2;i++){
             const off=i*6, dep=dDepth-i*8, op=0.55-i*0.12;
-            o.push(`<path d="M${l+off},${topY+off*0.4} C${l+off+nw*0.15},${topY+dep*0.5} ${cx-nw*0.2},${topY+dep*0.9} ${cx},${topY+dep*0.8} C${cx+nw*0.2},${topY+dep*0.9} ${r-off-nw*0.15},${topY+dep*0.5} ${r-off},${topY+off*0.4}" fill="none" stroke="var(--ink)" stroke-width="${LW.stitch}" opacity="${op}"/>`);
+            o.push(`<path d="M${l+off},${topY+off*0.4} C${l+off+nw*0.15},${topY+dep*0.5} ${cx-nw*0.2},${topY+dep*0.9} ${cx},${topY+dep*0.8} C${cx+nw*0.2},${topY+dep*0.9} ${r-off-nw*0.15},${topY+dep*0.5} ${r-off},${topY+off*0.4}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.stitch}" opacity="${op}"/>`);
           }
         } else {
-          o.push(`<path d="M${l},${topY} C${l+2},${topY-3} ${r-2},${topY-3} ${r},${topY}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l},${topY} C${l+2},${topY-3} ${r-2},${topY-3} ${r},${topY}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         }
       }
       else if(f==='collar_eton'){
@@ -2515,14 +2561,14 @@ const NeckComp = {
             const nl=cx+d*nw;
             // 스탠드 + 각진 Fall (피터팬보다 짧고 각짐)
             const tipX=nl+d*ew, tipY=topY+eh*0.3;
-            o.push(`<path d="M${nl},${topY} L${nl+d*2},${topY-standH} L${nl+d*ew*0.5},${topY-standH+1} L${tipX},${tipY} L${tipX-d*ew*0.2},${topY+eh*0.5} C${nl+d*ew*0.3},${topY+eh*0.4} ${nl+d*3},${topY+3} ${nl},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${nl},${topY} L${nl+d*2},${topY-standH} L${nl+d*ew*0.5},${topY-standH+1} L${tipX},${tipY} L${tipX-d*ew*0.2},${topY+eh*0.5} C${nl+d*ew*0.3},${topY+eh*0.4} ${nl+d*3},${topY+3} ${nl},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
           });
           // 앞여밈선
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+standH}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.6"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+standH}" stroke="var(--gstroke)" stroke-width="${LW.seam}" opacity="0.6"/>`);
         } else {
           // 뒷면: 짧은 스탠드 + 각진 Fall
-          o.push(`<path d="M${l},${topY} L${l},${topY-standH} C${cx-nw*0.3},${topY-standH-2} ${cx+nw*0.3},${topY-standH-2} ${r},${topY-standH} L${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<path d="M${l-4},${topY-standH} L${l-6},${topY-standH-6} C${cx-nw*0.2},${topY-standH-12} ${cx+nw*0.2},${topY-standH-12} ${r+6},${topY-standH-6} L${r+4},${topY-standH}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} L${l},${topY-standH} C${cx-nw*0.3},${topY-standH-2} ${cx+nw*0.3},${topY-standH-2} ${r},${topY-standH} L${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<path d="M${l-4},${topY-standH} L${l-6},${topY-standH-6} C${cx-nw*0.2},${topY-standH-12} ${cx+nw*0.2},${topY-standH-12} ${r+6},${topY-standH-6} L${r+4},${topY-standH}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_bertha'){
@@ -2530,14 +2576,14 @@ const NeckComp = {
         const{fw:bw,fd:bd}=resolveCollarParams('bertha',nw,baseNeckD);
         if(!isBack){
           // 왼쪽 Fall
-          o.push(`<path d="M${cx-3},${topY+4} C${cx-nw*0.5},${topY+bd*0.8} ${l-bw+6},${topY+bd} ${l-bw},${topY+bd*0.5} C${l-bw-3},${topY+bd*0.2} ${l-6},${topY+3} ${l},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+          o.push(`<path d="M${cx-3},${topY+4} C${cx-nw*0.5},${topY+bd*0.8} ${l-bw+6},${topY+bd} ${l-bw},${topY+bd*0.5} C${l-bw-3},${topY+bd*0.2} ${l-6},${topY+3} ${l},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
           // 오른쪽 Fall (미러)
-          o.push(`<path d="M${cx+3},${topY+4} C${cx+nw*0.5},${topY+bd*0.8} ${r+bw-6},${topY+bd} ${r+bw},${topY+bd*0.5} C${r+bw+3},${topY+bd*0.2} ${r+6},${topY+3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+          o.push(`<path d="M${cx+3},${topY+4} C${cx+nw*0.5},${topY+bd*0.8} ${r+bw-6},${topY+bd} ${r+bw},${topY+bd*0.5} C${r+bw+3},${topY+bd*0.2} ${r+6},${topY+3} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
           // 앞여밈선
-          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+6}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.5"/>`);
+          o.push(`<line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+6}" stroke="var(--gstroke)" stroke-width="${LW.seam}" opacity="0.5"/>`);
         } else {
           // 뒷면: 큰 둥근 칼라
-          o.push(`<path d="M${l},${topY} C${l-bw*0.4},${topY+bd*0.3} ${l-bw*0.5},${topY+bd*0.9} ${cx},${topY+bd+2} C${r+bw*0.5},${topY+bd*0.9} ${r+bw*0.4},${topY+bd*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l-bw*0.4},${topY+bd*0.3} ${l-bw*0.5},${topY+bd*0.9} ${cx},${topY+bd+2} C${r+bw*0.5},${topY+bd*0.9} ${r+bw*0.4},${topY+bd*0.3} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         }
       }
       else if(f==='collar_puritan'){
@@ -2548,11 +2594,11 @@ const NeckComp = {
             const nl=cx+d*nw;
             const tipX=nl+d*pw, tipY=topY+pd;
             // 넥에서 직선적으로 뻗어가며 뾰족한 끝
-            o.push(`<path d="M${cx+d*3},${topY+2} L${cx+d*nw*0.5},${topY+pd*0.35} L${tipX},${tipY} L${tipX-d*4},${tipY-3} L${nl+d*4},${topY+5} C${nl+d*2},${topY+3} ${nl+d*1},${topY+1} ${nl},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+            o.push(`<path d="M${cx+d*3},${topY+2} L${cx+d*nw*0.5},${topY+pd*0.35} L${tipX},${tipY} L${tipX-d*4},${tipY-3} L${nl+d*4},${topY+5} C${nl+d*2},${topY+3} ${nl+d*1},${topY+1} ${nl},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
           });
         } else {
           // 뒷면: 넓고 약간 각진 칼라
-          o.push(`<path d="M${l},${topY} C${l-pw*0.3},${topY+pd*0.2} ${l-pw*0.6},${topY+pd*0.7} ${cx},${topY+pd+2} C${r+pw*0.6},${topY+pd*0.7} ${r+pw*0.3},${topY+pd*0.2} ${r},${topY}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}"/>`);
+          o.push(`<path d="M${l},${topY} C${l-pw*0.3},${topY+pd*0.2} ${l-pw*0.6},${topY+pd*0.7} ${cx},${topY+pd+2} C${r+pw*0.6},${topY+pd*0.7} ${r+pw*0.3},${topY+pd*0.2} ${r},${topY}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}"/>`);
         }
       }
       return;
@@ -2592,22 +2638,22 @@ const NeckComp = {
       const d=baseNeckD;
       // 배경 마스크 — 넥라인 path를 가려서 겹침 방지
       o.push(`<rect x="${cx-5}" y="${topY+d*0.25}" width="10" height="${d*0.7+14}" fill="var(--gfill)" stroke="none"/>`);
-      o.push(`<line x1="${cx-3.5}" y1="${topY+d*0.3}" x2="${cx-3.5}" y2="${topY+d+12}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-      o.push(`<line x1="${cx+3.5}" y1="${topY+d*0.3}" x2="${cx+3.5}" y2="${topY+d+12}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-      for(let i=0;i<3;i++) o.push(`<circle cx="${cx}" cy="${topY+d*0.5+i*8}" r="1.5" fill="none" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
+      o.push(`<line x1="${cx-3.5}" y1="${topY+d*0.3}" x2="${cx-3.5}" y2="${topY+d+12}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+      o.push(`<line x1="${cx+3.5}" y1="${topY+d*0.3}" x2="${cx+3.5}" y2="${topY+d+12}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+      for(let i=0;i<3;i++) o.push(`<circle cx="${cx}" cy="${topY+d*0.5+i*8}" r="1.5" fill="none" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
     }
     if(nd==='keyhole'){
       const d=baseNeckD;
       // 배경 마스크
       o.push(`<path d="M${cx-5},${topY+d*0.25} L${cx-5.5},${topY+d*0.7} Q${cx},${topY+d*0.85} ${cx+5.5},${topY+d*0.7} L${cx+5},${topY+d*0.25} Z" fill="var(--gfill)" stroke="none"/>`);
-      o.push(`<path d="M${cx-3.5},${topY+d*0.3} L${cx-4},${topY+d*0.65} Q${cx},${topY+d*0.8} ${cx+4},${topY+d*0.65} L${cx+3.5},${topY+d*0.3}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      o.push(`<path d="M${cx-3.5},${topY+d*0.3} L${cx-4},${topY+d*0.65} Q${cx},${topY+d*0.8} ${cx+4},${topY+d*0.65} L${cx+3.5},${topY+d*0.3}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
     }
     if(nd==='drape'){
       const d=baseNeckD;
       const l=cx-neckW,r=cx+neckW;
       for(let i=1;i<=2;i++){
         const off=i*5, dep=d-i*7, op=0.5-i*0.12;
-        o.push(`<path d="M${l+off},${topY+off*0.3} Q${cx},${topY+dep*0.85} ${r-off},${topY+off*0.3}" fill="none" stroke="var(--ink)" stroke-width="${LW.stitch}" opacity="${op}"/>`);
+        o.push(`<path d="M${l+off},${topY+off*0.3} Q${cx},${topY+dep*0.85} ${r-off},${topY+off*0.3}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.stitch}" opacity="${op}"/>`);
       }
     }
   }
@@ -2943,7 +2989,7 @@ const DetailComp = {
     }
     else if(S.hemFinish==='drawstring'){
       o.push(`<path d="${hemLine(botY-12,12)}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" opacity="0.5"/>`);
-      if(!isBack) o.push(`<path d="M${cx-4},${botY-12} Q${cx-6},${botY-5} ${cx-10},${botY+1} M${cx+4},${botY-12} Q${cx+6},${botY-5} ${cx+10},${botY+1}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      if(!isBack) o.push(`<path d="M${cx-4},${botY-12} Q${cx-6},${botY-5} ${cx-10},${botY+1} M${cx+4},${botY-12} Q${cx+6},${botY-5} ${cx+10},${botY+1}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
     }
     else if(S.hemFinish==='curved_band')
       o.push(`<path d="M${hL},${botY-12} Q${cx},${botY-7} ${hR},${botY-12}" fill="none" stroke="var(--stitch)" stroke-width="${LW.stitch}" opacity="0.5"/>`);
@@ -2955,19 +3001,19 @@ const DetailComp = {
     if(S.dart==='bust')
       [-1,1].forEach(d=>{
         const dx=cx+d*halfBody*0.55;
-        o.push(`<line x1="${cx+d*halfBody}" y1="${waistY-12}" x2="${dx}" y2="${waistY-25}" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
-        o.push(`<line x1="${cx+d*halfBody}" y1="${waistY+4}" x2="${dx}" y2="${waistY-25}" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${cx+d*halfBody}" y1="${waistY-12}" x2="${dx}" y2="${waistY-25}" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${cx+d*halfBody}" y1="${waistY+4}" x2="${dx}" y2="${waistY-25}" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
       });
     else if(S.dart==='waist')
       [-1,1].forEach(d=>{
         const dx=cx+d*halfBody*0.4;
-        o.push(`<line x1="${dx-3}" y1="${waistY+12}" x2="${dx}" y2="${waistY-18}" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
-        o.push(`<line x1="${dx+3}" y1="${waistY+12}" x2="${dx}" y2="${waistY-18}" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${dx-3}" y1="${waistY+12}" x2="${dx}" y2="${waistY-18}" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${dx+3}" y1="${waistY+12}" x2="${dx}" y2="${waistY-18}" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
       });
     else if(S.dart==='princess')
       [-1,1].forEach(d=>{
         const px=cx+d*halfBody*0.4;
-        o.push(`<path d="M${px},${topY+22} Q${px+d*4},${waistY} ${px},${botY-8}" fill="none" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
+        o.push(`<path d="M${px},${topY+22} Q${px+d*4},${waistY} ${px},${botY-8}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
       });
   },
 
@@ -2977,32 +3023,32 @@ const DetailComp = {
     const pY=S.pocketY/100; // 0~1 normalized
     if(S.pocket==='chest_one'){
       const px=cx-halfBody*0.45,py=topY+bodyH*pY;
-      o.push(`<rect x="${px}" y="${py}" width="20" height="22" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
-      o.push(`<line x1="${px}" y1="${py}" x2="${px+20}" y2="${py}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      o.push(`<rect x="${px}" y="${py}" width="20" height="22" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}" rx="1"/>`);
+      o.push(`<line x1="${px}" y1="${py}" x2="${px+20}" y2="${py}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
     }
     else if(S.pocket==='chest_two')
       [-1,1].forEach(d=>{
         const px=cx+d*halfBody*0.35-10,py=topY+bodyH*pY;
-        o.push(`<rect x="${px}" y="${py}" width="20" height="22" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
-        o.push(`<line x1="${px}" y1="${py}" x2="${px+20}" y2="${py}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<rect x="${px}" y="${py}" width="20" height="22" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}" rx="1"/>`);
+        o.push(`<line x1="${px}" y1="${py}" x2="${px+20}" y2="${py}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
       });
     else if(S.pocket==='patch_round'){
       const px=cx-halfBody*0.45,py=topY+bodyH*pY,w=20,h=22,r=5;
-      o.push(`<path d="M${px},${py} L${px+w},${py} L${px+w},${py+h-r} Q${px+w},${py+h} ${px+w-r},${py+h} L${px+r},${py+h} Q${px},${py+h} ${px},${py+h-r} Z" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-      o.push(`<line x1="${px}" y1="${py}" x2="${px+w}" y2="${py}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      o.push(`<path d="M${px},${py} L${px+w},${py} L${px+w},${py+h-r} Q${px+w},${py+h} ${px+w-r},${py+h} L${px+r},${py+h} Q${px},${py+h} ${px},${py+h-r} Z" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+      o.push(`<line x1="${px}" y1="${py}" x2="${px+w}" y2="${py}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
     }
     else if(S.pocket==='flap'){
       const px=cx-halfBody*0.45,py=topY+bodyH*pY,w=20,h=22,fh=7;
-      o.push(`<rect x="${px}" y="${py}" width="${w}" height="${h}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
-      o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
-      o.push(`<line x1="${px-1}" y1="${py}" x2="${px+w+1}" y2="${py}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      o.push(`<rect x="${px}" y="${py}" width="${w}" height="${h}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}" rx="1"/>`);
+      o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}" rx="1"/>`);
+      o.push(`<line x1="${px-1}" y1="${py}" x2="${px+w+1}" y2="${py}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
       o.push(`<line x1="${px+2}" y1="${py-fh+2}" x2="${px+w-2}" y2="${py-fh+2}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="1.5,1.5"/>`);
     }
     else if(S.pocket==='welt'){
       const py=topY+bodyH*pY,pw=22;
       [-1,1].forEach(d=>{
         const px=cx+d*halfBody*0.4;
-        o.push(`<line x1="${px-pw/2}" y1="${py}" x2="${px+pw/2}" y2="${py}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${px-pw/2}" y1="${py}" x2="${px+pw/2}" y2="${py}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         o.push(`<line x1="${px-pw/2}" y1="${py+0.8}" x2="${px+pw/2}" y2="${py+0.8}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="1.5,1.5"/>`);
       });
     }
@@ -3011,27 +3057,27 @@ const DetailComp = {
       [-1,1].forEach(d=>{
         const px=cx+d*halfBody*0.38,angle=d*12*Math.PI/180;
         const x2=px+Math.cos(angle)*zl*d,y2=py+Math.sin(angle)*zl;
-        o.push(`<line x1="${px}" y1="${py}" x2="${x2}" y2="${y2}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${px}" y1="${py}" x2="${x2}" y2="${y2}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         const mx=(px+x2)/2,my=(py+y2)/2;
         o.push(`<rect x="${mx-1.5}" y="${my-1.5}" width="3" height="3" fill="var(--ink)" rx="0.5"/>`);
         const dx=x2-px,dy=y2-py,len=Math.sqrt(dx*dx+dy*dy);
         for(let i=3;i<len-3;i+=3){
           const tx=px+dx*i/len,ty=py+dy*i/len;
-          o.push(`<line x1="${tx-0.6}" y1="${ty-0.6}" x2="${tx+0.6}" y2="${ty+0.6}" stroke="var(--ink)" stroke-width="${LW.stitch*0.7}"/>`);
+          o.push(`<line x1="${tx-0.6}" y1="${ty-0.6}" x2="${tx+0.6}" y2="${ty+0.6}" stroke="var(--gstroke)" stroke-width="${LW.stitch*0.7}"/>`);
         }
       });
     }
     else if(S.pocket==='kangaroo'){
       const py=topY+bodyH*pY,pw=halfBody*1.3;
-      o.push(`<path d="M${cx-pw/2},${py} Q${cx-pw/2-3},${py+26} ${cx},${py+30} Q${cx+pw/2+3},${py+26} ${cx+pw/2},${py}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-      o.push(`<line x1="${cx-7}" y1="${py+12}" x2="${cx+7}" y2="${py+12}" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
+      o.push(`<path d="M${cx-pw/2},${py} Q${cx-pw/2-3},${py+26} ${cx},${py+30} Q${cx+pw/2+3},${py+26} ${cx+pw/2},${py}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+      o.push(`<line x1="${cx-7}" y1="${py+12}" x2="${cx+7}" y2="${py+12}" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
     }
     else if(S.pocket==='jetted'){
       const py=topY+bodyH*pY,pw=22;
       [-1,1].forEach(d=>{
         const px=cx+d*halfBody*0.4;
-        o.push(`<line x1="${px-pw/2}" y1="${py-1.5}" x2="${px+pw/2}" y2="${py-1.5}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-        o.push(`<line x1="${px-pw/2}" y1="${py+1.5}" x2="${px+pw/2}" y2="${py+1.5}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${px-pw/2}" y1="${py-1.5}" x2="${px+pw/2}" y2="${py-1.5}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${px-pw/2}" y1="${py+1.5}" x2="${px+pw/2}" y2="${py+1.5}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
       });
     }
     else if(S.pocket==='cargo'){
@@ -3039,13 +3085,13 @@ const DetailComp = {
       [-1,1].forEach(d=>{
         const px=cx+d*halfBody*0.38-w/2;
         // main pocket body
-        o.push(`<rect x="${px}" y="${py}" width="${w}" height="${h}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
+        o.push(`<rect x="${px}" y="${py}" width="${w}" height="${h}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}" rx="1"/>`);
         // side pleat lines
         o.push(`<line x1="${px+pleat}" y1="${py+2}" x2="${px+pleat}" y2="${py+h-2}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,1.5"/>`);
         o.push(`<line x1="${px+w-pleat}" y1="${py+2}" x2="${px+w-pleat}" y2="${py+h-2}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="2,1.5"/>`);
         // flap
-        o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.seam}" rx="1"/>`);
-        o.push(`<line x1="${px-1}" y1="${py}" x2="${px+w+1}" y2="${py}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<rect x="${px-1}" y="${py-fh}" width="${w+2}" height="${fh}" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.seam}" rx="1"/>`);
+        o.push(`<line x1="${px-1}" y1="${py}" x2="${px+w+1}" y2="${py}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         // button
         o.push(`<circle cx="${px+w/2}" cy="${py-fh/2}" r="1.2" fill="var(--ink)"/>`);
       });
@@ -3054,10 +3100,10 @@ const DetailComp = {
       const py=topY+bodyH*pY,pLen=22;
       [-1,1].forEach(d=>{
         const sx=cx+d*halfBody*0.95;
-        o.push(`<line x1="${sx}" y1="${py}" x2="${sx}" y2="${py+pLen}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${sx}" y1="${py}" x2="${sx}" y2="${py+pLen}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         // small opening marks
-        o.push(`<line x1="${sx}" y1="${py}" x2="${sx-d*2.5}" y2="${py+1}" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
-        o.push(`<line x1="${sx}" y1="${py+pLen}" x2="${sx-d*2.5}" y2="${py+pLen-1}" stroke="var(--ink)" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${sx}" y1="${py}" x2="${sx-d*2.5}" y2="${py+1}" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
+        o.push(`<line x1="${sx}" y1="${py+pLen}" x2="${sx-d*2.5}" y2="${py+pLen-1}" stroke="var(--gstroke)" stroke-width="${LW.stitch}"/>`);
       });
     }
   },
@@ -3100,10 +3146,10 @@ const DetailComp = {
       for(let i=0;i<count;i++){
         const by=startY+gap*i;
         if(isDouble&&pos!=='side'){
-          o.push(`<circle cx="${drawX-dOff}" cy="${by}" r="2.5" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-          o.push(`<circle cx="${drawX+dOff}" cy="${by}" r="2.5" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<circle cx="${drawX-dOff}" cy="${by}" r="2.5" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+          o.push(`<circle cx="${drawX+dOff}" cy="${by}" r="2.5" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         } else {
-          o.push(`<circle cx="${drawX}" cy="${by}" r="2.5" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<circle cx="${drawX}" cy="${by}" r="2.5" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         }
       }
       if(isDouble&&pos!=='side'){
@@ -3115,11 +3161,11 @@ const DetailComp = {
     }
     else if(S.closure==='zip'){
       const zx=drawX;
-      o.push(`<line x1="${zx}" y1="${startY}" x2="${zx}" y2="${endY}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      o.push(`<line x1="${zx}" y1="${startY}" x2="${zx}" y2="${endY}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
       for(let y=startY+4;y<endY-2;y+=5){
-        o.push(`<line x1="${zx-2}" y1="${y}" x2="${zx+2}" y2="${y}" stroke="var(--ink)" stroke-width="${LW.stitch}" opacity="0.5"/>`);
+        o.push(`<line x1="${zx-2}" y1="${y}" x2="${zx+2}" y2="${y}" stroke="var(--gstroke)" stroke-width="${LW.stitch}" opacity="0.5"/>`);
       }
-      o.push(`<rect x="${zx-3}" y="${startY-1}" width="6" height="5" rx="1" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      o.push(`<rect x="${zx-3}" y="${startY-1}" width="6" height="5" rx="1" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
     }
     else if(S.closure==='snap'){
       const span=endY-startY;
@@ -3128,28 +3174,28 @@ const DetailComp = {
       for(let i=0;i<count;i++){
         const sy=startY+gap*i;
         const sx=isDouble&&pos!=='side'?drawX-dOff:drawX;
-        o.push(`<circle cx="${sx}" cy="${sy}" r="2" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<circle cx="${sx}" cy="${sy}" r="2" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
         o.push(`<circle cx="${sx}" cy="${sy}" r="0.8" fill="var(--ink)"/>`);
         if(isDouble&&pos!=='side'){
-          o.push(`<circle cx="${drawX+dOff}" cy="${sy}" r="2" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+          o.push(`<circle cx="${drawX+dOff}" cy="${sy}" r="2" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
           o.push(`<circle cx="${drawX+dOff}" cy="${sy}" r="0.8" fill="var(--ink)"/>`);
         }
       }
     }
     else if(S.closure==='hidden'){
-      o.push(`<line x1="${drawX}" y1="${startY}" x2="${drawX}" y2="${endY}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.5"/>`);
+      o.push(`<line x1="${drawX}" y1="${startY}" x2="${drawX}" y2="${endY}" stroke="var(--gstroke)" stroke-width="${LW.seam}" opacity="0.5"/>`);
       o.push(`<line x1="${drawX-4}" y1="${startY}" x2="${drawX-4}" y2="${endY}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="5,4" opacity="0.3"/>`);
       o.push(`<line x1="${drawX+4}" y1="${startY}" x2="${drawX+4}" y2="${endY}" stroke="var(--stitch)" stroke-width="${LW.stitch}" stroke-dasharray="5,4" opacity="0.3"/>`);
     }
     else if(S.closure==='wrap'){
       // Wrap closure: overlapping front panel line + tie marks
       const wrapOff=12;
-      o.push(`<line x1="${drawX-wrapOff}" y1="${startY}" x2="${drawX-wrapOff}" y2="${endY}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-      o.push(`<line x1="${drawX+wrapOff}" y1="${startY}" x2="${drawX+wrapOff}" y2="${endY}" stroke="var(--ink)" stroke-width="${LW.seam}" opacity="0.4"/>`);
+      o.push(`<line x1="${drawX-wrapOff}" y1="${startY}" x2="${drawX-wrapOff}" y2="${endY}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+      o.push(`<line x1="${drawX+wrapOff}" y1="${startY}" x2="${drawX+wrapOff}" y2="${endY}" stroke="var(--gstroke)" stroke-width="${LW.seam}" opacity="0.4"/>`);
       // Tie/belt at waist
       const tieY=startY+(endY-startY)*0.45;
-      o.push(`<line x1="${drawX-wrapOff}" y1="${tieY}" x2="${drawX-wrapOff-15}" y2="${tieY+8}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
-      o.push(`<line x1="${drawX-wrapOff}" y1="${tieY}" x2="${drawX-wrapOff-12}" y2="${tieY+12}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      o.push(`<line x1="${drawX-wrapOff}" y1="${tieY}" x2="${drawX-wrapOff-15}" y2="${tieY+8}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
+      o.push(`<line x1="${drawX-wrapOff}" y1="${tieY}" x2="${drawX-wrapOff-12}" y2="${tieY+12}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
     }
   },
 
@@ -3771,7 +3817,7 @@ const SkirtComp = {
     // ── 랩 (wrap 타입) — 앞판만 ──
     if(S.skirtType==='wrap'&&!isBack){
       // 대각선 오버랩 라인
-      o.push(`<path d="M${cx+halfWaist*0.2},${waistY} L${cx-halfHem*0.3},${hemY}" fill="none" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+      o.push(`<path d="M${cx+halfWaist*0.2},${waistY} L${cx-halfHem*0.3},${hemY}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
     }
 
     // ── 슬릿 ──
@@ -3781,7 +3827,7 @@ const SkirtComp = {
         o.push(`<line x1="${cx}" y1="${hemY}" x2="${cx}" y2="${hemY-slitH}" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.seam}"/>`);
       }
       if(S.skirtSlit==='front'&&!isBack){
-        o.push(`<line x1="${cx}" y1="${hemY}" x2="${cx}" y2="${hemY-slitH}" stroke="var(--ink)" stroke-width="${LW.seam}"/>`);
+        o.push(`<line x1="${cx}" y1="${hemY}" x2="${cx}" y2="${hemY-slitH}" stroke="var(--gstroke)" stroke-width="${LW.seam}"/>`);
       }
       if(S.skirtSlit==='side'){
         o.push(`<line x1="${cx+halfHem}" y1="${hemY}" x2="${cx+halfHip}" y2="${hemY-slitH}" stroke="${isBack?'#444':'var(--ink)'}" stroke-width="${LW.seam}"/>`);
@@ -3814,7 +3860,7 @@ const SkirtComp = {
         const btnGap=Math.min(g.skLen*0.6,80)/(btnCount-1);
         for(let i=0;i<btnCount;i++){
           const by=waistY+15+btnGap*i;
-          o.push(`<circle cx="${cx}" cy="${by}" r="2.5" fill="none" stroke="var(--ink)" stroke-width="0.6"/>`);
+          o.push(`<circle cx="${cx}" cy="${by}" r="2.5" fill="none" stroke="var(--gstroke)" stroke-width="0.6"/>`);
         }
       }
       if(S.skirtClosure==='hook'){
@@ -4877,7 +4923,7 @@ const ExportModule = {
 <g id="Front_View" transform="translate(10,10)">${fi}</g>
 <g id="Back_View" transform="translate(370,10)">${bi}</g>
 </svg>`;
-    const resolved=c.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
+    const resolved=c.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#4A9DE8').replace(/var\(--handle\)/g,'#4A9DE8').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8').replace(/var\(--gstroke\)/g,(S.fillColor&&hexLuminance(S.fillColor)<100)?'#D0CEC8':'#2A2926');
     const b=new Blob([resolved],{type:'image/svg+xml'});
     const style=lbl.toLowerCase().replace(/\s/g,'_');
     const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flat_'+style+'_'+Date.now()+'.svg';a.click();
@@ -4896,7 +4942,7 @@ const ExportModule = {
       .replace(/var\(--grain\)/g,'#C8C4BB')
       .replace(/var\(--accent\)/g,'#B83A2A')
       .replace(/var\(--handle\)/g,'#B83A2A')
-      .replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
+      .replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8').replace(/var\(--gstroke\)/g,(S.fillColor&&hexLuminance(S.fillColor)<100)?'#D0CEC8':'#2A2926');
     const blob=new Blob([resolved],{type:'image/svg+xml;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const img=new Image();
@@ -5183,7 +5229,7 @@ const ExportModule = {
       ${tbl}${legend}${ftr}
     </svg>`;
 
-    const resolved=svg.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
+    const resolved=svg.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#4A9DE8').replace(/var\(--handle\)/g,'#4A9DE8').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8').replace(/var\(--gstroke\)/g,(S.fillColor&&hexLuminance(S.fillColor)<100)?'#D0CEC8':'#2A2926');
 
     // SVG → Canvas → PDF-like PNG (고해상도)
     const blob=new Blob([resolved],{type:'image/svg+xml;charset=utf-8'});
@@ -5218,7 +5264,7 @@ const ExportModule = {
       const clone=svgEl.cloneNode(true);
       const hl=clone.querySelector('.handles-layer');if(hl)hl.remove();
       let str='<svg xmlns="http://www.w3.org/2000/svg" width="320" height="460" viewBox="0 0 320 460">'+clone.innerHTML+'</svg>';
-      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
+      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#4A9DE8').replace(/var\(--handle\)/g,'#4A9DE8').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8').replace(/var\(--gstroke\)/g,(S.fillColor&&hexLuminance(S.fillColor)<100)?'#D0CEC8':'#2A2926');
       const blob=new Blob([str],{type:'image/svg+xml;charset=utf-8'});
       const url=URL.createObjectURL(blob);
       const img=new Image();
@@ -5650,7 +5696,7 @@ const ExportModule = {
       const clone=svgEl.cloneNode(true);
       const hl=clone.querySelector('.handles-layer');if(hl)hl.remove();
       let str='<svg xmlns="http://www.w3.org/2000/svg" width="320" height="460" viewBox="0 0 320 460">'+clone.innerHTML+'</svg>';
-      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#B83A2A').replace(/var\(--handle\)/g,'#B83A2A').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8');
+      str=str.replace(/var\(--ink\)/g,'#2A2926').replace(/var\(--stitch\)/g,'#999590').replace(/var\(--grain\)/g,'#C8C4BB').replace(/var\(--accent\)/g,'#4A9DE8').replace(/var\(--handle\)/g,'#4A9DE8').replace(/var\(--border\)/g,'#E4E0D8').replace(/var\(--gfill\)/g,S.fillColor||'#FAFAF8').replace(/var\(--gstroke\)/g,(S.fillColor&&hexLuminance(S.fillColor)<100)?'#D0CEC8':'#2A2926');
       const blob=new Blob([str],{type:'image/svg+xml;charset=utf-8'});
       const url=URL.createObjectURL(blob);
       const img=new Image();
@@ -6039,7 +6085,7 @@ const FactoryViewer={
     setGarmentType(S.garmentType||'top');
     Object.keys(S).forEach(k=>syncToggle(k,S[k]));
     SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
-    if(S.fillColor) document.documentElement.style.setProperty('--gfill',S.fillColor);
+    if(S.fillColor){document.documentElement.style.setProperty('--gfill',S.fillColor);const dk=hexLuminance(S.fillColor)<100;document.documentElement.style.setProperty('--gstroke',dk?'#D0CEC8':'#2A2926');}
     updateNeckSubPanels();syncCollarBtns();updateAllCompat();draw();
     // Hide editing UI
     document.getElementById('panelEl').style.display='none';
@@ -6092,10 +6138,18 @@ document.querySelectorAll('.psec-title').forEach(t=>{
   if(t.textContent.trim()==='Design Elements') t.parentElement.classList.add('collapsed');
 });
 // ── Color Palette ──
+function hexLuminance(hex){
+  const h=hex.replace('#','');
+  const r=parseInt(h.substring(0,2),16),g=parseInt(h.substring(2,4),16),b=parseInt(h.substring(4,6),16);
+  return 0.299*r+0.587*g+0.114*b;
+}
 function setFillColor(c){
   S.fillColor=c;
   const v=c||'#FAFAF8';
   document.documentElement.style.setProperty('--gfill',v);
+  // Auto-switch stroke for dark fills
+  const isDark=c&&hexLuminance(c)<100;
+  document.documentElement.style.setProperty('--gstroke',isDark?'#D0CEC8':'#2A2926');
   document.querySelectorAll('#colorBar .color-swatch').forEach(s=>s.classList.toggle('on',s.dataset.color===c));
   draw();
 }
@@ -6108,6 +6162,7 @@ document.getElementById('customColorPick').addEventListener('input',e=>{
   document.querySelectorAll('#colorBar .color-swatch').forEach(s=>s.classList.remove('on'));
   S.fillColor=c;
   document.documentElement.style.setProperty('--gfill',c);
+  document.documentElement.style.setProperty('--gstroke',hexLuminance(c)<100?'#D0CEC8':'#2A2926');
   draw();
 });
 
@@ -6116,22 +6171,27 @@ const CARD_DATA=[
   {title:'크루넥의 7가지 얼굴',titleEn:'7 Faces of the Crew Neck',tag:'Structure',
    sub:'같은 넥라인, 다른 실루엣. 핏과 기장, 소매 하나만 바꿔도 완전히 다른 옷이 된다.',
    subEn:'Same neckline, different silhouettes. Change one parameter and it becomes a different garment.',
+   colors:['#1B3A5C','#F5F0EB','#3C3C3C'],
    state:{neckShape:'round',fit:'regular',bodyLen:45,fitW:50,sleeveLength:32,sleeveType:'setin',fillColor:'#1B3A5C'}},
   {title:'미니멀 — 선 하나가 전부일 때',titleEn:'Minimal — When One Line Is Everything',tag:'Style',
    sub:'디테일을 전부 빼면 남는 건 비율뿐. 클린핏의 정수.',
    subEn:'Strip away every detail. What remains is pure proportion.',
+   colors:['#2C2C2C','#F8F6F1','#8B8680'],
    state:{neckShape:'round',fit:'slim',bodyLen:45,fitW:42,sleeveLength:25,sleeveType:'setin',pocket:'none',dart:'none',closure:'none',fillColor:'#2C2C2C'}},
   {title:'여름, 면 저지 한 장',titleEn:'Summer — One Layer of Cotton Jersey',tag:'Material',
    sub:'소재가 형태를 결정한다. 같은 패턴이 원단에 따라 어떻게 달라지는지.',
    subEn:'Material determines form. See how the same pattern changes with fabric.',
+   colors:['#F5F0EB','#B8D4E3','#C5CEB5'],
    state:{neckShape:'round',fit:'regular',bodyLen:40,fitW:48,sleeveLength:18,sleeveType:'setin',fillColor:'#F5F0EB'}},
   {title:'오버사이즈는 끝났을까?',titleEn:'Is Oversized Over?',tag:'Trend',
    sub:'핏 슬라이더 하나로 스키니부터 오버사이즈까지. 트렌드는 숫자로 말한다.',
    subEn:'From skinny to oversized with one slider. Trends speak in numbers.',
+   colors:['#C4B5A0','#1E1E1E','#4A5940'],
    state:{neckShape:'round',fit:'oversized',bodyLen:58,fitW:75,sleeveLength:40,sleeveType:'setin',shoulderExtra:6,fillColor:'#C4B5A0'}},
   {title:'래글런 소매의 3가지 변형',titleEn:'3 Variations of Raglan',tag:'Structure',
    sub:'어깨선이 사라지면 실루엣이 바뀐다. 셋인, 래글런, 그리고 그 사이.',
    subEn:'When the shoulder seam disappears, the silhouette transforms.',
+   colors:['#3B6B4E','#1B3A5C','#7A2E35'],
    state:{neckShape:'round',fit:'regular',bodyLen:50,fitW:55,sleeveLength:55,sleeveType:'raglan',fillColor:'#3B6B4E'}}
 ];
 
@@ -6159,6 +6219,10 @@ const CardFeed={
     document.querySelectorAll('.card').forEach(card=>{
       card.addEventListener('click',()=>this.enter(+card.dataset.card));
     });
+    // Variant cards → engine
+    document.querySelectorAll('.variant-card').forEach(vc=>{
+      vc.addEventListener('click',()=>this.pickVariant(+vc.dataset.vidx));
+    });
     // Hide engine
     document.querySelector('header').style.display='none';
     document.querySelector('.app').style.display='none';
@@ -6175,14 +6239,15 @@ const CardFeed={
       const cx=160,g=BodyComp.geometry(),o=[];
       const geo=BodyComp.outline(cx,g,false);
       SleeveComp.draw(cx,g,geo,o,false);
-      o.push(`<path d="${geo.path} Z" fill="var(--gfill)" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+      o.push(`<path d="${geo.path} Z" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
       const{p:np}=NeckComp.path(cx,g,false);
       const ef_=effectiveFinish();
       const hideNeckline=ef_==='turtle'||ef_==='mock'||ef_==='hood'||ef_.startsWith('collar');
-      if(!hideNeckline) o.push(`<path d="${np}" fill="none" stroke="var(--ink)" stroke-width="${LW.outline}" stroke-linecap="round"/>`);
+      if(!hideNeckline) o.push(`<path d="${np}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linecap="round"/>`);
       NeckComp.drawFinish(cx,g,o,false);
       const fillClr=cd.state.fillColor||'#FAFAF8';
-      svg.innerHTML=o.join('\n').replace(/var\(--gfill\)/g,fillClr);
+      const strokeClr=hexLuminance(fillClr)<100?'#D0CEC8':'#2A2926';
+      svg.innerHTML=o.join('\n').replace(/var\(--gfill\)/g,fillClr).replace(/var\(--gstroke\)/g,strokeClr);
     });
     // Restore state
     Object.assign(S,saved);
@@ -6203,45 +6268,141 @@ const CardFeed={
     const idx=Math.round(cards.scrollLeft/window.innerWidth);
     document.querySelectorAll('.card-dot').forEach((d,i)=>d.classList.toggle('on',i===idx));
   },
+  _pendingCard:null,
   enter(idx){
     const cd=CARD_DATA[idx];
     if(!cd)return;
-    // Apply card preset
+    this._pendingCard=idx;
+    // Pre-apply state (engine ready behind the scenes)
     Object.assign(S,DEFAULT_STATE);
     Object.assign(S,cd.state);
     migrateState(S);
     {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
     const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);
-    if(S.fillColor) setFillColor(S.fillColor); else setFillColor('');
+    // ── Tracing Paper → Variants ──
+    const cardEl=document.querySelector(`.card[data-card="${idx}"]`);
+    const cardsEl=document.getElementById('app-cards');
+    const dotsEl=document.getElementById('cardDots');
+    const logoEl=document.querySelector('.cards-logo');
+    // Phase 1: Card text fades, SVG stays
+    cardEl.classList.add('tracing');
+    dotsEl.style.cssText='transition:opacity 0.25s;opacity:0';
+    logoEl.style.cssText='transition:opacity 0.25s;opacity:0';
+    // Phase 2: Render 3 color variants
+    this.renderVariants(idx);
+    // Phase 3: Card fades, variants appear
+    setTimeout(()=>{
+      cardsEl.classList.add('tracing-out');
+      const varEl=document.getElementById('app-variants');
+      varEl.classList.remove('hidden');
+      varEl.classList.add('variants-in');
+    },250);
+    // Phase 4: Clean up card layer
+    setTimeout(()=>{
+      cardsEl.classList.add('hidden');
+      cardsEl.classList.remove('tracing-out');
+      cardEl.classList.remove('tracing');
+      dotsEl.style.cssText='display:none';
+    },700);
+    this.active=false;
+  },
+  renderVariants(idx){
+    const cd=CARD_DATA[idx];
+    const saved=JSON.parse(JSON.stringify(S));
+    cd.colors.forEach((clr,vi)=>{
+      Object.assign(S,DEFAULT_STATE);
+      Object.assign(S,cd.state);
+      {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+      const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);
+      const svg=document.getElementById('varSvg'+vi);
+      if(!svg)return;
+      const cx=160,g=BodyComp.geometry(),o=[];
+      const geo=BodyComp.outline(cx,g,false);
+      SleeveComp.draw(cx,g,geo,o,false);
+      o.push(`<path d="${geo.path} Z" fill="var(--gfill)" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linejoin="round"/>`);
+      const{p:np}=NeckComp.path(cx,g,false);
+      const ef_=effectiveFinish();
+      const hideNeckline=ef_==='turtle'||ef_==='mock'||ef_==='hood'||ef_.startsWith('collar');
+      if(!hideNeckline) o.push(`<path d="${np}" fill="none" stroke="var(--gstroke)" stroke-width="${LW.outline}" stroke-linecap="round"/>`);
+      NeckComp.drawFinish(cx,g,o,false);
+      const strokeClr=hexLuminance(clr)<100?'#D0CEC8':'#2A2926';
+      svg.innerHTML=o.join('\n').replace(/var\(--gfill\)/g,clr).replace(/var\(--gstroke\)/g,strokeClr);
+      // Set dot color
+      const dot=svg.closest('.variant-card').querySelector('.variant-dot');
+      if(dot) dot.style.background=clr;
+    });
+    Object.assign(S,saved);
+  },
+  pickVariant(vidx){
+    const idx=this._pendingCard;
+    const cd=CARD_DATA[idx];
+    if(!cd)return;
+    const clr=cd.colors[vidx];
+    // Apply state + chosen color
+    Object.assign(S,DEFAULT_STATE);
+    Object.assign(S,cd.state);
+    S.fillColor=clr;
+    migrateState(S);
+    {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
+    const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);
+    setFillColor(clr);
     setGarmentType(S.garmentType||'top');
     Object.keys(S).forEach(k=>syncToggle(k,S[k]));
     SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
     updateNeckSubPanels();syncCollarBtns();
     updateAllCompat();draw();
     History.push();
-    // Transition
-    this.hide();
+    // Transition: variants out, engine in
+    const varEl=document.getElementById('app-variants');
+    varEl.style.transition='opacity 0.3s ease';
+    varEl.style.opacity='0';
+    setTimeout(()=>{
+      varEl.classList.add('hidden');
+      varEl.classList.remove('variants-in');
+      varEl.style.cssText='';
+      document.querySelector('.cards-logo').style.cssText='display:none';
+      const hdr=document.querySelector('header');
+      const app=document.querySelector('.app');
+      hdr.style.display='';hdr.classList.add('engine-in');
+      app.style.display='';app.classList.add('engine-in');
+      setTimeout(()=>{
+        hdr.classList.remove('engine-in');
+        app.classList.remove('engine-in');
+      },500);
+    },300);
   },
   hide(){
+    // Instant hide (for factory/demo URL skip)
     this.active=false;
     document.getElementById('app-cards').classList.add('hidden');
     document.getElementById('cardDots').style.display='none';
     document.querySelector('.cards-logo').style.display='none';
     document.querySelector('header').style.display='';
-    const app=document.querySelector('.app');
-    app.style.display='';
-    app.classList.add('app-fade-in');
-    setTimeout(()=>app.classList.remove('app-fade-in'),500);
+    document.querySelector('.app').style.display='';
   },
   show(){
     this.active=true;
-    document.getElementById('app-cards').classList.remove('hidden');
-    document.getElementById('cardDots').style.display='';
-    document.querySelector('.cards-logo').style.display='';
-    document.querySelector('header').style.display='none';
-    document.querySelector('.app').style.display='none';
-    this.renderPreviews();
-    this.syncDots();
+    const hdr=document.querySelector('header');
+    const app=document.querySelector('.app');
+    // Hide variants if visible
+    const varEl=document.getElementById('app-variants');
+    varEl.classList.add('hidden');varEl.classList.remove('variants-in');varEl.style.cssText='';
+    // Phase 1: Engine fades out
+    hdr.classList.add('engine-out');
+    app.classList.add('engine-out');
+    // Phase 2: Cards fade in
+    setTimeout(()=>{
+      hdr.style.display='none';hdr.classList.remove('engine-out');
+      app.style.display='none';app.classList.remove('engine-out');
+      const cardsEl=document.getElementById('app-cards');
+      cardsEl.classList.remove('hidden');
+      cardsEl.classList.add('cards-in');
+      document.getElementById('cardDots').style.display='';
+      document.querySelector('.cards-logo').style.display='';
+      this.renderPreviews();
+      this.syncDots();
+      setTimeout(()=>cardsEl.classList.remove('cards-in'),500);
+    },300);
   }
 };
 CardFeed.init();
