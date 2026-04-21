@@ -12,3 +12,11 @@ flat-v4.html
 flat-v5.html
 *.md
 !data/README.md
+
+# HANDOFF 백업은 docs/archive/ 에만 저장 (원칙 7)
+HANDOFF.md.backup-*
+*.md.backup-*
+apply_cont64_*.sh
+
+# 기획탭 sweep 결과 (로컬 /home/claude/ 에서만 의미)
+/home/claude/sweep/
