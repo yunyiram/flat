@@ -990,7 +990,9 @@ const S={
   pantsWaist:'straight',pantsDart:'front_back',pantsRise:'mid',
   pantsClosure:'zip_fly',pantsFit:50,pantsPleat:'none',
   pantsCuff:'plain',pantsCrease:'none',
-  fillColor:''
+  fillColor:'',
+  // cont.68 옵션 H: BodyComp.geometry() sweatshirt 분기 트리거용 명시적 preset 이름
+  presetName:''
 };
 
 const DEFAULT_STATE=JSON.parse(JSON.stringify(S));
@@ -2092,10 +2094,72 @@ function toggleMeasure(){
 
 
 // ═══════════════════════════════════════════════════════════════
+// SFD POM 상수 — 옵션 H (cont.68): BodyComp.geometry() single source of truth
+// reference_data.md §6.2 (Sweatshirt Size M, 이람 OK 2026-04-21)
+// ═══════════════════════════════════════════════════════════════
+const SFD_POM = {
+  sweatshirt: {
+    M: {
+      neckWidth: 21,        // A (HPS-HPS full)
+      shoulderWidth: 51,    // B (full)
+      acrossFront: 43,      // C
+      acrossBack: 46,       // D
+      chestHalf: 58,        // E (1" below AH, half)
+      bodySweep: 56,        // F (hem rib 외곽, half)
+      frontNeckDrop: 11,    // G
+      backNeckDrop: 2.5,    // H
+      armholeStraight: 28,  // I
+      bicepWidth: 25,       // J (half, edge-edge) ★ 팔 품
+      sleeveLength: 63,     // K (HPS → cuff)
+      sleeveOpening: 10,    // L (rib inner, half) ★★★ rib 조임
+      cuffRibHeight: 7.5,   // M
+      hemRibHeight: 6.3,    // N
+      bodyLength: 71        // O
+    }
+  }
+};
+// 좌표 스케일 (anisotropic, cont.66 POM 재조정에서 역산)
+// T-shirt SFD M 기준: bodyLen 45 slider → SFD 71cm, bodyH pixel 181 → px/cm = 2.549 (수직)
+// halfBody pixel 55 → SFD chest half 53cm → px/cm = 1.038 (수평)
+const SFD_VSCALE = 2.549;  // 수직 cm → pixel
+const SFD_HSCALE = 1.038;  // 수평 cm → pixel
+
+// ═══════════════════════════════════════════════════════════════
 // COMPONENT: Body — 기본 몸판 지오메트리 + 아웃라인
 // ═══════════════════════════════════════════════════════════════
 const BodyComp = {
   geometry() {
+    // cont.68 옵션 H (절충): sweatshirt 분기
+    // body chest / body length / armhole depth / rib 수축 / cuff 조임 = SFD (스펙-렌더 single truth)
+    // shoulder / neck / slope = FLAT 도식화 convention 유지
+    //   ↳ 이유: SFD shoulder를 렌더에 직접 쓰면 FLAT outline 논리(shoulder≥armpit)와 충돌.
+    //            실무 tech pack 관행상 shoulder는 실제 수치보다 넓게 표현. 스펙시트(cont.66 SFD)는 별개.
+    //   ↳ 이람 피드백 핵심("팔 품 넓음 + 리브 조이지 않음") 해결엔 shoulder 수정 불필요.
+    if (S.presetName === 'sweatshirt') {
+      const pom = SFD_POM.sweatshirt.M;
+      // 몸통 dimension = SFD
+      const halfBody = pom.chestHalf * SFD_HSCALE;                          // 58 × 1.038 ≈ 60.2
+      const bodyH = pom.bodyLength * SFD_VSCALE;                            // 71 × 2.549 ≈ 181
+      const baseNeckD = pom.frontNeckDrop * SFD_VSCALE;                     // 11 × 2.549 ≈ 28.0
+      const neckW = (pom.neckWidth / 2) * SFD_HSCALE;                       // 21/2 × 1.038 ≈ 10.9
+      // Shoulder = FLAT convention (halfBody * 0.85 ~ T-shirt default 비율 46/55=0.836)
+      // + shoulderExtra (drop shoulder 표현)
+      const shoulderW = halfBody * 0.85 + S.shoulderExtra;                  // ~51.2 + 8 ≈ 59
+      const slopeY = S.shoulderSlope * 0.28;                                // primitive 유지
+      const topY = 70;
+      const fitW = 1.0;
+      // SFD 전용 필드 (sleeve / rib / armhole)
+      const sfdBicepHalf = (pom.bicepWidth / 2) * SFD_HSCALE;               // 25/2 × 1.038 ≈ 13.0
+      const sfdCuffHalf = (pom.sleeveOpening / 2) * SFD_HSCALE;             // 10/2 × 1.038 ≈ 5.2 ★ rib 조임
+      const sfdSleeveLen = pom.sleeveLength * SFD_VSCALE;                   // 63 × 2.549 ≈ 160.6
+      const sfdCuffRibH = pom.cuffRibHeight * SFD_VSCALE;                   // 7.5 × 2.549 ≈ 19.1
+      const sfdHemRibH = pom.hemRibHeight * SFD_VSCALE;                     // 6.3 × 2.549 ≈ 16.1
+      const sfdArmholeH = pom.armholeStraight * SFD_VSCALE;                 // 28 × 2.549 ≈ 71.4 (drop shoulder)
+      const sfdHemHalf = (pom.bodySweep / 2) * SFD_HSCALE;                  // 56/2 × 1.038 ≈ 29.1 (rib 수축)
+      return { halfBody, shoulderW, slopeY, neckW, baseNeckD, topY, bodyH, fitW,
+               sfdBicepHalf, sfdCuffHalf, sfdSleeveLen, sfdCuffRibH, sfdHemRibH, sfdArmholeH, sfdHemHalf };
+    }
+    // 기존 primitive (15 preset)
     const fitW=0.75+S.fitW*0.005;
     const cs=0.86+S.chest*0.0028;
     const halfBody=55*fitW*cs;
@@ -2111,6 +2175,10 @@ const BodyComp = {
   },
 
   armholeY(g) {
+    // cont.68 옵션 H: sweatshirt는 SFD armhole straight (28cm) 직접 사용
+    if (S.presetName === 'sweatshirt' && g.sfdArmholeH) {
+      return g.topY + g.slopeY + g.sfdArmholeH;  // SFD 기준 (drop shoulder 포함)
+    }
     // 암홀 깊이: 바디 높이의 25-28% (industry standard: 25-33%)
     // 기성복 기준 + 핏이 루즈할수록 암홀이 깊어짐
     const easeBonus=Math.max(0,(S.fitW-50)*0.12); // looser fit = deeper armhole
@@ -5094,12 +5162,14 @@ const PresetModule={
   apply(idx){
     const from={};SD.forEach(([id,k])=>{from[k]=S[k];});
     const p=this.DB[idx].s;
+    const name=this.DB[idx].name; // cont.68 옵션 H: 명시적 preset 이름 저장
     CascadeVis.morphPreset(from,()=>{
       S.sleeveShape='straight';
       S.closure='none'; S.closureStyle='single';
       S.neckType='finish';S.collarGroup='flat';S.collarType='peter';S.highneckType='turtle';
       S.shoulderType='standard';S.neckDetail='none';
       Object.assign(S,p);
+      S.presetName=name; // cont.68: BodyComp.geometry() sweatshirt 분기 트리거
       migrateState(S);
       {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
       const d=decomposeNeckFinish(S.neckFinish||'rib');
