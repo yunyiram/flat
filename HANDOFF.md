@@ -245,6 +245,7 @@ Q1 Phase 3-tier 동의 / Q2 Six Atomic (다) / Q3 b만
 | 이람 검수 (48/48 미달) | ✅ |
 | 원칙 9/10/11/12/13/14 등록 | ✅ |
 | 옵션 H 방향 + Part 1 구현 | ✅ b7b3b46 |
+| **옵션 H Part 2 축소판 (SleeveComp sleeveOpening)** | ✅ 71b7400 |
 | Sweatshirt 16 POM + §6.2 + 이람 OK | ✅ |
 | crewTee 14 POM + §6.3 (암묵 OK) | ✅ Part 3 |
 | hoodie 18 POM + §6.4 (암묵 OK) | ✅ Part 3 |
