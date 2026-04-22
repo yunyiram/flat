@@ -2921,7 +2921,12 @@ const SleeveComp = {
     const sleeveCapW=armholeH*0.65;
     const taperFactor=0.5+S.sleeveWidth*0.005;
     const lenTaper=Math.min(1,0.45+slLen*0.006);
-    const cuffHalfW=sleeveCapW*taperFactor*lenTaper;
+    // cont.68 Part 2 (옵션 H 축소판, 원칙 14): sweatshirt sleeveOpening SFD 적용
+    // rib cuff 조임 = bicep 대비 0.40 (SFD 10cm half ≈ 5.2px). 이람 피드백 "리브 조이지 않음" 해결.
+    // bicep은 기존 sleeveCapW 유지 (Part 2 축소판: sleeveOpening만 필수, 이상 DEFER Phase 4).
+    const cuffHalfW=(S.presetName==='sweatshirt'&&g.sfdCuffHalf)
+      ? g.sfdCuffHalf
+      : sleeveCapW*taperFactor*lenTaper;
     const angleRad=0.18+slLen*0.003;
     const sinA=Math.sin(angleRad), cosA=Math.cos(angleRad);
     const clr=isBack?'#444':'var(--gstroke)';
