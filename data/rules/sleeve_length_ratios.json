@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "spec": "S1",
+  "createdDate": "2026-04-28",
+  "source": [
+    "docs/sixatomic_pattern_generate_audit.md Section 10.2",
+    "docs/sixatomic_implementation_specs.md Section 1"
+  ],
+  "model": "sleeveLengthCm = ratio * sideArmLength",
+  "sideArmLengthDefault": 53,
+  "sideArmLengthSource": "KS K 0051 size M 기준 (신장 165cm 여성 어깨~손목 표준). future S11 (Body profile system) 도입 시 dynamic 전환.",
+  "defaultGender": "men",
+  "defaultGenderRationale": "투자자 데모 시점 자연스러움 + 현 FLAT preset과의 회귀 정합성 더 깔끔 (Men's Regular 0.385*53=20.4cm ≈ 현 short slider 30 = 20.7cm). 이람 cont.69 결정.",
+  "ratios": {
+    "women": {
+      "veryShort": 0.266,
+      "short": 0.310,
+      "regular": 0.353,
+      "aboveElbow": 0.447,
+      "forearm": 0.723,
+      "wrist": 1.000,
+      "full": 1.075
+    },
+    "men": {
+      "veryShort": 0.290,
+      "short": 0.335,
+      "regular": 0.385,
+      "aboveElbow": 0.485,
+      "forearm": 0.780,
+      "wrist": 1.000,
+      "full": 1.075
+    }
+  },
+  "labelMap": {
+    "sleeveless": null,
+    "cap": "veryShort",
+    "short": "regular",
+    "elbow": "aboveElbow",
+    "threequarter": "forearm",
+    "long": "wrist"
+  },
+  "garmentDefault": {
+    "tshirt": "regular",
+    "shirt": "wrist"
+  },
+  "displayLabels": {
+    "en": {
+      "sleeveless": "Sleeveless",
+      "cap": "Cap (Very Short)",
+      "short": "Short (Regular)",
+      "elbow": "Elbow (Above Elbow)",
+      "threequarter": "3/4 (Forearm)",
+      "long": "Long (Wrist)"
+    },
+    "ko": {
+      "sleeveless": "민소매",
+      "cap": "캡 (Very Short)",
+      "short": "반소매 (Regular)",
+      "elbow": "5부 (Above Elbow)",
+      "threequarter": "7부 (Forearm)",
+      "long": "긴소매 (Wrist)"
+    }
+  },
+  "regressionAnchors": {
+    "currentSliderValuesPreserved": true,
+    "currentPresets": {
+      "sleeveless": 0,
+      "cap": 15,
+      "short": 30,
+      "elbow": 50,
+      "threequarter": 72,
+      "long": 95
+    },
+    "menRatioCm": {
+      "veryShort": 15.4,
+      "regular": 20.4,
+      "aboveElbow": 25.7,
+      "forearm": 41.3,
+      "wrist": 53.0
+    },
+    "regressionGap": {
+      "cap": "+5.0cm (현 10.4 → ratio 15.4, 향후 검토)",
+      "short": "−0.3cm (현 20.7 ≈ ratio 20.4, ★ 회귀 정합성 가장 깔끔)",
+      "elbow": "−8.8cm (현 34.5 → ratio 25.7, 향후 검토)",
+      "threequarter": "−8.4cm (현 49.7 → ratio 41.3, 향후 검토)",
+      "long": "−12.6cm (현 65.6 → ratio 53.0, 향후 검토)"
+    },
+    "rationale": "P5=B 채택으로 현 슬라이더 값 유지. 회귀 시각 0. ratio 의미만 라벨에 매핑. cap/elbow/threequarter/long의 ratio 정합성 향상은 future spec (sixatomic 사이즈 정합 시점)에서."
+  },
+  "futureWork": [
+    "gender 토글 도입 시 defaultGender 동적 전환 (women's matrix 활성화) — TODO",
+    "S11 (Body profile system) 도입 시 sideArmLengthDefault 대신 profile.armLength 사용",
+    "P5=A 전환 (실제 ratio×armLen 슬라이더 set) — sixatomic 사이즈 정합 spec 도입 시",
+    "garment-specific 라벨 (셔츠 'Long (Wrist)' vs T-shirt 'Long (Wrist)' 차별화) — S2/S4 메타카피로"
+  ]
+}

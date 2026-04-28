@@ -366,7 +366,7 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
   </div>
   <div class="psec"><div class="psec-title">Sleeve</div>
     <div class="pg"><div class="pg-label" data-i18n="sleeve.structure">Structure</div><div class="trow" data-p="sleeveType"><button class="tb on" data-v="setin" data-i18n="sleeve.setin">Set-in</button><button class="tb" data-v="raglan" data-i18n="sleeve.raglan">Raglan</button><button class="tb" data-v="kimono" data-i18n="sleeve.kimono">Kimono</button></div></div>
-    <div class="pg"><div class="pg-label" data-i18n="sleeve.length">Length</div><div class="trow" data-p="sleeveLen"><button class="tb" data-v="sleeveless" data-i18n="sleeve.sleeveless">Sleeveless</button><button class="tb" data-v="cap" data-i18n="sleeve.cap">Cap</button><button class="tb on" data-v="short" data-i18n="sleeve.short">Short</button><button class="tb" data-v="elbow" data-i18n="sleeve.elbow">Elbow</button><button class="tb" data-v="threequarter" data-i18n="sleeve.threequarter">3/4</button><button class="tb" data-v="long" data-i18n="sleeve.long">Long</button></div></div>
+    <div class="pg"><div class="pg-label" data-i18n="sleeve.length">Length</div><div class="trow" data-p="sleeveLen"><button class="tb" data-v="sleeveless" data-i18n="sleeve.sleeveless">Sleeveless</button><button class="tb" data-v="cap" data-i18n="sleeve.cap">Cap (Very Short)</button><button class="tb on" data-v="short" data-i18n="sleeve.short">Short (Regular)</button><button class="tb" data-v="elbow" data-i18n="sleeve.elbow">Elbow (Above Elbow)</button><button class="tb" data-v="threequarter" data-i18n="sleeve.threequarter">3/4 (Forearm)</button><button class="tb" data-v="long" data-i18n="sleeve.long">Long (Wrist)</button></div></div>
     <div class="pg"><div class="pg-label" data-i18n="sleeve.sleeveLength">Sleeve Length</div><div class="slider-wrap"><input type="range" id="sl_sleeveLength" min="0" max="100" value="32"><span class="sval" id="sv_sleeveLength">Short</span></div></div>
     <div class="pg"><div class="pg-label" data-i18n="sleeve.sleeveWidth">Sleeve Width</div><div class="slider-wrap"><input type="range" id="sl_sleeveWidth" min="0" max="100" value="45"><span class="sval" id="sv_sleeveWidth">Normal</span></div></div>
     <div class="pg"><div class="pg-label" data-i18n="sleeve.shape">Shape</div><div class="trow" data-p="sleeveShape" data-fold="4"><button class="tb on" data-v="straight" data-i18n="sleeve.straight">Straight</button><button class="tb" data-v="capped" data-i18n="sleeve.capped">Capped</button><button class="tb" data-v="puff" data-i18n="sleeve.puff">Puff</button><button class="tb" data-v="bell" data-i18n="sleeve.bell">Bell</button><button class="tb" data-v="bishop" data-i18n="sleeve.bishop">Bishop</button><button class="tb" data-v="dolman" data-i18n="sleeve.dolman">Dolman</button><button class="tb" data-v="lantern" data-i18n="sleeve.lantern">Lantern</button><button class="tb" data-v="peasant" data-i18n="sleeve.peasant">Peasant</button><button class="tb" data-v="legmutton" data-i18n="sleeve.legmutton">Leg-of-Mutton</button><button class="tb" data-v="pagoda" data-i18n="sleeve.pagoda">Pagoda</button></div></div>
@@ -557,7 +557,7 @@ en:{
     strapType:'Strap',st_none:'None',st_wide:'Wide',st_narrow:'Narrow',st_spaghetti:'Spaghetti',st_ribbon:'Ribbon',st_tied:'Tied',
     slope:'Shoulder Slope',width:'Shoulder Width'},
   sleeve:{structure:'Structure',setin:'Set-in',raglan:'Raglan',kimono:'Kimono',
-    length:'Length',sleeveless:'Sleeveless',cap:'Cap',short:'Short',elbow:'Elbow',threequarter:'3/4',long:'Long',
+    length:'Length',sleeveless:'Sleeveless',cap:'Cap (Very Short)',short:'Short (Regular)',elbow:'Elbow (Above Elbow)',threequarter:'3/4 (Forearm)',long:'Long (Wrist)',
     sleeveLength:'Sleeve Length',sleeveWidth:'Sleeve Width',
     shape:'Shape',straight:'Straight',puff:'Puff',bell:'Bell',bishop:'Bishop',dolman:'Dolman',lantern:'Lantern',peasant:'Peasant',legmutton:'Leg-of-Mutton',pagoda:'Pagoda',
     cuff:'Cuff',plain:'Plain',c_rib:'Rib',c_raw:'Raw',rolled:'Rolled',elastic:'Elastic',french:'French',barrel:'Barrel',tab:'Tab',turnup:'Turn-up',knit:'Knit'},
@@ -706,7 +706,7 @@ en:{
     shoulderLine:{natural:'Natural',drop:'Drop',extended:'Extended',narrow:'Narrow'}, // legacy for old spec data
     sleeveType:{setin:'Set-in',raglan:'Raglan',kimono:'Kimono'},
     sleeveShape:{straight:'Straight',capped:'Capped',puff:'Puff',bell:'Bell',bishop:'Bishop',dolman:'Dolman',lantern:'Lantern',peasant:'Peasant',legmutton:'Leg-of-Mutton',pagoda:'Pagoda'},
-    sleeveLen:{sleeveless:'Sleeveless',cap:'Cap',short:'Short',elbow:'Elbow',threequarter:'3/4',long:'Long'},
+    sleeveLen:{sleeveless:'Sleeveless',cap:'Cap (Very Short)',short:'Short (Regular)',elbow:'Elbow (Above Elbow)',threequarter:'3/4 (Forearm)',long:'Long (Wrist)'},
     sleeveCuff:{plain:'Plain',rib:'Rib',raw:'Raw Edge',rolled:'Rolled',elastic:'Elastic',french:'French',barrel:'Barrel',tab:'Tab',turnup:'Turn-up',knit:'Knit'},
     sideSeam:{yes:'Sewn',no:'Seamless'},
     silhouette:{straight:'H',slight_a:'Slight A',a_line:'A',tapered:'Taper',cocoon:'Cocoon'},
@@ -773,7 +773,7 @@ ko:{
     strapType:'스트랩',st_none:'없음',st_wide:'와이드',st_narrow:'내로우',st_spaghetti:'스파게티',st_ribbon:'리본',st_tied:'타이드',
     slope:'어깨 경사',width:'어깨 폭'},
   sleeve:{structure:'구조',setin:'셋인',raglan:'래글런',kimono:'기모노',
-    length:'기장',sleeveless:'민소매',cap:'캡',short:'반소매',elbow:'5부',threequarter:'7부',long:'긴소매',
+    length:'기장',sleeveless:'민소매',cap:'캡 (Very Short)',short:'반소매 (Regular)',elbow:'5부 (Above Elbow)',threequarter:'7부 (Forearm)',long:'긴소매 (Wrist)',
     sleeveLength:'소매 길이',sleeveWidth:'소매 폭',
     shape:'형태',straight:'일자',capped:'캡슬리브',puff:'퍼프',bell:'벨',bishop:'비숍',dolman:'돌먼',lantern:'랜턴',peasant:'페전트',legmutton:'레그오브머튼',pagoda:'파고다',
     cuff:'소매단',plain:'접단',c_rib:'리브',c_raw:'로우엣지',rolled:'롤업',elastic:'밴딩',french:'프렌치',barrel:'배럴',tab:'탭',turnup:'턴업',knit:'니트'},
@@ -1384,6 +1384,39 @@ function migrateState(s){
 const SHOULDER_PRESETS={standard:{shoulderExtra:0,shoulderSlope:40},dropped:{shoulderExtra:16,shoulderSlope:25},off_shoulder:{shoulderExtra:4,shoulderSlope:25,neckCurve:80,neckWidth:100,neckDepth:8},halter:{shoulderExtra:-4,shoulderSlope:42,neckCurve:12,neckWidth:20,neckDepth:60},extended:{shoulderExtra:10,shoulderSlope:35},narrow:{shoulderExtra:-6,shoulderSlope:45},strapless:{shoulderExtra:0,shoulderSlope:25,neckCurve:85,neckWidth:100,neckDepth:5},one_shoulder:{shoulderExtra:0,shoulderSlope:40,neckCurve:75,neckWidth:40,neckDepth:35}};
 const SILHOUETTE_PRESETS={tapered:{hipFlare:-6},straight:{hipFlare:0},slight_a:{hipFlare:4},cocoon:{hipFlare:10},a_line:{hipFlare:12}};
 const FIT_PRESETS={skin:{fitW:6},slim:{fitW:26},regular:{fitW:50},relaxed:{fitW:66},oversized:{fitW:86},boxy:{fitW:94}};
+// ── S1: Sleeve length ratio model (sixatomic 흡수, 2026-04-28) ──
+// canonical source: data/rules/sleeve_length_ratios.json
+// docs/sixatomic_implementation_specs.md Section 1
+//
+// 설계 결정 (이람 cont.69 OK):
+//  P1. FLAT 6 라벨 유지 (1:1 매핑) + sixatomic 보편명 괄호 병기 (i18n L560/709/776)
+//  P2. side arm length 고정 53cm (KS K 0051 신장 165 표준; future S11 dynamic)
+//  P3. 슬라이더 cm 직접 입력 + 토글이 ratio set (양방향 동기화 보존, 변경 0)
+//  P4. women+men 매트릭스 둘 다 적재. defaultGender='men' (투자자 시점 + 회귀 정합성)
+//  P5. 현 SLEEVELEN_PRESETS 슬라이더 값 유지 (회귀 0). ratio는 의미만 변경.
+//
+// 사용처: spec 표시 (L5012), future S2 Recommended 배지, future gender 토글
+// future TODO: women's matrix 활성화 (gender 토글 도입 시 defaultGender 동적 전환)
+const SIDE_ARM_LENGTH_DEFAULT = 53; // cm, KS K 0051 size M (신장 165) 기준
+const SLEEVE_LENGTH_RATIOS = {
+  women: { veryShort:0.266, short:0.310, regular:0.353,
+           aboveElbow:0.447, forearm:0.723, wrist:1.000, full:1.075 },
+  men:   { veryShort:0.290, short:0.335, regular:0.385,
+           aboveElbow:0.485, forearm:0.780, wrist:1.000, full:1.075 }
+};
+const SLEEVE_LENGTH_LABEL_MAP = { // FLAT 라벨 → sixatomic ratio key
+  sleeveless: null, cap: 'veryShort', short: 'regular',
+  elbow: 'aboveElbow', threequarter: 'forearm', long: 'wrist'
+};
+const SLEEVE_LENGTH_DEFAULT_GENDER = 'men';
+const SLEEVE_LENGTH_GARMENT_DEFAULT = { tshirt:'regular', shirt:'wrist' };
+// 헬퍼: FLAT 라벨 → cm (current P5=B 시점 reference용. future S5/S2 도입 시 활용)
+function sleeveLenRatioToCm(flatLabel, gender = SLEEVE_LENGTH_DEFAULT_GENDER, armLen = SIDE_ARM_LENGTH_DEFAULT) {
+  const ratioKey = SLEEVE_LENGTH_LABEL_MAP[flatLabel];
+  if (!ratioKey) return 0;
+  const ratio = SLEEVE_LENGTH_RATIOS[gender]?.[ratioKey] ?? SLEEVE_LENGTH_RATIOS.men[ratioKey];
+  return Math.round(ratio * armLen * 10) / 10;
+}
 const SLEEVELEN_PRESETS={sleeveless:{sleeveLength:0},cap:{sleeveLength:15},short:{sleeveLength:30},elbow:{sleeveLength:50},threequarter:{sleeveLength:72},long:{sleeveLength:95}};
 const SKIRTLEN_PRESETS={mini:{skirtLen:28},above_knee:{skirtLen:42},knee:{skirtLen:55},midi:{skirtLen:72},maxi:{skirtLen:92}};
 const SKIRTTYPE_PRESETS={pencil:{skirtFlare:0},a_line:{skirtFlare:6},flared:{skirtFlare:16},circular:{skirtFlare:25},pleated:{skirtFlare:4},wrap:{skirtFlare:5}};
