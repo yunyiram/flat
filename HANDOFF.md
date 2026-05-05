@@ -2,7 +2,7 @@
 > **모든 탭은 세션 시작 시 이 파일을 먼저 읽는다.**
 > 섹션 단위 수정만. 전체 덮어쓰기 금지 (원칙 7).
 
-마지막 수정: 2026-04-28 코드탭 cont.72 Part 2 — **S6 자율 skip + S8 완료 (commit 대기)**. 자율 결정: S6 (Custom 카드) skip — FLAT 슬라이더+토글 양방향 동기화가 sixatomic Custom보다 우월. S8 (메타-그룹) light implementation: Design/Fit/Details 3 메타-헤더 추가, **DOM 순서 기반 sweep** (compareDocumentPosition - nesting 무관 Presets도 정확히 Design 그룹에 포함), Details default collapsed. flat-v6.html 단일 파일 (CSS .psec-meta + 2 신규 함수 toggleMetaGroup/initMetaGroups + 3 메타-헤더 HTML + i18n EN/KO + applyLang/CardFeed/페이지 init hook). 검증 96 case sweep NaN/Exc 0, 회귀 0, S2 dft + S5 ↺ 동시 작동. 이전: 2026-04-28 기획탭 cont.72 — (1) env_matrix v1.1: § 4 항목 3 (cont.71 사고 (x) 통합) / 항목 4 (사고 z 정정 한계) / 항목 5 (사고 i + j read fallback + U+FFFD 인접 timeout) + § 5 단계 6 (깨짐 정정 검증 사이클) + § 7 변경 이력 + § 8 검증 일자 갱신. (2) cont69_env_rca paste→write 정정: "명도화→명문화" + "포멃→포맷" + "동동→동등" + 사고 z/i/j/k/l 본문 통합 + 사고 (u) cont.72 보강 (codex 등 도메인 침범 확장). (3) 사고 k (Claude paste→write 시 한국어 단어 오류 도입 의심) + 사고 l (사고 처리가 메인 작업 흡수) + 사고 m (가짜 이분법 + 비용 무한 가정 + 결정 떠넘기기 시스템/도구 영역 + 코드탭 병렬 미활용) — 이람 push back으로 자각. user preferences/메모리 통합 후보 (env_matrix 추가 X, 비용 의식). (4) ⬆ tops_tees 가정 정정 인지 — 코드탭 cont.72 보고로 PresetModule.DB tshirts cat = crewTee 1개만, spec v0.2 9 항목 미래 추가, cont.71 인계서 "약 10개 미분류" 가정 잘못 확정. 16 prototype JSON 분리 코드탭 추천 채택. (5) HANDOFF edit_file 두 번 4분 timeout (사고 j 큰 파일 + U+FFFD 인접 가설 강화) → 이람 수동 prepend 의존. (6) 다음: B6.1 rules.json 분리 spec 작성 (인계서 단계 8.4) — 16 prototype JSON 분리와 병렬 진행. 이전:2026-04-28 코드탭 cont.72 — **1순위 차단 해제: tops_tees 미분류 추출 보고** ("🔵 코드→기획" 새 서브섹션). 이람 가정 정정: PresetModule.DB의 cat:'tshirts'는 crewTee 1개만, "약 10개 미분류"는 빈 배열. spec v0.2 의 9 명시 항목 (vneck_tee 등) 모두 미래 추가. flat-v6.html 16 preset 전체 cat 분류 표 + 차이 분석 + B6.2 implement 추천 (16 prototype JSON 분리 우선). 이전: 2026-04-28 코드탭 cont.69 Part 3 — **S5 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS .sl-revert + 4 신규 함수: getCurrentDefaults/revertSliderToDefault/initSliderRevertButtons/updateSliderRevertOpacity + slider input listener hook + PresetModule apply hooks + CardFeed pickVariant hook). 18 slider 모두 1:1 ↺ 자동 추가, default 일치 시 opacity 0.3 / changed 시 0.9. PresetModule.DB 활용 (S2 데이터 재사용). 검증 96 case sweep NaN/Exc 0, 회귀 0, ↺ 동작 정상, EN/KO tooltip 정상. 이람 "추천 순서 가자" 자율 진행. 이전: 2026-04-28 기획탭 cont.71 — (1) 환경 회복: env_matrix.md 파일 byte 손상 의심 상황→paste→write 재인코딩으로 head 옵션 회복 검증. (2) 사고 (u)(v)(w)+(x) cont69_env_rca 통합 완료 (4 edits, 근본원인 분류: (v)(w) 는 (q) 메커니즘 변형, (u)(x) 는 신규 패턴). (3) **★ 결정 6개 해소**: tunic/rugby = 추가 안 함 (파라미터로 도달) / vest_sweater = KNITWEAR + OUTERWEAR (Phase 2) / mock_neck = T-SHIRTS + KNITWEAR / half_zip = SWEATSHIRTS + KNITWEAR / KNITWEAR Hero = pullover_sweater 확정. (4) **B6.2 spec v0.2** (`docs/flat_data_separation_presets_spec.md`) presetCount 갱신 (합계 27→32) + 이람 결정 기준 명시 ("차이 누적량"). (5) **⬆ 요청**: tops_tees 기타 프리셋 목록 (약 10개 미분류) — 코드탭이 flat-v6.html 추출 → HANDOFF "코드→기획" 채널로 전달 → 다음 기획탭 세션이 개별 분류 결정. (6) 사고 z 신규 환경 이슈 모니터: 파일 본문 한국어 1글자 깨짐 평균 파일당 1-2건 (HANDOFF, B6.2 spec, RCA 곳곳 확인). cont.72 조사/정정 우선. 이전: 2026-04-28 코드탭 cont.69 Part 2 — **S2 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS dft dot + Reset 버튼 + state currentPresetIdx + updateRecommendedMarkers/resetToDefault 함수 + i18n EN/KO + CardFeed 진입 hook). PresetModule.DB 활용 (JSON 신설 X, 자율). 검증 96 case sweep NaN/Exc 0, 회귀 0, dft 정확성 100%. 이람 검수 OK + "후속 보강 메모 잊지 말고" 강조. 후속 TODO 5개 등록 (collar/opening data-neck dft, CARD_DATA 매핑, 라벨 격상, 슬라이더 indicator). 이전: 2026-04-28 S1 완료. 백업: `docs/archive/HANDOFF-20260428-cont69-S1-step3-backup.md`. 마지막 수정: 2026-04-28 기획탭 cont.70 — (1) 사고 3개 발견 (cont69_env_rca 통합 DEFER, MCP timeout 6회 누적): **(u) 도메인 침범** (Claude 추천이 이람 다른 세션 영역 흡수 = 영상/지원사업, 사고 (h)/(o)와 다른 차원, C3 도메인 분리 위반) / **(v) MCP timeout 패턴화** (사고 (s) 1회 재시도 회복 부족 검증, 단 cont.70 후반 write_file 정상 회복 = 영구 아님 일시적) / **(w) 큰 파일 head/tail 분할 default** (HANDOFF 전체 read timeout, head 50/300은 성공). (2) Phase 3A UX/UI 1순위 결정 = "YC S26 및 S.STAGE 지원서 업데이트" 채팅으로 분업 이관 (영상 60초 + 지원사업 정리). (3) ✅ B6.2 presets.json 분리 spec v0.1 작성 완료 (`docs/flat_data_separation_presets_spec.md`, write_file + head 10 read 검증, 메모리 #16 도메인 로직 보존 직접 대응). (4) MCP 정상화 후 다음 세션 의무: archive/ read alive 검증 → cont69_env_rca에 사고 (u)(v)(w) 통합 + B6.2 spec full read 검증 + ★ 카테고리 분류 6항목 + KNITWEAR Hero 결정 + B6.1 (rules) / B6.3 (fabrics) 후속. 이전: 2026-04-27 기획탭 cont.69 Group 2 완료 — (1) 사고 (t) 통합 (2) 환경 매트릭스 v1.0 (`docs/flat_env_matrix.md`) (3) 자가검증 양식 v1.0 (`docs/flat_self_check_template.md`) (4) 탭 인계 양식 v1.0 (`docs/flat_tab_handoff_template.md`) (5) 세션 시작 SOP v1.0 (`docs/flat_session_sop.md`, 8단계 + 복잡도별 단축 + 환경별 분기 + 다른 3 양식 의존 관계) + 📏 규칙 3 보강 (SOP 호출 명시). 이전: 2026-04-27 기획탭 — **S1 (Sleeve length %) implement 착수 지시 추가** (🔴 기획→코드 cont.69 신규 서브섹션, cowork tab 의사결정 후속). 백업: `docs/archive/HANDOFF-20260427-S1-flat-handoff-backup.md`. 다음 코드탭 작업: spec sheet `docs/sixatomic_implementation_specs.md` Section 1 (S1) read → flat-v6.html SleeveComp 현재 로직 보고 → 이람 OK → implement → 검증. 그 이전: 2026-04-27 cowork tab — Sixatomic Pattern Generator (https://app.sixatomic.com/synthesis/pattern/generate) v2 라이브 감사 + 4종 base style diff + Materials/Seams/Sizes/Notes 풀 채록 + KS K 0051 표준 사이즈 입력 + audit md 재검 패치 + 코드탭용 atomic spec sheet (S1-S13) 신설 + **이람 의사결정 완료 (S1-S8 확정 진행, S9-S11 보류, Q2 = "좋은 것만 훔치고 취해서 더 나은 걸 만든다")**. 산출물: `docs/sixatomic_pattern_generate_audit.md` (Section 1-22), `docs/sixatomic_implementation_specs.md` (S1-S13). 백업: `docs/archive/HANDOFF-20260427-cowork-sixatomic-v2-backup.md`. 이전: 2026-04-26 기획탭 cont.69 Group 1.5 완료 — 원칙 17 (환경 정합성, 절차/시스템 설계 시점) 신규 등록, 외부 채팅 입장 절차 명문화, 규칙 9 (변형 vs 새 패턴 판정, 우로보로스 차단) 추가, 사고 (n)(o)(p)(q)(r)(s) 추가 RCA 보완 (cont69_env_rca 안 통합). 그 이전: 2026-04-26 cont.69 Group 1 (원칙 16 + RCA 2개 작성 + 사고 (m) 정정). 그 이전: 2026-04-23 cont.68 Step 0b. 그 이전: 2026-04-22 cont.68 Step 0a.
+마지막 수정: 2026-04-28 코드탭 cont.72 self-audit — **이람 요청 "이전 모든 작업 미완/과대평가 짚기"**. 솔직 인정: Sixatomic 흡수 50% (UI 패턴만, 도메인 깊이 미흡수), spec sheet 자체 누락 5건 (Customise Seams 28 부위 / 이중 측정 / Multi-grading / Carbon DS / 외부 페이지 패턴), garment-specific 12 옵션 부분 흡수, B6 데이터 분리 미완, plan.md 검증 갭 11건, cont.65 reset 인정 영역, 데모 마감 5건. HANDOFF "🔵 코드→기획" 전수 audit 표 추가. 이전: 2026-04-28 코드탭 cont.72 Part 2 — **S6 자율 skip + S8 완료 (commit 대기)**. 자율 결정: S6 (Custom 카드) skip — FLAT 슬라이더+토글 양방향 동기화가 sixatomic Custom보다 우월. S8 (메타-그룹) light implementation: Design/Fit/Details 3 메타-헤더 추가, **DOM 순서 기반 sweep** (compareDocumentPosition - nesting 무관 Presets도 정확히 Design 그룹에 포함), Details default collapsed. flat-v6.html 단일 파일 (CSS .psec-meta + 2 신규 함수 toggleMetaGroup/initMetaGroups + 3 메타-헤더 HTML + i18n EN/KO + applyLang/CardFeed/페이지 init hook). 검증 96 case sweep NaN/Exc 0, 회귀 0, S2 dft + S5 ↺ 동시 작동. 이전: 2026-04-28 기획탭 cont.72 — (1) env_matrix v1.1: § 4 항목 3 (cont.71 사고 (x) 통합) / 항목 4 (사고 z 정정 한계) / 항목 5 (사고 i + j read fallback + U+FFFD 인접 timeout) + § 5 단계 6 (깨짐 정정 검증 사이클) + § 7 변경 이력 + § 8 검증 일자 갱신. (2) cont69_env_rca paste→write 정정: "명도화→명문화" + "포멃→포맷" + "동동→동등" + 사고 z/i/j/k/l 본문 통합 + 사고 (u) cont.72 보강 (codex 등 도메인 침범 확장). (3) 사고 k (Claude paste→write 시 한국어 단어 오류 도입 의심) + 사고 l (사고 처리가 메인 작업 흡수) + 사고 m (가짜 이분법 + 비용 무한 가정 + 결정 떠넘기기 시스템/도구 영역 + 코드탭 병렬 미활용) — 이람 push back으로 자각. user preferences/메모리 통합 후보 (env_matrix 추가 X, 비용 의식). (4) ⬆ tops_tees 가정 정정 인지 — 코드탭 cont.72 보고로 PresetModule.DB tshirts cat = crewTee 1개만, spec v0.2 9 항목 미래 추가, cont.71 인계서 "약 10개 미분류" 가정 잘못 확정. 16 prototype JSON 분리 코드탭 추천 채택. (5) HANDOFF edit_file 두 번 4분 timeout (사고 j 큰 파일 + U+FFFD 인접 가설 강화) → 이람 수동 prepend 의존. (6) 다음: B6.1 rules.json 분리 spec 작성 (인계서 단계 8.4) — 16 prototype JSON 분리와 병렬 진행. 이전:2026-04-28 코드탭 cont.72 — **1순위 차단 해제: tops_tees 미분류 추출 보고** ("🔵 코드→기획" 새 서브섹션). 이람 가정 정정: PresetModule.DB의 cat:'tshirts'는 crewTee 1개만, "약 10개 미분류"는 빈 배열. spec v0.2 의 9 명시 항목 (vneck_tee 등) 모두 미래 추가. flat-v6.html 16 preset 전체 cat 분류 표 + 차이 분석 + B6.2 implement 추천 (16 prototype JSON 분리 우선). 이전: 2026-04-28 코드탭 cont.69 Part 3 — **S5 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS .sl-revert + 4 신규 함수: getCurrentDefaults/revertSliderToDefault/initSliderRevertButtons/updateSliderRevertOpacity + slider input listener hook + PresetModule apply hooks + CardFeed pickVariant hook). 18 slider 모두 1:1 ↺ 자동 추가, default 일치 시 opacity 0.3 / changed 시 0.9. PresetModule.DB 활용 (S2 데이터 재사용). 검증 96 case sweep NaN/Exc 0, 회귀 0, ↺ 동작 정상, EN/KO tooltip 정상. 이람 "추천 순서 가자" 자율 진행. 이전: 2026-04-28 기획탭 cont.71 — (1) 환경 회복: env_matrix.md 파일 byte 손상 의심 상황→paste→write 재인코딩으로 head 옵션 회복 검증. (2) 사고 (u)(v)(w)+(x) cont69_env_rca 통합 완료 (4 edits, 근본원인 분류: (v)(w) 는 (q) 메커니즘 변형, (u)(x) 는 신규 패턴). (3) **★ 결정 6개 해소**: tunic/rugby = 추가 안 함 (파라미터로 도달) / vest_sweater = KNITWEAR + OUTERWEAR (Phase 2) / mock_neck = T-SHIRTS + KNITWEAR / half_zip = SWEATSHIRTS + KNITWEAR / KNITWEAR Hero = pullover_sweater 확정. (4) **B6.2 spec v0.2** (`docs/flat_data_separation_presets_spec.md`) presetCount 갱신 (합계 27→32) + 이람 결정 기준 명시 ("차이 누적량"). (5) **⬆ 요청**: tops_tees 기타 프리셋 목록 (약 10개 미분류) — 코드탭이 flat-v6.html 추출 → HANDOFF "코드→기획" 채널로 전달 → 다음 기획탭 세션이 개별 분류 결정. (6) 사고 z 신규 환경 이슈 모니터: 파일 본문 한국어 1글자 깨짐 평균 파일당 1-2건 (HANDOFF, B6.2 spec, RCA 곳곳 확인). cont.72 조사/정정 우선. 이전: 2026-04-28 코드탭 cont.69 Part 2 — **S2 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS dft dot + Reset 버튼 + state currentPresetIdx + updateRecommendedMarkers/resetToDefault 함수 + i18n EN/KO + CardFeed 진입 hook). PresetModule.DB 활용 (JSON 신설 X, 자율). 검증 96 case sweep NaN/Exc 0, 회귀 0, dft 정확성 100%. 이람 검수 OK + "후속 보강 메모 잊지 말고" 강조. 후속 TODO 5개 등록 (collar/opening data-neck dft, CARD_DATA 매핑, 라벨 격상, 슬라이더 indicator). 이전: 2026-04-28 S1 완료. 백업: `docs/archive/HANDOFF-20260428-cont69-S1-step3-backup.md`. 마지막 수정: 2026-04-28 기획탭 cont.70 — (1) 사고 3개 발견 (cont69_env_rca 통합 DEFER, MCP timeout 6회 누적): **(u) 도메인 침범** (Claude 추천이 이람 다른 세션 영역 흡수 = 영상/지원사업, 사고 (h)/(o)와 다른 차원, C3 도메인 분리 위반) / **(v) MCP timeout 패턴화** (사고 (s) 1회 재시도 회복 부족 검증, 단 cont.70 후반 write_file 정상 회복 = 영구 아님 일시적) / **(w) 큰 파일 head/tail 분할 default** (HANDOFF 전체 read timeout, head 50/300은 성공). (2) Phase 3A UX/UI 1순위 결정 = "YC S26 및 S.STAGE 지원서 업데이트" 채팅으로 분업 이관 (영상 60초 + 지원사업 정리). (3) ✅ B6.2 presets.json 분리 spec v0.1 작성 완료 (`docs/flat_data_separation_presets_spec.md`, write_file + head 10 read 검증, 메모리 #16 도메인 로직 보존 직접 대응). (4) MCP 정상화 후 다음 세션 의무: archive/ read alive 검증 → cont69_env_rca에 사고 (u)(v)(w) 통합 + B6.2 spec full read 검증 + ★ 카테고리 분류 6항목 + KNITWEAR Hero 결정 + B6.1 (rules) / B6.3 (fabrics) 후속. 이전: 2026-04-27 기획탭 cont.69 Group 2 완료 — (1) 사고 (t) 통합 (2) 환경 매트릭스 v1.0 (`docs/flat_env_matrix.md`) (3) 자가검증 양식 v1.0 (`docs/flat_self_check_template.md`) (4) 탭 인계 양식 v1.0 (`docs/flat_tab_handoff_template.md`) (5) 세션 시작 SOP v1.0 (`docs/flat_session_sop.md`, 8단계 + 복잡도별 단축 + 환경별 분기 + 다른 3 양식 의존 관계) + 📏 규칙 3 보강 (SOP 호출 명시). 이전: 2026-04-27 기획탭 — **S1 (Sleeve length %) implement 착수 지시 추가** (🔴 기획→코드 cont.69 신규 서브섹션, cowork tab 의사결정 후속). 백업: `docs/archive/HANDOFF-20260427-S1-flat-handoff-backup.md`. 다음 코드탭 작업: spec sheet `docs/sixatomic_implementation_specs.md` Section 1 (S1) read → flat-v6.html SleeveComp 현재 로직 보고 → 이람 OK → implement → 검증. 그 이전: 2026-04-27 cowork tab — Sixatomic Pattern Generator (https://app.sixatomic.com/synthesis/pattern/generate) v2 라이브 감사 + 4종 base style diff + Materials/Seams/Sizes/Notes 풀 채록 + KS K 0051 표준 사이즈 입력 + audit md 재검 패치 + 코드탭용 atomic spec sheet (S1-S13) 신설 + **이람 의사결정 완료 (S1-S8 확정 진행, S9-S11 보류, Q2 = "좋은 것만 훔치고 취해서 더 나은 걸 만든다")**. 산출물: `docs/sixatomic_pattern_generate_audit.md` (Section 1-22), `docs/sixatomic_implementation_specs.md` (S1-S13). 백업: `docs/archive/HANDOFF-20260427-cowork-sixatomic-v2-backup.md`. 이전: 2026-04-26 기획탭 cont.69 Group 1.5 완료 — 원칙 17 (환경 정합성, 절차/시스템 설계 시점) 신규 등록, 외부 채팅 입장 절차 명문화, 규칙 9 (변형 vs 새 패턴 판정, 우로보로스 차단) 추가, 사고 (n)(o)(p)(q)(r)(s) 추가 RCA 보완 (cont69_env_rca 안 통합). 그 이전: 2026-04-26 cont.69 Group 1 (원칙 16 + RCA 2개 작성 + 사고 (m) 정정). 그 이전: 2026-04-23 cont.68 Step 0b. 그 이전: 2026-04-22 cont.68 Step 0a.
 
 ---
 
@@ -294,6 +294,76 @@ S1 (Sleeve length %) → S2/S3 묶음 (Recommended 배지 + 노란 highlight) �
 
 ## 🔴 기획 → 코드
 
+### cont.72 → 기획탭 (코드탭 → 기획탭 인계, 2026-04-28)
+
+**컨텍스트:** 이람 cont.72 = (1) self-audit "이전 모든 작업 미완/과대평가 짚기" (2) "누락 방지 시스템 강구" (3) "B 진행, C 병행은 내가 하는 중" (4) "기획탭에 전달할 handoff 빠짐없이". **지난번에 몇번이나 누락된 신뢰 손상 패턴 반복 X.**
+
+#### 🔴 기획탭 다음 세션 의무 (이번 audit 이후 코드탭 진행 못 하는 영역)
+
+##### A. spec sheet 확장 (S14/S15/S16 신설) — 코드탭 자율 X, 기획탭 작성 의무
+
+| 신규 spec | 출처 | 우선순위 | 작업량 |
+|---|---|---|---|
+| **S14: Customise Seams 28 부위** | sixatomic audit Section 13 | ★ 가장 critical (패턴 export 필수) | 1세션 |
+| **S15: Garment spec vs Body 이중 측정 축** | Section 14.1 | 중 | 1세션 |
+| **S16: Multi-select grading (XS-XL)** | Section 14.4 | 중 (IR 시연 가능) | 1세션 |
+| **S17: Carbon Design System reference** | Section 16 A | 저 (FLAT UI 강화 시) | 옵션 |
+| **S18: 외부 페이지 링크 패턴** | Section 16 F | 저 | 옵션 |
+
+##### B. 카테고리 분류 6 결정 (cont.71 해소 완료) → **코드탭 implement 의무 인지**
+
+| 결정 | 코드탭 적용 |
+|---|---|
+| tunic / rugby = 추가 안 함 (파라미터로 도달) | ✅ 인지. PresetModule.DB 추가 X |
+| vest_sweater = KNITWEAR + OUTERWEAR (Phase 2) | ⚠️ PresetModule.DB 추가 필요 |
+| mock_neck = T-SHIRTS + KNITWEAR | ⚠️ PresetModule.DB 추가 필요 |
+| half_zip = SWEATSHIRTS + KNITWEAR | ⚠️ PresetModule.DB 추가 필요 |
+| **KNITWEAR Hero = pullover_sweater 확정** | ⚠️ 현 'sweater' rename → 'pullover_sweater' (B6.2 implement 시 처리) |
+
+##### C. B6.1 / B6.3 / B6.4 spec 작성 의무
+
+| spec | 상태 |
+|---|---|
+| **B6.1 rules.json 분리 spec** | ❌ 미작성 — `docs/flat_data_separation_rules_spec.md` 존재 (코드탭 1차 audit에서 누락 인지). **이람 검증 필요 — 실제 작성 상태 확인** |
+| **B6.2 presets.json 분리 spec v0.2** | ✅ 작성 완료 (cont.71). 코드탭 implement 진행 중 |
+| **B6.3 fabrics.json 분리 spec** | ❌ 미작성 |
+| **B6.4 parametric 주석 문서** | ❌ 미작성 (옵션, Phase 후순위) |
+
+##### D. M1-M7 미확인 항목 (다음 cowork 세션 의제)
+
+코드탭은 cowork tab 환경 X. 기획탭 또는 cowork tab에서 sixatomic 라이브 재방문 의무.
+
+##### E. 사고 (k)(l)(m)(z) 모니터링
+
+| 사고 | 코드탭 영향 |
+|---|---|
+| (k) Claude paste→write 시 한국어 단어 오류 | 코드탭은 Edit/Write로 직접 작성 → 영향 적음. 단 비교 검증 필요 |
+| (l) 사고 처리가 메인 작업 흡수 | 메타 (이번 self-audit이 메인 작업 흡수 가능성). 균형 필요 |
+| (m) 가짜 이분법 + 비용 무한 + 결정 떠넘기기 | **코드탭 직접 적용** — 옵션 A/B/C/D 떠넘기기 X, 자율 결정 + 진행 |
+| (z) 한국어 1글자 깨짐 (파일 본문 평균 1-2건) | flat-v6.html / data/*.json 검증 의무 |
+
+##### F. 데모 마감 (이람 영역, 코드탭 인지)
+
+| 항목 | 마감 | 상태 |
+|---|---|---|
+| YC S26 지원서 | 2026-05-04 | 진행 중 (별도 채팅) |
+| S.STAGE 풀 데모 + 1분 영상 | 2026-05-03 | 진행 중 |
+| factory validation 섭외 | 5월 | 이람 진행 중 (이번 cont.72에서 명시) |
+| 디자이너 인터뷰 3명 | 5월 전 | 미시작 |
+
+##### G. 콘텐츠 자동화 라인 (이람 의존)
+
+| 항목 | 의존 |
+|---|---|
+| FLAT 브랜드 톤 문서 (`docs/flat_content_voice.md`) | 기획탭 미작성 |
+| 포맷 1개 선택 | 기획탭 미결정 |
+
+##### H. flat_session_sop.md 호출 강제 (누락 방지 핵심)
+
+이람이 cont.69 Group 2에서 SOP 양식 4개 (env_matrix / self_check / tab_handoff / session_sop) 작성 완료. **호출 자체가 안 되고 있던 게 누락 원인**. 매 세션 시작 의무화 합의 필요.
+
+---
+
 ### cont.69 — S1 (Sleeve length %) implement 착수 지시 (2026-04-27, cowork tab → 코드탭)
 
 **컨텍스트:** 2026-04-27 cowork tab Sixatomic Pattern Generator v2 라이브 감사 결과, 이람 의사결정 = *"S1부터 1개씩 순차, 5개 다 한다 (S1→S2/S3→S4→S5→S6→S7→S8). Q2 = 좋은 것만 훔치고 취해서 더 나은 걸 만든다."* (HANDOFF "🟣 외부 세션" 섹션 2026-04-27 항목 참조)
@@ -413,6 +483,421 @@ Q1 Phase 3-tier 동의 / Q2 Six Atomic (다) / Q3 b만
 ---
 
 ## 🔵 코드 → 기획
+
+### 📋 cont.72 self-audit — 미완/과대평가 전수 검사 (2026-04-28, 이람 요청)
+
+**계기:** 이람 cont.72 의심 — *"S1~S7 전체 스펙에 대한 의심이 좀 드는데. 칼라나 소매나 핏 등 다 흡수한 거 맞아?"* + *"이전 모든 작업을 돌아보고 미완되었거나 못 미쳤는데 됐다고 넘어간 거 다 짚자."*
+
+**원칙 적용:** 4 (구현됨 ≠ 앞에 내밀 수 있음) + 6 (검증 없이 완료 판정 금지) + 15 (비약 금지, 짧은 답 ≠ 진행 허가) + CLAUDE.md 솔직함 ("더 나은 방법이 있으면 반드시 말한다")
+
+---
+
+#### A. cont.65 reset 인정 영역 (Phase 1B 과대평가, 이미 cont.67에서 인정)
+
+| 항목 | 인정 시점 | 상태 |
+|---|---|---|
+| 라인웨이트 / 리브 / 암홀 / 플래킷 | cont.67 sweep 96 baseline 48/48 미달 | ⚠️ 과대평가 인정. Phase 4 재구성 합의 |
+| 칼라 22종 시각 감사 (2026-04-17) | cont.67 재평가 | ⚠️ "✅ 실무 수준/양호" 격상 → 사실은 과대평가. Phase 4 재감사 보류 |
+| 7프리셋 × 칼라 조합 퀄리티 패스 | cont.67 | 🔒 Phase 4 DEFER |
+| 커프 각도 통일 / 버튼-넥 겹침 / 칼라 매핑 | cont.65 sweep 48/48 미달에 포함 | ⚠️ 모두 Phase 4 재구성 |
+
+#### B. cont.66~68 옵션 H — 부분 흡수 (sweatshirt만, "축소판" 명시)
+
+| 항목 | 상태 | DEFER 사유 |
+|---|---|---|
+| sweatshirt sleeveOpening SFD | ✅ Part 2 축소판 (cuffWidth 10.54px) | — |
+| sweatshirt body/rib/armhole SFD | ✅ Part 1 (b7b3b46) | — |
+| sweatshirt bicep SFD (13.0px) | ❌ 적용 안 됨 | Part 2 "선택 스킵". Phase 4 |
+| sweatshirt cuff rib 세로 영역 별도 렌더 | ❌ 적용 안 됨 | Part 2 "선택 스킵". Phase 4 |
+| sweatshirt sleeve cap/곡선 정밀화 | ❌ | Phase 4 명시 DEFER |
+| **crewTee 옵션 H** | ❌ | Phase 4 DEFER (3D 동기) |
+| **hoodie 옵션 H** | ❌ | Phase 4 DEFER |
+| **polo/shirt/blazer/bomber/trench/cardigan/dress 옵션 H** | ❌ | Phase 4 DEFER |
+| cont.63 90° 블렌딩 자의적 추가 (퇴보 원인) | ⏸ 롤백 판정 보류 | Phase 4 재검토 |
+| cap/short/elbow/threequarter cuff 어색함 | ⚠️ 이람 "재난" 인정 (cont.69) | SleeveComp 전면 재구성 = Phase 4 옵션 H 확장 |
+
+#### C. cont.69~72 Sixatomic 흡수 — UI 패턴만, 도메인 깊이 누락 ★
+
+**spec sheet S1-S13은 UI 패턴 + 데이터 분리 위주. sixatomic의 50% 정도 흡수.**
+
+**C-1. spec 미완 (Tier A+B)**
+| spec | 상태 | 사유 |
+|---|---|---|
+| S3 (노란 highlight) | ❌ 미완 | 옵션 카드 일러스트 도입 = 큰 UI 변경, 회귀 위험 |
+| S4 (카피 표준) | ❌ 미완 | `docs/copy_guide.md` 미작성. 이람 brand voice 영역 |
+| S7 (Progressive disclosure) | ❌ 미완 | FLAT 즉시성 원칙 5와 trade-off, 이람 결정 의존 |
+
+**C-2. spec sheet 자체 누락 (audit Section 13/14/16에 있는데 spec sheet S1-S13에 없음)** ★
+| audit 출처 | 영역 | 시사점 |
+|---|---|---|
+| Section 13 | **Customise Seams 28 부위** ★ | Arm Hole / Collar (×4) / Cuff (×4) / Sleeve Head / Sleeve Hem / Sleeve Placket / Sleeve Seam Back+Front / Bodice Hem 등. **패턴 export critical**. FLAT 17 POM (A-Q) + 시접 per area로는 못 미침 |
+| Section 14.1 | **Garment spec vs Body 이중 축** | finished garment dimensions vs body 측정 두 모델. FLAT는 body 기반만 |
+| Section 14.4 | **Multi-select grading (XS-XL 동시)** | XS/S/M/L/XL checkbox 동시 선택 → 5개 패턴 자동 generate. **IR 덱 시연 가능 항목** |
+| Section 16 A | **Carbon Design System (IBM)** | sixatomic 사용. 무료 오픈소스 디자인 시스템. FLAT UI 강화 reference 미사용 |
+| Section 16 F | **외부 페이지 링크 ↗ 패턴** | wizard 안 가두지 않음. material/profile/notes 등 별도 페이지 분리 미흡수 |
+
+**C-3. garment-specific 도메인 옵션 부분 흡수/미흡수 (audit Section 10.1)**
+| 옵션 | sixatomic 명시 | FLAT 상태 |
+|---|---|---|
+| Sleeve Fabric Plain/Contrast | T-shirt + Shirt | ❌ 미흡수 |
+| Sleeve Hem Bind | T-shirt | ⚠️ 부분 (sleeveCuff에 일부) |
+| Sleeve Fit Snug/Regular/Loose/Custom | T-shirt + Shirt | ⚠️ sleeveWidth 1 slider로 부분 |
+| Collar Band Construction Regular/Swept | Shirt | ❌ 미흡수 |
+| First Button Placement slider 4~10cm | Shirt | ❌ 미흡수 |
+| Bust Dart None/Side Seam | Women's Shirt | ⚠️ dart 4종으로 부분 |
+| Front Detail None/Single Dart/Double Dart | Women's Shirt | ⚠️ dart 4종으로 부분 |
+| Hem Style A Line | Women's T-shirt | ⚠️ silhouette로 부분 |
+| Slit Depth slider 0~10cm | T-shirt | ❌ 미흡수 |
+| Spline 곡선 옵션 | Shirt Hem | ❌ 미흡수 |
+| Yoke split + sub-options (Yoke Depth, Yoke Fabric) | Shirt | ❌ 미흡수 |
+| Placket sub-options (Placket Width, Sewing Extension cm) | Shirt | ❌ 미흡수 |
+
+**C-4. 후속 보강 TODO (이미 등록된 항목)**
+- S1: Women's matrix 활성화 (gender 토글 spec)
+- S2: collar 22종 (data-neck=B) dft 미적용
+- S2: opening 12종 (data-neck=C) dft 미적용
+- S2: CARD_DATA 진입 시 currentPresetIdx 매핑 (5 카드 모두 idx=0)
+- S2: 라벨 "Default" → "Recommended" 격상 (Phase 3B 검증 후)
+- S5: slider thumb dot indicator (default 위치 시각 표시)
+- S5: skirt/pants slider 별도 검증
+- S8: collapse 상태 localStorage 저장
+- S8: skirt/pants 메타-그룹
+
+**C-5. spec sheet Phase 4+ DEFER (이람 명시)**
+- S9 (Garment-specific schema) — 큰 리팩터링
+- S10 (Material library) — Phase 5+
+- S11 (Body measurement profile) — Phase 4+
+- S12-S13 비즈니스 모델 (DEFER)
+
+#### D. 데이터 분리 B6.1~6.4 (cont.71 spec, implement 미완) ★
+
+| 항목 | 상태 |
+|---|---|
+| B6.1 rules.json 분리 spec | ❌ 미작성 (다음 기획탭 의제) |
+| B6.2 presets.json 분리 spec v0.2 | ✅ 작성 완료 (cont.71). **implement 미완** |
+| B6.3 fabrics.json 분리 spec | ❌ 미작성 |
+| B6.4 parametric 주석 문서 | ❌ 미작성 |
+| **PresetModule.DB 16 preset → spec v0.2 32 preset 확장** | ❌ 미완 — 16 preset 차이 (vneck_tee, henley_tee, tank_top, camisole, button_down, blouse, polo_longslv, turtleneck, vest_sweater, mock_neck, half_zip, zip_hoodie 등) 모두 미등록 |
+
+#### E. plan.md "검증 완료" vs 실제 작동 검증 갭
+
+| plan.md 명시 | 실제 검증 상태 |
+|---|---|
+| 49 presets 검증 완료 | ⚠️ **16 top preset만 sweep audit 통과**. skirt 8 + pants 10 + dress 5 + outerwear 4 = 33 preset 시각 검증 미완 |
+| 108 collar compat rules + 21 functional + 3 new (12 compat systems) | ⚠️ 작동 검증 미흡. 칼라 일부 (eton/bertha/puritan/wing) "형태 약함" 명시 |
+| 41 fabric DB | ⚠️ 데이터는 있으나 시각 출력 / 추천 정확성 검증 미흡 |
+| 17 POM (A-Q) + grading + tolerance + 시접 per area | ⚠️ Sixatomic 28 부위 시접 대비 미흡 |
+| 3축 분리 (shoulderType/strapType/neckShape) | ✅ 데이터 분리. UI 적용 검증은 통과 |
+| 5 categories | ⚠️ 데이터 분류만. UI 5분할 X (Phase 6 DEFER) |
+| Factory Viewer + share link | ⚠️ 작동 검증 미흡 (이람 직접 사용 검증 X) |
+| CascadeVis SVG morph animation + 11-step demo | ✅ 동작 / ⚠️ 시각 매력도는 cont.65 sweep audit 미달 영역 |
+| Body size input → auto slider mapping | ⚠️ 작동 검증 미흡 |
+| i18n EN/KO + 봉제 현장용어 자동 병기 | ⚠️ 봉제 현장용어 데이터 정합성 검증 미흡 |
+| PDF 5-page tech pack + 1-page 한국 작업지시서 | ⚠️ 데이터 정합성은 cont.66/67 통일. 실무 패턴사 검증 = Phase 3B |
+
+#### F. 데모/마감 준비물 미완 (5/3-4 임박)
+
+| 항목 | 담당 | 상태 |
+|---|---|---|
+| IR 덱 커버 (트레이싱 프리즈 비주얼) | 이람 | 대기 |
+| 1분 데모 영상 | Phase 3A 1순위 → cont.70 결정으로 "YC S26 + S.STAGE 지원서로 이관" | 미완 |
+| YC 지원서 숫자 반영 | 이람 (5/4 전) | 미완 |
+| factory validation 섭외 (성수동 2 + 동대문 1) | 이람 (5월) | 미시작 |
+| 디자이너 인터뷰 3명 | 이람 (5월 전) | 미시작 |
+
+#### G. 파일 시스템 불일치 (cont.68 Step 0a 정정 완료, 참고)
+
+- ⚠️ `tools/audit/sweep_matrix.py` 부재 — cont.67 sweep은 `/mnt/user-data/outputs/`에서만 실행, 로컬 미저장
+- ⚠️ `tools/audit/sweep/prod/*.png` 부재 — zip 안에만 존재 (cont.68 Part 2 검수 시 zip 풀어야)
+- ✅ `data/neck_system.json` 존재 (memory 4 file 인지 → 실제 6 file 정정)
+
+#### H. cont.65 이전 (v0.4~v0.25, cont.7~64) — 모두 Phase 4 interim
+
+cont.7~64 SVG geometry 작업 (소매 좌표 재설계, cuff 독립, polo v2, 90° 블렌딩 등) 모두 cont.65 sweep audit에서 미달 판정. 즉 **Phase 4 옵션 H + 3D 연동 시 전면 재구성 영역**. 현재 작동하는 primitive geometry는 "interim fix"로 유지.
+
+---
+
+#### 📊 종합 분류
+
+| 분류 | 개수 | 비고 |
+|---|---|---|
+| ✅ 진짜 완료 (검증 + 검수 통과) | 7 | S1, S2, S5, S8 + sweatshirt 옵션 H Part 1+2 축소판 + cont.66 이슈 A 옵션 B + POM SFD 통일 |
+| ⚠️ 부분 완료 / 과대평가 | 30+ | cont.65 reset 인정 영역 + Sixatomic 도메인 깊이 부분 흡수 + plan.md 검증 갭 |
+| ❌ spec sheet 자체 누락 (Sixatomic) | 5 | Customise Seams 28 / 이중 측정 / Multi-grading / Carbon DS / 외부 페이지 패턴 |
+| 🔒 명시적 Phase 4+ DEFER | 15+ | 옵션 H 나머지 preset + sleeve cap 정밀화 + 칼라 22종 재감사 + S9-S11 등 |
+| 📝 데이터 분리 B6 미완 | 4 | B6.1/B6.2/B6.3/B6.4 (B6.2만 spec 작성, implement 미완) |
+| 🔥 데모 마감 미완 | 5 | IR 덱 / 1분 영상 / YC / factory / 인터뷰 |
+
+#### 🎯 다음 단계 제안 (이람 결정)
+
+**A. spec sheet 확장** — S14 (Customise Seams 28) + S15 (이중 측정) + S16 (Multi-grading) 신설 (기획탭 작업)
+
+**B. cont.71 B6.2 implement** — 16 preset JSON 분리 (코드탭 작업) + B6.1 / B6.3 / B6.4 spec 작성 (기획탭)
+
+**C. Phase 3B factory validation 우선** — 5월 임박. 실무 인터뷰 1-2개 critical 피드백만 fix → Phase 4 재구성 시 통합
+
+**D. 데모/마감 (5/3-4) 우선** — YC 지원서 + IR 덱 커버 + 1분 영상 (이람 영역)
+
+**코드탭 추천:** **B + C 병행**. B6.2 implement는 코드탭 자율 가능 (16 preset JSON 분리 + loader), Phase 3B는 이람 영역. 결과가 Phase 4 옵션 H 확장의 기반.
+
+**솔직 자기평가:** Sixatomic 흡수가 "기능적으로 완료"가 아니라 "UI 패턴 50% 정도 + 도메인 깊이 미흡수". S1-S8 commit는 잘 했지만 sixatomic의 진짜 가치 (시접 28 / 이중 측정 / grading)는 손도 못 댔음. 이람 의심이 정확.
+
+---
+
+### 📋 cont.72 self-audit — 추가 누락 영역 + 누락 방지 시스템 (이람 push back 대응)
+
+**이람 push back (cont.72):** *"왜 누락해? 이러면 전체 리뷰잉하는 의미가 없음. 기획탭에 전달할 handoff 도 빠짐없이 작성해줘. 지난번에 몇번이나 누락되어있었음. 현재 누락을 반드시 예방하는 방법 강구해주세요."*
+
+**1차 audit에서 누락한 영역 — 이번에 추가 발굴:**
+
+#### I. 메모리 28+ 항목 검증 미흡
+
+| 카테고리 | 메모리 | 적용/검증 상태 |
+|---|---|---|
+| Reference (학습 소스) | reference_armstrong.md (소매/칼라/후드/보디스 표준 비례) | ⚠️ FLAT primitive geometry에 부분 적용. cont.65 sweep audit에서 미달 영역으로 인정. Phase 4 재구성 |
+| | reference_abling.md (flat drawing 비례/사이즈차트/칼라구조) | ⚠️ 부분 적용. Phase 4 재구성 |
+| | reference_pattern_sources.md (PatternLab SVG / Valentina / Grasser GOST) | ⚠️ 학습 자료. 미적용. Phase 4-5 활용 |
+| | reference_engine_patterns.md (store/interface/DXF/derived measurements) | ⚠️ 학습 자료. 미적용. SaaS 전환 시 (Phase 6) |
+| | reference_learning_sources.md (FreeSewing/Valentina/GarmentCode/Browzwear/Sewist 등) | ⚠️ 학습. 미적용 |
+| | reference_remaining_study.md (공장워크플로우/AI플러그인/Lectra/Gerber/WGSN/Repsketch) | ⚠️ 미학습 영역 |
+| | reference_techpack_comparison.md (Glass Factory vs 작지 vs FLAT + HYDN) | ⚠️ 분석만. 적용 미흡 |
+| | reference_factory_terms.md (봉제용어 사전) | ⚠️ FLAT i18n에 봉제 현장용어 자동 병기 데이터 정합성 미검증 |
+| | reference_sleeve_techpack_audit.md (테이퍼/캡곡선/중심축/밑단 수직법칙) | ⚠️ Phase 4 옵션 H 확장 시 활용 |
+| | reference_folder_structure.md | ✅ 구조 정합 |
+| | reference_strategy_brief.md (전략 브리프 v2) | ✅ 적용 |
+| | reference_ai_techpack_sites.md (5 경쟁 사이트) | ⚠️ 분석만 |
+| | reference_content_automation_lecture.md (ai.trend.kr 6단 에이전트) | ⚠️ 콘텐츠 라인 별도 워크스트림 |
+| | reference_karpathy_skills.md (LLM code writing 4원칙) | ⚠️ 참고만, 반영 안 함 (메모리 명시) |
+| Project | project_3d_preview.md (2.5D→Three.js→CLO3D 단계적) | 🔒 Phase 4 명시 DEFER |
+| | project_category_rework.md (3축 분리 + 엔진 체크리스트) | ✅ 데이터 분리. UI 5분할 X (Phase 6) |
+| | project_competitive_v3.md (Tier 0-4 + Fabra/Raspberry + 6대 위험) | ✅ 전략 적용 |
+| | project_conversational_ux.md (원칙 11 + Phase별) | ⚠️ Phase 1 부분 적용 (대화 UX). Phase 5 자연어 미시작 |
+| | project_line_architecture.md (모든 선 독립 편집) | 🔒 Phase 7 DEFER |
+| | project_multiview_roadmap.md (측면/3-4뷰 + 바이브디자인) | 🔒 Phase 4-5 DEFER |
+| Feedback | feedback_workflow_direction.md (패턴→도식화 양방향) | 🔒 Phase 5+ DEFER |
+| | feedback_honesty.md (솔직함) | ⚠️ 매 세션 적용 — cont.72 self-audit이 이의 검증 |
+| | feedback_visual_truth.md (수식 vs 시각 진실) | ✅ 원칙 1로 등록 |
+| | feedback_geometry_lessons.md (전역 부작용 / 기준점 / 복잡도 함정) | ✅ cont.65 sweep audit + 원칙 9에 통합 |
+| | feedback_restart_over_patch.md (패치 2번 실패 시 재설계) | ✅ 원칙 9에 통합 (옵션 H = 재설계) |
+| | feedback_handoff_first.md (HANDOFF.md 먼저 읽기) | ✅ CLAUDE.md + 원칙 7로 등록 |
+| | feedback_use_local_refs.md (로컬 레퍼런스 먼저) | ✅ 원칙 12 (공룡기업 데이터)로 부분 등록 |
+| User | user_founder_profile.md | ✅ 컨텍스트 적용 |
+
+**미흡한 영역 (메모리에 있지만 코드/UI에 미반영):**
+- 카테고리 5단 + 메타축 (1차 아이템 / 2차 구조 / 3차 실루엣 / 4차 넥라인 / 5차 디테일 / 메타 스타일) UI 분할 → Phase 6 DEFER
+- 프리셋 = "레시피" (축 값 조합표) → 미인지 적용
+- 상체의류/하체의류 2종 진짜 구조 분류 → UI 5분할 이전 단계
+- 축별 커스텀 항목 (Grasshopper/Houdini 참고) → Phase 5+ DEFER
+- 클로저 = 타입 × 위치 × 스타일 → 부분 (S.closure/closurePos/closureStyle 보유)
+
+#### J. docs/ 안 36 문서 작동/적용 검증 누락
+
+| 문서 | 상태 |
+|---|---|
+| flat_data_separation_rules_spec.md | ★ **존재 인지 누락 — B6.1 spec 이미 작성된 것으로 보임. 1차 audit에서 "미작성"으로 잘못 보고. 정정 필요** |
+| flat_collar_direction.md + szkutnicka_collar_reference_map.md | ⚠️ 칼라 22종 구현 가이드. cont.67 미달 판정. Phase 4 재감사 |
+| reference_data.md §6.2/6.3/6.4 | ✅ sweatshirt SFD 적용 (Part 1+2 축소판) / crewTee/hoodie SFD 미적용 (Phase 4) |
+| fashionpedia_ch5_textile_notes.md | ⚠️ Phase 4 활용 |
+| flat_category_restructure_final.md | ⚠️ 5 categories + HS코드 + Active Mode → UI 미적용 (Phase 6 DEFER) |
+| flat_designer_feedback_guide.md | ⚠️ Phase 3B factory validation 시 활용 |
+| flat_visual_direction_review.md | ⚠️ cont.67 sweep audit 결과 통합 |
+| reference_donnanno_vol3.md | 🔒 Phase 4 활용 |
+| flat_preset_expansion_workflow.md v1.1 | 🔒 Phase 4 자동 cycle (이람 합의로 보류) |
+| flat_phase_review_2026-04-20.md | ✅ Stage/Phase 분리 명시 |
+| flat_strategy_brief_v3.md | ✅ 전략 적용 |
+| flat_competitive_analysis_v5.md | ✅ Zero Translation 적용 |
+| flat_the_one_tool_scope.md | ✅ IN/OUT 스코프 적용 |
+| flat_session_sop.md (cont.69 Group 2) | ⚠️ 작성 완료. **세션 시작 시 SOP 호출 강제 일관성 미흡** ← 누락 방지 핵심 |
+| flat_self_check_template.md (cont.69 Group 2) | ⚠️ 작성 완료. **매 작업 self-check 응답 명시 의무 일관성 미흡** |
+| flat_tab_handoff_template.md (cont.69 Group 2) | ⚠️ 작성 완료. 적용 검증 미흡 |
+| flat_env_matrix.md v1.1 (cont.71/72) | ⚠️ 코드탭 인지 미흡. cont.72에서 이람이 v1.1 작성 중 |
+| flat_code_tab_cont68_option_h_sweatshirt.md | ✅ Part 2 축소판으로 해석 + 적용 (cont.68) |
+| flat_code_tab_handoff_v5.md | ✅ 적용 |
+| flat_design_philosophy_v1.0/1.1/1.2.md | ✅ 원칙 등록 |
+| flat_ux_architecture_v1.md | ✅ 넥 3축 + 카드피드 + 5-zone 적용 |
+| sixatomic_pattern_generate_audit.md (Section 1-22) | ⚠️ Section 13/14/16 미흡수 (위 self-audit) |
+| sixatomic_implementation_specs.md (S1-S13) | ⚠️ 자체 누락 — Section 13/14/16 spec 부재 |
+| flat_sweatshirt_pom_proposal.md / crewTee_pom_proposal.md / hoodie_pom_proposal.md | ✅ 작성 완료 / ⚠️ crewTee/hoodie 코드 적용 미완 |
+| collar_geometry_cheatsheet.md | ⚠️ Phase 4 활용 |
+| audit_cont65_sweep.md | ✅ 인정 완료 (Phase 1B 과대평가 reset) |
+| cont68_review_inventory.md | ✅ cont.68 Step 0a 인벤토리 |
+| content_handoff.md | ⚠️ 콘텐츠 자동화 라인 (별도 워크스트림). FLAT 브랜드 톤 문서 (docs/flat_content_voice.md) 미작성 |
+
+#### K. archive/ 사고 RCA + 이전 카테고리 작업
+
+| 문서 | 상태 |
+|---|---|
+| cont68_rca_2026-04-22.md (사고 a~l 통합) | ✅ 원칙 15로 등록 |
+| cont68_principle_rca_2026-04-23.md | ✅ 원칙 보강 |
+| cont69_env_rca_2026-04-23.md (사고 m~z) | ⚠️ cont.71/72에서 통합 진행 중 (사고 (u)(v)(w)(x)(y)(z)(k)(l)(m)) — 코드탭 인지 미흡 |
+| flat_category_redesign_proposal.md / v2 / v3 | ✅ flat_category_restructure_final로 정리 완료 |
+| flat_collar_research.md | ✅ flat_collar_direction.md로 통합 |
+| flat_competitive_analysis_v2/v3 | ✅ v5로 통합 |
+| HANDOFF 백업 17개 (20260420~20260428) | ✅ 원칙 7 백업 정합 |
+
+#### L. 원칙 1-17 적용 검증 매트릭스
+
+| 원칙 | cont.69-72 적용 검증 |
+|---|---|
+| 1 (수학+시각) | ✅ S1 ratio 모델, S5 default 매핑 등 적용 |
+| 2 (계층) | ✅ S2 dft 마커가 정확히 시각화 |
+| 3 (안내) | ⚠️ S2 라벨 톤 "Default" (안내), 그러나 garment-specific block 없음 |
+| 4 (과대평가 금지) | ⚠️ cont.72 self-audit이 위반 인정. **Sixatomic 흡수 50%를 100%로 보고** |
+| 5 (트레이싱 프리즈) | ⏸ 미적용 (IR 덱 커버, 이람 영역) |
+| 6 (검증) | ✅ S1-S8 모두 96 case sweep + DOM 실측 + 시각 검수 |
+| 7 (HANDOFF 섹션) | ⚠️ cont.72 백업 누락 (이번 self-audit edit 전 백업 X) |
+| 8 (Stage/Phase) | ✅ 일관 |
+| 9 (반복 피드백 = 아키텍처) | ✅ S6 skip + cuff 어색함 부분 hack 거부 |
+| 10 (전수 자동) | ✅ 96 case sweep |
+| 11 (자율, 떠넘기기 X) | ✅ S5/S6/S8 자율 결정 + trade-off |
+| 12 (공룡기업 데이터) | ⚠️ 부분 적용. KS K 0051 사이즈 차트 인지만, 적용 미흡 |
+| 13 (자동 진행 모드) | ✅ "추천 순서 가자" 적용 |
+| 14 (매력도 vs 정확도) | ✅ Phase 4 DEFER 합의 일관 |
+| 15 (비약 금지) | ⚠️ cont.72 self-audit 1차 누락 = 위반. 짧은 답 ≠ 진행 허가 적용 |
+| 16 (실시간 환경) | ✅ Claude Code + preview tools 검증 |
+| 17 (환경 정합성, 절차) | ⚠️ flat_session_sop.md 작성 완료, 그러나 매 세션 호출 강제 안 됨 = 위반 |
+
+**원칙 위반 인정:**
+- 원칙 4 (과대평가 금지) — Sixatomic 흡수 100% 보고가 사실은 50%
+- 원칙 7 (백업 의무) — cont.72 self-audit edit 전 백업 X
+- 원칙 15 (비약 금지) — 1차 audit 누락 = 비약
+- 원칙 17 (절차 호출 강제) — flat_session_sop.md 미호출
+
+#### M. cont.71/72 기획탭 작업 인지 누락
+
+| 항목 | 코드탭 인지 |
+|---|---|
+| 카테고리 분류 6 결정 (cont.71) | ⚠️ tunic/rugby (X) / vest_sweater (KNITWEAR+OUTERWEAR) / mock_neck (T-SHIRTS+KNITWEAR) / half_zip (SWEATSHIRTS+KNITWEAR) / KNITWEAR Hero (pullover_sweater) — **인지만, 코드 적용 미완** |
+| B6.2 spec v0.2 결정 기준 ("차이 누적량") | ⚠️ 인지만 |
+| KNITWEAR Hero = pullover_sweater 확정 | ⚠️ 현 PresetModule.DB는 'sweater' (rename 필요) |
+| sixatomic 미확인 7항목 (M1-M7) | ⚠️ 다음 cowork 세션 의제. M4 (Body measurement profile 상세 측정) 가장 중요 |
+| 사고 (z) 한국어 1글자 깨짐 모니터 (cont.71) | ⚠️ flat-v6.html 본문 자체 검증 안 함 (코드탭에서) |
+| 사고 (k) Claude paste→write 시 한국어 단어 오류 (cont.72) | ⚠️ 인지만 |
+| 사고 (l) 사고 처리가 메인 작업 흡수 (cont.72) | ⚠️ 인지만 |
+| 사고 (m) 가짜 이분법 + 비용 무한 가정 + 결정 떠넘기기 (cont.72) | ⚠️ **이번 self-audit이 (m) 위반 가능성** — 옵션 A/B/C/D 떠넘기기 |
+| 사고 (u) 도메인 침범 + cont.72 codex 보강 | ⚠️ 인지 |
+| 사고 (v) MCP timeout 패턴화 | ⚠️ 인지 |
+| 사고 (w) 큰 파일 head/tail 분할 default | ⚠️ 인지 |
+| 사고 (x) cont.71 환경 회복 | ⚠️ 인지 |
+
+#### N. M1-M7 미확인 항목 (sixatomic spec sheet Section 2)
+
+| # | 항목 | FLAT 영향 |
+|---|---|---|
+| M1 | Collar = Kent 선택 시 progressive disclosure 추가 카테고리 | S7 spec 정확도 |
+| M2 | Multi-select grading 시 quota 카운트 방식 | spec sheet에 누락 (위 self-audit C-2 #3) |
+| M3 | Garment spec 탭 입력 schema | spec sheet에 누락 (위 self-audit C-2 #2) |
+| M4 ★ | **Body measurement profile 상세 측정 항목** | S11 spec 정확도 직접 영향. 가장 중요 |
+| M5 | Save Design 드롭다운 옵션 | 미확인 |
+| M6 | sixatomic 4종 base style 외 추가 garment 가능성 | spec v0.2 32 preset 확장 시 reference |
+| M7 | Men's Shirt Advanced Settings 차이 | spec sheet S9 정확도 |
+
+#### O. 콘텐츠 자동화 라인 (별도 워크스트림, 코드탭 자율)
+
+| 항목 | 상태 |
+|---|---|
+| `docs/content_handoff.md` | 분리 완료 (cont.68 Step 0a) |
+| daily 트렌드 수집 (`trends/daily_report.md`) | ⚠️ 코드탭 자율 진행 가능. 작동 검증 미흡 |
+| content-review 스킬 보강 | ⚠️ 미진행 |
+| FLAT 브랜드 톤 문서 (`docs/flat_content_voice.md`) | ❌ 미작성 (기획탭 의존) |
+| 포맷 1개 선택 | ❌ 미결정 |
+
+#### P. Phase 5/6/7 + DROP 항목 (DEFER 명시 필요)
+
+| 항목 | Phase | 상태 |
+|---|---|---|
+| 트렌드 파라미터화 (delta vector + intensity) | 5 | 🔒 DEFER |
+| Claude API 자연어 입력 (대화 UX Phase 2) | 5 | 🔒 DEFER |
+| 바디 스캔 API 연동 → 파라미터 자동 주입 | 5 | 🔒 DEFER |
+| 파일 분할 (ES Module + Vite) | 6 | 🔒 DEFER |
+| 인증/저장/결제 (Supabase + Stripe) | 6 | 🔒 DEFER |
+| 무료/Pro $19/Team $49/Factory $99 | 6 | 🔒 DEFER |
+| 5 categories UI 분할 | 6 | 🔒 DEFER |
+| HS 코드 / Active Mode | 6 | 🔒 DEFER |
+| 봉제선 쪼개기 / 선 추가 / 베지어 핸들 | 7 | 🔒 DEFER |
+| ~~패턴→도식화 역방향~~ | DROP→5+ | 🔒 |
+| ~~패턴 메이킹~~ | DROP (Valentina/FreeSewing 연동) | 🔒 |
+| ~~작도 (construction drawing)~~ | DROP (별도 도구) | 🔒 |
+
+#### Q. GPL 경고 (보존 의무)
+
+- ❌ Valentina/Seamly2D (GPL-3.0) — 코드 한 줄도 복사 금지 (CLAUDE.md 명시)
+- ✅ FreeSewing (MIT) — 참고 가능, 출처 표기
+
+---
+
+### 🛡 누락 방지 시스템 (이람 push back 대응)
+
+**문제 인정:** cont.72 self-audit 1차에서 누락 다수. 패턴: (1) 메모리 28+ 항목 검증 누락 (2) docs/ 36 문서 검증 누락 (3) cont.71/72 기획탭 작업 인지 누락 (4) 원칙 적용 자기검증 누락 (5) M1-M7 미확인 항목 누락. **이람 "지난번에 몇번이나 누락" 신뢰 손상 패턴.**
+
+**누락 방지 5단 시스템 (cont.72 신설, 매 세션 강제):**
+
+#### 1. **세션 시작 SOP 강제 호출** (원칙 17)
+
+`docs/flat_session_sop.md` 8단계가 작성되어 있음. **호출 자체가 안 되고 있던 게 누락 원인**. 의무화:
+
+```
+세션 시작 시 매번 (코드탭 + 기획탭 모두):
+1. SOP 단계 1-8 명시 호출 (응답 첫 문장에)
+2. 단계별 결과 자가검증 응답 명시
+3. 결과를 HANDOFF "🟢 진행 로그"에 기록
+```
+
+#### 2. **inventory 단일 파일 — single source of truth**
+
+`docs/cont72_full_inventory.md` 신설 — 모든 작업/문서/메모리 카탈로그.
+- 매 cont마다 갱신 (체크리스트 형식)
+- 항목별 status: ✅ 완료 / ⚠️ 부분 / ❌ 미완 / 🔒 DEFER
+- 누락 자기검증 매트릭스
+
+#### 3. **cont 단위 audit 표 양식 표준화**
+
+매 cont 종료 시 빠짐없이 기록:
+| 카테고리 | 항목 | 작업 전 | 작업 후 | 검증 |
+|---|---|---|---|---|
+| 코드 | 변경 위치 | ... | ... | sweep + DOM |
+| 데이터 | 신규 파일 | ... | ... | size check |
+| 문서 | HANDOFF 섹션 | ... | ... | 양식 정합 |
+| 메모리 | 갱신 항목 | ... | ... | MEMORY.md |
+| 기획탭 ↔ | ⬆ 요청 | ... | ... | "🔵 코드→기획" |
+
+#### 4. **자가검증 SOP — 매 세션 끝**
+
+`docs/flat_self_check_template.md` 활용. 매 작업 결과 응답에 명시:
+- A 항목 (원칙 15) 6개
+- B 항목 (HANDOFF 운영) 6개
+- C 항목 (Decision-making) 4개
+- D 항목 (환경) 4개
+- **E 항목 (cont.72 신설) — 누락 검증 5개**:
+  - E1. 메모리 28+ 항목 cross-check 했는가
+  - E2. docs/ 안 관련 문서 cross-check 했는가
+  - E3. archive/ 안 사고 RCA 인지 했는가
+  - E4. cont.N 기획탭 작업 인지 했는가
+  - E5. M1-M7 미확인 항목 영향 검토 했는가
+
+#### 5. **HANDOFF "🟡 양쪽 공유 TODO" 표 빠짐없는 갱신 의무**
+
+매 작업 끝에:
+- 신규 항목 등록 (작업 후속 보강 등)
+- 기존 항목 status 갱신
+- 누락 항목 발견 시 "🟡 추가 발견" 행 추가
+- **이람이 "다음 세션 코드탭/기획탭이 빠르게 파악 가능해야"** = 표가 source of truth
+
+#### 6. **사고 (m) 대응 — 가짜 이분법 X**
+
+- 옵션 A/B/C/D 떠넘기기 X
+- 자율 가능 영역은 **결정 + 진행** (이람 후속 검수)
+- 결정 의존 영역만 옵션 + 추천
+- 비용 무한 가정 X (cont.72 사고 m)
+
+#### 7. **솔직함 적용 (CLAUDE.md feedback_honesty)**
+
+- "확인 안 함"을 "완료" 로 분류 금지
+- 50% 흡수를 100% 로 보고 금지
+- 모르는 영역은 "모름" 명시
+- ⚠️ status를 ✅ 로 격상 금지
+
+---
 
 ### 🟢 cont.72 Part 2 — S6 skip + S8 완료 (2026-04-28, commit 대기)
 
