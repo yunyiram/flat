@@ -2,7 +2,7 @@
 > **모든 탭은 세션 시작 시 이 파일을 먼저 읽는다.**
 > 섹션 단위 수정만. 전체 덮어쓰기 금지 (원칙 7).
 
-마지막 수정: 2026-04-28 코드탭 cont.69 — **S1 완료 (commit 대기)**. data/rules/sleeve_length_ratios.json 신설 + flat-v6.html (i18n EN/KO 라벨 보강 + ratio const 블록). 검증 96 case sweep NaN/undef/Exc 0, crewTee/sweatshirt 회귀 0. 이람 검수 OK ("슬라이더+토글 양방향 좋아"). cuff 어색함은 Phase 4 DEFER 합의. 이전: 2026-04-28 S1 Step 3 재검 + 1차 보고. 백업: `docs/archive/HANDOFF-20260428-cont69-S1-step3-backup.md`. 마지막 수정: 2026-04-28 기획탭 cont.70 — (1) 사고 3개 발견 (cont69_env_rca 통합 DEFER, MCP timeout 6회 누적): **(u) 도메인 침범** (Claude 추천이 이람 다른 세션 영역 흡수 = 영상/지원사업, 사고 (h)/(o)와 다른 차원, C3 도메인 분리 위반) / **(v) MCP timeout 패턴화** (사고 (s) 1회 재시도 회복 부족 검증, 단 cont.70 후반 write_file 정상 회복 = 영구 아님 일시적) / **(w) 큰 파일 head/tail 분할 default** (HANDOFF 전체 read timeout, head 50/300은 성공). (2) Phase 3A UX/UI 1순위 결정 = "YC S26 및 S.STAGE 지원서 업데이트" 채팅으로 분업 이관 (영상 60초 + 지원사업 정리). (3) ✅ B6.2 presets.json 분리 spec v0.1 작성 완료 (`docs/flat_data_separation_presets_spec.md`, write_file + head 10 read 검증, 메모리 #16 도메인 로직 보존 직접 대응). (4) MCP 정상화 후 다음 세션 의무: archive/ read alive 검증 → cont69_env_rca에 사고 (u)(v)(w) 통합 + B6.2 spec full read 검증 + ★ 카테고리 분류 6항목 + KNITWEAR Hero 결정 + B6.1 (rules) / B6.3 (fabrics) 후속. 이전: 2026-04-27 기획탭 cont.69 Group 2 완료 — (1) 사고 (t) 통합 (2) 환경 매트릭스 v1.0 (`docs/flat_env_matrix.md`) (3) 자가검증 양식 v1.0 (`docs/flat_self_check_template.md`) (4) 탭 인계 양식 v1.0 (`docs/flat_tab_handoff_template.md`) (5) 세션 시작 SOP v1.0 (`docs/flat_session_sop.md`, 8단계 + 복잡도별 단축 + 환경별 분기 + 다른 3 양식 의존 관계) + 📏 규칙 3 보강 (SOP 호출 명시). 이전: 2026-04-27 기획탭 — **S1 (Sleeve length %) implement 착수 지시 추가** (🔴 기획→코드 cont.69 신규 서브섹션, cowork tab 의사결정 후속). 백업: `docs/archive/HANDOFF-20260427-S1-flat-handoff-backup.md`. 다음 코드탭 작업: spec sheet `docs/sixatomic_implementation_specs.md` Section 1 (S1) read → flat-v6.html SleeveComp 현재 로직 보고 → 이람 OK → implement → 검증. 그 이전: 2026-04-27 cowork tab — Sixatomic Pattern Generator (https://app.sixatomic.com/synthesis/pattern/generate) v2 라이브 감사 + 4종 base style diff + Materials/Seams/Sizes/Notes 풀 채록 + KS K 0051 표준 사이즈 입력 + audit md 재검 패치 + 코드탭용 atomic spec sheet (S1-S13) 신설 + **이람 의사결정 완료 (S1-S8 확정 진행, S9-S11 보류, Q2 = "좋은 것만 훔치고 취해서 더 나은 걸 만든다")**. 산출물: `docs/sixatomic_pattern_generate_audit.md` (Section 1-22), `docs/sixatomic_implementation_specs.md` (S1-S13). 백업: `docs/archive/HANDOFF-20260427-cowork-sixatomic-v2-backup.md`. 이전: 2026-04-26 기획탭 cont.69 Group 1.5 완료 — 원칙 17 (환경 정합성, 절차/시스템 설계 시점) 신규 등록, 외부 채팅 입장 절차 명문화, 규칙 9 (변형 vs 새 패턴 판정, 우로보로스 차단) 추가, 사고 (n)(o)(p)(q)(r)(s) 추가 RCA 보완 (cont69_env_rca 안 통합). 그 이전: 2026-04-26 cont.69 Group 1 (원칙 16 + RCA 2개 작성 + 사고 (m) 정정). 그 이전: 2026-04-23 cont.68 Step 0b. 그 이전: 2026-04-22 cont.68 Step 0a.
+마지막 수정: 2026-04-28 코드탭 cont.69 Part 2 — **S2 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS dft dot + Reset 버튼 + state currentPresetIdx + updateRecommendedMarkers/resetToDefault 함수 + i18n EN/KO + CardFeed 진입 hook). PresetModule.DB 활용 (JSON 신설 X, 자율). 검증 96 case sweep NaN/Exc 0, 회귀 0, dft 정확성 100%. 이람 검수 OK + "후속 보강 메모 잊지 말고" 강조. 후속 TODO 5개 등록 (collar/opening data-neck dft, CARD_DATA 매핑, 라벨 격상, 슬라이더 indicator). 이전: 2026-04-28 S1 완료. 백업: `docs/archive/HANDOFF-20260428-cont69-S1-step3-backup.md`. 마지막 수정: 2026-04-28 기획탭 cont.70 — (1) 사고 3개 발견 (cont69_env_rca 통합 DEFER, MCP timeout 6회 누적): **(u) 도메인 침범** (Claude 추천이 이람 다른 세션 영역 흡수 = 영상/지원사업, 사고 (h)/(o)와 다른 차원, C3 도메인 분리 위반) / **(v) MCP timeout 패턴화** (사고 (s) 1회 재시도 회복 부족 검증, 단 cont.70 후반 write_file 정상 회복 = 영구 아님 일시적) / **(w) 큰 파일 head/tail 분할 default** (HANDOFF 전체 read timeout, head 50/300은 성공). (2) Phase 3A UX/UI 1순위 결정 = "YC S26 및 S.STAGE 지원서 업데이트" 채팅으로 분업 이관 (영상 60초 + 지원사업 정리). (3) ✅ B6.2 presets.json 분리 spec v0.1 작성 완료 (`docs/flat_data_separation_presets_spec.md`, write_file + head 10 read 검증, 메모리 #16 도메인 로직 보존 직접 대응). (4) MCP 정상화 후 다음 세션 의무: archive/ read alive 검증 → cont69_env_rca에 사고 (u)(v)(w) 통합 + B6.2 spec full read 검증 + ★ 카테고리 분류 6항목 + KNITWEAR Hero 결정 + B6.1 (rules) / B6.3 (fabrics) 후속. 이전: 2026-04-27 기획탭 cont.69 Group 2 완료 — (1) 사고 (t) 통합 (2) 환경 매트릭스 v1.0 (`docs/flat_env_matrix.md`) (3) 자가검증 양식 v1.0 (`docs/flat_self_check_template.md`) (4) 탭 인계 양식 v1.0 (`docs/flat_tab_handoff_template.md`) (5) 세션 시작 SOP v1.0 (`docs/flat_session_sop.md`, 8단계 + 복잡도별 단축 + 환경별 분기 + 다른 3 양식 의존 관계) + 📏 규칙 3 보강 (SOP 호출 명시). 이전: 2026-04-27 기획탭 — **S1 (Sleeve length %) implement 착수 지시 추가** (🔴 기획→코드 cont.69 신규 서브섹션, cowork tab 의사결정 후속). 백업: `docs/archive/HANDOFF-20260427-S1-flat-handoff-backup.md`. 다음 코드탭 작업: spec sheet `docs/sixatomic_implementation_specs.md` Section 1 (S1) read → flat-v6.html SleeveComp 현재 로직 보고 → 이람 OK → implement → 검증. 그 이전: 2026-04-27 cowork tab — Sixatomic Pattern Generator (https://app.sixatomic.com/synthesis/pattern/generate) v2 라이브 감사 + 4종 base style diff + Materials/Seams/Sizes/Notes 풀 채록 + KS K 0051 표준 사이즈 입력 + audit md 재검 패치 + 코드탭용 atomic spec sheet (S1-S13) 신설 + **이람 의사결정 완료 (S1-S8 확정 진행, S9-S11 보류, Q2 = "좋은 것만 훔치고 취해서 더 나은 걸 만든다")**. 산출물: `docs/sixatomic_pattern_generate_audit.md` (Section 1-22), `docs/sixatomic_implementation_specs.md` (S1-S13). 백업: `docs/archive/HANDOFF-20260427-cowork-sixatomic-v2-backup.md`. 이전: 2026-04-26 기획탭 cont.69 Group 1.5 완료 — 원칙 17 (환경 정합성, 절차/시스템 설계 시점) 신규 등록, 외부 채팅 입장 절차 명문화, 규칙 9 (변형 vs 새 패턴 판정, 우로보로스 차단) 추가, 사고 (n)(o)(p)(q)(r)(s) 추가 RCA 보완 (cont69_env_rca 안 통합). 그 이전: 2026-04-26 cont.69 Group 1 (원칙 16 + RCA 2개 작성 + 사고 (m) 정정). 그 이전: 2026-04-23 cont.68 Step 0b. 그 이전: 2026-04-22 cont.68 Step 0a.
 
 ---
 
@@ -414,6 +414,66 @@ Q1 Phase 3-tier 동의 / Q2 Six Atomic (다) / Q3 b만
 
 ## 🔵 코드 → 기획
 
+### 🟢 cont.69 Part 2 — S2 완료 (2026-04-28, commit 대기)
+
+**작업:** Sixatomic 흡수 두 번째 spec. Recommended 배지 시스템 — A 옵션 채택 (S2만 분리, S3 큰 UI 변경은 별도 spec).
+
+**자율 결정 (이람 OK 후):**
+- garment_defaults.json **신설 X** — PresetModule.DB(16 preset) 기존 데이터 활용. 60 default 결정 부담 회피.
+- 라벨 톤 = "Default/기본값" (실무 검증 전 "Recommended" 과대평가 회피, 원칙 4)
+- Reset 범위 = 전체 preset 복원 1개 버튼
+
+**구현 (flat-v6.html 단일 파일):**
+
+| 위치 | 변경 |
+|---|---|
+| L47-48 CSS | `.tb` `position:relative` + `.tb.dft::after` 회색 5px dot 우상단 + `.tb.on.dft::after{display:none}` (active 자동 숨김) + `.reset-btn` |
+| L334 HTML | 헤더에 `<button class="reset-btn" id="resetBtn" onclick="resetToDefault()">↺</button>` |
+| L755/930 i18n | EN `reset:{title:'Reset to default'}` / KO `reset:{title:'기본값으로 복원'}` |
+| L933 applyLang | data-i18n-title 처리 + 끝에 `updateRecommendedMarkers()` |
+| L995 state | `currentPresetIdx, currentSkirtIdx, currentPantsIdx` 추가 |
+| L1240 신규 fn | `updateRecommendedMarkers()` (top/skirt/pants 자동 분기) + `resetToDefault()` |
+| L5210/5276/5300 | PresetModule.apply/applySkirt/applyPants에 currentIdx 저장 + marker 호출 |
+| L6829 CardFeed.pickVariant | 진입 hook (panel 표시 후 marker 갱신) |
+
+**검증 (preview DOM 실측):**
+
+| 항목 | 결과 |
+|---|---|
+| 96 case sweep (16 preset × 6 sleeve length) | NaN 0 / Exception 0 ✅ |
+| crewTee 회귀 | halfBody 55, shoulderW 46 (S1 baseline 동일) ✅ |
+| sweatshirt 회귀 | halfBody 60.20, shoulderW 59.17, sfdCuffHalf 5.19 ✅ |
+| 16 preset dft 정확성 | sleeveLen 100% 일치 ✅ |
+| 사용자 토글 변경 → dot 즉시 갱신 | CSS .on.dft 자동 처리 ✅ |
+| Reset 버튼 동작 | preset default 복원 (active + dft 일치) ✅ |
+| 시각 검증 | Standard 옆 dot, Short(Regular) 옆 dot, Active엔 dot 없음 ✅ |
+| Console errors | 0 ✅ |
+
+**시각 디테일 (이람 검수 영역):** 회색 `#bbb` 5px dot, 우상단 (top:3px,right:5px). 변경 원하면 명시.
+
+**🔥 후속 보강 TODO (이람 강조 — "잊지 말고"):**
+
+1. **collar 22종 (`data-neck="B"`) dft 미적용** — neckFinish='collar' 등은 별도 토글 시스템 (data-p 아님). dft 마커 미적용. 후속 spec 필요.
+2. **opening 12종 (`data-neck="C"`) dft 미적용** — pullover/full_button/half_placket 등 동일 이슈.
+3. **CARD_DATA 진입 시 currentPresetIdx 매핑 부정확** — 5장 카드 모두 idx=0 매핑. panel에서 preset 클릭 후엔 정확. 첫 진입만 minor.
+4. **라벨 격상** — Phase 3B (factory validation 5월) 검증 후 "Default" → "Recommended" 격상 가능 (실무 표준 정합 확인 시).
+5. **슬라이더 Default indicator** — 현재 토글만. 슬라이더는 S5 (Revert per-input)에서 individual revert 버튼으로 처리.
+
+**원칙 self-check (이람 요청 — 매번 명시):**
+- ✅ 원칙 4 (과대평가 금지) — "Default/기본값" 톤 채택
+- ✅ 원칙 6 (검증 산출물) — 96 case sweep + DOM 실측 + 시각 검수
+- ✅ 원칙 9 (반복 피드백 = 아키텍처) — 신규 추가, magic number 조정 X
+- ✅ 원칙 11 (자율, 떠넘기기 금지) — 데이터 위치 자율 (PresetModule.DB 활용) + 1차안 시각 디테일
+- ✅ 원칙 14 (매력도 vs 정확도) — UI 매력도 작업 (Phase 3A), 실무 정확도와 분리
+- ✅ 원칙 15 (비약 금지) — 시스템(메타데이터) vs 인스턴스(시각 디테일) 분리, 후속 보강 명시
+- ✅ Q2 흡수 — sixatomic ⓡ 패턴 흡수 + FLAT 기존 자산 활용 (재창조)
+
+**push:** commit 대기 — message: `S2: Default marker (dot) + Reset button — PresetModule.DB 활용`
+
+**다음:** spec sheet Section 0 작업 순서대로 → **S5 (Revert per-input)** 추천 (S2 데이터 활용 자연스러움). 이람 priority 결정 대기.
+
+---
+
 ### 🟢 cont.69 — S1 완료 (2026-04-28, commit 대기)
 
 **작업:** sixatomic 흡수 첫 spec. sleeve length를 % of side arm length 모델로 흡수. FLAT 6 라벨 유지 + 보편명 괄호 병기 + women+men 매트릭스 적재 + Men's default.
@@ -769,9 +829,15 @@ P5=B 채택 시:
 | factory validation | 성수동 섭외 (Phase 3B) | 검증 output | 5월 |
 | **🟣 Sixatomic v2 audit + spec sheet (cowork tab)** | 산출물 read + Section 17 priority 결정 | 결정 후 spec ID 단위 implement | 2026-04-27 완료, 이람 의사결정 완료 |
 | **다음 cowork 세션 의제 — 미확인 7개** | M1~M7 채록 추가 | — | spec sheet Section 2 참조 |
-| **S1 (Sleeve length ratio model)** | spec 결정 OK + 검수 OK | ✅ 구현 + 검증 96 case 통과 | 완료 (cont.69, commit 대기) |
+| **S1 (Sleeve length ratio model)** | spec 결정 OK + 검수 OK | ✅ 구현 + 검증 96 case 통과 | 완료 (cont.69, commit 471caa4) |
 | **S1 후속 — Women's matrix 활성화** | gender 토글 도입 spec 필요 | DEFAULT_GENDER 동적 전환 | TODO (별도 spec, 이람 잊지 말기 강조) |
-| **S2/S3 (Recommended 배지 + 노란 highlight)** | priority 결정 대기 | spec read 후 implement | 다음 spec 후보 |
+| **S2 (Default 마커 + Reset 버튼)** | A 옵션 OK + 검수 OK + 후속 보강 메모 강조 | ✅ 구현 + 검증 96 case 통과 | 완료 (cont.69 Part 2, commit 대기) |
+| **S2 후속 — collar 22종 (data-neck="B") dft 미적용** | spec 필요 | 별도 메커니즘 토글 처리 | TODO (이람 잊지 말기 강조) |
+| **S2 후속 — opening 12종 (data-neck="C") dft 미적용** | spec 필요 | 동일 메커니즘 보강 | TODO |
+| **S2 후속 — CARD_DATA 진입 시 currentPresetIdx 매핑** | spec 필요 | CARD_DATA에 presetIdx 명시 | TODO (minor) |
+| **S2 후속 — 라벨 격상 "Default" → "Recommended"** | Phase 3B validation 후 | i18n update | TODO (Phase 3B 후) |
+| **S2 후속 — 슬라이더 Default indicator** | S5 spec 안 통합 | individual revert 버튼 | S5에서 처리 |
+| **S5 (Revert per-input) 또는 S6 (Custom 카드)** | priority 결정 대기 | spec read 후 implement | 다음 spec 후보 |
 | **S1 후속 — cap/short/elbow/threequarter cuff 정밀화** | Phase 4 합의 | 옵션 H 확장 + 3D 연동 시점 | DEFER (Phase 4) |
 
 ---

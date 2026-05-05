@@ -44,8 +44,13 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .pg{margin-bottom:12px;}.pg:last-child{margin-bottom:0;}
 .pg-label{font-size:11px;font-weight:500;color:var(--text-mid);margin-bottom:6px;}
 .trow{display:flex;flex-wrap:wrap;gap:4px;}
-.tb{font-family:'Inter','Noto Sans KR',sans-serif;font-size:10px;padding:4px 10px;border:1px solid var(--border);border-radius:100px;background:transparent;color:var(--text-sub);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.tb{font-family:'Inter','Noto Sans KR',sans-serif;font-size:10px;padding:4px 10px;border:1px solid var(--border);border-radius:100px;background:transparent;color:var(--text-sub);cursor:pointer;transition:all 0.15s;white-space:nowrap;position:relative;}
 .tb:hover{border-color:var(--text-mid);color:var(--text-mid);}.tb.on{background:var(--ink);border-color:var(--ink);color:#fff;}
+/* cont.69 S2: Default 마커 — 현재 preset의 default 옵션 표시 */
+.tb.dft::after{content:'';position:absolute;top:3px;right:5px;width:5px;height:5px;border-radius:50%;background:#bbb;pointer-events:none;}
+.tb.on.dft::after{display:none;}
+.reset-btn{font-family:'Inter','Noto Sans KR',sans-serif;font-size:13px;padding:3px 9px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text-mid);cursor:pointer;transition:all 0.15s;line-height:1;margin-right:6px;}
+.reset-btn:hover{border-color:var(--text-dark);color:var(--text-dark);}
 .slider-wrap{display:flex;align-items:center;gap:8px;}
 .slider-wrap input[type="range"]{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:var(--border);border-radius:2px;outline:none;}
 .slider-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--ink);cursor:pointer;border:2px solid var(--surface);box-shadow:0 1px 3px rgba(0,0,0,0.15);}
@@ -331,7 +336,7 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
       <button class="mode-btn" id="modeBoth" onclick="setMode('both')" data-i18n="header.both">Both</button>
     </div>
     <div class="mode-toggle"><button class="mode-btn on" id="langEn" onclick="setLang('en')" style="font-size:10px;padding:4px 10px">EN</button><button class="mode-btn" id="langKo" onclick="setLang('ko')" style="font-size:10px;padding:4px 10px">KO</button></div>
-    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.26</span>
+    <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><button class="reset-btn" id="resetBtn" onclick="resetToDefault()" title="Reset to default" data-i18n-title="reset.title">↺</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.26</span>
   </div>
 </header>
 <div class="app">
@@ -747,7 +752,8 @@ en:{
     totalLen:'Total Length',halfChest:'Half Chest',halfHem:'Half Hem Width',shoulderW:'Shoulder Width',sleeveLen:'Sleeve Length',
     halfWaist:'Half Waist',halfHip:'Half Hip',bandH:'Band Height',
     rise:'Rise',inseam:'Inseam',hemW:'Hem Width'},
-  alert:{specCopied:'Spec sheet copied',loadFail:'File load failed: '}
+  alert:{specCopied:'Spec sheet copied',loadFail:'File load failed: '},
+  reset:{title:'Reset to default'}
 },
 ko:{
   header:{panel:'패널',direct:'직접 편집',both:'둘 다'},
@@ -922,7 +928,8 @@ ko:{
     totalLen:'총기장',halfChest:'가슴둘레(반)',halfHem:'밑단폭(반)',shoulderW:'어깨폭',sleeveLen:'소매기장',
     halfWaist:'허리둘레(반)',halfHip:'힙둘레(반)',bandH:'밴드높이',
     rise:'밑위길이',inseam:'인심길이',hemW:'밑단폭'},
-  alert:{specCopied:'스펙시트 복사 완료',loadFail:'파일 로드 실패: '}
+  alert:{specCopied:'스펙시트 복사 완료',loadFail:'파일 로드 실패: '},
+  reset:{title:'기본값으로 복원'}
 }
 };
 function t(section,key){ return LANG[curLang]?.[section]?.[key] ?? LANG.en?.[section]?.[key] ?? key; }
@@ -930,6 +937,11 @@ function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const[sec,key]=el.getAttribute('data-i18n').split('.');
     el.textContent=t(sec,key);
+  });
+  // cont.69 S2: data-i18n-title (tooltip 번역) — Reset 버튼 등
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{
+    const[sec,key]=el.getAttribute('data-i18n-title').split('.');
+    el.title=t(sec,key);
   });
   // 동적 요소 재렌더
   if(typeof DesignEl!=='undefined') DesignEl.updateList();
@@ -956,6 +968,8 @@ function applyLang(){
   });
   // html lang 속성
   document.documentElement.lang=curLang==='ko'?'ko':'en';
+  // cont.69 S2: Default 마커 — panel 빌드 후 호출 (applyLang은 init/lang 변경 시 호출)
+  if(typeof updateRecommendedMarkers==='function') updateRecommendedMarkers();
 }
 function setLang(lang){ curLang=lang; document.getElementById('langEn').classList.toggle('on',lang==='en'); document.getElementById('langKo').classList.toggle('on',lang==='ko'); applyLang(); }
 
@@ -992,7 +1006,11 @@ const S={
   pantsCuff:'plain',pantsCrease:'none',
   fillColor:'',
   // cont.68 옵션 H: BodyComp.geometry() sweatshirt 분기 트리거용 명시적 preset 이름
-  presetName:''
+  presetName:'',
+  // cont.69 S2: Default 마커 + Reset 버튼 — 현재 active preset index (top/skirt/pants 분리)
+  currentPresetIdx:0,
+  currentSkirtIdx:0,
+  currentPantsIdx:0
 };
 
 const DEFAULT_STATE=JSON.parse(JSON.stringify(S));
@@ -1228,6 +1246,35 @@ function setMode(m){
 // ───────────────────────────────────────────────────────────────
 // PANEL UI
 // ───────────────────────────────────────────────────────────────
+
+// cont.69 S2: Default 마커 갱신 — 현재 active preset의 default 값과 일치하는 토글에 dot 표시.
+// PresetModule.DB(top) / SKIRT_DB / PANTS_DB 자동 분기. data-p 토글만 처리 (data-neck/collar 제외).
+function updateRecommendedMarkers(){
+  const gType = (typeof getGarmentType==='function') ? getGarmentType() : 'top';
+  let DB, idx;
+  if(gType==='skirt'){DB=PresetModule.SKIRT_DB; idx=S.currentSkirtIdx;}
+  else if(gType==='pants'){DB=PresetModule.PANTS_DB; idx=S.currentPantsIdx;}
+  else {DB=PresetModule.DB; idx=S.currentPresetIdx;}
+  if(typeof idx!=='number'||!DB||!DB[idx])return;
+  const defaults=DB[idx].s;
+  document.querySelectorAll('.trow[data-p]').forEach(r=>{
+    const field=r.dataset.p;
+    const defVal=defaults[field];
+    r.querySelectorAll('.tb').forEach(b=>{
+      if(defVal!==undefined && b.dataset.v===String(defVal)) b.classList.add('dft');
+      else b.classList.remove('dft');
+    });
+  });
+}
+
+// cont.69 S2: Reset to default — 현재 garment type의 active preset 다시 적용
+function resetToDefault(){
+  const gType=(typeof getGarmentType==='function')?getGarmentType():'top';
+  if(gType==='skirt') PresetModule.applySkirt(S.currentSkirtIdx||0);
+  else if(gType==='pants') PresetModule.applyPants(S.currentPantsIdx||0);
+  else PresetModule.apply(S.currentPresetIdx||0);
+}
+
 function syncToggle(p,v){
   const r=document.querySelector('.trow[data-p="'+p+'"]');if(!r)return;
   r.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
@@ -5208,6 +5255,7 @@ const PresetModule={
       S.shoulderType='standard';S.neckDetail='none';
       Object.assign(S,p);
       S.presetName=name; // cont.68: BodyComp.geometry() sweatshirt 분기 트리거
+      S.currentPresetIdx=idx; // cont.69 S2: Default 마커 추적
       migrateState(S);
       {const ds=decomposeNeckShape(S.neckShape);Object.assign(S,ds);}
       const d=decomposeNeckFinish(S.neckFinish||'rib');
@@ -5217,6 +5265,7 @@ const PresetModule={
       SD.forEach(([id,k,vid,fmt])=>{document.getElementById(id).value=S[k];document.getElementById(vid).textContent=fmt(S[k]);});
       updateNeckSubPanels(); syncCollarBtns();
       DesignEl.updateList(); updateAllCompat(); draw(true);
+      updateRecommendedMarkers(); // cont.69 S2: Default dot 마커 갱신
     });
   },
   // ── 스커트 프리셋 ──
@@ -5234,9 +5283,11 @@ const PresetModule={
     const from={};SD.forEach(([id,k])=>{from[k]=S[k];});
     CascadeVis.morphPreset(from,()=>{
       Object.assign(S,this.SKIRT_DB[idx].s);
+      S.currentSkirtIdx=idx; // cont.69 S2
       Object.keys(S).forEach(k=>syncToggle(k,S[k]));
       SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
       draw(true);
+      updateRecommendedMarkers(); // cont.69 S2
     });
   },
   // ── 팬츠 프리셋 ──
@@ -5256,9 +5307,11 @@ const PresetModule={
     const from={};SD.forEach(([id,k])=>{from[k]=S[k];});
     CascadeVis.morphPreset(from,()=>{
       Object.assign(S,this.PANTS_DB[idx].s);
+      S.currentPantsIdx=idx; // cont.69 S2
       Object.keys(S).forEach(k=>syncToggle(k,S[k]));
       SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
       draw(true);
+      updateRecommendedMarkers(); // cont.69 S2
     });
   },
   init(){
@@ -6774,6 +6827,7 @@ const CardFeed={
     SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
     updateNeckSubPanels();syncCollarBtns();
     updateAllCompat();draw();
+    if(typeof updateRecommendedMarkers==='function') updateRecommendedMarkers(); // cont.69 S2: panel 진입 시 dft 마커 갱신
     History.push();
     // Transition: variants out, engine in
     const varEl=document.getElementById('app-variants');
