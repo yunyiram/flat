@@ -1,0 +1,39 @@
+{
+  "category": "polo",
+  "version": "0.1",
+  "presets": [
+    {
+      "name": "polo",
+      "cat": "polo",
+      "alsoCat": null,
+      "s": {
+        "neckShape": "round",
+        "neckFinish": "collar_polo",
+        "neckDepth": 30,
+        "neckCurve": 75,
+        "neckWidth": 40,
+        "fit": "regular",
+        "fitW": 50,
+        "shoulderType": "standard",
+        "shoulderExtra": 0,
+        "shoulderSlope": 40,
+        "sleeveType": "setin",
+        "sleeveLen": "short",
+        "sleeveLength": 32,
+        "sleeveWidth": 45,
+        "sleeveCuff": "rib",
+        "sideSeam": "yes",
+        "silhouette": "straight",
+        "hipFlare": 0,
+        "dart": "none",
+        "hemShape": "straight",
+        "hemFinish": "folded",
+        "bodyLen": 48,
+        "chest": 52,
+        "pocket": "none",
+        "trimming": "none",
+        "stitchType": "single"
+      }
+    }
+  ]
+}

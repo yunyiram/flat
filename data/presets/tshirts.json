@@ -1,0 +1,39 @@
+{
+  "category": "tshirts",
+  "version": "0.1",
+  "presets": [
+    {
+      "name": "crewTee",
+      "cat": "tshirts",
+      "alsoCat": null,
+      "s": {
+        "neckShape": "round",
+        "neckFinish": "rib",
+        "neckDepth": 35,
+        "neckCurve": 75,
+        "neckWidth": 40,
+        "shoulderType": "standard",
+        "shoulderSlope": 40,
+        "shoulderExtra": 0,
+        "sleeveType": "setin",
+        "sleeveLen": "short",
+        "sleeveLength": 32,
+        "sleeveWidth": 45,
+        "sleeveCuff": "plain",
+        "sideSeam": "yes",
+        "silhouette": "slight_a",
+        "hipFlare": 4,
+        "dart": "none",
+        "hemShape": "straight",
+        "hemFinish": "folded",
+        "fit": "regular",
+        "fitW": 50,
+        "bodyLen": 45,
+        "chest": 50,
+        "pocket": "none",
+        "trimming": "none",
+        "stitchType": "single"
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "version": "0.1",
+  "spec": "B6.2 lift-and-shift",
+  "createdDate": "2026-04-28",
+  "source": [
+    "docs/flat_data_separation_presets_spec.md v0.2",
+    "flat-v6.html PresetModule.DB / SKIRT_DB / PANTS_DB"
+  ],
+  "lift_and_shift_strategy": "현 PresetModule.DB schema + enum 그대로 JSON으로 추출. 회귀 0 우선. spec v0.2 의 5 카테고리 reorganize + sixatomic-style enum 표준화는 후속 spec.",
+  "categories": [
+    {
+      "id": "tshirts",
+      "name": { "en": "T-Shirts", "ko": "티셔츠" },
+      "filePath": "presets/tshirts.json",
+      "presetCount": 1,
+      "presets": ["crewTee"]
+    },
+    {
+      "id": "polo",
+      "name": { "en": "Polo", "ko": "폴로" },
+      "filePath": "presets/polo.json",
+      "presetCount": 1,
+      "presets": ["polo"]
+    },
+    {
+      "id": "shirtsBlouses",
+      "name": { "en": "Shirts & Blouses", "ko": "셔츠/블라우스" },
+      "filePath": "presets/shirtsBlouses.json",
+      "presetCount": 1,
+      "presets": ["shirt"]
+    },
+    {
+      "id": "knitwear",
+      "name": { "en": "Knitwear", "ko": "니트" },
+      "filePath": "presets/knitwear.json",
+      "presetCount": 2,
+      "presets": ["sweater", "cardigan"]
+    },
+    {
+      "id": "sweatshirts",
+      "name": { "en": "Sweatshirts & Hoodies", "ko": "맨투맨/후드" },
+      "filePath": "presets/sweatshirts.json",
+      "presetCount": 2,
+      "presets": ["sweatshirt", "hoodie"]
+    },
+    {
+      "id": "dress",
+      "name": { "en": "Dresses", "ko": "원피스" },
+      "filePath": "presets/dress.json",
+      "presetCount": 5,
+      "presets": ["volSleeveDress", "shirtDress", "peterPanDress", "drapeDress", "slipDress"]
+    },
+    {
+      "id": "outerwear",
+      "name": { "en": "Outerwear", "ko": "아우터" },
+      "filePath": "presets/outerwear.json",
+      "presetCount": 4,
+      "presets": ["funnelCoat", "blazer", "bomber", "trench"]
+    },
+    {
+      "id": "skirt",
+      "name": { "en": "Skirts", "ko": "스커트" },
+      "filePath": "presets/skirt.json",
+      "presetCount": 8,
+      "presets": ["pencil", "aLine", "flared", "circular", "pleated", "miniSkirt", "maxiSkirt", "wrapSkirt"]
+    },
+    {
+      "id": "pants",
+      "name": { "en": "Pants", "ko": "팬츠" },
+      "filePath": "presets/pants.json",
+      "presetCount": 10,
+      "presets": ["slacks", "taperedP", "wideP", "skinnyP", "jogger", "cargoP", "bootcutP", "shortPants", "bermudaP", "baggyP"]
+    }
+  ],
+  "totalPresets": 34,
+  "schemaNote": "preset.s = state field map. enum 값은 flat-v6.html 현 사용값 그대로 (round/v/deep_v/u/square/boat/scoop/straight). spec v0.2 의 sixatomic-style enum (crew/v/scoop/...) 표준화는 후속.",
+  "futureWork": [
+    "5 카테고리 reorganize (spec v0.2 — tshirts/shirts/polo/knitwear/sweatshirts only) + dress/outerwear/skirt/pants 별도 spec 결정",
+    "sixatomic-style enum 표준화 (round → crew, deep_v → deep_v, etc.)",
+    "spec v0.2 의 32 preset 확장 (현 16 → +vneck_tee/henley_tee/pocket_tee/.../pullover_sweater/turtleneck/vest_sweater/mock_neck/half_zip 등)",
+    "loader 도입 (PresetModule.DB inline → fetch + JSON 결과로 대체)",
+    "recommendedFabricIds / activeMode / isHero / difficulty 필드 추가 (spec v0.2 schema 정합)"
+  ]
+}

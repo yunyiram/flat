@@ -1,0 +1,16 @@
+{
+  "category": "pants",
+  "version": "0.1",
+  "presets": [
+    {"name": "slacks", "s": {"pantsType": "straight", "pantsLen": 80, "pantsFlare": 0, "pantsWaist": "straight", "pantsDart": "front_back", "pantsRise": "mid", "pantsClosure": "zip_fly", "pantsFit": 50, "pantsPleat": "single", "pantsCuff": "plain", "pantsCrease": "front"}},
+    {"name": "taperedP", "s": {"pantsType": "tapered", "pantsLen": 80, "pantsFlare": -5, "pantsWaist": "straight", "pantsDart": "front_back", "pantsRise": "mid", "pantsClosure": "zip_fly", "pantsFit": 45, "pantsPleat": "none", "pantsCuff": "plain", "pantsCrease": "none"}},
+    {"name": "wideP", "s": {"pantsType": "wide", "pantsLen": 80, "pantsFlare": 15, "pantsWaist": "contour", "pantsDart": "front_back", "pantsRise": "high", "pantsClosure": "zip_fly", "pantsFit": 65, "pantsPleat": "double", "pantsCuff": "plain", "pantsCrease": "front"}},
+    {"name": "skinnyP", "s": {"pantsType": "skinny", "pantsLen": 80, "pantsFlare": -8, "pantsWaist": "straight", "pantsDart": "none", "pantsRise": "low", "pantsClosure": "zip_fly", "pantsFit": 20, "pantsPleat": "none", "pantsCuff": "plain", "pantsCrease": "none"}},
+    {"name": "jogger", "s": {"pantsType": "tapered", "pantsLen": 75, "pantsFlare": -3, "pantsWaist": "elastic", "pantsDart": "none", "pantsRise": "mid", "pantsClosure": "drawstring", "pantsFit": 60, "pantsPleat": "none", "pantsCuff": "rib", "pantsCrease": "none"}},
+    {"name": "cargoP", "s": {"pantsType": "straight", "pantsLen": 80, "pantsFlare": 2, "pantsWaist": "straight", "pantsDart": "none", "pantsRise": "mid", "pantsClosure": "zip_fly", "pantsFit": 60, "pantsPleat": "none", "pantsCuff": "plain", "pantsCrease": "none"}},
+    {"name": "bootcutP", "s": {"pantsType": "flared", "pantsLen": 85, "pantsFlare": 12, "pantsWaist": "straight", "pantsDart": "front_back", "pantsRise": "mid", "pantsClosure": "zip_fly", "pantsFit": 45, "pantsPleat": "none", "pantsCuff": "plain", "pantsCrease": "none"}},
+    {"name": "shortPants", "s": {"pantsType": "straight", "pantsLen": 28, "pantsFlare": 0, "pantsWaist": "elastic", "pantsDart": "none", "pantsRise": "mid", "pantsClosure": "drawstring", "pantsFit": 55, "pantsPleat": "none", "pantsCuff": "plain", "pantsCrease": "none"}},
+    {"name": "bermudaP", "s": {"pantsType": "straight", "pantsLen": 42, "pantsFlare": 0, "pantsWaist": "straight", "pantsDart": "front", "pantsRise": "mid", "pantsClosure": "zip_fly", "pantsFit": 50, "pantsPleat": "single", "pantsCuff": "cuffed", "pantsCrease": "front"}},
+    {"name": "baggyP", "s": {"pantsType": "baggy", "pantsLen": 78, "pantsFlare": 8, "pantsWaist": "elastic", "pantsDart": "none", "pantsRise": "high", "pantsClosure": "elastic_w", "pantsFit": 75, "pantsPleat": "none", "pantsCuff": "rib", "pantsCrease": "none"}}
+  ]
+}
