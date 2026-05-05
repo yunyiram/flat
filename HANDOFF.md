@@ -2,7 +2,7 @@
 > **모든 탭은 세션 시작 시 이 파일을 먼저 읽는다.**
 > 섹션 단위 수정만. 전체 덮어쓰기 금지 (원칙 7).
 
-마지막 수정: 2026-04-28 코드탭 cont.69 Part 3 — **S5 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS .sl-revert + 4 신규 함수: getCurrentDefaults/revertSliderToDefault/initSliderRevertButtons/updateSliderRevertOpacity + slider input listener hook + PresetModule apply hooks + CardFeed pickVariant hook). 18 slider 모두 1:1 ↺ 자동 추가, default 일치 시 opacity 0.3 / changed 시 0.9. PresetModule.DB 활용 (S2 데이터 재사용). 검증 96 case sweep NaN/Exc 0, 회귀 0, ↺ 동작 정상, EN/KO tooltip 정상. 이람 "추천 순서 가자" 자율 진행. 이전: 2026-04-28 기획탭 cont.71 — (1) 환경 회복: env_matrix.md 파일 byte 손상 의심 상황→paste→write 재인코딩으로 head 옵션 회복 검증. (2) 사고 (u)(v)(w)+(x) cont69_env_rca 통합 완료 (4 edits, 근본원인 분류: (v)(w) 는 (q) 메커니즘 변형, (u)(x) 는 신규 패턴). (3) **★ 결정 6개 해소**: tunic/rugby = 추가 안 함 (파라미터로 도달) / vest_sweater = KNITWEAR + OUTERWEAR (Phase 2) / mock_neck = T-SHIRTS + KNITWEAR / half_zip = SWEATSHIRTS + KNITWEAR / KNITWEAR Hero = pullover_sweater 확정. (4) **B6.2 spec v0.2** (`docs/flat_data_separation_presets_spec.md`) presetCount 갱신 (합계 27→32) + 이람 결정 기준 명시 ("차이 누적량"). (5) **⬆ 요청**: tops_tees 기타 프리셋 목록 (약 10개 미분류) — 코드탭이 flat-v6.html 추출 → HANDOFF "코드→기획" 채널로 전달 → 다음 기획탭 세션이 개별 분류 결정. (6) 사고 z 신규 환경 이슈 모니터: 파일 본문 한국어 1글자 깨짐 평균 파일당 1-2건 (HANDOFF, B6.2 spec, RCA 곳곳 확인). cont.72 조사/정정 우선. 이전: 2026-04-28 코드탭 cont.69 Part 2 — **S2 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS dft dot + Reset 버튼 + state currentPresetIdx + updateRecommendedMarkers/resetToDefault 함수 + i18n EN/KO + CardFeed 진입 hook). PresetModule.DB 활용 (JSON 신설 X, 자율). 검증 96 case sweep NaN/Exc 0, 회귀 0, dft 정확성 100%. 이람 검수 OK + "후속 보강 메모 잊지 말고" 강조. 후속 TODO 5개 등록 (collar/opening data-neck dft, CARD_DATA 매핑, 라벨 격상, 슬라이더 indicator). 이전: 2026-04-28 S1 완료. 백업: `docs/archive/HANDOFF-20260428-cont69-S1-step3-backup.md`. 마지막 수정: 2026-04-28 기획탭 cont.70 — (1) 사고 3개 발견 (cont69_env_rca 통합 DEFER, MCP timeout 6회 누적): **(u) 도메인 침범** (Claude 추천이 이람 다른 세션 영역 흡수 = 영상/지원사업, 사고 (h)/(o)와 다른 차원, C3 도메인 분리 위반) / **(v) MCP timeout 패턴화** (사고 (s) 1회 재시도 회복 부족 검증, 단 cont.70 후반 write_file 정상 회복 = 영구 아님 일시적) / **(w) 큰 파일 head/tail 분할 default** (HANDOFF 전체 read timeout, head 50/300은 성공). (2) Phase 3A UX/UI 1순위 결정 = "YC S26 및 S.STAGE 지원서 업데이트" 채팅으로 분업 이관 (영상 60초 + 지원사업 정리). (3) ✅ B6.2 presets.json 분리 spec v0.1 작성 완료 (`docs/flat_data_separation_presets_spec.md`, write_file + head 10 read 검증, 메모리 #16 도메인 로직 보존 직접 대응). (4) MCP 정상화 후 다음 세션 의무: archive/ read alive 검증 → cont69_env_rca에 사고 (u)(v)(w) 통합 + B6.2 spec full read 검증 + ★ 카테고리 분류 6항목 + KNITWEAR Hero 결정 + B6.1 (rules) / B6.3 (fabrics) 후속. 이전: 2026-04-27 기획탭 cont.69 Group 2 완료 — (1) 사고 (t) 통합 (2) 환경 매트릭스 v1.0 (`docs/flat_env_matrix.md`) (3) 자가검증 양식 v1.0 (`docs/flat_self_check_template.md`) (4) 탭 인계 양식 v1.0 (`docs/flat_tab_handoff_template.md`) (5) 세션 시작 SOP v1.0 (`docs/flat_session_sop.md`, 8단계 + 복잡도별 단축 + 환경별 분기 + 다른 3 양식 의존 관계) + 📏 규칙 3 보강 (SOP 호출 명시). 이전: 2026-04-27 기획탭 — **S1 (Sleeve length %) implement 착수 지시 추가** (🔴 기획→코드 cont.69 신규 서브섹션, cowork tab 의사결정 후속). 백업: `docs/archive/HANDOFF-20260427-S1-flat-handoff-backup.md`. 다음 코드탭 작업: spec sheet `docs/sixatomic_implementation_specs.md` Section 1 (S1) read → flat-v6.html SleeveComp 현재 로직 보고 → 이람 OK → implement → 검증. 그 이전: 2026-04-27 cowork tab — Sixatomic Pattern Generator (https://app.sixatomic.com/synthesis/pattern/generate) v2 라이브 감사 + 4종 base style diff + Materials/Seams/Sizes/Notes 풀 채록 + KS K 0051 표준 사이즈 입력 + audit md 재검 패치 + 코드탭용 atomic spec sheet (S1-S13) 신설 + **이람 의사결정 완료 (S1-S8 확정 진행, S9-S11 보류, Q2 = "좋은 것만 훔치고 취해서 더 나은 걸 만든다")**. 산출물: `docs/sixatomic_pattern_generate_audit.md` (Section 1-22), `docs/sixatomic_implementation_specs.md` (S1-S13). 백업: `docs/archive/HANDOFF-20260427-cowork-sixatomic-v2-backup.md`. 이전: 2026-04-26 기획탭 cont.69 Group 1.5 완료 — 원칙 17 (환경 정합성, 절차/시스템 설계 시점) 신규 등록, 외부 채팅 입장 절차 명문화, 규칙 9 (변형 vs 새 패턴 판정, 우로보로스 차단) 추가, 사고 (n)(o)(p)(q)(r)(s) 추가 RCA 보완 (cont69_env_rca 안 통합). 그 이전: 2026-04-26 cont.69 Group 1 (원칙 16 + RCA 2개 작성 + 사고 (m) 정정). 그 이전: 2026-04-23 cont.68 Step 0b. 그 이전: 2026-04-22 cont.68 Step 0a.
+마지막 수정: 2026-04-28 코드탭 cont.72 — **1순위 차단 해제: tops_tees 미분류 추출 보고** ("🔵 코드→기획" 새 서브섹션). 이람 가정 정정: PresetModule.DB의 cat:'tshirts'는 crewTee 1개만, "약 10개 미분류"는 빈 배열. spec v0.2 의 9 명시 항목 (vneck_tee 등) 모두 미래 추가. flat-v6.html 16 preset 전체 cat 분류 표 + 차이 분석 + B6.2 implement 추천 (16 prototype JSON 분리 우선). 이전: 2026-04-28 코드탭 cont.69 Part 3 — **S5 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS .sl-revert + 4 신규 함수: getCurrentDefaults/revertSliderToDefault/initSliderRevertButtons/updateSliderRevertOpacity + slider input listener hook + PresetModule apply hooks + CardFeed pickVariant hook). 18 slider 모두 1:1 ↺ 자동 추가, default 일치 시 opacity 0.3 / changed 시 0.9. PresetModule.DB 활용 (S2 데이터 재사용). 검증 96 case sweep NaN/Exc 0, 회귀 0, ↺ 동작 정상, EN/KO tooltip 정상. 이람 "추천 순서 가자" 자율 진행. 이전: 2026-04-28 기획탭 cont.71 — (1) 환경 회복: env_matrix.md 파일 byte 손상 의심 상황→paste→write 재인코딩으로 head 옵션 회복 검증. (2) 사고 (u)(v)(w)+(x) cont69_env_rca 통합 완료 (4 edits, 근본원인 분류: (v)(w) 는 (q) 메커니즘 변형, (u)(x) 는 신규 패턴). (3) **★ 결정 6개 해소**: tunic/rugby = 추가 안 함 (파라미터로 도달) / vest_sweater = KNITWEAR + OUTERWEAR (Phase 2) / mock_neck = T-SHIRTS + KNITWEAR / half_zip = SWEATSHIRTS + KNITWEAR / KNITWEAR Hero = pullover_sweater 확정. (4) **B6.2 spec v0.2** (`docs/flat_data_separation_presets_spec.md`) presetCount 갱신 (합계 27→32) + 이람 결정 기준 명시 ("차이 누적량"). (5) **⬆ 요청**: tops_tees 기타 프리셋 목록 (약 10개 미분류) — 코드탭이 flat-v6.html 추출 → HANDOFF "코드→기획" 채널로 전달 → 다음 기획탭 세션이 개별 분류 결정. (6) 사고 z 신규 환경 이슈 모니터: 파일 본문 한국어 1글자 깨짐 평균 파일당 1-2건 (HANDOFF, B6.2 spec, RCA 곳곳 확인). cont.72 조사/정정 우선. 이전: 2026-04-28 코드탭 cont.69 Part 2 — **S2 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS dft dot + Reset 버튼 + state currentPresetIdx + updateRecommendedMarkers/resetToDefault 함수 + i18n EN/KO + CardFeed 진입 hook). PresetModule.DB 활용 (JSON 신설 X, 자율). 검증 96 case sweep NaN/Exc 0, 회귀 0, dft 정확성 100%. 이람 검수 OK + "후속 보강 메모 잊지 말고" 강조. 후속 TODO 5개 등록 (collar/opening data-neck dft, CARD_DATA 매핑, 라벨 격상, 슬라이더 indicator). 이전: 2026-04-28 S1 완료. 백업: `docs/archive/HANDOFF-20260428-cont69-S1-step3-backup.md`. 마지막 수정: 2026-04-28 기획탭 cont.70 — (1) 사고 3개 발견 (cont69_env_rca 통합 DEFER, MCP timeout 6회 누적): **(u) 도메인 침범** (Claude 추천이 이람 다른 세션 영역 흡수 = 영상/지원사업, 사고 (h)/(o)와 다른 차원, C3 도메인 분리 위반) / **(v) MCP timeout 패턴화** (사고 (s) 1회 재시도 회복 부족 검증, 단 cont.70 후반 write_file 정상 회복 = 영구 아님 일시적) / **(w) 큰 파일 head/tail 분할 default** (HANDOFF 전체 read timeout, head 50/300은 성공). (2) Phase 3A UX/UI 1순위 결정 = "YC S26 및 S.STAGE 지원서 업데이트" 채팅으로 분업 이관 (영상 60초 + 지원사업 정리). (3) ✅ B6.2 presets.json 분리 spec v0.1 작성 완료 (`docs/flat_data_separation_presets_spec.md`, write_file + head 10 read 검증, 메모리 #16 도메인 로직 보존 직접 대응). (4) MCP 정상화 후 다음 세션 의무: archive/ read alive 검증 → cont69_env_rca에 사고 (u)(v)(w) 통합 + B6.2 spec full read 검증 + ★ 카테고리 분류 6항목 + KNITWEAR Hero 결정 + B6.1 (rules) / B6.3 (fabrics) 후속. 이전: 2026-04-27 기획탭 cont.69 Group 2 완료 — (1) 사고 (t) 통합 (2) 환경 매트릭스 v1.0 (`docs/flat_env_matrix.md`) (3) 자가검증 양식 v1.0 (`docs/flat_self_check_template.md`) (4) 탭 인계 양식 v1.0 (`docs/flat_tab_handoff_template.md`) (5) 세션 시작 SOP v1.0 (`docs/flat_session_sop.md`, 8단계 + 복잡도별 단축 + 환경별 분기 + 다른 3 양식 의존 관계) + 📏 규칙 3 보강 (SOP 호출 명시). 이전: 2026-04-27 기획탭 — **S1 (Sleeve length %) implement 착수 지시 추가** (🔴 기획→코드 cont.69 신규 서브섹션, cowork tab 의사결정 후속). 백업: `docs/archive/HANDOFF-20260427-S1-flat-handoff-backup.md`. 다음 코드탭 작업: spec sheet `docs/sixatomic_implementation_specs.md` Section 1 (S1) read → flat-v6.html SleeveComp 현재 로직 보고 → 이람 OK → implement → 검증. 그 이전: 2026-04-27 cowork tab — Sixatomic Pattern Generator (https://app.sixatomic.com/synthesis/pattern/generate) v2 라이브 감사 + 4종 base style diff + Materials/Seams/Sizes/Notes 풀 채록 + KS K 0051 표준 사이즈 입력 + audit md 재검 패치 + 코드탭용 atomic spec sheet (S1-S13) 신설 + **이람 의사결정 완료 (S1-S8 확정 진행, S9-S11 보류, Q2 = "좋은 것만 훔치고 취해서 더 나은 걸 만든다")**. 산출물: `docs/sixatomic_pattern_generate_audit.md` (Section 1-22), `docs/sixatomic_implementation_specs.md` (S1-S13). 백업: `docs/archive/HANDOFF-20260427-cowork-sixatomic-v2-backup.md`. 이전: 2026-04-26 기획탭 cont.69 Group 1.5 완료 — 원칙 17 (환경 정합성, 절차/시스템 설계 시점) 신규 등록, 외부 채팅 입장 절차 명문화, 규칙 9 (변형 vs 새 패턴 판정, 우로보로스 차단) 추가, 사고 (n)(o)(p)(q)(r)(s) 추가 RCA 보완 (cont69_env_rca 안 통합). 그 이전: 2026-04-26 cont.69 Group 1 (원칙 16 + RCA 2개 작성 + 사고 (m) 정정). 그 이전: 2026-04-23 cont.68 Step 0b. 그 이전: 2026-04-22 cont.68 Step 0a.
 
 ---
 
@@ -413,6 +413,75 @@ Q1 Phase 3-tier 동의 / Q2 Six Atomic (다) / Q3 b만
 ---
 
 ## 🔵 코드 → 기획
+
+### 🟡 cont.72 — tops_tees 미분류 추출 보고 (2026-04-28, 1순위 차단 해제)
+
+**지시:** cont.72 기획탭 1순위 — `flat-v6.html` PresetModule.DB의 tops_tees 카테고리 미분류 preset 약 10개 추출 + 핵심 구조 요약. cont.71에서 차단.
+
+**중요 정정 — 이람 가정 vs 실제:**
+
+| 항목 | 이람 가정 (cont.71 spec v0.2) | 실제 (코드 추출) |
+|---|---|---|
+| tops_tees 기타 preset 수 | "약 10개 미분류" | **0개** (cat:'tshirts'는 crewTee 1개만) |
+| 의미 | flat-v6.html에 미분류 항목 다수 존재 | **flat-v6.html에는 cat:'tshirts'에 crewTee 1개만 등록**. spec v0.2 의 9개 명시 (vneck_tee, henley_tee, pocket_tee, ringer_tee, raglan_tee, longline_tee, tank_top, camisole) **모두 미래 추가 항목** — 현재 flat-v6.html에 없음 |
+
+**즉:** "★기타 tops_tees = 코드탭 목록 의존"의 코드탭 목록은 **빈 배열**. spec v0.2 의 T-SHIRTS 11 preset은 9 명시 + 1 (crewTee) = 10. "기타" 추가 항목을 PresetModule.DB에서 가져올 게 없음. 11번째 preset은 이람이 별도 선택해야 함.
+
+**flat-v6.html PresetModule.DB 16 preset 전체 추출 (cat 분류):**
+
+| idx | name | cat | shoulderType | sleeveType | sleeveLen | sleeveCuff | sleeveShape | neckShape | neckFinish | closure | closureStyle | pocket | dart | 특이 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0 | crewTee | tshirts | standard | setin | short | plain | straight | round | rib | none | single | none | none | — |
+| 1 | polo | polo | standard | setin | short | rib | straight | round | collar_polo | none | single | none | none | rib cuff |
+| 2 | shirt | shirtsBlouses | standard | setin | long | barrel | straight | round | collar | button | single | none | none | shirt_tail hem |
+| 3 | sweater | knitwear | standard | setin | long | rib | straight | round | rib | none | single | none | none | hem rib |
+| 4 | cardigan | knitwear (alsoCat:outerwear) | standard | setin | long | rib | straight | v | collar_round | button | single | patch_round | none | hem rib |
+| 5 | sweatshirt | sweatshirts | dropped | raglan | long | rib | straight | round | rib | none | single | none | none | drop sh + raglan + rib hem |
+| 6 | hoodie | sweatshirts | dropped | raglan | long | rib | straight | round | hood | none | single | kangaroo | none | hood + raglan + kangaroo |
+| 7 | volSleeveDress | dress | standard | setin | elbow | plain | lantern | u | binding | none | single | none | bust | u-neck + lantern sleeve + a-line |
+| 8 | shirtDress | dress | standard | setin | short | rolled | straight | round | collar | button | single | chest_one | waist | shirt collar + waist dart + a-line |
+| 9 | peterPanDress | dress | standard | setin | short | plain | puff | round | collar_peter | none | single | none | bust | peter pan collar + puff sleeve |
+| 10 | drapeDress | dress | standard | setin | sleeveless | plain | straight | cowl | collar_cowl | none | single | none | bust | cowl + slim straight |
+| 11 | slipDress | dress | narrow (strapType:spaghetti) | setin | sleeveless | plain | straight | v | binding | none | single | none | bust | spaghetti strap |
+| 12 | funnelCoat | outerwear | standard | setin | long | plain | straight | round | collar_funnel | none | single | welt | none | funnel collar + a-line |
+| 13 | blazer | outerwear | standard | setin | long | plain | straight | v | collar_notched | button | single | flap | bust | notched lapel + flap pocket |
+| 14 | bomber | outerwear | dropped | raglan | long | rib | straight | round | collar_band | zip | single | welt | none | band collar + zip + raglan |
+| 15 | trench | outerwear | standard | raglan | long | plain | straight | v | collar_peaked | button | **double** | welt | none | peaked lapel + double-breasted + raglan |
+
+**카테고리별 카운트:**
+- tshirts: 1 (crewTee)
+- polo: 1 (polo)
+- shirtsBlouses: 1 (shirt)
+- knitwear: 2 (sweater, cardigan — cardigan에 alsoCat:outerwear)
+- sweatshirts: 2 (sweatshirt, hoodie)
+- dress: 5 (volSleeveDress, shirtDress, peterPanDress, drapeDress, slipDress)
+- outerwear: 4 (funnelCoat, blazer, bomber, trench)
+
+**합계: 16 preset.** spec v0.2의 T-SHIRTS=11/SHIRTS=4/POLO=2/KNITWEAR=8/SWEATSHIRTS=5 = 30 (top wear 합계, dress/outerwear 별도) 와는 큰 차이. **현 flat-v6.html은 spec v0.2 가 가정한 32 preset 확장의 시작점 (16 → 32)**.
+
+**기획탭 다음 결정 사항 (이람):**
+1. spec v0.2 의 T-SHIRTS 11 = 9 명시 + crewTee (existing) + 1 추가? 또는 9 명시 + crewTee = 10? 11번째는 어떤 preset?
+2. spec v0.2 의 SHIRTS 4 (button_down/camp_collar/band_collar/blouse) + tunic = 현재 shirt 1개에서 어떻게 확장? (camp_collar/band_collar는 collar_finish만 다른 same shirt 변형이라 차이 누적량 부족 가능)
+3. spec v0.2 의 KNITWEAR 8 (pullover_sweater + turtleneck + cardigan + vest_sweater + mock_neck + ?) — turtleneck/mock_neck/vest_sweater는 현재 PresetModule.DB에 없음. 추가 등록 필요
+4. spec v0.2 의 SWEATSHIRTS 5 (crewneck_sweat/hoodie/zip_hoodie + half_zip + ?) — zip_hoodie는 현재 hoodie + closure='zip' 변형으로 도달 가능
+
+**정합 분석 (B6.2 spec implement 시점):**
+- 현 flat-v6.html PresetModule.DB의 16 preset = **prototype data** (B6.2 § 3 prototype 5 + 11 = 16과 정합)
+- spec v0.2 의 32 preset 확장 = **B6.2 implement 후 확장 spec** (별도 Phase)
+- B6.2 implement 시점에 16 preset → JSON 분리 + spec v0.2 의 추가 16 preset 등록
+
+**원칙 11 코드탭 추가 의견 (떠넘기기 X, 정답 제시):**
+- 현 16 preset은 PresetModule.DB에 이미 있고 SVG 렌더 작동 검증됨 (cont.65 sweep, cont.68 옵션 H 등)
+- spec v0.2 의 추가 16 preset (vneck_tee, henley_tee, tank_top 등)은 **새 SVG 렌더 검증 필요** = 큰 작업 (각 preset별 곡선 검수)
+- 추천: B6.2 implement = **현 16 preset의 JSON 분리만 우선** (회귀 0 보장). 추가 16 preset 등록은 별도 Phase (사실상 Phase 4 옵션 H 확장과 겹침)
+- 이람 결정 영역: spec v0.2 의 32 preset 일괄 vs 16 → 32 단계적
+
+**다음 기획탭 액션:**
+- 본 추출 결과 + 정정 사항 read
+- spec v0.2 의 11/4/2/8/5 카운트 vs 현 1/1/1/2/2 카운트 갭 검토
+- B6.2 implement spec 확정 (16 prototype 분리 우선 vs 32 일괄)
+
+---
 
 ### 🟢 cont.69 Part 3 — S5 완료 (2026-04-28, commit 대기)
 
