@@ -141,19 +141,19 @@
 - cap/short/elbow/threequarter cuff 정밀화 (Phase 4 SleeveComp 재구성)
 
 ### S2 후속
-- collar 22종 (data-neck=B) dft 미적용
-- opening 12종 (data-neck=C) dft 미적용
-- CARD_DATA presetIdx 매핑 (5 카드 모두 idx=0)
-- 라벨 "Default" → "Recommended" (Phase 3B 검증 후)
-- 슬라이더 default indicator (S5 통합)
+- ~~collar 22종 (data-neck=B) dft 미적용~~ ✅ cont.72 Part 5 해소
+- ~~opening 12종 (data-neck=C) dft 미적용~~ ✅ cont.72 Part 5 해소
+- ~~CARD_DATA presetIdx 매핑 (5 카드 모두 idx=0)~~ ✅ cont.72 Part 5 해소 (fuzzy match)
+- 라벨 "Default" → "Recommended" (Phase 3B 검증 후) — 보존
+- ~~슬라이더 default indicator (S5 통합)~~ ✅ cont.72 Part 5 해소
 
 ### S5 후속
-- slider thumb dot indicator (default 위치 시각)
-- skirt/pants slider 별도 검증
+- ~~slider thumb dot indicator (default 위치 시각)~~ ✅ cont.72 Part 5 해소
+- skirt/pants slider 별도 검증 — 자율 후순위
 
 ### S8 후속
-- collapse 상태 localStorage 저장
-- skirt/pants 메타-그룹
+- ~~collapse 상태 localStorage 저장~~ ✅ cont.72 Part 5 해소
+- skirt/pants 메타-그룹 — 자율 후순위
 
 ### B6.2 후속
 - Loader 도입 (PresetModule.DB inline 제거 + fetch)

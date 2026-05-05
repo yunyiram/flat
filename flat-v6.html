@@ -73,6 +73,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .sl-revert{font-size:11px;padding:1px 4px;border:none;background:transparent;color:var(--text-mid);cursor:pointer;opacity:0.3;transition:opacity 0.15s,color 0.15s;line-height:1;font-family:'Inter','Noto Sans KR',sans-serif;}
 .sl-revert:hover{opacity:1;color:var(--text-dark);}
 .sl-revert.changed{opacity:0.9;color:var(--text-dark);}
+/* cont.72 보강: slider thumb default 위치 시각 표시 — track 위 작은 dot */
+.slider-track-wrap{position:relative;flex:1;display:flex;align-items:center;}
+.slider-track-wrap input[type="range"]{flex:1;}
+.slider-default-mark{position:absolute;width:2px;height:7px;background:#bbb;top:50%;transform:translateY(-50%);pointer-events:none;border-radius:1px;}
 .canvas{background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;}
 .sketch-wrap{display:flex;gap:28px;align-items:flex-start;}
 .sketch-col{display:flex;flex-direction:column;align-items:center;}
@@ -988,7 +992,8 @@ function applyLang(){
   // cont.69 S5: slider revert 버튼 init + opacity 갱신
   if(typeof initSliderRevertButtons==='function') initSliderRevertButtons();
   if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity();
-  // cont.69 S8: 메타-그룹 init (Details default collapsed)
+  if(typeof updateSliderDefaultMarks==='function') updateSliderDefaultMarks(); // cont.72 보강: slider thumb default mark
+  // cont.69 S8: 메타-그룹 init (Details default collapsed, localStorage restore)
   if(typeof initMetaGroups==='function') initMetaGroups();
 }
 function setLang(lang){ curLang=lang; document.getElementById('langEn').classList.toggle('on',lang==='en'); document.getElementById('langKo').classList.toggle('on',lang==='ko'); applyLang(); }
@@ -1268,7 +1273,23 @@ function setMode(m){
 // ───────────────────────────────────────────────────────────────
 
 // cont.69 S2: Default 마커 갱신 — 현재 active preset의 default 값과 일치하는 토글에 dot 표시.
-// PresetModule.DB(top) / SKIRT_DB / PANTS_DB 자동 분기. data-p 토글만 처리 (data-neck/collar 제외).
+// PresetModule.DB(top) / SKIRT_DB / PANTS_DB 자동 분기.
+// cont.72 보강: data-neck="B" (collar 22) + data-neck="C" (opening 12) 매핑 추가.
+const NECKFINISH_TO_COLLAR = { // neckFinish state → data-neck="B" enum
+  'collar':'shirt', 'collar_polo':'polo', 'collar_band':'band',
+  'collar_notched':'notched', 'collar_shawl':'shawl', 'collar_peaked':'peaked',
+  'collar_round':'round_lapel', 'collar_peter':'peter', 'collar_sailor':'sailor',
+  'collar_funnel':'funnel', 'collar_convertible':'convertible',
+  'collar_china':'mock', 'collar_mandarin':'mock',
+  'collar_wing':'wing', 'collar_cowl':'cowl', 'collar_eton':'eton',
+  'collar_bertha':'bertha', 'collar_puritan':'puritan', 'collar_bow':'bow',
+  'turtle':'turtle', 'mock':'mock', 'hood':'hood',
+  'rib':'none', 'binding':'none', 'raw':'none' // 칼라 없음
+};
+const CLOSURE_TO_OPENING = { // closure state → data-neck="C" enum
+  'none':'pullover', 'button':'full_button', 'zip':'full_zip',
+  'snap':'snap', 'hidden':'pullover', 'wrap':'wrap'
+};
 function updateRecommendedMarkers(){
   const gType = (typeof getGarmentType==='function') ? getGarmentType() : 'top';
   let DB, idx;
@@ -1277,6 +1298,7 @@ function updateRecommendedMarkers(){
   else {DB=PresetModule.DB; idx=S.currentPresetIdx;}
   if(typeof idx!=='number'||!DB||!DB[idx])return;
   const defaults=DB[idx].s;
+  // 1. data-p 토글 (기존)
   document.querySelectorAll('.trow[data-p]').forEach(r=>{
     const field=r.dataset.p;
     const defVal=defaults[field];
@@ -1285,6 +1307,39 @@ function updateRecommendedMarkers(){
       else b.classList.remove('dft');
     });
   });
+  // 2. data-neck="B" — collar 22종 (cont.72 보강)
+  const collarRow = document.querySelector('.trow[data-neck="B"]');
+  if(collarRow){
+    const collarVal = NECKFINISH_TO_COLLAR[defaults.neckFinish];
+    collarRow.querySelectorAll('.tb').forEach(b=>{
+      if(collarVal!==undefined && b.dataset.v===collarVal) b.classList.add('dft');
+      else b.classList.remove('dft');
+    });
+  }
+  // 3. data-neck="C" — opening 12종 (cont.72 보강)
+  const openingRow = document.querySelector('.trow[data-neck="C"]');
+  if(openingRow){
+    const closureVal = defaults.closure || 'none';
+    const openingVal = CLOSURE_TO_OPENING[closureVal];
+    openingRow.querySelectorAll('.tb').forEach(b=>{
+      if(openingVal!==undefined && b.dataset.v===openingVal) b.classList.add('dft');
+      else b.classList.remove('dft');
+    });
+  }
+}
+
+// cont.72 보강: CARD_DATA 진입 시 가장 유사한 preset idx 찾기 (fuzzy match)
+// state field 일치도 가장 높은 PresetModule.DB idx 반환. S2 dft 정확도 향상.
+function findClosestPresetIdx(state){
+  let bestIdx=0, bestScore=-1;
+  PresetModule.DB.forEach((p,i)=>{
+    let score=0;
+    Object.keys(p.s).forEach(k=>{
+      if(state[k]===p.s[k]) score++;
+    });
+    if(score>bestScore){bestScore=score; bestIdx=i;}
+  });
+  return bestIdx;
 }
 
 // cont.69 S2: Reset to default — 현재 garment type의 active preset 다시 적용
@@ -1348,9 +1403,38 @@ function updateSliderRevertOpacity(){
   });
 }
 
+// cont.72 보강: slider track에 default 위치 시각 mark (S5 후속 TODO)
+function updateSliderDefaultMarks(){
+  const defaults=getCurrentDefaults();
+  if(!defaults) return;
+  document.querySelectorAll('.slider-wrap').forEach(wrap=>{
+    const input=wrap.querySelector('input[type="range"]');
+    if(!input||!input.id?.startsWith('sl_')) return;
+    const k=input.id.replace(/^sl_/,'');
+    // 기존 mark 제거
+    wrap.querySelector('.slider-default-mark')?.remove();
+    if(defaults[k]===undefined) return;
+    const min=+input.min, max=+input.max, defVal=defaults[k];
+    if(typeof defVal!=='number'||isNaN(defVal)) return;
+    const pct=((defVal-min)/(max-min))*100;
+    if(pct<0||pct>100) return;
+    // input 부모에 relative 보장
+    if(getComputedStyle(wrap).position==='static') wrap.style.position='relative';
+    const mark=document.createElement('div');
+    mark.className='slider-default-mark';
+    // input의 영역 안에서 % 위치. input의 left offset + width × pct/100
+    // 단순화: input의 컨테이너 (slider-wrap) 안에서 input의 left + (input width * pct / 100)
+    // 정확 계산은 input geometry. slider-wrap에 absolute position.
+    mark.style.left=`calc(${pct}% )`;
+    // input 다음 sibling으로 추가 (input 위에 layered)
+    input.insertAdjacentElement('afterend',mark);
+  });
+}
+
 // cont.69 S8: 메타-그룹 collapse toggle (Design/Fit/Details)
 // DOM 순서 기반 — metaEl 다음 ~ 다음 메타-헤더 직전의 모든 .psec sweep (nesting 무관)
-function toggleMetaGroup(metaEl){
+// cont.72 보강: localStorage 저장 (S8 후속 TODO)
+function toggleMetaGroup(metaEl, skipSave){
   metaEl.classList.toggle('collapsed');
   const isCollapsed=metaEl.classList.contains('collapsed');
   const allMetas=[...document.querySelectorAll('.psec-meta')];
@@ -1361,15 +1445,32 @@ function toggleMetaGroup(metaEl){
     const beforeNext=nextMeta ? (nextMeta.compareDocumentPosition(p) & Node.DOCUMENT_POSITION_PRECEDING) : true;
     if(afterThis && beforeNext) p.style.display=isCollapsed?'none':'';
   });
+  if(!skipSave && typeof saveMetaGroupStates==='function') saveMetaGroupStates();
+}
+
+// cont.72 보강: 메타-그룹 collapse 상태 localStorage 저장 (S8 후속)
+function saveMetaGroupStates(){
+  const states={};
+  document.querySelectorAll('.psec-meta').forEach(m=>{
+    states[m.dataset.metaId]=m.classList.contains('collapsed');
+  });
+  try{ localStorage.setItem('flat_meta_groups',JSON.stringify(states)); }catch(e){}
 }
 
 // cont.69 S8: 메타-그룹 init — 클릭 핸들러 + Details default collapsed
+// cont.72 보강: localStorage restore (저장 상태 우선, 없으면 default Details collapsed)
 function initMetaGroups(){
+  let savedStates=null;
+  try{ savedStates=JSON.parse(localStorage.getItem('flat_meta_groups')||'null'); }catch(e){}
   document.querySelectorAll('.psec-meta').forEach(m=>{
     if(m.dataset._inited) return;
     m.dataset._inited='1';
     m.addEventListener('click',()=>toggleMetaGroup(m));
-    if(m.dataset.metaId==='details') toggleMetaGroup(m); // Details default collapsed
+    const id=m.dataset.metaId;
+    let shouldCollapse;
+    if(savedStates && id in savedStates) shouldCollapse=savedStates[id]; // localStorage 우선
+    else shouldCollapse=(id==='details'); // default: Details collapsed
+    if(shouldCollapse !== m.classList.contains('collapsed')) toggleMetaGroup(m, true); // skipSave
   });
 }
 
@@ -5366,6 +5467,7 @@ const PresetModule={
       DesignEl.updateList(); updateAllCompat(); draw(true);
       updateRecommendedMarkers(); // cont.69 S2: Default dot 마커 갱신
       if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity(); // cont.69 S5
+      if(typeof updateSliderDefaultMarks==='function') updateSliderDefaultMarks(); // cont.72 보강
     });
   },
   // ── 스커트 프리셋 ──
@@ -5389,6 +5491,7 @@ const PresetModule={
       draw(true);
       updateRecommendedMarkers(); // cont.69 S2
       if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity(); // cont.69 S5
+      if(typeof updateSliderDefaultMarks==='function') updateSliderDefaultMarks(); // cont.72 보강
     });
   },
   // ── 팬츠 프리셋 ──
@@ -5414,6 +5517,7 @@ const PresetModule={
       draw(true);
       updateRecommendedMarkers(); // cont.69 S2
       if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity(); // cont.69 S5
+      if(typeof updateSliderDefaultMarks==='function') updateSliderDefaultMarks(); // cont.72 보강
     });
   },
   init(){
@@ -6925,6 +7029,7 @@ const CardFeed={
     const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);
     setFillColor(clr);
     setGarmentType(S.garmentType||'top');
+    if(typeof findClosestPresetIdx==='function') S.currentPresetIdx=findClosestPresetIdx(S); // cont.72 보강: fuzzy match
     Object.keys(S).forEach(k=>syncToggle(k,S[k]));
     SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
     updateNeckSubPanels();syncCollarBtns();
@@ -6932,6 +7037,7 @@ const CardFeed={
     if(typeof updateRecommendedMarkers==='function') updateRecommendedMarkers(); // cont.69 S2: panel 진입 시 dft 마커 갱신
     if(typeof initSliderRevertButtons==='function') initSliderRevertButtons(); // cont.69 S5
     if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity();
+    if(typeof updateSliderDefaultMarks==='function') updateSliderDefaultMarks(); // cont.72 보강: slider thumb default mark
     if(typeof initMetaGroups==='function') initMetaGroups(); // cont.69 S8: 메타-그룹 init
     History.push();
     // Transition: variants out, engine in
