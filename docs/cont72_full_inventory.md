@@ -149,11 +149,11 @@
 
 ### S5 후속
 - ~~slider thumb dot indicator (default 위치 시각)~~ ✅ cont.72 Part 5 해소
-- skirt/pants slider 별도 검증 — 자율 후순위
+- ~~skirt/pants slider 별도 검증~~ ✅ cont.72 Part 6 검증 (skirt 3 + pants 3 = 6 ↺ 자동 추가)
 
 ### S8 후속
 - ~~collapse 상태 localStorage 저장~~ ✅ cont.72 Part 5 해소
-- skirt/pants 메타-그룹 — 자율 후순위
+- ~~skirt/pants 메타-그룹~~ ✅ cont.72 Part 6 해소 (skirt-design/skirt-fit/skirt-details + pants-design/pants-fit/pants-details = 6 메타)
 
 ### B6.2 후속
 - Loader 도입 (PresetModule.DB inline 제거 + fetch)
