@@ -41,6 +41,12 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .psec.collapsed .psec-title{margin-bottom:0;}
 .psec.collapsed .psec-title::after{transform:rotate(-90deg);}
 .psec.collapsed>*:not(.psec-title){display:none !important;}
+/* cont.69 S8: 메타-그룹 헤더 (Design / Fit / Details) — psec 묶음 */
+.psec-meta{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:var(--text-dark);margin:18px 12px 8px;padding:8px 0 6px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;display:flex;align-items:center;gap:7px;}
+.psec-meta:first-of-type{margin-top:8px;}
+.psec-meta::before{content:'■';font-size:7px;color:var(--accent);}
+.psec-meta::after{content:'';margin-left:auto;border:3px solid transparent;border-top:4px solid var(--text-mid);opacity:0.5;transition:transform 0.15s;}
+.psec-meta.collapsed::after{transform:rotate(-90deg);}
 .pg{margin-bottom:12px;}.pg:last-child{margin-bottom:0;}
 .pg-label{font-size:11px;font-weight:500;color:var(--text-mid);margin-bottom:6px;}
 .trow{display:flex;flex-wrap:wrap;gap:4px;}
@@ -345,6 +351,7 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
 </header>
 <div class="app">
 <div class="panel" id="panelEl">
+  <div class="psec-meta" data-meta-id="design" data-i18n="meta.design">Design</div>
   <div class="psec"><div class="psec-title">Garment</div>
     <div class="pg"><div class="trow"><button class="tb on" id="gtTop" onclick="setGarmentType('top')" data-i18n="garment.top">Top</button><button class="tb" id="gtDress" onclick="setGarmentType('dress')" data-i18n="garment.dress">Dress</button><button class="tb" id="gtOuterwear" onclick="setGarmentType('outerwear')" data-i18n="garment.outerwear">Outerwear</button><button class="tb" id="gtSkirt" onclick="setGarmentType('skirt')" data-i18n="garment.skirt">Skirt</button><button class="tb" id="gtPants" onclick="setGarmentType('pants')" data-i18n="garment.pants">Pants</button></div></div>
     <div class="pg" id="coordRow" style="display:none"><div class="pg-label" data-i18n="coord.label">Bottom Coord</div><div class="trow"><button class="tb on" id="coordNone" onclick="setCoordBottom('none')" data-i18n="coord.none">None</button><button class="tb" id="coordSkirt" onclick="setCoordBottom('skirt')" data-i18n="coord.skirt">+Skirt</button><button class="tb" id="coordPants" onclick="setCoordBottom('pants')" data-i18n="coord.pants">+Pants</button></div></div>
@@ -357,6 +364,7 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
   <div class="psec"><div class="psec-title">Presets</div>
     <div class="preset-row" id="presetRow"></div>
   </div>
+  <div class="psec-meta" data-meta-id="fit" data-i18n="meta.fit">Fit</div>
   <div class="psec"><div class="psec-title">Neckline</div>
     <div class="pg"><div class="pg-label" data-i18n="neck.shape">Shape</div><div class="trow" data-p="neckShape" data-fold="6"><button class="tb on" data-v="round" data-i18n="neck.round">Round</button><button class="tb" data-v="v" data-i18n="neck.v">V-Neck</button><button class="tb" data-v="deep_v" data-i18n="neck.deep_v">Deep V</button><button class="tb" data-v="u" data-i18n="neck.u">U-Neck</button><button class="tb" data-v="square" data-i18n="neck.square">Square</button><button class="tb" data-v="boat" data-i18n="neck.boat">Boat</button><button class="tb" data-v="scoop" data-i18n="neck.scoop">Scoop</button><button class="tb" data-v="straight" data-i18n="neck.straight">Straight</button></div></div>
     <div class="pg"><div class="pg-label" data-i18n="neck.detail">Detail</div><div class="trow" data-p="neckDetail"><button class="tb on" data-v="none" data-i18n="neck.d_none">None</button><button class="tb" data-v="henley" data-i18n="neck.henley">Henley</button><button class="tb" data-v="keyhole" data-i18n="neck.keyhole">Keyhole</button><button class="tb" data-v="drape" data-i18n="neck.drape">Drape</button></div></div>
@@ -407,6 +415,7 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
     <div class="pg"><div class="pg-label" data-i18n="fit.length">Length</div><div class="slider-wrap"><input type="range" id="sl_bodyLen" min="0" max="100" value="45"><span class="sval" id="sv_bodyLen">Standard</span></div></div>
     <div class="pg"><div class="pg-label" data-i18n="fit.chest">Chest</div><div class="slider-wrap"><input type="range" id="sl_chest" min="0" max="100" value="50"><span class="sval" id="sv_chest">50</span></div></div>
   </div>
+  <div class="psec-meta" data-meta-id="details" data-i18n="meta.advanced">Details</div>
   <div class="psec"><div class="psec-title">Detail</div>
     <div class="pg"><div class="pg-label" data-i18n="detail.pocket">Pocket</div><div class="trow" data-p="pocket" data-fold="5"><button class="tb on" data-v="none" data-i18n="detail.p_none">None</button><button class="tb" data-v="chest_one" data-i18n="detail.chest1">Chest 1</button><button class="tb" data-v="chest_two" data-i18n="detail.chest2">Chest 2</button><button class="tb" data-v="patch_round" data-i18n="detail.patchRound">Round</button><button class="tb" data-v="flap" data-i18n="detail.flap">Flap</button><button class="tb" data-v="welt" data-i18n="detail.welt">Welt</button><button class="tb" data-v="zip" data-i18n="detail.zip">Zipper</button><button class="tb" data-v="kangaroo" data-i18n="detail.kangaroo">Kangaroo</button><button class="tb" data-v="jetted" data-i18n="detail.jetted">Jetted</button><button class="tb" data-v="cargo" data-i18n="detail.cargo">Cargo</button><button class="tb" data-v="seam" data-i18n="detail.seam">Seam Pocket</button></div></div>
     <div class="pg" id="pocketYRow" style="display:none"><div class="pg-label" data-i18n="detail.pocketPos">Position</div><div class="slider-wrap"><input type="range" id="sl_pocketY" min="10" max="70" value="22"><span class="sval" id="sv_pocketY">22%</span></div></div>
@@ -757,7 +766,8 @@ en:{
     halfWaist:'Half Waist',halfHip:'Half Hip',bandH:'Band Height',
     rise:'Rise',inseam:'Inseam',hemW:'Hem Width'},
   alert:{specCopied:'Spec sheet copied',loadFail:'File load failed: '},
-  reset:{title:'Reset to default'}
+  reset:{title:'Reset to default'},
+  meta:{design:'Design',fit:'Fit',advanced:'Details'}
 },
 ko:{
   header:{panel:'패널',direct:'직접 편집',both:'둘 다'},
@@ -933,7 +943,8 @@ ko:{
     halfWaist:'허리둘레(반)',halfHip:'힙둘레(반)',bandH:'밴드높이',
     rise:'밑위길이',inseam:'인심길이',hemW:'밑단폭'},
   alert:{specCopied:'스펙시트 복사 완료',loadFail:'파일 로드 실패: '},
-  reset:{title:'기본값으로 복원'}
+  reset:{title:'기본값으로 복원'},
+  meta:{design:'디자인',fit:'핏',advanced:'디테일'}
 }
 };
 function t(section,key){ return LANG[curLang]?.[section]?.[key] ?? LANG.en?.[section]?.[key] ?? key; }
@@ -977,6 +988,8 @@ function applyLang(){
   // cont.69 S5: slider revert 버튼 init + opacity 갱신
   if(typeof initSliderRevertButtons==='function') initSliderRevertButtons();
   if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity();
+  // cont.69 S8: 메타-그룹 init (Details default collapsed)
+  if(typeof initMetaGroups==='function') initMetaGroups();
 }
 function setLang(lang){ curLang=lang; document.getElementById('langEn').classList.toggle('on',lang==='en'); document.getElementById('langKo').classList.toggle('on',lang==='ko'); applyLang(); }
 
@@ -1332,6 +1345,31 @@ function updateSliderRevertOpacity(){
     const k=btn.dataset.k;
     if(defaults[k]===undefined){btn.classList.remove('changed');return;}
     btn.classList.toggle('changed',S[k]!==defaults[k]);
+  });
+}
+
+// cont.69 S8: 메타-그룹 collapse toggle (Design/Fit/Details)
+// DOM 순서 기반 — metaEl 다음 ~ 다음 메타-헤더 직전의 모든 .psec sweep (nesting 무관)
+function toggleMetaGroup(metaEl){
+  metaEl.classList.toggle('collapsed');
+  const isCollapsed=metaEl.classList.contains('collapsed');
+  const allMetas=[...document.querySelectorAll('.psec-meta')];
+  const idx=allMetas.indexOf(metaEl);
+  const nextMeta=allMetas[idx+1] || null;
+  document.querySelectorAll('.psec').forEach(p=>{
+    const afterThis=metaEl.compareDocumentPosition(p) & Node.DOCUMENT_POSITION_FOLLOWING;
+    const beforeNext=nextMeta ? (nextMeta.compareDocumentPosition(p) & Node.DOCUMENT_POSITION_PRECEDING) : true;
+    if(afterThis && beforeNext) p.style.display=isCollapsed?'none':'';
+  });
+}
+
+// cont.69 S8: 메타-그룹 init — 클릭 핸들러 + Details default collapsed
+function initMetaGroups(){
+  document.querySelectorAll('.psec-meta').forEach(m=>{
+    if(m.dataset._inited) return;
+    m.dataset._inited='1';
+    m.addEventListener('click',()=>toggleMetaGroup(m));
+    if(m.dataset.metaId==='details') toggleMetaGroup(m); // Details default collapsed
   });
 }
 
@@ -6894,6 +6932,7 @@ const CardFeed={
     if(typeof updateRecommendedMarkers==='function') updateRecommendedMarkers(); // cont.69 S2: panel 진입 시 dft 마커 갱신
     if(typeof initSliderRevertButtons==='function') initSliderRevertButtons(); // cont.69 S5
     if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity();
+    if(typeof initMetaGroups==='function') initMetaGroups(); // cont.69 S8: 메타-그룹 init
     History.push();
     // Transition: variants out, engine in
     const varEl=document.getElementById('app-variants');
@@ -7191,6 +7230,8 @@ if(new URLSearchParams(location.search).has('demo')){
   try { if(typeof PresetModule!=='undefined' && PresetModule.DB && PresetModule.DB[0]) PresetModule.apply(0); } catch(e){}
   setTimeout(()=>CascadeVis.toggle(),800);
 }
+// cont.69 S8: 메타-그룹 init (페이지 init 시점, panel 진입 전이라도 1회 실행)
+if(typeof initMetaGroups==='function') initMetaGroups();
 </script>
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 </body>
