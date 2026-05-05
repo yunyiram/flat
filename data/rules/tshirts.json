@@ -1,0 +1,28 @@
+{
+  "version": "0.1",
+  "category": "tshirts",
+  "rules": [
+    {
+      "id": "tshirts_halter_collar_block",
+      "category": "tshirts",
+      "trigger": { "axis": "neckShape", "values": ["halter"] },
+      "type": "hard",
+      "effect": {
+        "axis": "collarType",
+        "values": ["spread", "button_down", "band", "mandarin", "shawl", "shirt"],
+        "message": {
+          "en": "Halter neckline doesn't support collar attachment.",
+          "ko": "할터 넥은 칼라 부착이 안 돼요."
+        }
+      },
+      "description": {
+        "en": "Halter has no shoulder/back fabric for collar attachment.",
+        "ko": "할터는 칼라를 붙일 어깨/등 원단이 없음."
+      },
+      "source": "category_restructure_final § 4 T-SHIRTS",
+      "validated": false,
+      "version": "0.1",
+      "lastUpdated": "2026-04-28"
+    }
+  ]
+}

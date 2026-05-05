@@ -1,0 +1,28 @@
+{
+  "version": "0.1",
+  "category": "shirts",
+  "rules": [
+    {
+      "id": "shirts_raglan_warn",
+      "category": "shirts",
+      "trigger": { "axis": "sleeveType", "values": ["raglan"] },
+      "type": "soft",
+      "effect": {
+        "axis": "sleeveType",
+        "values": ["raglan"],
+        "message": {
+          "en": "Raglan sleeve isn't typical for woven shirts. Try set-in.",
+          "ko": "셔츠는 보통 래글런이 아니라 셋인 소매를 써요."
+        }
+      },
+      "description": {
+        "en": "Woven shirts use set-in shoulder construction; raglan is uncommon.",
+        "ko": "직조 셔츠는 셋인 어깨가 표준. 래글런은 비표준."
+      },
+      "source": "category_restructure_final § 4 SHIRTS",
+      "validated": false,
+      "version": "0.1",
+      "lastUpdated": "2026-04-28"
+    }
+  ]
+}

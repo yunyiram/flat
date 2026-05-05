@@ -1,0 +1,28 @@
+{
+  "version": "0.1",
+  "category": "cross",
+  "rules": [
+    {
+      "id": "cross_henley_neckdetail",
+      "category": "cross",
+      "trigger": { "axis": "neckDetail", "values": ["henley"] },
+      "type": "soft",
+      "effect": {
+        "axis": "category",
+        "values": ["tshirts", "sweatshirts", "knitwear"],
+        "message": {
+          "en": "Henley placket works in T-shirts, sweatshirts, knitwear. Not typical in shirts/polo.",
+          "ko": "헨리 플래킷은 티셔츠/스웨트/니트에서 자연스러워요. 셔츠/폴로엔 일반적이지 않아요."
+        }
+      },
+      "description": {
+        "en": "Henley = short button placket on knit garments. Cross-category detail.",
+        "ko": "헨리 = 니트 의류의 짧은 버튼 플래킷. 카테고리 횡단 디테일."
+      },
+      "source": "category_restructure_final § 2 카테고리 횡단 디테일",
+      "validated": false,
+      "version": "0.1",
+      "lastUpdated": "2026-04-28"
+    }
+  ]
+}

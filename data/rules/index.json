@@ -1,0 +1,30 @@
+{
+  "version": "0.1",
+  "spec": "B6.1 lift-and-shift prototype",
+  "lastUpdated": "2026-04-28",
+  "createdDate": "2026-04-28",
+  "source": "docs/flat_data_separation_rules_spec.md v0.1",
+  "lift_and_shift_strategy": "spec sheet § 4 prototype 6 sample 그대로 신설. 풀 변환 (카테고리 재구조 final § 4 ❌/△ → hard/soft rule 전체) 후속.",
+  "categories": [
+    { "id": "tshirts", "filePath": "rules/tshirts.json", "ruleCount": 1, "validated": false },
+    { "id": "shirts", "filePath": "rules/shirts.json", "ruleCount": 1, "validated": false },
+    { "id": "polo", "filePath": "rules/polo.json", "ruleCount": 1, "validated": false },
+    { "id": "knitwear", "filePath": "rules/knitwear.json", "ruleCount": 1, "validated": false },
+    { "id": "sweatshirts", "filePath": "rules/sweatshirts.json", "ruleCount": 1, "validated": false }
+  ],
+  "crossCategory": {
+    "filePath": "rules/cross_category.json",
+    "ruleCount": 1
+  },
+  "factoryValidation": {
+    "status": "pending",
+    "lastValidated": null,
+    "evidenceSource": null
+  },
+  "futureWork": [
+    "카테고리 재구조 final § 4 풀 변환 (❌/△ → hard/soft rule 전체)",
+    "factory validation 5월 후 hard/soft 전환 + evidence 채록",
+    "Loader 도입 (코드 본체 imperative 함수 → declarative rule loader)",
+    "5 카테고리 reorganize (shirtsBlouses → shirts 등 spec 정합)"
+  ]
+}

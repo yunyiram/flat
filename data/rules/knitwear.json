@@ -1,0 +1,28 @@
+{
+  "version": "0.1",
+  "category": "knitwear",
+  "rules": [
+    {
+      "id": "knitwear_raglan_warn",
+      "category": "knitwear",
+      "trigger": { "axis": "sleeveType", "values": ["raglan"] },
+      "type": "soft",
+      "effect": {
+        "axis": "sleeveType",
+        "values": ["raglan"],
+        "message": {
+          "en": "Raglan in knitwear is uncommon. Most knits use set-in or dropped.",
+          "ko": "니트에 래글런은 드물어요. 셋인이나 드롭숄더가 일반적이에요."
+        }
+      },
+      "description": {
+        "en": "Knitwear typically uses set-in or dropped shoulder; raglan is uncommon for sweaters.",
+        "ko": "니트웨어는 셋인 또는 드롭숄더가 표준. 스웨터에 래글런은 드물다."
+      },
+      "source": "category_restructure_final § 4 KNITWEAR",
+      "validated": false,
+      "version": "0.1",
+      "lastUpdated": "2026-04-28"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "version": "0.1",
+  "category": "sweatshirts",
+  "rules": [
+    {
+      "id": "sweatshirts_sleeveless_block",
+      "category": "sweatshirts",
+      "trigger": { "axis": "sleeveLength", "values": ["sleeveless"] },
+      "type": "hard",
+      "effect": {
+        "axis": "sleeveLength",
+        "values": ["sleeveless"],
+        "message": {
+          "en": "Sweatshirts always have sleeves (definition). For sleeveless fleece, try Knitwear.",
+          "ko": "스웨트셔츠는 소매가 있는 게 정의예요. 민소매 플리스는 니트 카테고리에서요."
+        }
+      },
+      "description": {
+        "en": "Sweatshirt definition includes sleeves; sleeveless violates category identity.",
+        "ko": "스웨트셔츠 정의에 소매 포함. 민소매는 카테고리 정체성 위반."
+      },
+      "source": "category_restructure_final § 4 SWEATSHIRTS",
+      "validated": false,
+      "version": "0.1",
+      "lastUpdated": "2026-04-28"
+    }
+  ]
+}

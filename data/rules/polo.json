@@ -1,0 +1,28 @@
+{
+  "version": "0.1",
+  "category": "polo",
+  "rules": [
+    {
+      "id": "polo_sleeveless_block",
+      "category": "polo",
+      "trigger": { "axis": "sleeveLength", "values": ["sleeveless"] },
+      "type": "hard",
+      "effect": {
+        "axis": "sleeveLength",
+        "values": ["sleeveless"],
+        "message": {
+          "en": "Polo always has sleeves. For sleeveless knit top, try Knitwear vest.",
+          "ko": "폴로는 소매가 있어야 해요. 민소매 니트는 베스트 카테고리에서요."
+        }
+      },
+      "description": {
+        "en": "Polo definition includes sleeves; sleeveless violates category identity.",
+        "ko": "폴로 정의에 소매 포함. 민소매는 카테고리 정체성 위반."
+      },
+      "source": "category_restructure_final § 4 POLO",
+      "validated": false,
+      "version": "0.1",
+      "lastUpdated": "2026-04-28"
+    }
+  ]
+}
