@@ -2,7 +2,7 @@
 > **모든 탭은 세션 시작 시 이 파일을 먼저 읽는다.**
 > 섹션 단위 수정만. 전체 덮어쓰기 금지 (원칙 7).
 
-마지막 수정: 2026-04-28 코드탭 cont.69 Part 2 — **S2 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS dft dot + Reset 버튼 + state currentPresetIdx + updateRecommendedMarkers/resetToDefault 함수 + i18n EN/KO + CardFeed 진입 hook). PresetModule.DB 활용 (JSON 신설 X, 자율). 검증 96 case sweep NaN/Exc 0, 회귀 0, dft 정확성 100%. 이람 검수 OK + "후속 보강 메모 잊지 말고" 강조. 후속 TODO 5개 등록 (collar/opening data-neck dft, CARD_DATA 매핑, 라벨 격상, 슬라이더 indicator). 이전: 2026-04-28 S1 완료. 백업: `docs/archive/HANDOFF-20260428-cont69-S1-step3-backup.md`. 마지막 수정: 2026-04-28 기획탭 cont.70 — (1) 사고 3개 발견 (cont69_env_rca 통합 DEFER, MCP timeout 6회 누적): **(u) 도메인 침범** (Claude 추천이 이람 다른 세션 영역 흡수 = 영상/지원사업, 사고 (h)/(o)와 다른 차원, C3 도메인 분리 위반) / **(v) MCP timeout 패턴화** (사고 (s) 1회 재시도 회복 부족 검증, 단 cont.70 후반 write_file 정상 회복 = 영구 아님 일시적) / **(w) 큰 파일 head/tail 분할 default** (HANDOFF 전체 read timeout, head 50/300은 성공). (2) Phase 3A UX/UI 1순위 결정 = "YC S26 및 S.STAGE 지원서 업데이트" 채팅으로 분업 이관 (영상 60초 + 지원사업 정리). (3) ✅ B6.2 presets.json 분리 spec v0.1 작성 완료 (`docs/flat_data_separation_presets_spec.md`, write_file + head 10 read 검증, 메모리 #16 도메인 로직 보존 직접 대응). (4) MCP 정상화 후 다음 세션 의무: archive/ read alive 검증 → cont69_env_rca에 사고 (u)(v)(w) 통합 + B6.2 spec full read 검증 + ★ 카테고리 분류 6항목 + KNITWEAR Hero 결정 + B6.1 (rules) / B6.3 (fabrics) 후속. 이전: 2026-04-27 기획탭 cont.69 Group 2 완료 — (1) 사고 (t) 통합 (2) 환경 매트릭스 v1.0 (`docs/flat_env_matrix.md`) (3) 자가검증 양식 v1.0 (`docs/flat_self_check_template.md`) (4) 탭 인계 양식 v1.0 (`docs/flat_tab_handoff_template.md`) (5) 세션 시작 SOP v1.0 (`docs/flat_session_sop.md`, 8단계 + 복잡도별 단축 + 환경별 분기 + 다른 3 양식 의존 관계) + 📏 규칙 3 보강 (SOP 호출 명시). 이전: 2026-04-27 기획탭 — **S1 (Sleeve length %) implement 착수 지시 추가** (🔴 기획→코드 cont.69 신규 서브섹션, cowork tab 의사결정 후속). 백업: `docs/archive/HANDOFF-20260427-S1-flat-handoff-backup.md`. 다음 코드탭 작업: spec sheet `docs/sixatomic_implementation_specs.md` Section 1 (S1) read → flat-v6.html SleeveComp 현재 로직 보고 → 이람 OK → implement → 검증. 그 이전: 2026-04-27 cowork tab — Sixatomic Pattern Generator (https://app.sixatomic.com/synthesis/pattern/generate) v2 라이브 감사 + 4종 base style diff + Materials/Seams/Sizes/Notes 풀 채록 + KS K 0051 표준 사이즈 입력 + audit md 재검 패치 + 코드탭용 atomic spec sheet (S1-S13) 신설 + **이람 의사결정 완료 (S1-S8 확정 진행, S9-S11 보류, Q2 = "좋은 것만 훔치고 취해서 더 나은 걸 만든다")**. 산출물: `docs/sixatomic_pattern_generate_audit.md` (Section 1-22), `docs/sixatomic_implementation_specs.md` (S1-S13). 백업: `docs/archive/HANDOFF-20260427-cowork-sixatomic-v2-backup.md`. 이전: 2026-04-26 기획탭 cont.69 Group 1.5 완료 — 원칙 17 (환경 정합성, 절차/시스템 설계 시점) 신규 등록, 외부 채팅 입장 절차 명문화, 규칙 9 (변형 vs 새 패턴 판정, 우로보로스 차단) 추가, 사고 (n)(o)(p)(q)(r)(s) 추가 RCA 보완 (cont69_env_rca 안 통합). 그 이전: 2026-04-26 cont.69 Group 1 (원칙 16 + RCA 2개 작성 + 사고 (m) 정정). 그 이전: 2026-04-23 cont.68 Step 0b. 그 이전: 2026-04-22 cont.68 Step 0a.
+마지막 수정: 2026-04-28 코드탭 cont.69 Part 3 — **S5 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS .sl-revert + 4 신규 함수: getCurrentDefaults/revertSliderToDefault/initSliderRevertButtons/updateSliderRevertOpacity + slider input listener hook + PresetModule apply hooks + CardFeed pickVariant hook). 18 slider 모두 1:1 ↺ 자동 추가, default 일치 시 opacity 0.3 / changed 시 0.9. PresetModule.DB 활용 (S2 데이터 재사용). 검증 96 case sweep NaN/Exc 0, 회귀 0, ↺ 동작 정상, EN/KO tooltip 정상. 이람 "추천 순서 가자" 자율 진행. 이전: 2026-04-28 기획탭 cont.71 — (1) 환경 회복: env_matrix.md 파일 byte 손상 의심 상황→paste→write 재인코딩으로 head 옵션 회복 검증. (2) 사고 (u)(v)(w)+(x) cont69_env_rca 통합 완료 (4 edits, 근본원인 분류: (v)(w) 는 (q) 메커니즘 변형, (u)(x) 는 신규 패턴). (3) **★ 결정 6개 해소**: tunic/rugby = 추가 안 함 (파라미터로 도달) / vest_sweater = KNITWEAR + OUTERWEAR (Phase 2) / mock_neck = T-SHIRTS + KNITWEAR / half_zip = SWEATSHIRTS + KNITWEAR / KNITWEAR Hero = pullover_sweater 확정. (4) **B6.2 spec v0.2** (`docs/flat_data_separation_presets_spec.md`) presetCount 갱신 (합계 27→32) + 이람 결정 기준 명시 ("차이 누적량"). (5) **⬆ 요청**: tops_tees 기타 프리셋 목록 (약 10개 미분류) — 코드탭이 flat-v6.html 추출 → HANDOFF "코드→기획" 채널로 전달 → 다음 기획탭 세션이 개별 분류 결정. (6) 사고 z 신규 환경 이슈 모니터: 파일 본문 한국어 1글자 깨짐 평균 파일당 1-2건 (HANDOFF, B6.2 spec, RCA 곳곳 확인). cont.72 조사/정정 우선. 이전: 2026-04-28 코드탭 cont.69 Part 2 — **S2 완료 (commit 대기)**. flat-v6.html 단일 파일 변경 (CSS dft dot + Reset 버튼 + state currentPresetIdx + updateRecommendedMarkers/resetToDefault 함수 + i18n EN/KO + CardFeed 진입 hook). PresetModule.DB 활용 (JSON 신설 X, 자율). 검증 96 case sweep NaN/Exc 0, 회귀 0, dft 정확성 100%. 이람 검수 OK + "후속 보강 메모 잊지 말고" 강조. 후속 TODO 5개 등록 (collar/opening data-neck dft, CARD_DATA 매핑, 라벨 격상, 슬라이더 indicator). 이전: 2026-04-28 S1 완료. 백업: `docs/archive/HANDOFF-20260428-cont69-S1-step3-backup.md`. 마지막 수정: 2026-04-28 기획탭 cont.70 — (1) 사고 3개 발견 (cont69_env_rca 통합 DEFER, MCP timeout 6회 누적): **(u) 도메인 침범** (Claude 추천이 이람 다른 세션 영역 흡수 = 영상/지원사업, 사고 (h)/(o)와 다른 차원, C3 도메인 분리 위반) / **(v) MCP timeout 패턴화** (사고 (s) 1회 재시도 회복 부족 검증, 단 cont.70 후반 write_file 정상 회복 = 영구 아님 일시적) / **(w) 큰 파일 head/tail 분할 default** (HANDOFF 전체 read timeout, head 50/300은 성공). (2) Phase 3A UX/UI 1순위 결정 = "YC S26 및 S.STAGE 지원서 업데이트" 채팅으로 분업 이관 (영상 60초 + 지원사업 정리). (3) ✅ B6.2 presets.json 분리 spec v0.1 작성 완료 (`docs/flat_data_separation_presets_spec.md`, write_file + head 10 read 검증, 메모리 #16 도메인 로직 보존 직접 대응). (4) MCP 정상화 후 다음 세션 의무: archive/ read alive 검증 → cont69_env_rca에 사고 (u)(v)(w) 통합 + B6.2 spec full read 검증 + ★ 카테고리 분류 6항목 + KNITWEAR Hero 결정 + B6.1 (rules) / B6.3 (fabrics) 후속. 이전: 2026-04-27 기획탭 cont.69 Group 2 완료 — (1) 사고 (t) 통합 (2) 환경 매트릭스 v1.0 (`docs/flat_env_matrix.md`) (3) 자가검증 양식 v1.0 (`docs/flat_self_check_template.md`) (4) 탭 인계 양식 v1.0 (`docs/flat_tab_handoff_template.md`) (5) 세션 시작 SOP v1.0 (`docs/flat_session_sop.md`, 8단계 + 복잡도별 단축 + 환경별 분기 + 다른 3 양식 의존 관계) + 📏 규칙 3 보강 (SOP 호출 명시). 이전: 2026-04-27 기획탭 — **S1 (Sleeve length %) implement 착수 지시 추가** (🔴 기획→코드 cont.69 신규 서브섹션, cowork tab 의사결정 후속). 백업: `docs/archive/HANDOFF-20260427-S1-flat-handoff-backup.md`. 다음 코드탭 작업: spec sheet `docs/sixatomic_implementation_specs.md` Section 1 (S1) read → flat-v6.html SleeveComp 현재 로직 보고 → 이람 OK → implement → 검증. 그 이전: 2026-04-27 cowork tab — Sixatomic Pattern Generator (https://app.sixatomic.com/synthesis/pattern/generate) v2 라이브 감사 + 4종 base style diff + Materials/Seams/Sizes/Notes 풀 채록 + KS K 0051 표준 사이즈 입력 + audit md 재검 패치 + 코드탭용 atomic spec sheet (S1-S13) 신설 + **이람 의사결정 완료 (S1-S8 확정 진행, S9-S11 보류, Q2 = "좋은 것만 훔치고 취해서 더 나은 걸 만든다")**. 산출물: `docs/sixatomic_pattern_generate_audit.md` (Section 1-22), `docs/sixatomic_implementation_specs.md` (S1-S13). 백업: `docs/archive/HANDOFF-20260427-cowork-sixatomic-v2-backup.md`. 이전: 2026-04-26 기획탭 cont.69 Group 1.5 완료 — 원칙 17 (환경 정합성, 절차/시스템 설계 시점) 신규 등록, 외부 채팅 입장 절차 명문화, 규칙 9 (변형 vs 새 패턴 판정, 우로보로스 차단) 추가, 사고 (n)(o)(p)(q)(r)(s) 추가 RCA 보완 (cont69_env_rca 안 통합). 그 이전: 2026-04-26 cont.69 Group 1 (원칙 16 + RCA 2개 작성 + 사고 (m) 정정). 그 이전: 2026-04-23 cont.68 Step 0b. 그 이전: 2026-04-22 cont.68 Step 0a.
 
 ---
 
@@ -413,6 +413,61 @@ Q1 Phase 3-tier 동의 / Q2 Six Atomic (다) / Q3 b만
 ---
 
 ## 🔵 코드 → 기획
+
+### 🟢 cont.69 Part 3 — S5 완료 (2026-04-28, commit 대기)
+
+**작업:** Sixatomic 흡수 세 번째 spec. Revert per-input — 모든 slider 옆에 ↺ 버튼 자동 추가. S2 데이터 (PresetModule.DB) 재사용.
+
+**자율 결정:**
+- 모든 `.slider-wrap`에 JS init 시점 ↺ 자동 추가 (HTML 직접 수정 X)
+- 시각: default 일치 → opacity 0.3 (흐림) / changed → 0.9 (강조). hover → 1.0
+- skirt/pants 자동 분기 (currentSkirtIdx/currentPantsIdx 활용)
+- slider thumb dot indicator는 over-engineer 회피 (후속)
+
+**구현 (`flat-v6.html` 단일 파일):**
+
+| 위치 | 변경 |
+|---|---|
+| L66-68 CSS | `.sl-revert` 스타일 (opacity 0.3 default / 0.9 .changed / 1.0 hover) |
+| L1273-1322 신규 함수 4개 | getCurrentDefaults / revertSliderToDefault / initSliderRevertButtons / updateSliderRevertOpacity |
+| L933 applyLang | initSliderRevertButtons + updateSliderRevertOpacity 호출 |
+| L2197 slider input listener | updateSliderRevertOpacity (사용자 변경 즉시 반영) |
+| L5210/5276/5300 PresetModule | apply/applySkirt/applyPants에 opacity 호출 |
+| L6829 CardFeed.pickVariant | initSliderRevertButtons + updateSliderRevertOpacity (panel 진입 hook) |
+
+**검증 (preview DOM 실측):**
+
+| 항목 | 결과 |
+|---|---|
+| 18 slider-wrap 1:1 ↺ 자동 추가 | ✅ |
+| 96 case sweep | NaN 0 / Exception 0 ✅ |
+| crewTee 회귀 | halfBody 55, shoulderW 46 ✅ |
+| sweatshirt 회귀 | halfBody 60.20, shoulderW 59.17, sfdCuffHalf 5.19 ✅ |
+| 페이지 로드 직후 default 일치 → changed 0 | ✅ |
+| 슬라이더 변경 → revert btn .changed 즉시 활성 | ✅ (sleeveLength 32→80) |
+| ↺ 클릭 → default 복원 + .changed off | ✅ (sleeveLength 32 복원) |
+| EN/KO tooltip | "Reset to default" / "기본값으로 복원" ✅ |
+| S2 dft 동시 동작 | shirt apply 시 sleeveLenDfts=['long'] 정상 ✅ |
+| Console errors | 0 ✅ |
+| 시각 (Sleeve Length 변경 후) | 변경 슬라이더 ↺ 진한 / 다른 슬라이더 ↺ 흐림 ✅ |
+
+**원칙 self-check:**
+- ✅ 원칙 4 (과대평가 금지) — Default 톤 유지 (S2 채택)
+- ✅ 원칙 6 (검증 산출물) — 96 case + DOM 실측
+- ✅ 원칙 9 (반복 피드백 = 아키텍처) — 신규 추가 only
+- ✅ 원칙 11 (자율) — JS auto-add 패턴, S2 데이터 재사용
+- ✅ 원칙 14 (매력도 vs 정확도) — UX 매력도 작업
+- ✅ 원칙 15 (비약 금지) — slider thumb indicator 별도 보류
+
+**후속 보강:**
+- slider thumb dot indicator (default 위치 시각 표시) — minor
+- skirt/pants slider 별도 검증 (top 위주 검증)
+
+**push:** commit 대기 — `S5: Revert per-input (모든 slider 옆 ↺ 버튼)`
+
+**다음:** S6 (Custom 카드 통합) 또는 S8 (카테고리 그룹 정리). 이람 "추천 순서 가자" 자율 진행 중.
+
+---
 
 ### 🟢 cont.69 Part 2 — S2 완료 (2026-04-28, commit 대기)
 
@@ -837,8 +892,13 @@ P5=B 채택 시:
 | **S2 후속 — CARD_DATA 진입 시 currentPresetIdx 매핑** | spec 필요 | CARD_DATA에 presetIdx 명시 | TODO (minor) |
 | **S2 후속 — 라벨 격상 "Default" → "Recommended"** | Phase 3B validation 후 | i18n update | TODO (Phase 3B 후) |
 | **S2 후속 — 슬라이더 Default indicator** | S5 spec 안 통합 | individual revert 버튼 | S5에서 처리 |
-| **S5 (Revert per-input) 또는 S6 (Custom 카드)** | priority 결정 대기 | spec read 후 implement | 다음 spec 후보 |
+| **S5 (Revert per-input)** | "추천 순서 가자" 자율 OK | ✅ 구현 + 검증 96 case 통과 | 완료 (cont.69 Part 3, commit 대기) |
+| **S6 (Custom 카드 통합) 또는 S8 (카테고리 그룹)** | 자율 진행 중 | spec read 후 implement | 다음 spec 후보 |
 | **S1 후속 — cap/short/elbow/threequarter cuff 정밀화** | Phase 4 합의 | 옵션 H 확장 + 3D 연동 시점 | DEFER (Phase 4) |
+| **B6.2 presets.json 분리 spec v0.2** | ★ 결정 6개 반영 (cont.71) | 소비 — 코드탭 implement 시 read | 완료 (cont.71, presetCount 27→32) |
+| **⬆ tops_tees 기타 프리셋 목록 요청** | 이름·구조 개별 분류 수행 대기 | flat-v6.html에서 약 10개 preset 이름 + 구조 요약 추출 → HANDOFF "코드→기획" 채널 | 요청 중 (cont.72 기획탭 의존) |
+| **사고 (u)(v)(w)+(x) cont69_env_rca 통합** | ✅ cont.71 (4 edits) | — | 완료 |
+| **사고 z (파일 본문 한국어 1글자 깨짐)** | cont.72 조사/정정 | 일부 파일 flat-v6.html 외 docs/ 우선 | 모니터 중 (cont.72) |
 
 ---
 

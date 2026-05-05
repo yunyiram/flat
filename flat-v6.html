@@ -63,6 +63,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .measure-toggle.on{background:var(--ink);color:#fff;border-color:var(--ink);}
 .slider-wrap.hl input[type="range"]::-webkit-slider-thumb{background:var(--accent);box-shadow:0 0 0 4px var(--accent-light);}
 .slider-wrap.hl .sval{color:var(--accent);font-weight:500;}
+/* cont.69 S5: Revert per-input — 모든 slider 옆 ↺ 버튼 (default 일치 시 흐림) */
+.sl-revert{font-size:11px;padding:1px 4px;border:none;background:transparent;color:var(--text-mid);cursor:pointer;opacity:0.3;transition:opacity 0.15s,color 0.15s;line-height:1;font-family:'Inter','Noto Sans KR',sans-serif;}
+.sl-revert:hover{opacity:1;color:var(--text-dark);}
+.sl-revert.changed{opacity:0.9;color:var(--text-dark);}
 .canvas{background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;}
 .sketch-wrap{display:flex;gap:28px;align-items:flex-start;}
 .sketch-col{display:flex;flex-direction:column;align-items:center;}
@@ -970,6 +974,9 @@ function applyLang(){
   document.documentElement.lang=curLang==='ko'?'ko':'en';
   // cont.69 S2: Default 마커 — panel 빌드 후 호출 (applyLang은 init/lang 변경 시 호출)
   if(typeof updateRecommendedMarkers==='function') updateRecommendedMarkers();
+  // cont.69 S5: slider revert 버튼 init + opacity 갱신
+  if(typeof initSliderRevertButtons==='function') initSliderRevertButtons();
+  if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity();
 }
 function setLang(lang){ curLang=lang; document.getElementById('langEn').classList.toggle('on',lang==='en'); document.getElementById('langKo').classList.toggle('on',lang==='ko'); applyLang(); }
 
@@ -1273,6 +1280,59 @@ function resetToDefault(){
   if(gType==='skirt') PresetModule.applySkirt(S.currentSkirtIdx||0);
   else if(gType==='pants') PresetModule.applyPants(S.currentPantsIdx||0);
   else PresetModule.apply(S.currentPresetIdx||0);
+}
+
+// cont.69 S5: 현재 active preset의 default 값 조회 (top/skirt/pants 분기)
+function getCurrentDefaults(){
+  const gType=(typeof getGarmentType==='function')?getGarmentType():'top';
+  if(gType==='skirt') return PresetModule.SKIRT_DB[S.currentSkirtIdx||0]?.s;
+  if(gType==='pants') return PresetModule.PANTS_DB[S.currentPantsIdx||0]?.s;
+  return PresetModule.DB[S.currentPresetIdx||0]?.s;
+}
+
+// cont.69 S5: 단일 슬라이더를 default 값으로 복원
+function revertSliderToDefault(k){
+  const defaults=getCurrentDefaults();
+  if(!defaults||defaults[k]===undefined) return;
+  S[k]=defaults[k];
+  const input=document.getElementById('sl_'+k);
+  const sval=document.getElementById('sv_'+k);
+  if(input) input.value=defaults[k];
+  if(sval){const sd=SD.find(x=>x[1]===k); if(sd) sval.textContent=sd[3](defaults[k]);}
+  const cmInput=document.getElementById('cm_'+k);
+  if(cmInput){const cm=CM_MAP.find(x=>x[0]===k); if(cm) cmInput.value=cm[2](defaults[k]);}
+  if(['sleeveLength','fitW','bodyLen'].includes(k)) updateAllCompat();
+  draw(true);
+  updateSliderRevertOpacity();
+}
+
+// cont.69 S5: 모든 slider-wrap에 ↺ revert 버튼 자동 추가 (init 시 1회)
+function initSliderRevertButtons(){
+  document.querySelectorAll('.slider-wrap').forEach(wrap=>{
+    if(wrap.querySelector('.sl-revert')) return; // 이미 추가됨
+    const input=wrap.querySelector('input[type="range"]');
+    if(!input||!input.id||!input.id.startsWith('sl_')) return;
+    const k=input.id.replace(/^sl_/,'');
+    const btn=document.createElement('button');
+    btn.className='sl-revert';
+    btn.textContent='↺';
+    btn.dataset.k=k;
+    btn.title='Revert to default';
+    btn.setAttribute('data-i18n-title','reset.title');
+    btn.addEventListener('click',()=>revertSliderToDefault(k));
+    wrap.appendChild(btn);
+  });
+}
+
+// cont.69 S5: 모든 slider-revert 버튼 opacity 갱신 (default 일치 → 흐림 / 다름 → 강조)
+function updateSliderRevertOpacity(){
+  const defaults=getCurrentDefaults();
+  if(!defaults) return;
+  document.querySelectorAll('.sl-revert').forEach(btn=>{
+    const k=btn.dataset.k;
+    if(defaults[k]===undefined){btn.classList.remove('changed');return;}
+    btn.classList.toggle('changed',S[k]!==defaults[k]);
+  });
 }
 
 function syncToggle(p,v){
@@ -2137,6 +2197,7 @@ function dismissExtToast(){
 SD.forEach(([id,k,vid,fmt])=>{
   const el=document.getElementById(id);
   el.addEventListener('input',e=>{S[k]=+e.target.value;document.getElementById(vid).textContent=fmt(S[k]);const ci=document.getElementById('cm_'+k);if(ci){const m=CM_MAP.find(x=>x[0]===k);if(m)ci.value=m[2](S[k]);}if(['sleeveLength','fitW','bodyLen'].includes(k))updateAllCompat();draw(true);
+    if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity(); // cont.69 S5
     // Extended range toast trigger
     if(!extendedMode&&EXT_RANGES[id]&&+e.target.value>=+e.target.max-1)showExtToast();
   });
@@ -5266,6 +5327,7 @@ const PresetModule={
       updateNeckSubPanels(); syncCollarBtns();
       DesignEl.updateList(); updateAllCompat(); draw(true);
       updateRecommendedMarkers(); // cont.69 S2: Default dot 마커 갱신
+      if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity(); // cont.69 S5
     });
   },
   // ── 스커트 프리셋 ──
@@ -5288,6 +5350,7 @@ const PresetModule={
       SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
       draw(true);
       updateRecommendedMarkers(); // cont.69 S2
+      if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity(); // cont.69 S5
     });
   },
   // ── 팬츠 프리셋 ──
@@ -5312,6 +5375,7 @@ const PresetModule={
       SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
       draw(true);
       updateRecommendedMarkers(); // cont.69 S2
+      if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity(); // cont.69 S5
     });
   },
   init(){
@@ -6828,6 +6892,8 @@ const CardFeed={
     updateNeckSubPanels();syncCollarBtns();
     updateAllCompat();draw();
     if(typeof updateRecommendedMarkers==='function') updateRecommendedMarkers(); // cont.69 S2: panel 진입 시 dft 마커 갱신
+    if(typeof initSliderRevertButtons==='function') initSliderRevertButtons(); // cont.69 S5
+    if(typeof updateSliderRevertOpacity==='function') updateSliderRevertOpacity();
     History.push();
     // Transition: variants out, engine in
     const varEl=document.getElementById('app-variants');
