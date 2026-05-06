@@ -204,6 +204,117 @@
 
 ---
 
-## 8. 갱신 이력
+## 8. 🚨 Quality-Insufficient 영역 (전체 프로젝트 audit, 2026-05-06 cont.72 보강)
+
+> **이람 cont.72 push:** *"넘어갈 수 없는 퀄리티인데 완료된 작업들도 찾아내주세요."*
+> 원칙 4 (구현됨 ≠ 앞에 내밀 수 있음) 적용. plan.md "검증 완료" 항목 + 이전 commit 영역 cross-check.
+
+### A. cont.65 reset 인정 영역 (재명시)
+
+| 항목 | "완료" 시점 | 실제 상태 |
+|---|---|---|
+| 칼라 22종 시각 감사 | 2026-04-17 ("✅ 양호" 격상) | cont.67 sweep audit 미달. eton/bertha/puritan/wing "형태 약함" 명시. **Phase 4 재감사 보류** |
+| Polo v2 SVG 렌더 | cont.60 (전용 렌더러) | cont.65 sweep audit 미달. 옵션 H 미적용 (Phase 4) |
+| cuff/sleeve shape 10종 (straight/capped/puff/bell/bishop/dolman/lantern/peasant/legmutton/pagoda) | cont.61~64 | cont.69 이람 "재난" 인정. SleeveComp 전면 재구성 = Phase 4 |
+| cont.63 90° 블렌딩 자의적 추가 | cont.63 | 퇴보 원인. 롤백 판정 보류 (Phase 4) |
+| 라인웨이트 / 리브 / 암홀 / 플래킷 (Phase 1B) | "✅ 완료" plan.md | cont.67 sweep audit 48/48 미달 인정 |
+
+### B. plan.md "Current Status" 검증 갭 (2026-05-06 점검)
+
+| plan.md 명시 | 실제 검증 | 갭 |
+|---|---|---|
+| **"49 presets (31 top + 8 skirt + 10 pants)"** | 실제 16 top + 8 skirt + 10 pants = **34** | 부정확 (31 vs 16) |
+| "108 collar compat rules + 21 functional + 3 new (12 compat systems)" | 작동 검증 미흡 (개별 rule 발동 케이스 X) | 카운트 추정 / 작동 미검증 |
+| "41 fabric DB" | data/fabrics.json 19KB 존재 / 41 항목 카운트 미검증 | 항목 정확성 미확인 |
+| "17 POM (A-Q) + 시접 per area" | sixatomic 28 부위 시접 (S14 spec) 대비 11 부위 미흡 | 도메인 깊이 부족 |
+| **"PDF 5-page tech pack + 1-page 한국 작업지시서"** | 출력 작동 + 데이터 정합 OK / **실무 패턴사 사용 검증 X** | Phase 3B factory validation 의존 |
+| **"Factory Viewer + share link"** | 작동 검증 미흡 — 이람 직접 사용 X | 검증 미흡 |
+| "CascadeVis SVG morph animation + 11-step demo" | 동작 OK / **시각 매력도 미흡** (cont.65 sweep audit 영역) | 매력도 검증 X |
+| **"Body size input → auto slider mapping"** | 작동 검증 미흡 (88/68/92 입력 → fit/chest 갱신 정확도) | 검증 X |
+| "i18n EN/KO + 봉제 현장용어 자동 병기" | 데이터 적재 / **봉제 용어 매핑 정확성 미검증** (에리=collar, 구찌=?, 간도메=?) | 매핑 정확성 X |
+| "3축 분리 (shoulderType 8 / strapType 6 / neckShape 8)" | 데이터 분리 / UI 적용 검증 미흡 | UI 검증 X |
+| "5 categories (cont.71 결정)" | 데이터 분류만 / **UI 5분할 X** (Phase 6 DEFER 명시) | UI 미적용 |
+| "Cascade Vis 11-step demo" | 작동 / 부드러움 검증 X | UX 검증 X |
+
+### C. cont.69-72 작업 자체 검증 갭
+
+| 작업 | 검증 갭 |
+|---|---|
+| **S1 women's matrix** | 데이터만 적재 / UI 적용 X (gender 토글 spec 미작성) |
+| **S2 dft 매핑 (NECKFINISH_TO_COLLAR 22+)** | 22 collar enum 매핑 정확성 검증 미흡 |
+| **CARD_DATA fuzzy match** | 5 카드 실제 매칭 결과 검증 X (Card 4 Raglan → idx 0 정확?) |
+| **S8 메타-그룹 매핑** | 이람 검수 X (자율 결정 — Design/Fit/Details 분류 적정성) |
+| **B6.1 6 sample rule** | 코드 본체 compat 시스템과 정합 X (separate JSON, 코드 변환 미완) |
+| **B6.2 schema simplification** | recommendedFabricIds / activeMode / isHero / difficulty 빈 채로 lift-and-shift (spec v0.2 정합 X) |
+
+### D. 작동 검증 미흡 영역 (preview 가능, 미진행)
+
+| 영역 | 작동 |
+|---|---|
+| Style Overlay 7종 (Casual/Formal/Military/Workwear/Sport/Minimal/Romantic) | 토글 visible / 실제 SVG 변환 검증 X |
+| CascadeVis 11-step demo | 작동 / 매력도 검증 X |
+| Direct Edit 모드 (핸들 드래그) | 작동 / 정확도 검증 X |
+| Hint system (sleeveSkin/sleeveTooWide/rtwCropOversizeSleeveless 등) | 발동 케이스 검증 X |
+| Compat system (108 rules + 22 collar × 8 neck × 8 shoulder) | 개별 rule 발동 검증 X |
+| Spec sheet 출력 (graded XS-XL + tolerance + SFD POM) | 작동 / 도메인 정합 검증 미흡 |
+| Body size input → auto slider mapping | 88/68/92 입력 검증 X |
+| CM input ↔ slider 양방향 (cm/inch toggle) | 작동 검증 미흡 |
+| Trace paper / Factory link | 작동 검증 X |
+| Pocket Y 슬라이더 / Extended Range ∞ 모드 | 작동 검증 X |
+| Skirt 8 / Pants 10 preset 시각 | cont.65 sweep audit 미적용 (top wear만) |
+| Dress 5 / Outerwear 4 시각 | 옵션 H 미적용 (Phase 4 명시 DEFER) |
+
+### E. 메모리 28+ 항목 적용 갭
+
+| 메모리 | 적용 |
+|---|---|
+| Armstrong 비례 / Abling 비례 / Donnanno Vol.3 | 부분 적용 (primitive geometry) — Phase 4 재구성 |
+| 패턴 소스 (PatternLab / Valentina / Grasser) | 학습만 — 미적용 |
+| 카테고리 5단 + 메타축 | UI 5분할 X — Phase 6 DEFER |
+| 축별 커스텀 (Grasshopper / Houdini) | Phase 5+ DEFER |
+| 선으로 디자인 (베지어 핸들 직접 드래그) | Phase 7 DEFER |
+| 3D 미리보기 (2.5D→Three.js→CLO3D) | Phase 4-5 DEFER |
+| 봉제 현장용어 (factory_terms 메모리) | i18n 정합성 미검증 |
+| AI techpack 사이트 5개 | 경쟁 분석만 |
+| Tier 0-4 / Fabra / Raspberry | 전략만 |
+| 콘텐츠 자동화 (ai.trend.kr 6단 에이전트) | 별도 워크스트림 — FLAT 브랜드 톤 미작성 |
+
+### F. 데모/마감 미완 (이람 영역, 별도 채팅)
+
+| 항목 | 마감 | 진행 |
+|---|---|---|
+| IR 덱 커버 (트레이싱 프리즈 비주얼) | 5/3-4 임박 | 미완 |
+| 1분 데모 영상 | 5/3 | 미완 |
+| YC S26 지원서 | 5/4 | 진행 중 (별도 채팅) |
+| Factory validation 섭외 | 5월 | 이람 진행 중 |
+| 디자이너 인터뷰 3명 | 5월 전 | 미시작 |
+
+### G. 종합 분류
+
+| 분류 | 개수 | 핵심 |
+|---|---|---|
+| ✅ **진짜 완료** (검증+검수+시각 OK) | 7 + cont.72 11 commit | S1/S2/S5/S8 + sweatshirt 옵션 H 축소판 + B6.1/B6.2 lift-and-shift + 보강 8건 + 누락 방지 5단 일부 |
+| 🚨 **"완료" 표시됐지만 미달** ★ | 12+ | 칼라 22 / 49 preset (실제 34 + 33 시각 X) / cuff-sleeve "재난" / compat 작동 X / PDF 패턴사 사용 X / Factory Viewer / CascadeVis 매력도 / Body input / 봉제 용어 / 3축 UI / 5 cat UI / 49 → 34 카운트 부정확 |
+| ⚠️ **부분 완료** | 30+ | cont.65-72 작업의 도메인 깊이 / S2 dft 매핑 정확성 / B6.1 코드 정합 / B6.2 schema 단순화 / Sixatomic 흡수 50% |
+| 🔒 **명시 DEFER** | 15+ | Phase 4 옵션 H 확장 / S9-S11 / Phase 5 트렌드/SaaS / Phase 6 / Phase 7 |
+| ❌ **미완 (spec/이람 결정 의존)** | 12+ | S3/S4/S7 / S14-S18 / 카테고리 분류 6 코드 / 5 카테고리 reorganize / 32 preset / enum 표준화 |
+| 📝 **이람 영역 (코드탭 인지)** | 5 | IR / 영상 / YC / factory / 인터뷰 |
+
+### H. 우선순위 권장 (이람 결정 의존)
+
+**🚨 1. 작동 검증 sweep** — preview에서 작동 작용 영역 (D) 일괄 검증 (Style Overlay / Cascade / Hint / Compat / Spec / Body input / CM toggle / Trace / Pocket / Extended / Direct Edit). **자율 가능**.
+
+**🚨 2. plan.md "Current Status" 정정** — 49 → 34 / 카운트 부정확 항목. **자율 가능 (data 정확성)**.
+
+**🚨 3. Skirt 8 / Pants 10 시각 검증** — cont.65 sweep audit가 top wear 16만. 18 추가 sweep. **자율 가능 (회귀 X)**.
+
+**🚨 4. 22 collar SVG sweep** — cont.67 미달 영역. 옵션 H 미적용 상태에서도 일부 visual 정합 가능. **자율 가능 (시각 캡처)**.
+
+**❌ 5-N. 도메인 결정 영역** — 이람/기획탭 의존 (5 카테고리 / enum / 32 preset / 카테고리 분류 6 / S14-S18 spec).
+
+---
+
+## 9. 갱신 이력
 
 - **2026-04-28 cont.72 v0.1**: 신설. 이람 push back 누락 방지 시스템 5단 중 #2.
+- **2026-05-06 cont.72 보강 v0.2**: § 8 Quality-Insufficient 영역 신설 (이람 push "넘어갈 수 없는 퀄리티" 발굴). 12+ 영역 등록.
