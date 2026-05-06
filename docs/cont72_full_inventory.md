@@ -247,22 +247,30 @@
 | **B6.1 6 sample rule** | 코드 본체 compat 시스템과 정합 X (separate JSON, 코드 변환 미완) |
 | **B6.2 schema simplification** | recommendedFabricIds / activeMode / isHero / difficulty 빈 채로 lift-and-shift (spec v0.2 정합 X) |
 
-### D. 작동 검증 미흡 영역 (preview 가능, 미진행)
+### D. 작동 검증 영역 — cont.72 Part 8 T2-T3 sweep 결과
 
-| 영역 | 작동 |
-|---|---|
-| Style Overlay 7종 (Casual/Formal/Military/Workwear/Sport/Minimal/Romantic) | 토글 visible / 실제 SVG 변환 검증 X |
-| CascadeVis 11-step demo | 작동 / 매력도 검증 X |
-| Direct Edit 모드 (핸들 드래그) | 작동 / 정확도 검증 X |
-| Hint system (sleeveSkin/sleeveTooWide/rtwCropOversizeSleeveless 등) | 발동 케이스 검증 X |
-| Compat system (108 rules + 22 collar × 8 neck × 8 shoulder) | 개별 rule 발동 검증 X |
-| Spec sheet 출력 (graded XS-XL + tolerance + SFD POM) | 작동 / 도메인 정합 검증 미흡 |
-| Body size input → auto slider mapping | 88/68/92 입력 검증 X |
-| CM input ↔ slider 양방향 (cm/inch toggle) | 작동 검증 미흡 |
-| Trace paper / Factory link | 작동 검증 X |
-| Pocket Y 슬라이더 / Extended Range ∞ 모드 | 작동 검증 X |
-| Skirt 8 / Pants 10 preset 시각 | cont.65 sweep audit 미적용 (top wear만) |
-| Dress 5 / Outerwear 4 시각 | 옵션 H 미적용 (Phase 4 명시 DEFER) |
+| 영역 | cont.72 audit 시 | T2-T3 sweep 결과 (2026-05-06) |
+|---|---|---|
+| Style Overlay 7 (Casual/Formal/Military/Workwear/Sport/Minimal/Romantic) | 미진행 | ✅ 7/7 작동 (toggle on/off state change 5개 net change / 2개 toggle 양방향 net 0 = 정상) |
+| CascadeVis 11-step demo | 미진행 | 함수 정의 ✅ / 시각 매력도 검증 X (cont.65 영역) |
+| Direct Edit 모드 (핸들 드래그) | 미진행 | 자동 검증 X (수동 검증 필요) |
+| Hint system | 미진행 | ✅ 함수 작동 (canvas hint element 존재) / 개별 발동 케이스 (sleeveSkin/Wide 등) 검증 X |
+| Compat system | 미진행 | ✅ 6 system 카운트 (NECKTYPE 3 / SHOULDER_NECKTYPE 3 / DETAIL_NECKTYPE 1 / SHOULDER_DETAIL 3 / COLLAR 8 / NECK_BC_BLOCKED 9 = **6 system, plan.md "12 compat systems" 부정확**) / 개별 rule 발동 검증 X |
+| Spec sheet 출력 | 미진행 | ✅ SpecModule.update 정의 / 도메인 정합 검증 미흡 |
+| **Body size input mapping** | 미진행 | ⚠️ **88/68/92 입력에도 fitW 변경 0 — 작동 미흡 (or default 일치 case 확인 필요)** ★ |
+| CM input ↔ slider (cm/inch toggle) | 미진행 | ✅ toggleMeasure 작동 (cm ↔ inch) |
+| Trace paper / Factory link | 미진행 | 자동 검증 X / cardFeed 관리 |
+| Pocket Y 슬라이더 | 미진행 | ✅ 22→35 변경 작동 (단 pocket=none이라 UI 비활성, 정상) |
+| Extended Range ∞ 모드 | 미진행 | ✅ 9 항목 정의 (sleeveLength 100→160 등) / initial false |
+| **Skirt 8 preset** | cont.65 sweep audit 미적용 | ✅ 8/8 자동 검증 통과 (NaN 0 / Exception 0). 시각 sweep은 후속 (top wear와 동일 패턴) |
+| **Pants 10 preset** | cont.65 sweep audit 미적용 | ✅ 10/10 자동 검증 통과 |
+| **22 collar SVG** | cont.67 미달 (eton/bertha/puritan/wing 형태 약함) | ✅ 22/22 자동 검증 NaN 0 / 시각 정확도는 cont.67 미달 그대로 (옵션 H 미적용) |
+| **Sleeve shape 10종** | cont.69 이람 "재난" 인정 | ✅ 10/10 자동 검증 NaN 0 / 시각 "재난" 그대로 (Phase 4) |
+| Dress 5 / Outerwear 4 시각 | 옵션 H 미적용 | 🔒 Phase 4 DEFER 명시 |
+| **fabric DB 41 항목** | 미검증 | ✅ 41 정확 (plan.md 정합) |
+| Design Elements 14 types | 미검증 | ✅ HTML 14 button 확인 (DesignEl.add hseam/vseam/pocket_patch/dart/pocket_welt/pocket_flap/pleat_box/pleat_knife/yoke/pintuck/ruffle/belt/epaulet/tab) |
+| **i18n EN/KO 318 keys** | 미검증 | ✅ 318/318 100% (cont.72 Part 8 T1 sleeve.capped 정정 후) |
+| **한국어 1글자 깨짐 (사고 z)** | 모니터 중 | ✅ flat-v6.html / data/*.json / HANDOFF / inventory / progress / plan 모두 U+FFFD 0 |
 
 ### E. 메모리 28+ 항목 적용 갭
 
