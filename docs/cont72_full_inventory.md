@@ -257,7 +257,8 @@
 | Hint system | 미진행 | ✅ 함수 작동 (canvas hint element 존재) / 개별 발동 케이스 (sleeveSkin/Wide 등) 검증 X |
 | Compat system | 미진행 | ✅ 6 system 카운트 (NECKTYPE 3 / SHOULDER_NECKTYPE 3 / DETAIL_NECKTYPE 1 / SHOULDER_DETAIL 3 / COLLAR 8 / NECK_BC_BLOCKED 9 = **6 system, plan.md "12 compat systems" 부정확**) / 개별 rule 발동 검증 X |
 | Spec sheet 출력 | 미진행 | ✅ SpecModule.update 정의 / 도메인 정합 검증 미흡 |
-| **Body size input mapping** | 미진행 | ⚠️ **88/68/92 입력에도 fitW 변경 0 — 작동 미흡 (or default 일치 case 확인 필요)** ★ |
+| **Body size input mapping** | 미진행 | ⚠️ **부분 작동** — chest slider만 갱신 (76→10/100→67 검증). plan.md "bust/waist/hip → chest/hipFlare" 명시인데 **hipFlare 미갱신** (fitW도 미갱신). 88/68/92 default 일치 case는 변경 0 정상 |
+| **봉제 현장용어 60+ 매핑** | 메모리만 / 미통합 | ✅ data/factory_terms.json 신설 (60 용어, structure/sewing/pattern/pocket/closure/ease/stitch/fabric_cutting 8 카테고리). i18n LANG.ko 통합은 후속 spec (B6.5 신설 권장) |
 | CM input ↔ slider (cm/inch toggle) | 미진행 | ✅ toggleMeasure 작동 (cm ↔ inch) |
 | Trace paper / Factory link | 미진행 | 자동 검증 X / cardFeed 관리 |
 | Pocket Y 슬라이더 | 미진행 | ✅ 22→35 변경 작동 (단 pocket=none이라 UI 비활성, 정상) |

@@ -1,0 +1,107 @@
+{
+  "version": "0.1",
+  "createdDate": "2026-05-06",
+  "spec": "cont.72 Part 8 T4 — 봉제 현장용어 자동 병기 source",
+  "source": "메모리 reference_factory_terms.md / 서울의류협동조합 봉제용어 / 국립언어원 감수 / hydnstudio.co.kr",
+  "purpose": "FLAT i18n KO label과 봉제 현장 (공장 작지서) 소통 사이의 매핑. Construction Notes 자동 병기 + Factory Viewer 한국어 모드.",
+  "applyStatus": "data 신설 / i18n 통합 후속 (별도 spec)",
+  "terms": {
+    "structure": {
+      "에리": {"en": "Collar", "ko_standard": "옷깃", "category": "structure"},
+      "에리고시": {"en": "Collar Stand", "ko_standard": "칼라밴드", "category": "structure"},
+      "에리구리": {"en": "Neckline", "ko_standard": "넥라인", "category": "structure"},
+      "소대야마": {"en": "Sleeve Cap", "ko_standard": "소매산", "category": "structure"},
+      "소대구찌": {"en": "Sleeve Opening", "ko_standard": "소매부리", "category": "structure"},
+      "오비": {"en": "Waistband", "ko_standard": "허릿단", "category": "structure"},
+      "와끼": {"en": "Side Line", "ko_standard": "옆선", "category": "structure"},
+      "고마대": {"en": "Rise", "ko_standard": "바지 샅", "category": "structure"},
+      "단작": {"en": "Placket", "ko_standard": "덧대어진 단", "category": "structure"}
+    },
+    "sewing_technique": {
+      "간도메": {"en": "Bar Tack", "ko_standard": "빗장박음", "alt": "바텍", "category": "sewing", "use": "포켓/벨트루프 고정"},
+      "고로시": {"en": "Under Pressing", "ko_standard": "시접가름 다림질", "category": "sewing"},
+      "스쿠이": {"en": "Blind Stitch", "ko_standard": "공그르기", "category": "sewing"},
+      "랍빠": {"en": "Binding", "ko_standard": "가장자리 감싸기", "category": "sewing"},
+      "해리": {"en": "Binding/Bias", "ko_standard": "바이어스 처리", "category": "sewing"},
+      "하미다시": {"en": "Piping", "ko_standard": "파이핑", "category": "sewing"},
+      "노바시": {"en": "Pulls", "ko_standard": "늘려 박기", "category": "sewing"}
+    },
+    "pattern_cutting": {
+      "데끼패턴": {"en": "Master Pattern", "ko_standard": "시접 없는 알패턴", "category": "pattern"},
+      "낫찌": {"en": "Notch", "ko_standard": "가윗밥 표시", "category": "pattern"},
+      "마카": {"en": "Marker", "ko_standard": "원단 위 패턴 배치", "category": "pattern"},
+      "지누시": {"en": "Anti-shrinkage", "ko_standard": "수축방지", "category": "pattern"},
+      "고다찌": {"en": "Precise Cutting", "ko_standard": "맞춤 재단", "category": "pattern"}
+    },
+    "pocket": {
+      "구찌": {"en": "Welt Pocket", "ko_standard": "입술 주머니", "category": "pocket"},
+      "하꼬주머니": {"en": "Welt Pocket", "ko_standard": "홑입술", "category": "pocket"},
+      "무까대": {"en": "Pocket Facing", "ko_standard": "주머니 안단", "category": "pocket"},
+      "후다": {"en": "Flap", "ko_standard": "주머니 뚜껑", "category": "pocket"}
+    },
+    "closure": {
+      "가다마이": {"en": "Single Breasted", "ko_standard": "싱글", "category": "closure"},
+      "요마이": {"en": "Double Breasted", "ko_standard": "더블", "category": "closure"},
+      "돗도": {"en": "Snap", "ko_standard": "똑딱이 단추", "category": "closure"},
+      "마이깡": {"en": "Hook & Eye", "ko_standard": "훅앤아이", "category": "closure"},
+      "히오꼬": {"en": "Hidden Button", "ko_standard": "히든 버튼", "category": "closure"},
+      "깡": {"en": "Buckle", "ko_standard": "버클", "category": "closure"}
+    },
+    "ease": {
+      "유두리": {"en": "Ease", "ko_standard": "옷 여유분", "category": "ease"},
+      "이세": {"en": "Ease (Sleeve)", "ko_standard": "소매 이세", "category": "ease", "use": "암홀보다 소매에 주는 여유분"}
+    },
+    "stitch": {
+      "본봉": {"en": "Single Needle Lock Stitch", "ko_standard": "한줄 스티치", "category": "stitch"},
+      "쌍침": {"en": "Double Needle Lock Stitch", "ko_standard": "두줄 스티치", "category": "stitch"},
+      "가시바리": {"en": "Reverse Stitch", "ko_standard": "되돌아 박기", "category": "stitch"},
+      "니혼바리": {"en": "Double Felled Seam", "ko_standard": "두줄 솔기", "category": "stitch", "use": "바지/아웃도어용"},
+      "호시": {"en": "Hidden Stitch", "ko_standard": "숨은 상침", "category": "stitch"},
+      "인타록크": {"en": "Interlock / 5Thread Safety Stitch", "ko_standard": "올풀림 방지 루프", "category": "stitch"},
+      "오바로크": {"en": "Overlock / Serged Edge", "ko_standard": "오버록", "category": "stitch", "alt": "올풀림 방지"},
+      "삼봉": {"en": "2Needle Bottom Cover Stitch", "ko_standard": "삼봉", "category": "stitch", "use": "다이마루 신축 부분"},
+      "싱글삼봉": {"en": "Single Needle Chain Stitch", "ko_standard": "싱글삼봉", "category": "stitch"},
+      "갈라삼봉": {"en": "Track Stitch", "ko_standard": "갈라삼봉", "category": "stitch", "use": "절개선 양쪽 스티치"},
+      "가이루빠": {"en": "Needle Bottom Cover Stitch", "ko_standard": "가이루빠", "category": "stitch", "use": "고정용 오바록크"},
+      "오드롬프": {"en": "Flatlock Stitch", "ko_standard": "플랫락", "category": "stitch", "use": "무시접 봉제"},
+      "미쓰마끼": {"en": "Baby Hem", "ko_standard": "세겹 말아박기", "category": "stitch"},
+      "미스오리": {"en": "Three-folded Sewing", "ko_standard": "세겹 접어박기", "category": "stitch"},
+      "날라리": {"en": "Lettuce Edge Stitch", "ko_standard": "상추모양 스티치", "category": "stitch"},
+      "지도리": {"en": "Catch Stitch", "ko_standard": "새발뜨기", "category": "stitch"},
+      "감치기": {"en": "Hemming Stitch", "ko_standard": "감치기", "category": "stitch"},
+      "피콧": {"en": "Picot Stitch", "ko_standard": "가두리 장식 실고리", "category": "stitch"},
+      "하마구리": {"en": "Scallop Stitch", "ko_standard": "둥근 가장자리", "category": "stitch"},
+      "나나이찌": {"en": "Rectangular Buttonhole", "ko_standard": "사각 단춧구멍", "category": "stitch"},
+      "큐큐": {"en": "Keyhole Buttonhole", "ko_standard": "둥근 머리 단춧구멍", "category": "stitch"},
+      "다꼬": {"en": "Double Needle Chain", "ko_standard": "고무줄 주름", "category": "stitch", "use": "8줄까지"},
+      "지누이": {"en": "Tacking", "ko_standard": "시침", "category": "stitch"}
+    },
+    "fabric_cutting": {
+      "오무데": {"en": "Outshell", "ko_standard": "겉면", "category": "fabric"},
+      "우라": {"en": "Lining", "ko_standard": "안감", "category": "fabric"},
+      "우라까이": {"en": "Turn Inside Out", "ko_standard": "뒤집기", "category": "fabric"},
+      "다대": {"en": "Warp", "ko_standard": "식서/세로 방향", "category": "fabric"},
+      "요꼬": {"en": "Weft", "ko_standard": "위사/가로 방향", "category": "fabric"},
+      "나라시": {"en": "Platform", "ko_standard": "연단 원단 펼치기", "category": "fabric"},
+      "시루이": {"en": "Notch/Marking", "ko_standard": "원단 표시", "category": "fabric"},
+      "미미": {"en": "Selvage", "ko_standard": "식서", "category": "fabric"},
+      "사까": {"en": "Nap Down/Up", "ko_standard": "원단의 결 방향", "category": "fabric"},
+      "데끼": {"en": "Raw Edge", "ko_standard": "시접 없는 알패턴", "category": "fabric"},
+      "시와": {"en": "Crease Line", "ko_standard": "원단 구김", "category": "fabric"},
+      "시아게": {"en": "Ironing", "ko_standard": "다림질", "category": "fabric"}
+    }
+  },
+  "totalTerms": 60,
+  "FLAT_application_status": {
+    "Construction_Notes_병기": "❌ 미적용 (PDF 작업지시서에 자동 병기 가능 — 후속 spec)",
+    "Factory_Viewer_KO_mode": "❌ 미적용 (i18n KO label에 '표준어 (현장어)' 병기 — 후속 spec)",
+    "i18n_LANG.ko_통합": "❌ 미적용 (예: collar: '칼라' → '칼라 (에리)')",
+    "factoryTerm_field": "❌ plan.md 'factoryTerm{}' 명시했지만 코드 미구현"
+  },
+  "futureWork": [
+    "B6.5 신설 — i18n KO label에 factoryTerm 통합 spec",
+    "PDF 한국 작업지시서 자동 병기 (Construction Notes 영역)",
+    "Factory Viewer 한국어 모드 토글 (표준어 / 현장어 전환)",
+    "5월 공장 검증 (Phase 3B) 전 적용 완료"
+  ]
+}
