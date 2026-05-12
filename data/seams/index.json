@@ -1,0 +1,56 @@
+{
+  "version": "0.1",
+  "spec": "S14 Phase 1 lift-and-shift",
+  "createdDate": "2026-05-07",
+  "source": [
+    "docs/spec_S14_customise_seams.md (cont.73 기획탭)",
+    "docs/sixatomic_pattern_generate_audit.md Section 13 (Customise Seams)"
+  ],
+  "purpose": "Sixatomic 28 부위 시접 자산 — FLAT 17 POM 도메인 깊이 정정. factory validation 5월 후 default 정밀화.",
+  "ambiguity_27_vs_28": {
+    "issue": "audit '28개' 표기 vs 실제 명시 27개 (Arm Hole / Attachment 행 모호)",
+    "current_assumption": "case A (28개) — Arm Hole 단독 + Attachment 단독 별도 등록",
+    "resolution_required": "다음 cowork tab 라이브 재방문 (M1-M7과 동시 처리)",
+    "implement_safe": "현 spec 14.4 default 패턴은 27/28 무관 — group 단위로 적용"
+  },
+  "groups": [
+    { "id": "collar", "filePath": "seams/collar.json", "count": 4 },
+    { "id": "collar_stand", "filePath": "seams/collar_stand.json", "count": 4 },
+    { "id": "cuff", "filePath": "seams/cuff.json", "count": 4 },
+    { "id": "sleeve", "filePath": "seams/sleeve.json", "count": 5 },
+    { "id": "pocket", "filePath": "seams/pocket.json", "count": 3 },
+    { "id": "side_seam", "filePath": "seams/side_seam.json", "count": 2 },
+    { "id": "singles", "filePath": "seams/singles.json", "count": 5, "case_a_assumption_note": "audit 28 가정 시 singles=6 (Arm Hole + Attachment 별도) / case B 27 가정 시 singles=4. 현재 5 = attachment_generic 별도 등록 + 다음 cowork tab 재방문으로 확정 후 5→4 or 5→6 정정." }
+  ],
+  "totalAreas": 27,
+  "audit_28_vs_actual_27": "현 implement = 27 (case A 거의 가정, attachment_generic 단일 등록). audit '28개' 표기 정정은 후속.",
+  "defaultPattern": {
+    "curved_thin": 0.80,
+    "curved_thin_applies_to": ["Arm Hole", "Collar (Main)", "Collar Attachment", "Collar Stand", "Collar Stand Attachment", "Neckline"],
+    "straight_standard": 1.00,
+    "straight_standard_applies_to": ["Cuff (Main)", "Cuff Attachment", "Pocket Flap Attachment", "Patch Pocket Side Seam", "Patch Pocket Upper Edge"],
+    "interfacing_zero": 0.00,
+    "interfacing_zero_applies_to": ["all *_interfacing variants"],
+    "tbd_factory_validation": ["Side Seam Back", "Side Seam Front", "Sleeve Seam Back", "Sleeve Seam Front", "Sleeve Head", "Sleeve Hem", "Sleeve Placket", "Shoulder", "Bodice Hem"]
+  },
+  "rangePattern": {
+    "default": [0.0, 5.0],
+    "step": 0.1,
+    "unit": "cm"
+  },
+  "factoryValidation": {
+    "status": "pending",
+    "lastValidated": null,
+    "evidenceSource": null,
+    "tbd_count": 10,
+    "tbd_areas": ["sleeve_head", "sleeve_hem", "sleeve_placket", "sleeve_seam_back", "sleeve_seam_front", "side_seam_back", "side_seam_front", "neckline", "shoulder", "bodice_hem"]
+  },
+  "schemaNote": "각 부위 entry = { id, group, type (main/attachment/interfacing/attachment_interfacing/standalone), default_cm, range, validated, source, message? }. B6.1 hard/soft 패턴 차용 — type=hard (factory 검증 통과) / type=soft (default).",
+  "futureWork": [
+    "27 vs 28 모호 정정 — Arm Hole / Attachment 분리 vs 통합 (cowork 라이브)",
+    "factory validation 5월 → tbd 9 부위 default 결정 + validated 갱신",
+    "Phase 2 UI implement (카드 grammar + 일러스트 + S5 revert 패턴 재사용)",
+    "Phase 3 PDF tech pack export — '시접 spec' 섹션 자동 매핑",
+    "loader 도입 (PDF / Tech pack export 함수에 fetch + JSON 결과로 대체)"
+  ]
+}

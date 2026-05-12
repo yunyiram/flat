@@ -1,0 +1,45 @@
+{
+  "group": "collar_stand",
+  "version": "0.1",
+  "displayName": { "en": "Collar Stand", "ko": "칼라 스탠드" },
+  "factoryTerm": "에리고시",
+  "areas": [
+    {
+      "id": "collar_stand_main",
+      "displayName": { "en": "Collar Stand", "ko": "칼라 스탠드" },
+      "type": "main",
+      "default_cm": 0.80,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.2",
+      "factoryNote": "에리고시 시접"
+    },
+    {
+      "id": "collar_stand_attachment",
+      "displayName": { "en": "Collar Stand Attachment", "ko": "칼라 스탠드 부착" },
+      "type": "attachment",
+      "default_cm": 0.80,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.2"
+    },
+    {
+      "id": "collar_stand_interfacing",
+      "displayName": { "en": "Collar Stand Interfacing", "ko": "칼라 스탠드 심지" },
+      "type": "interfacing",
+      "default_cm": 0.00,
+      "range": [0.0, 2.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.2"
+    },
+    {
+      "id": "collar_stand_attachment_interfacing",
+      "displayName": { "en": "Collar Stand Attachment Interfacing", "ko": "칼라 스탠드 부착 심지" },
+      "type": "attachment_interfacing",
+      "default_cm": 0.00,
+      "range": [0.0, 2.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.2"
+    }
+  ]
+}

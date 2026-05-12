@@ -1,0 +1,28 @@
+{
+  "group": "side_seam",
+  "version": "0.1",
+  "displayName": { "en": "Side Seam", "ko": "옆선" },
+  "factoryTerm": "와끼",
+  "areas": [
+    {
+      "id": "side_seam_back",
+      "displayName": { "en": "Side Seam Back", "ko": "옆선 뒤" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD factory validation)",
+      "note": "TBD"
+    },
+    {
+      "id": "side_seam_front",
+      "displayName": { "en": "Side Seam Front", "ko": "옆선 앞" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD)",
+      "note": "TBD"
+    }
+  ]
+}

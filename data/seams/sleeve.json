@@ -1,0 +1,61 @@
+{
+  "group": "sleeve",
+  "version": "0.1",
+  "displayName": { "en": "Sleeve", "ko": "소매" },
+  "factoryTerm": "소대",
+  "areas": [
+    {
+      "id": "sleeve_head",
+      "displayName": { "en": "Sleeve Head", "ko": "소매산" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD factory validation)",
+      "factoryTerm": "소대 야마",
+      "note": "TBD — factory validation 5월 후 결정"
+    },
+    {
+      "id": "sleeve_hem",
+      "displayName": { "en": "Sleeve Hem", "ko": "소매단" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD)",
+      "factoryTerm": "소대 구찌",
+      "note": "TBD"
+    },
+    {
+      "id": "sleeve_placket",
+      "displayName": { "en": "Sleeve Placket", "ko": "소매 플래킷" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD)",
+      "factoryTerm": "단작 (Sleeve)",
+      "note": "TBD"
+    },
+    {
+      "id": "sleeve_seam_back",
+      "displayName": { "en": "Sleeve Seam Back", "ko": "소매 뒷솔기" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD)",
+      "note": "TBD"
+    },
+    {
+      "id": "sleeve_seam_front",
+      "displayName": { "en": "Sleeve Seam Front", "ko": "소매 앞솔기" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD)",
+      "note": "TBD"
+    }
+  ]
+}

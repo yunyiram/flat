@@ -1,0 +1,58 @@
+{
+  "group": "singles",
+  "version": "0.1",
+  "displayName": { "en": "Standalone Areas", "ko": "단일 부위" },
+  "note": "audit 28/27 모호 영역 — Arm Hole / Attachment 별도 등록 (case A 가정, 후속 정정 필요)",
+  "areas": [
+    {
+      "id": "arm_hole",
+      "displayName": { "en": "Arm Hole", "ko": "암홀" },
+      "type": "standalone",
+      "default_cm": 0.80,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.2 (얇은 시접, 곡선)"
+    },
+    {
+      "id": "attachment_generic",
+      "displayName": { "en": "Attachment (generic)", "ko": "부착 (일반)" },
+      "type": "attachment",
+      "default_cm": 1.00,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (모호 — Arm Hole Attachment vs 단독)",
+      "note": "27/28 모호 case A 가정 등록. 후속 cowork tab 재방문으로 정정."
+    },
+    {
+      "id": "neckline",
+      "displayName": { "en": "Neckline", "ko": "넥라인" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD)",
+      "factoryTerm": "에리 구리",
+      "note": "TBD"
+    },
+    {
+      "id": "shoulder",
+      "displayName": { "en": "Shoulder", "ko": "어깨" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD)",
+      "note": "TBD"
+    },
+    {
+      "id": "bodice_hem",
+      "displayName": { "en": "Bodice Hem", "ko": "몸판 단" },
+      "type": "standalone",
+      "default_cm": null,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1 (TBD)",
+      "note": "TBD"
+    }
+  ]
+}

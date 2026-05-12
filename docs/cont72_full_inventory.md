@@ -117,7 +117,7 @@
 | S11 Body measurement profile | 🔒 Phase 4+ | — |
 | S12 Quota SaaS | 🔒 Phase 5+ | — |
 | S13 PLM/ERP | 🔒 Phase 5+ | — |
-| **S14 Customise Seams 28 부위** ★ | ❌ spec 미작성 (기획탭 의무) | — |
+| **S14 Customise Seams 28 부위** ★ | ✅ spec 작성 (cont.73, docs/spec_S14_customise_seams.md) / ✅ **Phase 1 implement (cont.72 Part 10): `data/seams/` 신설 8 파일 (index + collar 4 / collar_stand 4 / cuff 4 / sleeve 5 / pocket 3 / side_seam 2 / singles 5 = 27 area, tbd 10, factory validation 후속)** | 27/28 모호 정정 cowork 후속 |
 | **S15 Garment spec vs Body 이중 측정** | ❌ 동일 | — |
 | **S16 Multi-select grading** | ❌ 동일 | — |
 | **S17 Carbon Design System** (옵션) | ❌ | — |

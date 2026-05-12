@@ -1,0 +1,36 @@
+{
+  "group": "pocket",
+  "version": "0.1",
+  "displayName": { "en": "Pocket", "ko": "포켓" },
+  "factoryTerm": "구찌 / 하꼬 주머니",
+  "areas": [
+    {
+      "id": "patch_pocket_side_seam",
+      "displayName": { "en": "Patch Pocket Side Seam", "ko": "패치 포켓 옆선" },
+      "type": "standalone",
+      "default_cm": 1.00,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1-13.2 (직선)"
+    },
+    {
+      "id": "patch_pocket_upper_edge",
+      "displayName": { "en": "Patch Pocket Upper Edge", "ko": "패치 포켓 윗단" },
+      "type": "standalone",
+      "default_cm": 1.00,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1-13.2"
+    },
+    {
+      "id": "pocket_flap_attachment",
+      "displayName": { "en": "Pocket Flap Attachment", "ko": "포켓 플랩 부착" },
+      "type": "attachment",
+      "default_cm": 1.00,
+      "range": [0.0, 5.0],
+      "validated": false,
+      "source": "sixatomic_audit Section 13.1-13.2",
+      "factoryTerm": "후다 부착"
+    }
+  ]
+}
