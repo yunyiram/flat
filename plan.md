@@ -24,7 +24,7 @@
 - **PDF**: 5-page tech pack + 1-page 한국 작업지시서 — 출력 작동 ⚠️ 실무 패턴사 사용 검증 X (Phase 3B 의존)
 - **Factory Viewer**: read-only URL + share link ⚠️ 작동 검증 미흡 (이람 직접 사용 X)
 - **CascadeVis**: SVG morph animation + 11-step demo — 동작 ⚠️ 시각 매력도 미흡 (cont.65 sweep audit 영역)
-- **Body size input** → auto slider mapping (bust/waist/hip → chest/hipFlare) ⚠️ 작동 검증 미흡
+- **Body size input** → auto slider mapping (bust/hip → chest/hipFlare). hipFlare 정상 작동 (cont.72 Part 11 정정). ⚠️ **waist input 변수 선언만 / 매핑 미구현** (도메인 결정 필요 — silhouette tapered? 별도 slider?)
 - **★ cont.67:** reference_data.md §6.2 sweatshirt + §6.3 crewTee + §6.4 hoodie SFD 16/14/18 POM
 - **★ cont.68 Part 1:** BodyComp.geometry() sweatshirt 분기 (body/rib/armhole SFD + shoulder FLAT convention 절충)
 - **★ cont.69-72:** S1/S2/S5/S8 (UI 메타-패턴) + B6.2 lift-and-shift (34 preset / 9 cat JSON) + B6.1 lift-and-shift (6 sample rule) + 보강 8건 + 누락 방지 시스템 5단

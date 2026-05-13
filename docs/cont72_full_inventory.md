@@ -273,6 +273,40 @@
 | **i18n EN/KO 318 keys** | 미검증 | ✅ 318/318 100% (cont.72 Part 8 T1 sleeve.capped 정정 후) |
 | **한국어 1글자 깨짐 (사고 z)** | 모니터 중 | ✅ flat-v6.html / data/*.json / HANDOFF / inventory / progress / plan 모두 U+FFFD 0 |
 
+### D-2. 검증 부족 영역 보강 — cont.72 Part 12 self-audit의 self-audit
+
+> **계기:** cont.72 Part 11 hipFlare 잘못된 audit 발견 + 이람 push "검증 필요한 부분 저장 빼놓지 말고".
+> **원칙 4 적용:** audit 자체도 "구현됨 = 검증됨"으로 과대평가 금지.
+
+| 영역 | cont.72 Part 8/11 판정 | 검증 부족 한계 |
+|---|---|---|
+| Style Overlay 7 작동 | ✅ 7/7 작동 | toggle on/off net change만 / single direction 시각 변환 X / 실제 SVG 변형 검증 X |
+| Compat system 6 (plan.md "12") | ✅ count 6 | 개별 rule 발동 케이스 X — 예: shoulderType='halter' 선택 시 NECKTYPE_COMPAT 적용 실제 차단 검증 X |
+| CascadeVis 11-step | ✅ 함수 정의 | 11-step 실제 morph animation 부드러움 + 시각 매력도 X |
+| CM toggle (cm/inch) | ✅ measureUnit 변경 | 모든 slider/cm-input 실제 변환 결과 X (cm 'sleeveLength 22' vs inch '8.7"') |
+| Hint system | ✅ canvas hint element | 개별 hint 발동 (sleeveSkin: sleeveWidth<20 + sleeveLength>15) 실제 toast 표시 X |
+| Extended Range 9 항목 | ✅ EXT_RANGES 정의 | 실제 slider max 변경 (sleeveLength max 100→160) + UI toggle X |
+| Pocket Y | ✅ 22→35 변경 | 실제 pocket 시각 위치 (`pocketY 35%` SVG 좌표 변경) X |
+| **CARD_DATA fuzzy match** | ✅ cont.72 Part 5 추가 → ✅ **Part 12 fix 완료** | Part 12 검증: 5 카드 매칭 결과 발견 — Card 3 (Oversized) / Card 4 (Raglan) 모두 crewTee 잘못 매핑. **fix: (1) findClosestPresetIdx 가중치 +2 (sleeveType/fit/shoulderType/neckFinish) + (2) CARD_DATA 5장에 명시적 `targetPresetName` 추가** (Card 0/1/2 crewTee / Card 3 hoodie / Card 4 sweatshirt) + (3) CardFeed.pickVariant에서 명시 우선 / fuzzy fallback |
+| S8 메타-그룹 매핑 | ✅ 자율 매핑 | 이람 검수 X (Design vs Fit vs Details 분류 적정성) |
+| B6.2 schema 정합 | ⚠️ simplification | recommendedFabricIds / activeMode / isHero / difficulty 빈 채로 lift-and-shift (spec v0.2 정합 X) |
+| 22 collar SVG | ✅ NaN 0 | 시각 정확도 cont.65 미달 — **어느 collar (eton/bertha/puritan/wing 외)도** 정확히 미달인지 X |
+| Skirt 8 / Pants 10 | ✅ NaN 0 | 시각 정확도 X (top wear sweep만 cont.65 baseline) |
+| 41 fabric DB | ✅ 41 정확 | 항목별 EN/KO/GSM/season/stretch 데이터 정확성 X |
+| 108 compat rules | ⚠️ 카운트 추정 | 실제 카운트 + 작동 케이스 X (개별 rule 발동) |
+| 봉제 현장용어 60 | ✅ data 신설 | i18n LANG.ko 통합 X (B6.5 미작성, factory_terms i18n 자동 병기 미적용) |
+| Body size mapping hipFlare | ⚠️ Part 8 잘못 audit → Part 11 정정 | hipFlare 정상 / **waist 미사용 = 진짜 갭** (waist → silhouette tapered 도메인 결정) |
+| **27/28 모호 (S14)** | ✅ Phase 1 27 implement | 28 vs 27 cowork tab 재방문 후속 (M1-M7 묶음) |
+| **TBD 10 부위 default** | ⚠️ S14 null | factory validation 5월 후 결정 |
+
+**Part 12 audit 자체의 한계:** 본 표도 "검증 부족 영역"의 카탈로그일 뿐 — 각 영역 실제 검증은 별도 작업. 누락 방지 시스템 적용 명시 (audit ≠ 작동 검증).
+
+**우선순위 권장 (자율 가능 영역만):**
+- ⭐ Compat system 개별 rule 발동 sweep (NECKTYPE_COMPAT / SHOULDER_NECKTYPE_COMPAT 등)
+- ⭐ CARD_DATA fuzzy 5 카드 매칭 결과 자동 검증 (코드탭 자율)
+- ⭐ B6.5 factoryTerm i18n 통합 spec 작성 (이람 brand voice 무관 영역만)
+- ⭐ Style Overlay 7 single direction 변경 sweep
+
 ### E. 메모리 28+ 항목 적용 갭
 
 | 메모리 | 적용 |

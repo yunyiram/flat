@@ -1337,11 +1337,15 @@ function updateRecommendedMarkers(){
 // cont.72 보강: CARD_DATA 진입 시 가장 유사한 preset idx 찾기 (fuzzy match)
 // state field 일치도 가장 높은 PresetModule.DB idx 반환. S2 dft 정확도 향상.
 function findClosestPresetIdx(state){
+  // cont.72 Part 12 fix: distinctive field (sleeveType/fit/shoulderType/neckFinish) 가중치 +2
+  // 이전 알고리즘은 동점 시 첫 매칭 (DB[0]=crewTee) 항상 우선 → Card 3/4 잘못 매핑
+  // 가중치 추가로 Card 3 (oversized) → hoodie / Card 4 (raglan) → sweatshirt 매칭 개선
+  const WEIGHT_2X=['sleeveType','fit','shoulderType','neckFinish'];
   let bestIdx=0, bestScore=-1;
   PresetModule.DB.forEach((p,i)=>{
     let score=0;
     Object.keys(p.s).forEach(k=>{
-      if(state[k]===p.s[k]) score++;
+      if(state[k]===p.s[k]) score += WEIGHT_2X.includes(k) ? 2 : 1;
     });
     if(score>bestScore){bestScore=score; bestIdx=i;}
   });
@@ -6821,6 +6825,7 @@ const CARD_DATA=[
    fit:'어깨를 바꾸면 소매가 따라옵니다',fitEn:'Change the shoulder, the sleeve follows',
    breatheParam:'fitW',breatheAmp:10,
    colors:['#1B3A5C','#F5F0EB','#3C3C3C'],
+   targetPresetName:'crewTee', // cont.72 Part 12: 명시적 매핑 (CARD_DATA fuzzy match audit 정정)
    state:{neckShape:'round',fit:'regular',bodyLen:45,fitW:50,sleeveLength:32,sleeveType:'setin',fillColor:'#1B3A5C'}},
   {title:'미니멀 — 선 하나가 전부일 때',titleEn:'Minimal — When One Line Is Everything',tag:'Style',
    sub:'디테일을 전부 빼면 남는 건 비율뿐. 클린핏의 정수.',
@@ -6828,6 +6833,7 @@ const CARD_DATA=[
    fit:'선 하나가 비율을 결정합니다',fitEn:'One line defines the proportion',
    breatheParam:'fitW',breatheAmp:8,
    colors:['#2C2C2C','#F8F6F1','#8B8680'],
+   targetPresetName:'crewTee', // Minimal = slim fit crewTee variant
    state:{neckShape:'round',fit:'slim',bodyLen:45,fitW:42,sleeveLength:25,sleeveType:'setin',pocket:'none',dart:'none',closure:'none',fillColor:'#2C2C2C'}},
   {title:'여름, 면 저지 한 장',titleEn:'Summer — One Layer of Cotton Jersey',tag:'Material',
    sub:'소재가 형태를 결정한다. 같은 패턴이 원단에 따라 어떻게 달라지는지.',
@@ -6835,6 +6841,7 @@ const CARD_DATA=[
    fit:'기장을 줄이면 실루엣이 바뀝니다',fitEn:'Shorten the length, the silhouette shifts',
    breatheParam:'bodyLen',breatheAmp:8,
    colors:['#F5F0EB','#B8D4E3','#C5CEB5'],
+   targetPresetName:'crewTee', // Summer = short sleeve crewTee variant
    state:{neckShape:'round',fit:'regular',bodyLen:40,fitW:48,sleeveLength:18,sleeveType:'setin',fillColor:'#F5F0EB'}},
   {title:'오버사이즈는 끝났을까?',titleEn:'Is Oversized Over?',tag:'Trend',
    sub:'핏 슬라이더 하나로 스키니부터 오버사이즈까지. 트렌드는 숫자로 말한다.',
@@ -6842,6 +6849,7 @@ const CARD_DATA=[
    fit:'품을 넓히면 어깨도 따라갑니다',fitEn:'Widen the fit, the shoulders follow',
    breatheParam:'fitW',breatheAmp:15,
    colors:['#C4B5A0','#1E1E1E','#4A5940'],
+   targetPresetName:'hoodie', // Oversized = hoodie 매칭 (fit:oversized, fitW:80, shoulderExtra:10 정합)
    state:{neckShape:'round',fit:'oversized',bodyLen:58,fitW:75,sleeveLength:40,sleeveType:'setin',shoulderExtra:6,fillColor:'#C4B5A0'}},
   {title:'래글런 소매의 3가지 변형',titleEn:'3 Variations of Raglan',tag:'Structure',
    sub:'어깨선이 사라지면 실루엣이 바뀐다. 셋인, 래글런, 그리고 그 사이.',
@@ -6849,6 +6857,7 @@ const CARD_DATA=[
    fit:'어깨선이 사라지면 소매가 달라집니다',fitEn:'Remove the shoulder seam, the sleeve transforms',
    breatheParam:'sleeveLength',breatheAmp:10,
    colors:['#3B6B4E','#1B3A5C','#7A2E35'],
+   targetPresetName:'sweatshirt', // Raglan = sweatshirt 매칭 (sleeveType:raglan + dropped shoulder)
    state:{neckShape:'round',fit:'regular',bodyLen:50,fitW:55,sleeveLength:55,sleeveType:'raglan',fillColor:'#3B6B4E'}}
 ];
 
@@ -7035,7 +7044,12 @@ const CardFeed={
     const d=decomposeNeckFinish(S.neckFinish||'rib');Object.assign(S,d);
     setFillColor(clr);
     setGarmentType(S.garmentType||'top');
-    if(typeof findClosestPresetIdx==='function') S.currentPresetIdx=findClosestPresetIdx(S); // cont.72 보강: fuzzy match
+    // cont.72 Part 12 정정: 명시적 targetPresetName 우선 / fuzzy fallback
+    if(cd.targetPresetName){
+      const explicitIdx=PresetModule.DB.findIndex(p=>p.name===cd.targetPresetName);
+      if(explicitIdx>=0) S.currentPresetIdx=explicitIdx;
+      else if(typeof findClosestPresetIdx==='function') S.currentPresetIdx=findClosestPresetIdx(S);
+    } else if(typeof findClosestPresetIdx==='function') S.currentPresetIdx=findClosestPresetIdx(S);
     Object.keys(S).forEach(k=>syncToggle(k,S[k]));
     SD.forEach(([id,k,vid,fmt])=>{const el=document.getElementById(id);if(el){el.value=S[k];document.getElementById(vid).textContent=fmt(S[k]);}});
     updateNeckSubPanels();syncCollarBtns();
