@@ -15,8 +15,8 @@
 
 - **34 presets** (16 top + 8 skirt + 10 pants), 7 cat 데이터 분류 (5 cat UI는 Phase 6 DEFER)
   - ※ 이전 "49 presets (31 top)" 표기 = 부정확 (추정치). 실제 PresetModule.DB 16. spec v0.2 32 preset 확장 후속 (Phase 4)
-- **108 collar compat rules + 21 functional + 3 new constraints (12 compat systems)** — 데이터 적재 ⚠️ 작동 케이스별 검증 미흡 (cont.72 audit § 8 D)
-- **41 fabric DB** (EN/KO, GSM, season, stretch, garment fit) — 데이터 ⚠️ 항목 정확성 미검증
+- **27 compat rules (6 system)** — cont.72 Part 13 정정 (이전 "108 + 21 + 3 = 132 (12 system)" 표기 부정확): NECKTYPE_COMPAT 3 / SHOULDER_NECKTYPE_COMPAT 3 / DETAIL_NECKTYPE_COMPAT 1 / SHOULDER_DETAIL_COMPAT 3 / COLLAR_COMPAT 8 / NECK_BC_BLOCKED 9 = 27 rule, 6 system. 작동 케이스 자동 검증 진행. ⚠️ 도메인 비교 (sixatomic carve-out) 후속 Cowork 분담
+- **41 fabric DB** (EN/KO, GSM, season, stretch, garment fit) — ✅ cont.72 Part 13 검증: 41 entry 모두 name.en/ko/gsm/season/stretch/id 정합 (missing 0)
 - **14 design elements**, **7 style overlays**, **18 collar params**
 - **17 POM** (A-Q) + XS-XL grading + tolerance + 시접(S/A) per area — sweatshirt §6.2 적용 / crewTee/hoodie §6.3-6.4 코드 미적용 (Phase 4) ※ sixatomic 28 부위 시접 (S14 spec) 대비 11 부위 미흡
 - **i18n**: EN/KO ⚠️ 봉제 현장용어 자동 병기 매핑 정합성 미검증 (cont.72 audit)
