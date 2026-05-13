@@ -1,0 +1,97 @@
+{
+  "version": "0.1",
+  "spec": "B6.5 Phase 1 — factory_terms 60 ↔ i18n 318 keys 매핑 표",
+  "createdDate": "2026-05-12",
+  "source": [
+    "data/factory_terms.json (cont.72 Part 8 T4 신설)",
+    "flat-v6.html LANG.ko (L756-933)",
+    "docs/flat_data_separation_B6_5_factoryterm_i18n_spec.md v0.1"
+  ],
+  "purpose": "factory_terms 봉제 현장용어를 i18n LANG.ko key와 1:1 매핑. LANG.ko_factory 자동 생성 source. PDF 작업지시서 자동 병기.",
+  "approach": "1:1 직접 매핑 (factoryKey → i18n_path) / 1:N 매핑 (한 factoryKey가 여러 위치) / 매핑 없음 (i18n key 확장 필요).",
+  "mappings": {
+    "structure": [
+      {"factoryKey": "에리", "en": "Collar", "i18n_paths": ["neck.collarLabel"], "ko_factory_override": "에리", "confidence": "high"},
+      {"factoryKey": "에리고시", "en": "Collar Stand", "i18n_paths": [], "note": "현 i18n에 별도 키 X. spec_S14 collar_stand 영역과 연계 가능", "confidence": "missing_i18n"},
+      {"factoryKey": "에리구리", "en": "Neckline", "i18n_paths": ["neck.shape"], "ko_factory_override": "에리구리", "confidence": "medium", "note": "neck.shape은 카테고리 라벨 (Shape), neckline 직접 매핑 X. 별도 키 추가 권장"},
+      {"factoryKey": "소대야마", "en": "Sleeve Cap", "i18n_paths": ["sleeve.capped"], "ko_factory_override": "소대 야마 (캡슬리브)", "confidence": "medium"},
+      {"factoryKey": "소대구찌", "en": "Sleeve Opening", "i18n_paths": ["sleeve.cuff"], "ko_factory_override": "소대 구찌 (소매단)", "confidence": "high"},
+      {"factoryKey": "오비", "en": "Waistband", "i18n_paths": ["skirt.waistband", "pants.waist"], "ko_factory_override": "오비", "confidence": "high"},
+      {"factoryKey": "와끼", "en": "Side Line", "i18n_paths": ["body.sideSeam"], "ko_factory_override": "와끼", "confidence": "high"},
+      {"factoryKey": "고마대", "en": "Rise", "i18n_paths": ["pants.rise"], "ko_factory_override": "고마대", "confidence": "high"},
+      {"factoryKey": "단작", "en": "Placket", "i18n_paths": [], "note": "neck.openingLabel과 연관 / S2 후속 collar 22 별도 메커니즘", "confidence": "missing_i18n"}
+    ],
+    "sewing_technique": [
+      {"factoryKey": "간도메", "en": "Bar Tack", "i18n_paths": [], "note": "sewing-technical, UI 라벨 X. PDF 작업지시서 Construction Notes 영역 매핑", "confidence": "construction_only"},
+      {"factoryKey": "고로시", "en": "Under Pressing", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "스쿠이", "en": "Blind Stitch", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "랍빠", "en": "Binding", "i18n_paths": ["neck.binding"], "ko_factory_override": "랍빠", "confidence": "high"},
+      {"factoryKey": "해리", "en": "Binding/Bias", "i18n_paths": ["neck.binding"], "ko_factory_override": "해리 (바이어스)", "confidence": "medium", "note": "랍빠와 중첩"},
+      {"factoryKey": "하미다시", "en": "Piping", "i18n_paths": ["detail.piping"], "ko_factory_override": "하미다시", "confidence": "high"},
+      {"factoryKey": "노바시", "en": "Pulls", "i18n_paths": [], "confidence": "construction_only"}
+    ],
+    "pattern_cutting": [
+      {"factoryKey": "데끼패턴", "en": "Master Pattern", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "낫찌", "en": "Notch", "i18n_paths": [], "confidence": "construction_only", "note": "PDF tech pack Pattern 영역"},
+      {"factoryKey": "마카", "en": "Marker", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "지누시", "en": "Anti-shrinkage", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "고다찌", "en": "Precise Cutting", "i18n_paths": [], "confidence": "construction_only"}
+    ],
+    "pocket": [
+      {"factoryKey": "구찌", "en": "Welt Pocket", "i18n_paths": ["detail.welt"], "ko_factory_override": "구찌 (웰트 포켓)", "confidence": "high"},
+      {"factoryKey": "하꼬주머니", "en": "Welt Pocket (single)", "i18n_paths": ["detail.welt"], "ko_factory_override": "하꼬 주머니 (홑입술)", "confidence": "medium", "note": "구찌와 중첩"},
+      {"factoryKey": "무까대", "en": "Pocket Facing", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "후다", "en": "Flap", "i18n_paths": ["detail.flap"], "ko_factory_override": "후다", "confidence": "high"}
+    ],
+    "closure": [
+      {"factoryKey": "가다마이", "en": "Single Breasted", "i18n_paths": ["detail.b_single"], "ko_factory_override": "가다마이 (싱글)", "confidence": "high"},
+      {"factoryKey": "요마이", "en": "Double Breasted", "i18n_paths": ["detail.b_double"], "ko_factory_override": "요마이 (더블)", "confidence": "high"},
+      {"factoryKey": "돗도", "en": "Snap", "i18n_paths": ["detail.snap"], "ko_factory_override": "돗도 (스냅)", "confidence": "high"},
+      {"factoryKey": "마이깡", "en": "Hook & Eye", "i18n_paths": [], "confidence": "missing_i18n", "note": "i18n key 확장 권장"},
+      {"factoryKey": "히오꼬", "en": "Hidden Button", "i18n_paths": ["detail.hidden"], "ko_factory_override": "히오꼬 (히든)", "confidence": "high"},
+      {"factoryKey": "깡", "en": "Buckle", "i18n_paths": [], "confidence": "missing_i18n"}
+    ],
+    "ease": [
+      {"factoryKey": "유두리", "en": "Ease", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "이세", "en": "Ease (Sleeve)", "i18n_paths": ["sleeve.sleeveWidth"], "ko_factory_override": "이세", "confidence": "medium", "note": "sleeve ease 영역"}
+    ],
+    "stitch": [
+      {"factoryKey": "본봉", "en": "Single Needle Lock Stitch", "i18n_paths": ["detail.single"], "ko_factory_override": "본봉 (싱글)", "confidence": "high"},
+      {"factoryKey": "쌍침", "en": "Double Needle Lock Stitch", "i18n_paths": ["detail.double"], "ko_factory_override": "쌍침 (더블)", "confidence": "high"},
+      {"factoryKey": "가시바리", "en": "Reverse Stitch", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "니혼바리", "en": "Double Felled Seam", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "호시", "en": "Hidden Stitch", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "인타록크", "en": "Interlock", "i18n_paths": ["detail.overlock"], "ko_factory_override": "인타록크 (오버락)", "confidence": "medium"},
+      {"factoryKey": "오바로크", "en": "Overlock", "i18n_paths": ["detail.overlock"], "ko_factory_override": "오바로크", "confidence": "high"},
+      {"factoryKey": "삼봉", "en": "2Needle Bottom Cover Stitch", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "오드롬프", "en": "Flatlock Stitch", "i18n_paths": ["detail.flatlock"], "ko_factory_override": "오드롬프 (플랫락)", "confidence": "high"},
+      {"factoryKey": "감치기", "en": "Hemming Stitch", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "지누이", "en": "Tacking", "i18n_paths": [], "confidence": "construction_only"}
+    ],
+    "fabric_cutting": [
+      {"factoryKey": "오무데", "en": "Outshell", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "우라", "en": "Lining", "i18n_paths": [], "confidence": "missing_i18n", "note": "fabric layer 영역 — B6.3 fabric library 분리 시 추가"},
+      {"factoryKey": "다대", "en": "Warp", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "요꼬", "en": "Weft", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "미미", "en": "Selvage", "i18n_paths": [], "confidence": "construction_only"},
+      {"factoryKey": "시아게", "en": "Ironing", "i18n_paths": [], "confidence": "construction_only"}
+    ]
+  },
+  "statistics": {
+    "total_factory_terms": 60,
+    "mapped_to_i18n": 18,
+    "missing_i18n_key": 6,
+    "construction_only": 26,
+    "medium_confidence": 6,
+    "high_confidence": 14,
+    "coverage_pct": 30,
+    "note": "30% i18n UI 매핑 / 43% construction (PDF 작업지시서) / 10% i18n 확장 필요 / 17% partial. 모든 60 용어가 factory PDF/Notes에 활용 가능."
+  },
+  "futureWork": [
+    "i18n key 확장 (에리고시/에리구리/단작/마이깡/깡/우라 → 신규 key 추가)",
+    "construction_only 26 용어 → PDF 작업지시서 Construction Notes 영역 자동 통합",
+    "ko_factory_override 18 → LANG.ko_factory 자동 생성 (B6.5 Phase 2)",
+    "Phase 3B factory 인터뷰 후 confidence medium → high 격상 (현장 정확성 검증)",
+    "병기 형식 (A/B/C/D) 이람 결정 — ko_factory_override 값에 반영 (단독 vs 병기)"
+  ]
+}

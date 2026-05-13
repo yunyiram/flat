@@ -294,7 +294,7 @@
 | Skirt 8 / Pants 10 | ✅ NaN 0 | 시각 정확도 X (top wear sweep만 cont.65 baseline) |
 | 41 fabric DB | ✅ 41 정확 | ✅ **cont.72 Part 13 검증** — 41 entry 모두 name.en/ko/gsm/season/stretch/id 정합 (missing 0). plan.md 정합. |
 | 108 compat rules | ⚠️ 카운트 추정 | ✅ **cont.72 Part 13 정정** — 실제 6 system / **27 rule** (NECKTYPE 3+SHOULDER_NECKTYPE 3+DETAIL_NECKTYPE 1+SHOULDER_DETAIL 3+COLLAR 8+NECK_BC_BLOCKED 9). plan.md "108+21+3=132 (12 system)" 표기 4-5배 부풀림 정정. 작동 케이스 sample: neckShape=halter → collar 차단 / hood × wrap × turtle × open_front 등 NECK_BC 차단 9 조합 |
-| 봉제 현장용어 60 | ✅ data 신설 | i18n LANG.ko 통합 X (B6.5 미작성, factory_terms i18n 자동 병기 미적용) |
+| 봉제 현장용어 60 | ✅ data 신설 | ✅ **cont.72 Part 13 — B6.5 Phase 1 매핑 표 신설** (`data/factory_terms_i18n_mapping.json`): 60 용어 → 18 i18n 매핑 (30% UI) / 26 construction-only (43% PDF) / 6 missing i18n (10% 확장 필요) / 14 high confidence / 6 medium. ko_factory_override 18 entry. LANG.ko_factory 자동 생성 source. Phase 2 (LANG 생성) + Phase 3 (UI 토글) + Phase 4 (PDF) 후속. |
 | Body size mapping hipFlare | ⚠️ Part 8 잘못 audit → Part 11 정정 | hipFlare 정상 / **waist 미사용 = 진짜 갭** (waist → silhouette tapered 도메인 결정) |
 | **27/28 모호 (S14)** | ✅ Phase 1 27 implement | 28 vs 27 cowork tab 재방문 후속 (M1-M7 묶음) |
 | **TBD 10 부위 default** | ⚠️ S14 null | factory validation 5월 후 결정 |

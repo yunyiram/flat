@@ -1,0 +1,979 @@
+{
+  "version": "0.1",
+  "generated": "2026-05-13T17:31:10.800450",
+  "axis": "sleeveLength",
+  "axis_values": [
+    "sleeveless",
+    "cap",
+    "short",
+    "elbow",
+    "threequarter",
+    "long"
+  ],
+  "cat_filter": "top",
+  "preset_count": 16,
+  "axis_count": 6,
+  "total_cases": 96,
+  "cases": [
+    {
+      "preset_name": "crewTee",
+      "preset_cat": "tshirts",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "crewTee",
+      "preset_cat": "tshirts",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "crewTee",
+      "preset_cat": "tshirts",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "crewTee",
+      "preset_cat": "tshirts",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "crewTee",
+      "preset_cat": "tshirts",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "crewTee",
+      "preset_cat": "tshirts",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "polo",
+      "preset_cat": "polo",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "polo",
+      "preset_cat": "polo",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "polo",
+      "preset_cat": "polo",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "polo",
+      "preset_cat": "polo",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "polo",
+      "preset_cat": "polo",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "polo",
+      "preset_cat": "polo",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "shirt",
+      "preset_cat": "shirtsBlouses",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "shirt",
+      "preset_cat": "shirtsBlouses",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "shirt",
+      "preset_cat": "shirtsBlouses",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "shirt",
+      "preset_cat": "shirtsBlouses",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "shirt",
+      "preset_cat": "shirtsBlouses",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "shirt",
+      "preset_cat": "shirtsBlouses",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "sweater",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "sweater",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "sweater",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "sweater",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "sweater",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "sweater",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "cardigan",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "cardigan",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "cardigan",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "cardigan",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "cardigan",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "cardigan",
+      "preset_cat": "knitwear",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "sweatshirt",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "sweatshirt",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "sweatshirt",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "sweatshirt",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "sweatshirt",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "sweatshirt",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "hoodie",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "hoodie",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "hoodie",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "hoodie",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "hoodie",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "hoodie",
+      "preset_cat": "sweatshirts",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "volSleeveDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "volSleeveDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "volSleeveDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "volSleeveDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "volSleeveDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "volSleeveDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "shirtDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "shirtDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "shirtDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "shirtDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "shirtDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "shirtDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "peterPanDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "peterPanDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "peterPanDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "peterPanDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "peterPanDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "peterPanDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "drapeDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "drapeDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "drapeDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "drapeDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "drapeDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "drapeDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "slipDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "slipDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "slipDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "slipDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "slipDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "slipDress",
+      "preset_cat": "dress",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "funnelCoat",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "funnelCoat",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "funnelCoat",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "funnelCoat",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "funnelCoat",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "funnelCoat",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "blazer",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "blazer",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "blazer",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "blazer",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "blazer",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "blazer",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "bomber",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "bomber",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "bomber",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "bomber",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "bomber",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "bomber",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    },
+    {
+      "preset_name": "trench",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "sleeveless",
+      "state_override": {
+        "sleeveLength": 0,
+        "sleeveLen": "sleeveless"
+      }
+    },
+    {
+      "preset_name": "trench",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "cap",
+      "state_override": {
+        "sleeveLength": 15,
+        "sleeveLen": "cap"
+      }
+    },
+    {
+      "preset_name": "trench",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "short",
+      "state_override": {
+        "sleeveLength": 30,
+        "sleeveLen": "short"
+      }
+    },
+    {
+      "preset_name": "trench",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "elbow",
+      "state_override": {
+        "sleeveLength": 50,
+        "sleeveLen": "elbow"
+      }
+    },
+    {
+      "preset_name": "trench",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "threequarter",
+      "state_override": {
+        "sleeveLength": 72,
+        "sleeveLen": "threequarter"
+      }
+    },
+    {
+      "preset_name": "trench",
+      "preset_cat": "outerwear",
+      "axis": "sleeveLength",
+      "value": "long",
+      "state_override": {
+        "sleeveLength": 95,
+        "sleeveLen": "long"
+      }
+    }
+  ]
+}
