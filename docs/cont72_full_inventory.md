@@ -257,7 +257,7 @@
 | Hint system | 미진행 | ✅ 함수 작동 (canvas hint element 존재) / 개별 발동 케이스 (sleeveSkin/Wide 등) 검증 X |
 | Compat system | 미진행 | ✅ 6 system 카운트 (NECKTYPE 3 / SHOULDER_NECKTYPE 3 / DETAIL_NECKTYPE 1 / SHOULDER_DETAIL 3 / COLLAR 8 / NECK_BC_BLOCKED 9 = **6 system, plan.md "12 compat systems" 부정확**) / 개별 rule 발동 검증 X |
 | Spec sheet 출력 | 미진행 | ✅ SpecModule.update 정의 / 도메인 정합 검증 미흡 |
-| **Body size input mapping** | 미진행 | ⚠️ **부분 작동** — chest slider만 갱신 (76→10/100→67 검증). plan.md "bust/waist/hip → chest/hipFlare" 명시인데 **hipFlare 미갱신** (fitW도 미갱신). 88/68/92 default 일치 case는 변경 0 정상 |
+| **Body size input mapping** | 미진행 | ⚠️ **cont.72 Part 11 정정** — hipFlare 실제 **정상 작동** (코드 L2302-2306: `Math.round((hip-bust)*0.4)` 매핑 확인). cont.72 Part 8 T4 검증 case 3개 모두 hipDiff 4-6 → flareVal 2 (default와 같음 → "변경 0" 오판). 극단 case (hipDiff 22 → 9, -3 → -1) 검증 시 정상 변화. **진짜 갭 = waist input 미사용** (함수 변수 선언 후 0회 사용. plan.md "bust/waist/hip → chest/hipFlare" 명시지만 waist 매핑 미구현). waist → silhouette tapered or 별도 slider = 도메인 결정 (이람 후속). |
 | **봉제 현장용어 60+ 매핑** | 메모리만 / 미통합 | ✅ data/factory_terms.json 신설 (60 용어, structure/sewing/pattern/pocket/closure/ease/stitch/fabric_cutting 8 카테고리). i18n LANG.ko 통합은 후속 spec (B6.5 신설 권장) |
 | CM input ↔ slider (cm/inch toggle) | 미진행 | ✅ toggleMeasure 작동 (cm ↔ inch) |
 | Trace paper / Factory link | 미진행 | 자동 검증 X / cardFeed 관리 |
