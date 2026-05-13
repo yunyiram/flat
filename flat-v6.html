@@ -349,7 +349,7 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
       <button class="mode-btn" id="modeDirect" onclick="setMode('direct')" data-i18n="header.direct">Direct Edit</button>
       <button class="mode-btn" id="modeBoth" onclick="setMode('both')" data-i18n="header.both">Both</button>
     </div>
-    <div class="mode-toggle"><button class="mode-btn on" id="langEn" onclick="setLang('en')" style="font-size:10px;padding:4px 10px">EN</button><button class="mode-btn" id="langKo" onclick="setLang('ko')" style="font-size:10px;padding:4px 10px">KO</button></div>
+    <div class="mode-toggle"><button class="mode-btn on" id="langEn" onclick="setLang('en')" style="font-size:10px;padding:4px 10px">EN</button><button class="mode-btn" id="langKo" onclick="setLang('ko')" style="font-size:10px;padding:4px 10px">KO</button><button class="mode-btn" id="langKoFactory" onclick="setLang('ko_factory')" style="font-size:10px;padding:4px 10px" title="봉제 현장용어 모드 — 공장 작지서 소통용">공장</button></div>
     <button class="measure-toggle" id="measureToggle" onclick="toggleMeasure()">cm</button><button class="reset-btn" id="resetBtn" onclick="resetToDefault()" title="Reset to default" data-i18n-title="reset.title">↺</button><span class="htag" id="garmentTag">T-SHIRT</span><span class="ext-tag" id="extTag" title="Extended range mode">∞</span><span class="htag">v0.26</span>
   </div>
 </header>
@@ -955,9 +955,53 @@ ko:{
   alert:{specCopied:'스펙시트 복사 완료',loadFail:'파일 로드 실패: '},
   reset:{title:'기본값으로 복원'},
   meta:{design:'디자인',fit:'핏',advanced:'디테일'}
+},
+// cont.72 Part 15: B6.5 Phase 2 — LANG.ko_factory (봉제 현장용어 모드)
+// source: data/factory_terms_i18n_mapping.json (Phase 1, 18 entries with ko_factory_override)
+// fallback: LANG.ko (sparse — 매핑된 키만 override, 나머지는 ko fallback)
+// 병기 형식: default C (표준어 메인 + 현장어 괄호) — 이람 brand voice 후속 결정 가능
+ko_factory:{
+  sleeve:{
+    capped:'캡슬리브 (소대 야마)',  // 소대야마
+    cuff:'소매단 (소대 구찌)',  // 소대구찌 (sleeve opening 인접)
+    sleeveWidth:'소매 폭 (이세)',  // 이세 — sleeve ease
+  },
+  body:{
+    sideSeam:'옆선 (와끼)',  // 와끼
+  },
+  neck:{
+    collarLabel:'칼라 (에리)',  // 에리
+    binding:'바이어스 (랍빠/해리)',  // 랍빠/해리
+  },
+  detail:{
+    welt:'웰트 (구찌/하꼬 주머니)',  // 구찌/하꼬주머니
+    flap:'플랩 (후다)',  // 후다
+    piping:'파이핑 (하미다시)',  // 하미다시
+    b_single:'싱글 (가다마이)',  // 가다마이
+    b_double:'더블 (요마이)',  // 요마이
+    snap:'스냅 (돗도)',  // 돗도
+    hidden:'히든 (히오꼬)',  // 히오꼬
+    single:'싱글 (본봉)',  // 본봉
+    double:'더블 (쌍침)',  // 쌍침
+    overlock:'오버록 (오바로크)',  // 오바로크
+    flatlock:'플랫락 (오드롬프)',  // 오드롬프
+  },
+  pants:{
+    rise:'바지 샅 (고마대)',  // 고마대
+  },
+  skirt:{
+    waistband:'허릿단 (오비)',  // 오비
+  },
+  // 나머지는 LANG.ko fallback (t() 함수에서 자동 처리)
 }
 };
-function t(section,key){ return LANG[curLang]?.[section]?.[key] ?? LANG.en?.[section]?.[key] ?? key; }
+// cont.72 Part 15: ko_factory 모드 시 LANG.ko로 fallback
+function t(section,key){
+  if(curLang==='ko_factory'){
+    return LANG.ko_factory?.[section]?.[key] ?? LANG.ko?.[section]?.[key] ?? LANG.en?.[section]?.[key] ?? key;
+  }
+  return LANG[curLang]?.[section]?.[key] ?? LANG.en?.[section]?.[key] ?? key;
+}
 function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const[sec,key]=el.getAttribute('data-i18n').split('.');
@@ -1002,7 +1046,14 @@ function applyLang(){
   // cont.69 S8: 메타-그룹 init (Details default collapsed, localStorage restore)
   if(typeof initMetaGroups==='function') initMetaGroups();
 }
-function setLang(lang){ curLang=lang; document.getElementById('langEn').classList.toggle('on',lang==='en'); document.getElementById('langKo').classList.toggle('on',lang==='ko'); applyLang(); }
+function setLang(lang){
+  curLang=lang;
+  document.getElementById('langEn').classList.toggle('on',lang==='en');
+  document.getElementById('langKo').classList.toggle('on',lang==='ko');
+  const lkf=document.getElementById('langKoFactory');
+  if(lkf) lkf.classList.toggle('on',lang==='ko_factory');
+  applyLang();
+}
 
 // ═══════════════════════════════════════════════════════════════
 // FLAT v0.6 — 컴포넌트 모듈 구조
