@@ -63,6 +63,59 @@ python3 tools/audit/verify_path_seq.py --numeric-sweep sleeveLength --cat top
 
 ---
 
+## 2026-05-15 (cont.72 Part 16 배치 4) — 자율 영역 4건 추가 (L/K/F/G)
+
+이람: "한도 추가함 :) 계속하자"
+
+### L — HANDOFF 백업
+- `docs/archive/HANDOFF-20260515-cont72-part16-batch3-backup.md` 신설 (176KB / 2320 lines)
+- 사고 15 재발 방지 + 누락 방지 #7 (HANDOFF 덮어쓰기 금지) 적용
+
+### K — `tools/audit/README.md` 신설
+- 7 도구 인덱스: sync_check / compat_sweep / style_overlay_sweep / sweep_matrix / inspect_flat / verify_path_seq / gallery.html
+- 실행 패턴 (전체 정합성 점검 / DOM 실측 / sweep + 갤러리)
+- 각 도구 baseline 매트릭스 (sync_check 7 영역 / compat_sweep 6 system / style_overlay_sweep 7 style)
+- CI 통합 명세 (.github/workflows/audit.yml Phase 4 시점)
+
+### F — sync_check.py check_i18n() 신설 + 정확화
+- LANG.en ↔ LANG.ko 카테고리/카운트 depth-aware 정합 검증
+- **가짜 갭 정정 1건**: regex 함정 발견 — `loadFail:'File load failed: '` 안 `failed:` 매치 → 문자열 리터럴 추적 추가 (in_string state 도입)
+- **진짜 갭 발견 1건**: `specLabels` 카테고리 35 keys EN 전체 / KO 누락 → 이람 brand voice 영역 (한국어 표기 작성 필요)
+- alert/designEl count_mismatch 모두 가짜 (정확화 후 [] 0)
+
+### G — sync_check.py check_preset_schema() 신설 + 자동 정정
+- 발견: pants 10 + skirt 8 = 18 preset cat 필드 누락 (cont.72 Part 3 lift-and-shift 자율 결정 시점 누락)
+- 자동 정정 (Python json load → cat 필드 추가 (name 다음 위치) → dump back)
+- 재검 결과: required_field_issues 0 ✅
+- optional 필드 (spec v0.2 schema): recommendedFabricIds / activeMode / isHero / difficulty 모두 0 (lift-and-shift 정합 — Phase 4 schema 적용 후속)
+
+### 새 발견 종합 (배치 4)
+1. **alert.failed = 가짜 갭** (regex 문자열 리터럴 함정)
+2. **designEl.Click = 가짜 갭** (regex 문자열 리터럴 함정)
+3. **specLabels 35 keys KO 누락 = 진짜 갭** (이람 brand voice 영역)
+4. **pants+skirt cat 18 누락 = 자동 정정** (회귀 0)
+
+### 사고 자각
+- 사고 (l) 변형 회피: 4건 = "한도 추가함 계속하자" 명시 응답 범위. 메인 작업 흡수 X.
+- 사고 (m) 떠넘기기 X: L/K/F/G 자율 결정 후 즉시 진행.
+- 원칙 6 검증 게이트 적용: F에서 가짜 갭 vs 진짜 갭 구분 자가 발견 + 즉시 정정 (regex 정확화). G에서 자동 정정 후 재검.
+- 사고 15 재발 방지: edit_block 5회 + write_file 신규 2개 (README.md / 자동 정정 inline Python).
+
+### 산출물 (commit 대기)
+- `docs/archive/HANDOFF-20260515-cont72-part16-batch3-backup.md` (백업)
+- `tools/audit/README.md` 신설
+- `tools/audit/sync_check.py` 9 영역 확장 (check_i18n + check_preset_schema 신설, 가짜 갭 regex 정확화)
+- `data/presets/pants.json` + `data/presets/skirt.json` cat 필드 자동 추가 (18 preset)
+- `HANDOFF.md` 헤더 cont.72 Part 16 배치 4 갱신 + 🟡 TODO 4건 추가
+- `progress.md` 본 항목 prepend
+
+### Next Up
+- 이람 검수: specLabels 35 keys KO 한국어 표기 작성 (brand voice)
+- B6.2 v0.2 schema 적용: recommendedFabricIds/activeMode/isHero/difficulty 필드 채우기 (Phase 4 + 이람 결정)
+- compat_sweep.py DOM 발동 검증 18건 (Puppeteer + preview 회복 후)
+
+---
+
 ## 2026-05-15 (cont.72 Part 16 배치 3) — 재검 후 추가 자율 영역 4건 (B/C/D/E)
 
 이람 응답: "빼먹은 부분 없는지 재검하고, 자율 영역 진행"

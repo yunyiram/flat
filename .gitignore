@@ -12,6 +12,7 @@ flat-v4.html
 flat-v5.html
 *.md
 !data/README.md
+!tools/audit/README.md
 
 # HANDOFF 백업은 docs/archive/ 에만 저장 (원칙 7)
 HANDOFF.md.backup-*

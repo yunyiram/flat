@@ -2,13 +2,125 @@
   "category": "skirt",
   "version": "0.1",
   "presets": [
-    {"name": "pencil", "s": {"skirtType": "pencil", "skirtLen": 55, "skirtFlare": 0, "waistband": "straight", "skirtDart": "front_back", "skirtSlit": "center_back", "skirtHem": "folded", "skirtClosure": "zip_back", "skirtFit": 50}},
-    {"name": "aLine", "s": {"skirtType": "a_line", "skirtLen": 55, "skirtFlare": 6, "waistband": "straight", "skirtDart": "front_back", "skirtSlit": "none", "skirtHem": "folded", "skirtClosure": "zip_side", "skirtFit": 50}},
-    {"name": "flared", "s": {"skirtType": "flared", "skirtLen": 60, "skirtFlare": 16, "waistband": "straight", "skirtDart": "front", "skirtSlit": "none", "skirtHem": "folded", "skirtClosure": "zip_side", "skirtFit": 50}},
-    {"name": "circular", "s": {"skirtType": "circular", "skirtLen": 72, "skirtFlare": 25, "waistband": "contour", "skirtDart": "none", "skirtSlit": "none", "skirtHem": "curved", "skirtClosure": "zip_back", "skirtFit": 50}},
-    {"name": "pleated", "s": {"skirtType": "pleated", "skirtLen": 55, "skirtFlare": 4, "waistband": "straight", "skirtDart": "none", "skirtSlit": "none", "skirtHem": "folded", "skirtClosure": "zip_side", "skirtFit": 50}},
-    {"name": "miniSkirt", "s": {"skirtType": "a_line", "skirtLen": 28, "skirtFlare": 4, "waistband": "straight", "skirtDart": "front", "skirtSlit": "none", "skirtHem": "folded", "skirtClosure": "zip_side", "skirtFit": 45}},
-    {"name": "maxiSkirt", "s": {"skirtType": "a_line", "skirtLen": 92, "skirtFlare": 10, "waistband": "elastic", "skirtDart": "none", "skirtSlit": "side", "skirtHem": "folded", "skirtClosure": "elastic_w", "skirtFit": 55}},
-    {"name": "wrapSkirt", "s": {"skirtType": "wrap", "skirtLen": 55, "skirtFlare": 5, "waistband": "none", "skirtDart": "none", "skirtSlit": "none", "skirtHem": "folded", "skirtClosure": "none", "skirtFit": 50}}
+    {
+      "name": "pencil",
+      "cat": "skirt",
+      "s": {
+        "skirtType": "pencil",
+        "skirtLen": 55,
+        "skirtFlare": 0,
+        "waistband": "straight",
+        "skirtDart": "front_back",
+        "skirtSlit": "center_back",
+        "skirtHem": "folded",
+        "skirtClosure": "zip_back",
+        "skirtFit": 50
+      }
+    },
+    {
+      "name": "aLine",
+      "cat": "skirt",
+      "s": {
+        "skirtType": "a_line",
+        "skirtLen": 55,
+        "skirtFlare": 6,
+        "waistband": "straight",
+        "skirtDart": "front_back",
+        "skirtSlit": "none",
+        "skirtHem": "folded",
+        "skirtClosure": "zip_side",
+        "skirtFit": 50
+      }
+    },
+    {
+      "name": "flared",
+      "cat": "skirt",
+      "s": {
+        "skirtType": "flared",
+        "skirtLen": 60,
+        "skirtFlare": 16,
+        "waistband": "straight",
+        "skirtDart": "front",
+        "skirtSlit": "none",
+        "skirtHem": "folded",
+        "skirtClosure": "zip_side",
+        "skirtFit": 50
+      }
+    },
+    {
+      "name": "circular",
+      "cat": "skirt",
+      "s": {
+        "skirtType": "circular",
+        "skirtLen": 72,
+        "skirtFlare": 25,
+        "waistband": "contour",
+        "skirtDart": "none",
+        "skirtSlit": "none",
+        "skirtHem": "curved",
+        "skirtClosure": "zip_back",
+        "skirtFit": 50
+      }
+    },
+    {
+      "name": "pleated",
+      "cat": "skirt",
+      "s": {
+        "skirtType": "pleated",
+        "skirtLen": 55,
+        "skirtFlare": 4,
+        "waistband": "straight",
+        "skirtDart": "none",
+        "skirtSlit": "none",
+        "skirtHem": "folded",
+        "skirtClosure": "zip_side",
+        "skirtFit": 50
+      }
+    },
+    {
+      "name": "miniSkirt",
+      "cat": "skirt",
+      "s": {
+        "skirtType": "a_line",
+        "skirtLen": 28,
+        "skirtFlare": 4,
+        "waistband": "straight",
+        "skirtDart": "front",
+        "skirtSlit": "none",
+        "skirtHem": "folded",
+        "skirtClosure": "zip_side",
+        "skirtFit": 45
+      }
+    },
+    {
+      "name": "maxiSkirt",
+      "cat": "skirt",
+      "s": {
+        "skirtType": "a_line",
+        "skirtLen": 92,
+        "skirtFlare": 10,
+        "waistband": "elastic",
+        "skirtDart": "none",
+        "skirtSlit": "side",
+        "skirtHem": "folded",
+        "skirtClosure": "elastic_w",
+        "skirtFit": 55
+      }
+    },
+    {
+      "name": "wrapSkirt",
+      "cat": "skirt",
+      "s": {
+        "skirtType": "wrap",
+        "skirtLen": 55,
+        "skirtFlare": 5,
+        "waistband": "none",
+        "skirtDart": "none",
+        "skirtSlit": "none",
+        "skirtHem": "folded",
+        "skirtClosure": "none",
+        "skirtFit": 50
+      }
+    }
   ]
 }

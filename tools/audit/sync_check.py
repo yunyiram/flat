@@ -355,6 +355,180 @@ def check_params(text):
     }
 
 
+def check_i18n(text):
+    """8. LANG.en vs LANG.ko 정합 (모든 nested key 매칭)
+
+    cont.72 Part 16 자율 영역 F. inventory § 8 D-2 "i18n 자동 병기 매핑 정합성
+    미검증" 대응. EN/KO 키 갯수 + 카테고리별 정확 매칭 검증.
+    """
+    # LANG={ en:{...}, ko:{...}, ko_factory:{...} }
+    lang_start = text.find('const LANG={')
+    if lang_start < 0:
+        return {'name': 'i18n EN/KO', 'ok': False, 'note': 'LANG not found'}
+
+    def extract_section(start_marker, section_text):
+        sec_start = section_text.find(start_marker)
+        if sec_start < 0:
+            return None
+        open_pos = section_text.find('{', sec_start)
+        depth = 0
+        i = open_pos
+        while i < len(section_text):
+            if section_text[i] == '{':
+                depth += 1
+            elif section_text[i] == '}':
+                depth -= 1
+                if depth == 0:
+                    return section_text[open_pos:i + 1]
+            i += 1
+        return None
+
+    lang_body = text[lang_start:]
+    en_body = extract_section('en:{', lang_body)
+    ko_body = extract_section('ko:{', lang_body)
+
+    if not en_body or not ko_body:
+        return {'name': 'i18n EN/KO', 'ok': False, 'note': 'en/ko not found'}
+
+    # 카테고리 추출 (depth-aware, nested object 안 키 제외)
+    def top_categories(body):
+        cats = {}
+        depth = 0
+        i = 1  # skip opening {
+        while i < len(body):
+            ch = body[i]
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+            elif depth == 0 and (ch.isalpha() or ch == '_'):
+                m = re.match(r"([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*\{", body[i:])
+                if m:
+                    cat_name = m.group(1)
+                    cat_open = i + m.end() - 1
+                    d = 0
+                    j = cat_open
+                    while j < len(body):
+                        if body[j] == '{':
+                            d += 1
+                        elif body[j] == '}':
+                            d -= 1
+                            if d == 0:
+                                cat_body = body[cat_open + 1:j]
+                                # 첫 레벨 키만 — depth=0 + 문자열 리터럴 제외
+                                d2 = 0
+                                k = 0
+                                key_count = 0
+                                in_string = None
+                                while k < len(cat_body):
+                                    c2 = cat_body[k]
+                                    # 문자열 리터럴 추적
+                                    if in_string:
+                                        if c2 == in_string and (k == 0 or cat_body[k - 1] != '\\'):
+                                            in_string = None
+                                        k += 1
+                                        continue
+                                    if c2 in ("'", '"'):
+                                        in_string = c2
+                                        k += 1
+                                        continue
+                                    if c2 == '{':
+                                        d2 += 1
+                                    elif c2 == '}':
+                                        d2 -= 1
+                                    elif d2 == 0 and (c2.isalpha() or c2 == '_'):
+                                        m2 = re.match(r"[a-zA-Z_][a-zA-Z0-9_]*\s*:", cat_body[k:])
+                                        if m2:
+                                            key_count += 1
+                                            k += m2.end()
+                                            continue
+                                    k += 1
+                                cats[cat_name] = key_count
+                                i = j + 1
+                                break
+                        j += 1
+                    continue
+            i += 1
+        return cats
+
+    en_cats = top_categories(en_body)
+    ko_cats = top_categories(ko_body)
+
+    # 정합 검증
+    en_keys = set(en_cats.keys())
+    ko_keys = set(ko_cats.keys())
+    cat_ok = en_keys == ko_keys
+
+    # 카테고리별 항목 카운트 매칭
+    mismatch = []
+    for k in (en_keys & ko_keys):
+        if en_cats[k] != ko_cats[k]:
+            mismatch.append(f"{k}: EN {en_cats[k]} vs KO {ko_cats[k]}")
+
+    count_ok = len(mismatch) == 0
+    ok = cat_ok and count_ok
+
+    return {
+        'name': 'i18n EN/KO 정합',
+        'ok': ok,
+        'en_categories': len(en_cats),
+        'ko_categories': len(ko_cats),
+        'en_only': sorted(en_keys - ko_keys),
+        'ko_only': sorted(ko_keys - en_keys),
+        'count_mismatch': mismatch[:10],
+        'baseline': f'EN ↔ KO 카테고리 + 카운트 정확 일치 (cont.72 Part 8 T1 i18n sleeve.capped 정정 후속)',
+    }
+
+
+def check_preset_schema(text):
+    """9. PresetModule.DB 34 preset schema 정합
+
+    cont.72 Part 16 자율 영역 G. inventory § 8 D-2 "B6.2 schema 정합 (simplification)"
+    대응. recommendedFabricIds / activeMode / isHero / difficulty 등 spec v0.2 필드의
+    빈 채로 lift-and-shift 상태 측정.
+
+    참고: spec v0.2는 풍부한 schema 정의했지만 cont.72 Part 3 lift-and-shift는
+    현 FLAT enum/cat 그대로 (자율 결정, 사고 m 대응). 본 check는 *현 schema 정합*
+    검증만 — spec v0.2 schema 적용 여부는 별도 작업 (Phase 4).
+    """
+    if not os.path.isdir('data/presets'):
+        return {'name': 'preset schema', 'ok': False, 'note': 'data/presets/ missing'}
+
+    cat_files = [
+        f for f in sorted(os.listdir('data/presets'))
+        if f.endswith('.json') and f != 'index.json'
+    ]
+    schema_issues = []
+    total_presets = 0
+    required_fields = ['name', 'cat', 's']  # 현 minimal schema
+    optional_fields = ['recommendedFabricIds', 'activeMode', 'isHero', 'difficulty']
+    optional_filled = {f: 0 for f in optional_fields}
+
+    for fn in cat_files:
+        with open(f'data/presets/{fn}') as f:
+            data = json.load(f)
+        entries = data if isinstance(data, list) else data.get('presets', [])
+        for p in entries:
+            total_presets += 1
+            for req in required_fields:
+                if req not in p:
+                    schema_issues.append(f"{fn}: {p.get('name', '?')} missing {req}")
+            for opt in optional_fields:
+                if opt in p and p[opt] is not None and p[opt] != []:
+                    optional_filled[opt] += 1
+
+    ok = len(schema_issues) == 0
+    return {
+        'name': 'preset schema (B6.2 v0.1 minimal)',
+        'ok': ok,
+        'total_presets': total_presets,
+        'required_field_issues': len(schema_issues),
+        'issues_sample': schema_issues[:5],
+        'optional_filled': optional_filled,
+        'baseline': '34 preset / required: name+cat+s / optional (spec v0.2 schema 후속): recommendedFabricIds/activeMode/isHero/difficulty 모두 0 = lift-and-shift 정합',
+    }
+
+
 def main():
     if not os.path.exists('flat-v6.html'):
         print('ERR: must run from flat/ project root')
@@ -371,6 +545,8 @@ def main():
         check_seams(text),
         check_factory_terms(text),
         check_params(text),
+        check_i18n(text),
+        check_preset_schema(text),
     ]
 
     print('# FLAT sync_check report')
