@@ -33,15 +33,27 @@
 - **Demo URL**: https://yunyiram.github.io/flat/
 - **Repo**: https://github.com/yunyiram/flat (public)
 
-### 도메인 로직 분리 완료 ✅
+### 도메인 로직 분리 완료 ✅ (cont.72 Part 16 정정 — 실제 디스크 사이즈 + 분할 추가)
+
 ```
-data/
-├── rules.json     14KB
-├── presets.json    36KB
-├── params.json     20KB
-└── fabrics.json    19KB
-                    89KB  "알맹이" — CTO rewrite 시에도 보존
+data/                                     ※ Loader 미도입, inline source of truth 우선
+├── fabrics.json                  19KB    ✅ 41 entry, sync_check 정합
+├── presets.json                  24KB    원본 (cont.72 Part 3 분할 source)
+├── rules.json                    17KB    원본 (cont.72 Part 4 분할 source)
+├── params.json                   20KB    parametric data (B6.4 주석 TODO)
+├── neck_system.json               8KB    cont.72 추가 (3축 분리 시 신설)
+├── factory_terms.json             8KB    cont.72 Part 13 (봉제 용어 60)
+├── factory_terms_i18n_mapping.json 9KB   cont.72 Part 15 (B6.5 Phase 1)
+├── presets/                      44KB    cont.72 Part 3 분할 (9 cat × 34 preset JSON)
+├── rules/                        32KB    cont.72 Part 4 sample lift-and-shift (6 system / 6 sample rule + sleeve_length_ratios.json)
+└── seams/                        32KB    cont.72 Part 10 신설 (S14 Phase 1, 8 file / 27 area)
+                                  213KB   총합 "알맹이" — CTO rewrite 시에도 보존
 ```
+
+검증 (cont.72 Part 16, `tools/audit/sync_check.py`):
+- preset DB ↔ JSON: 34/34 ✅
+- fabric ↔ JSON: 41/41 ✅
+- B6.1 sample rule: 6 system / 6 rule ✅ (full 27 rule lift-and-shift = Phase 2)
 
 ### ⚠️ GPL 경고
 - ❌ Valentina/Seamly2D (GPL-3.0) — 코드 한 줄도 복사 금지

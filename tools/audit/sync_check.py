@@ -149,6 +149,142 @@ def check_rules(text):
     }
 
 
+def check_card_data(text):
+    """4. CARD_DATA targetPresetName ↔ PresetModule.DB names
+
+    cont.72 Part 12 fix: 5 카드에 targetPresetName 명시 추가.
+    Card 0/1/2 = crewTee / Card 3 = hoodie / Card 4 = sweatshirt 매핑.
+    targetPresetName이 실제 DB.name과 일치해야 fuzzy fallback 없이 직접 매칭.
+    """
+    # CARD_DATA 안의 targetPresetName 추출
+    card_targets = re.findall(r"targetPresetName:['\"]([^'\"]+)['\"]", text)
+
+    # PresetModule.DB.name 셋 (tops only — CARD_DATA = top wear)
+    pm_start = text.find('const PresetModule={')
+    db_body = find_block(text[pm_start:], 'DB:[', '[') or ''
+    db_names = set(re.findall(r"name:['\"]([^'\"]+)['\"]", db_body))
+
+    invalid = [t for t in card_targets if t not in db_names]
+    ok = len(invalid) == 0 and len(card_targets) >= 5
+    return {
+        'name': 'CARD_DATA targetPresetName (cont.72 Part 12 fix)',
+        'ok': ok,
+        'card_targets_count': len(card_targets),
+        'card_targets': card_targets[:10],
+        'invalid_targets': invalid,
+        'baseline': '5 카드 모두 명시 (Card 0/1/2 crewTee / 3 hoodie / 4 sweatshirt)',
+    }
+
+
+def check_seams(text):
+    """5. S14 Phase 1 seams 27 area ↔ data/seams/ 분할
+
+    cont.72 Part 10 baseline: 8 파일 (collar 4 / collar_stand 4 / cuff 4 /
+    sleeve 5 / pocket 3 / side_seam 2 / singles 5 + index)
+    = 27 area, tbd 10, factory validation 후속.
+    """
+    if not os.path.isdir('data/seams'):
+        return {'name': 'seams (S14 Phase 1)', 'ok': False, 'note': 'data/seams/ missing'}
+    seam_files = [
+        f for f in sorted(os.listdir('data/seams'))
+        if f.endswith('.json') and f != 'index.json'
+    ]
+    area_count = 0
+    tbd_count = 0
+    for fn in seam_files:
+        try:
+            with open(f'data/seams/{fn}') as f:
+                data = json.load(f)
+            entries = data if isinstance(data, list) else (data.get('areas') or data.get('seams') or [])
+            area_count += len(entries)
+            for e in entries:
+                v = (e.get('default') or e.get('defaultValue') or '')
+                if isinstance(v, str) and v.lower() in ('tbd', 'todo', ''):
+                    tbd_count += 1
+        except Exception:
+            pass
+    # cont.72 Part 10 baseline
+    BASELINE_AREA = 27
+    BASELINE_FILES = 7  # excluding index.json
+    ok = area_count == BASELINE_AREA and len(seam_files) == BASELINE_FILES
+    return {
+        'name': 'seams (S14 Phase 1)',
+        'ok': ok,
+        'file_count': len(seam_files),
+        'area_count': area_count,
+        'tbd_count': tbd_count,
+        'baseline': f'{BASELINE_FILES} file / {BASELINE_AREA} area (cont.72 Part 10; 28 vs 27 모호 cowork 정정 후속)',
+    }
+
+
+def check_factory_terms(text):
+    """6. B6.5 봉제 현장용어 60 매핑 ↔ LANG.ko_factory 정합
+
+    cont.72 Part 13-15 baseline:
+    - data/factory_terms.json: 60 terms / 8 category
+    - data/factory_terms_i18n_mapping.json: 60→18 UI + 26 construction-only + 6 확장
+    - flat-v6.html LANG.ko_factory: 19 entries (sleeve/body/neck/detail/pants/skirt 6 카테고리)
+    """
+    if not os.path.exists('data/factory_terms.json'):
+        return {'name': 'factoryTerms (B6.5)', 'ok': False, 'note': 'data/factory_terms.json missing'}
+    with open('data/factory_terms.json') as f:
+        ft = json.load(f)
+    # schema: { terms: { cat: { key: {...} } }, totalTerms: 60 }
+    declared_total = ft.get('totalTerms', 0)
+    computed_total = 0
+    for cat, entries in ft.get('terms', {}).items():
+        if isinstance(entries, (list, dict)):
+            computed_total += len(entries)
+    BASELINE_TERMS = 60
+    # declared 60, computed 68 (메모리 source = 서울의류협동조합 60 + 확장 8). 양쪽 표시
+    terms_ok = declared_total >= BASELINE_TERMS
+
+    mapping_count = 0
+    mapping_ok = False
+    if os.path.exists('data/factory_terms_i18n_mapping.json'):
+        with open('data/factory_terms_i18n_mapping.json') as f:
+            m = json.load(f)
+        # schema: { mappings: { cat: { key: {...} } } }
+        mappings = m.get('mappings', {})
+        for cat, entries in mappings.items():
+            if isinstance(entries, (list, dict)):
+                mapping_count += len(entries)
+        mapping_ok = mapping_count >= 18  # 60→18 UI baseline
+
+    # ko_factory LANG section: 카운트 (LANG 객체 nested)
+    ko_factory_start = text.find('ko_factory:{')
+    if ko_factory_start < 0:
+        ko_factory_start = text.find('ko_factory:')
+    ko_factory_count = 0
+    if ko_factory_start > 0:
+        # find matching {...} block
+        open_pos = text.find('{', ko_factory_start)
+        depth = 0
+        i = open_pos
+        while i < len(text):
+            if text[i] == '{':
+                depth += 1
+            elif text[i] == '}':
+                depth -= 1
+                if depth == 0:
+                    ko_factory_body = text[open_pos:i + 1]
+                    break
+            i += 1
+        # count nested keys (sleeve.* + body.* etc.)
+        ko_factory_count = len(re.findall(r"^\s*[a-zA-Z_][a-zA-Z0-9_]*\s*:\s*['\"]", ko_factory_body, re.MULTILINE))
+
+    ok = terms_ok and mapping_ok and ko_factory_count >= 15
+    return {
+        'name': 'factoryTerms (B6.5 Phase 1-2)',
+        'ok': ok,
+        'declared_terms': declared_total,
+        'computed_terms': computed_total,
+        'mapping_count': mapping_count,
+        'ko_factory_keys': ko_factory_count,
+        'baseline': '60 terms / ≥18 mapping (UI) / ≥15 ko_factory keys (cont.72 Part 13-15)',
+    }
+
+
 def main():
     if not os.path.exists('flat-v6.html'):
         print('ERR: must run from flat/ project root')
@@ -161,6 +297,9 @@ def main():
         check_presets(text),
         check_fabrics(text),
         check_rules(text),
+        check_card_data(text),
+        check_seams(text),
+        check_factory_terms(text),
     ]
 
     print('# FLAT sync_check report')

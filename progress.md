@@ -1,5 +1,61 @@
 # Progress Log
 
+## 2026-05-15 (cont.72 Part 16 배치 2) — 자율 영역 4건 즉시 진행
+
+이람 응답: "Cowork/기획탭에 전달함- 자율 영역 시작하자."
+
+### A7 — plan.md "Current Status" 재검증
+- data/ 도메인 분리 섹션 정정 (cont.72 Part 3/4/10/13/15 누적 반영)
+- 단일 파일 4 (fabrics 19KB / presets 24KB / rules 17KB / params 20KB) + 분할 3 (presets/ 44KB / rules/ 32KB / seams/ 32KB) + 추가 3 (neck_system / factory_terms / i18n_mapping = 25KB)
+- 합계 213KB "알맹이" — CTO rewrite 시 보존
+- sync_check.py 검증 정합 명시
+
+### A4 — sync_check.py 6 영역 확장 (PASS)
+1. preset DB ↔ JSON: 34/34 ✅
+2. fabric ↔ JSON: 41/41 ✅
+3. B6.1 sample rules: 6 system / 6 rule ✅
+4. **CARD_DATA targetPresetName**: 5 카드 모두 명시 ✅ (Card 0/1/2 crewTee / 3 hoodie / 4 sweatshirt, invalid 0)
+5. **seams (S14 Phase 1)**: 7 file / 27 area ✅ (tbd 27 = factory validation 후 결정)
+6. **factoryTerms (B6.5 Phase 1-2)**: declared 60 / computed 68 (확장 8) / mapping 50 / ko_factory keys 19 ✅
+
+**새 발견:** factoryTerms declared 60 vs computed 68 — base 60 (서울의류협동조합 메모리) + 확장 8 (ease 2 + stitch 23 + fabric_cutting 12 카테고리 일부 중복) 명시 후속.
+
+### A3 — B6.4 parametric 주석 spec v0.1 draft
+- `docs/flat_data_separation_B6_4_parametric_spec.md` 신설 (7 섹션)
+- params.json v0.26 = 20KB / 19 top keys / 200+ entries 인벤토리
+- 사용 흐름 명시 (inline = source of truth / params.json = parallel documentation)
+- 정합성 검증 sync_check.py check_params() 후속 (자율 영역, 회귀 0)
+- 향후 Phase 5 SaaS 카테고리별 분할 패턴 명시
+- 이람 brand voice 무관 영역만 — 검수 후 v0.2 확장
+
+### A6 — CLAUDE.md 토큰 절약 자가검증
+- `docs/archive/cont72_token_savings_self_check.md` 신설
+- 9 규칙 평가: 7 ✅ / 2 ⚠️ 부분 / 0 ❌ 미적용
+- ⚠️ 부분: #3 (재독 금지 부분 위반) / #8 (`/cost` 호출 0)
+- 사고 15 재발 방지 가이드라인 4건 신설 (write_file rewrite 큰 파일 금지 등)
+- 누락 방지 5단 4/5 적용 (#1 SOP 호출 = 이람 합의 대기)
+
+### 사고 자각
+- 사고 (l) 변형 회피: 자율 영역 4건 = 이람 "자율 영역 시작하자" 명시 응답 범위 내. 메인 작업 흡수 X.
+- 사고 (m) 떠넘기기 X: A1-A7 발굴 후 즉시 진행 A1/A2+A4/A5 (배치 1) + A7/A4 확장/A3/A6 (배치 2) 자율 결정.
+- 사고 15 재발 방지: edit_block 7회 + write_file 신규 3개 (sync_check.py / B6.4 spec / token check). progress.md 손실 0.
+
+### 산출물 (commit 대기)
+- `tools/audit/sync_check.py` 6 영역 확장 (185→290 lines)
+- `docs/flat_data_separation_B6_4_parametric_spec.md` 신설
+- `docs/archive/cont72_token_savings_self_check.md` 신설
+- `plan.md` Current Status data/ 섹션 정정
+- `HANDOFF.md` 헤더 + 🟡 TODO 4건 추가 (Part 16 배치 2)
+- `progress.md` 본 항목 prepend
+
+### Next Up
+- 이람 검수: B6.4 spec v0.1 → v0.2 확장 (이람 brand voice 결정 필요 영역)
+- factoryTerms 60 vs 68 정합성 정리 (data/factory_terms.json totalTerms 명세 갱신)
+- sync_check.py check_params() 후속 (자율 영역, 회귀 0)
+- S15 implement 게이트 — 이람 OK 후
+
+---
+
 ## 2026-05-15 (cont.72 Part 16) — Cowork/HANDOFF 정리 + 자율 영역 추가 발굴
 
 이람 요청: "여태까지 작업 리뷰하면서 cowork, 기획탭에 넘길 거 handoff 잘 작성해주고, 자율 영역 추가 발굴 하자."
