@@ -163,12 +163,26 @@
 - schema 정합 (recommendedFabricIds / activeMode / isHero / difficulty)
 
 ### Sixatomic 흡수 후속 ★
-- Section 13 Customise Seams 28 부위 (S14 spec 작성 필요)
-- Section 14.1 Garment spec vs Body 이중 측정 (S15)
-- Section 14.4 Multi-select grading XS-XL (S16)
+- ~~Section 13 Customise Seams 28 부위 (S14 spec 작성 필요)~~ ✅ cont.73 spec + cont.72 Part 10 Phase 1 implement (data/seams/ 27 area). Phase 2 UI / Phase 3 PDF 후속
+- Section 14.1 Garment spec vs Body 이중 측정 (S15) — 기획탭 spec 작성 후속
+- Section 14.4 Multi-select grading XS-XL (S16) — 기획탭 spec 작성 후속
 - Section 16 A Carbon Design System reference (S17 옵션)
 - Section 16 F 외부 페이지 링크 패턴 (S18 옵션)
 - Sleeve Fabric / Sleeve Hem Bind / Sleeve Fit 분리 / Collar Band Construction / First Button Placement / Bust Dart / Front Detail / Hem A Line / Slit Depth / Spline / Yoke split / Placket sub-options
+
+### B6.5 factoryTerm i18n 후속 (cont.72 Part 12+14+15 — Phase 1-3 완료)
+- ~~Phase 1 매핑 표~~ ✅ data/factory_terms_i18n_mapping.json (60 용어 → 18 UI / 26 PDF / 6 확장)
+- ~~Phase 2 LANG.ko_factory~~ ✅ 19 entries / 6 카테고리
+- ~~Phase 3 UI 토글~~ ✅ "공장" 버튼 + t() fallback
+- Phase 4 PDF 통합 (Construction Notes 자동 병기) — factory validation 5월 후
+- i18n 확장 6 keys (에리고시/에리구리/단작/마이깡/깡/우라) — 신규 i18n key
+- 병기 형식 (A/B/C/D) 이람 brand voice 검수 (현 default C)
+
+### sweep_matrix.py 후속 (cont.72 Part 14 — 1차 minimal 완료)
+- ~~1차 minimal (preset × axis JSON)~~ ✅ 5 axes / 96 case
+- PNG 캡처 통합 (Playwright/Puppeteer) — preview MCP 회복 또는 headless chrome
+- DOM 실측 자동화 + gallery.html 자동 생성
+- Compat sweep / Style Overlay sweep 등 axis 확장
 
 ### cont.71 카테고리 분류 6 결정 코드 implement
 - vest_sweater = KNITWEAR + OUTERWEAR — preset 추가

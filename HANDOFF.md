@@ -2008,7 +2008,13 @@ P5=B 채택 시:
 | **B6.3 fabrics.json spec** | cont.73 후순위 이동 (data/fabrics.json 이미 외부 분리) | — | 후순위 (Phase 4+) |
 | **B6.4 parametric 주석** | 옵션, 후순위 | — | TODO (옵션) |
 | **카테고리 분류 6 implement** (cont.71 결정) | spec OK | vest_sweater/mock_neck/half_zip preset 추가 + sweater rename → pullover_sweater | DEFER (Phase 4 옵션 H 동기) |
-| **S14 Customise Seams 28 부위 spec** ★ critical | cont.73 1순위 진행 중 | 작성 후 implement | 진행 중 (기획탭) |
+| **S14 Customise Seams 28 부위 spec** ★ critical | ✅ cont.73 spec 작성 | ✅ **Phase 1 implement (cont.72 Part 10): data/seams/ 8 파일 / 27 area** | Phase 2 UI / Phase 3 PDF 후속. 27/28 모호 cowork 정정 |
+| **B6.5 factoryTerm i18n 통합** | spec read | ✅ **Phase 1-3 implement (cont.72 Part 12+14+15): spec + 매핑 표 + LANG.ko_factory 19 entries + "공장" UI 토글** | Phase 4 PDF (factory validation 후) / 병기 형식 brand voice |
+| **sweep_matrix.py (cont.65 부재 정정)** | — | ✅ **1차 minimal (cont.72 Part 14): 5 axes / 96 case JSON** | PNG 캡처 + DOM 실측 + gallery 후속 (preview 회복 시) |
+| **검증 부족 17 영역 분담** | HANDOFF "🔵 Part 13" 등록 | ✅ 코드탭 5건 해소 (CARD_DATA fuzzy / Compat 카운트 / fabric DB / 봉제용어 i18n / Body waist) | 🟣 Cowork 5 / 🔴 기획탭+이람 12 분담 |
+| **Compat system 카운트 정정** | — | ✅ **cont.72 Part 13: plan.md "108+21+3=132 (12 system)" → 실제 27 rule / 6 system** (4-5배 부풀림 정정) | 도메인 비교 (sixatomic carve-out) Cowork 분담 |
+| **MCP 대안 실험 A/B (cont.72 Part 9)** | spec docs/incoming/ | ✅ 실험 A 실격 (설치 SIGKILL) / 실험 B 잠정 합격 (git sync) / 권장 B 채택 + A sudo 재시도 | 이람 최종 결정 (메모리 항목 18 삭제 / 11 반영) |
+| **progress.md Part 7-15 누락 정정** | — | ✅ cont.72 Part 16 종합 기록 (Part 8까지만 기록됐던 누락 발견) | 누락 방지 #5 적용 |
 | **S15 Garment spec vs Body 이중 측정 spec** | 미작성 | 작성 후 implement | TODO |
 | **S16 Multi-select grading (XS-XL) spec** | 미작성 | IR 시연 가능 항목 | TODO |
 | **S17 Carbon Design System reference** | 미작성 (옵션) | FLAT UI 강화 시 | TODO (옵션) |
@@ -2039,7 +2045,11 @@ P5=B 채택 시:
 | **cont.73 작업 우선순위 갱신 인지 (S14 ★ 1순위, B6.3 후순위)** | ✅ cont.73 헤더 명시 | ✅ 코드탭 인지 | 동기화 |
 | **메모리 28+ 항목 검증 매트릭스** | inventory § 4에 등록 | — | 매 cont 갱신 |
 | **docs/ 36 문서 적용 검증 매트릭스** | inventory § 3에 등록 | — | 매 cont 갱신 |
-| **cont.72 누적 commit 10건** | review 가능 (header history) | 471caa4 / 1e97270 / c7a91a0 / ececbbd / cafaec2 / 73eb278 / 9f2234f / 6faa879 / 454c461 / b8cc8e3 | 완료 |
+| **cont.72 누적 commit 23+건** | review 가능 (header history) | Part 1-8: 471caa4/1e97270/c7a91a0/ececbbd/cafaec2/73eb278/9f2234f/6faa879/454c461/b8cc8e3/c904d08/1a90f65/f693bfc/336f063/8677f83/3bdbef0 / Part 9-15: MCP 실험 + S14 Phase 1 + Body audit + D-2/B6.5 spec/CARD fix + 분업/Compat + B6.5 Phase 1/sweep_matrix + B6.5 Phase 2-3 + progress 종합 | 진행 중 |
+| **S15 spec 작성 (cont.75)** | ✅ `docs/spec_S15_garment_vs_body_dual_measurement.md` | implement 대기 (이람 OK 후) | 완료 (기획탭) |
+| **Cowork validation requests 누적 문서 (cont.75)** | ✅ `docs/cowork_validation_requests.md` 신설 + cross-ref 갱신 | — | 완료 (기획탭) |
+| **Cowork 라이브 준비서 (cont.75)** | ✅ `docs/cowork_session_prep_cont75.md` 신설 (단일 reference, A1-A5 + B1-B3 + C1-C4 + D1-D2 14 ID 매트릭스) | cowork tab 진입 시 reference | 완료 (기획탭, 진입 대기) |
+| **audit § 20.3 M1-M7 정확화 (cont.75)** | ✅ 준비서 § 2 A2 갱신 (M3/M4 S15 핵심, M6 A3 분기) | cowork 라이브 채록 | 완료 (기획탭) |
 
 ---
 
