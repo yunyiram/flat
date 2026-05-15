@@ -1,5 +1,136 @@
 # Progress Log
 
+## 2026-05-15 (cont.72 Part 17) — cascade_pattern.md #2 본체 적용 1차 (정적 분석 + dynamic verifier 신설)
+
+이람 진입: "docs/cascade_pattern.md 읽어줘" → cascade_pattern.md POC 학습 1급 타개점 3개 보고 → 이람 "#2부터 (가장 안전)" 결정 → 환경 점검 (Playwright/Chrome 본 세션 X) → 이람 "A, B 진행 가능. 내가 해결할 수 있는 부분 넘겨줘" → 정적/동적 2분리 진행.
+
+### A. 정적 분석 보고서 (`docs/inspect_flat_path_seq_static_analysis.md`)
+
+flat-v6.html path 빌더 함수 3 컴포넌트 분기 매트릭스 grep:
+- **BodyComp.outline() (L2530~2629)**: lp 6 분기 + side seam 4 분기 + hem 7 분기 + rp/ra 대칭. **numeric slider 영향 거의 X** (hipFlare>=8 boundary만 좌표식 변경, command 종류 동일).
+- **NeckComp.path() (L2637~2689) ★ 사고 의심 #1 발견**: `t = S.neckCurve / 100` numeric slider가 boundary 0.06 / 0.15에서 **command 시퀀스 자체를 분기** (square M+L×3 ↔ V M+L×2 ↔ curved M+C). cascade_pattern.md #1 cascade transition (`transition: d 150ms`) 진입 시 boundary에서 path jump 발생 — cont.63 자의적 90° 블렌딩과 같은 차원의 누적 사고 가능성.
+- **SleeveComp.draw() (L3253+)**: shape enum 8+종이 분기 거의 흡수, numeric → 분기 변환 거의 없음 (sleeveLength<=2 early return만, element 존재/소실 = transition 불가 영역, opacity 처리 필요).
+
+cascade_pattern.md #2 가설 정정: "preset 그룹 baseline" → "**option 조합 그룹 + numeric slider 불변**" (규칙 9 변형, 새 패턴 X).
+
+### B. Dynamic verifier 도구 (`tools/audit/verify_path_seq.py`)
+
+Playwright 기반, inspect_flat.py 자매. POC `tests/verify-paths.js`의 본체 적용판.
+- `--axis` mode = enum option 분기 매트릭스 추출 (의도된 분기 발견 → 보고)
+- `--numeric-sweep` mode = ★ 사고 의심 검증 (slider 미세 변동 → command seq 불변 확인)
+- 11 numeric slider × 사고 boundary 포함 값 매트릭스 (neckCurve 0/3/5/**6**/7/10/14/**15**/16/20/50/80/100 등)
+- 위반 시 `tools/audit/path_seq_violations/{label}_{cat}_{ts}.json` + stdout 보고
+- PASS 시 `tools/audit/path_seq_baselines/{label}_{cat}_{ts}.json` baseline
+
+### 본 세션 자가검증 (chrome 없이 가능 부분)
+
+- Python AST parse ✅
+- cmd_seq regex 5 cases (square M+L×3 / V M+L×2 / curved M+C / default M+L+C / empty) ✅
+- load_presets 7 top cat × 16 preset 정합 (HANDOFF 헤더 일치) ✅
+- 회귀 위험: 0 (flat-v6.html 변경 0, 새 파일만 추가)
+
+### 이람 환경 분담 (B 단계 dynamic 실행)
+
+```bash
+pip3 install playwright
+python3 -m playwright install chromium
+python3 tools/audit/verify_path_seq.py --numeric-sweep neckCurve --cat top
+python3 tools/audit/verify_path_seq.py --numeric-sweep hipFlare --cat top
+python3 tools/audit/verify_path_seq.py --numeric-sweep sleeveLength --cat top
+```
+
+결과 stdout + path_seq_violations/*.json 회신 시 사고 #1/#2/#3 확정 + Phase 3A (iii) cascade transition Option C 진입 가능.
+
+### 사고 자각
+
+- 사고 (l) 변형 회피: 이람 "#2부터" 명시 응답 범위 내. 본 보고서 § 5.0 적용 권장 순서 따름.
+- 사고 (m) 떠넘기기 X: 환경 결과 (chrome X) 보고 후 정적/동적 2분리 자율 결정. 완전 청산 옵션 D 명시. 이람 push "A+B 같이 진행 가능?" 분담 컨펌 후 진행.
+- 사고 9 변형 vs 새 패턴 판정: cascade_pattern.md #2 가설 정정 = 변형 (RCA 통합), 새 패턴 X.
+- 환경 인식 (규칙 8): bash 직접 확인 ✅ (Playwright 미설치 + chromium 부재 명시).
+
+### 산출물 (commit 대기)
+
+- `docs/inspect_flat_path_seq_static_analysis.md` 신설 (정적 분석 보고서, 8 섹션)
+- `tools/audit/verify_path_seq.py` 신설 (~280 lines, axis + numeric-sweep + numeric-sweep-all 3 mode)
+- `HANDOFF.md` 헤더 + 🔵 코드→기획 cont.72 Part 17 신규 subsection
+- `progress.md` 본 항목 prepend
+
+### Next Up
+
+- 이람 환경 dynamic verifier 실행 (이람 분담) → 결과 회신
+- 결과 PASS 시 Phase 3A (iii) cascade transition 진입 게이트 확보
+- 결과 FAIL 시 사고 #1/#2/#3 확정 위치 → NeckComp Option C (drag class toggle) 보강 또는 command unify 결정
+
+---
+
+## 2026-05-15 (cont.72 Part 16 배치 3) — 재검 후 추가 자율 영역 4건 (B/C/D/E)
+
+이람 응답: "빼먹은 부분 없는지 재검하고, 자율 영역 진행"
+
+### 재검 결과
+- A1-A7 자율 영역 표 모두 완료 ✅ (배치 1+2)
+- 새 자율 가능 영역 4건 발굴 (B/C/D/E): factoryTerms 정합 / check_params / Compat sweep / Style Overlay sweep
+- 모두 이람 brand voice 무관, 회귀 0, 자율 진행 가능
+
+### B — factoryTerms 60 → 68 정합 정정
+- `data/factory_terms.json` totalTerms: 60 → 68
+- `totalTermsBreakdown` 8 카테고리 명세 신설 (structure 9 / sewing 7 / pattern 5 / pocket 4 / closure 6 / ease 2 / stitch 23 / fabric_cutting 12)
+- `tools/audit/sync_check.py` BASELINE_TERMS = 68 + declared==computed==68 strict check
+- 결과: declared 68 / computed 68 정확 일치 ✅
+
+### C — sync_check.py check_params() 신설 (B6.4 spec § 3 후속)
+- params.json v0.26 인벤토리: **20 top keys** (메타 3 + 도메인 17), state_defaults 62 entries, collar_params 5 카테고리
+- inline S 객체 카운트: **62 entries — state_defaults와 정확 일치 ✅**
+- **새 발견 2건:**
+  - B6.4 spec § 1 "19 keys" → 실제 20 정정 (svg_constants 포함)
+  - B6.4 spec § 1 표 "state_defaults 63" → 실제 62 정정 (description 메타 제외)
+- spec md + sync_check.py 동시 갱신
+- 결과: sync_check.py 7 영역 모두 PASS ✅
+
+### D — compat_sweep.py 신설 (inventory § 8 D-2 권장)
+- 6 system 27 rule 정적 sweep:
+  - NECKTYPE_COMPAT: 3/3 ✅
+  - SHOULDER_NECKTYPE_COMPAT: 3/3 ✅
+  - DETAIL_NECKTYPE_COMPAT: 1/1 ✅
+  - SHOULDER_DETAIL_COMPAT: 3/3 ✅
+  - COLLAR_COMPAT: 8/8 ✅
+  - NECK_BC_BLOCKED: 9/9 ✅
+  - **Total: 27/27** (cont.72 Part 13 정정값 정합)
+- COLLAR_COMPAT 8 neckShape × 5 collarGroup 매트릭스: **차단 12/40 cells (30%)**
+- NECK_BC_BLOCKED 9 pair 인벤토리 (hood/wrap, turtle/open_front 등)
+- 새 발견 (정적 분석): regex 함정 — JS 주석 안 `scoop:`, `none:` 패턴 매치 → `strip_js_comments()` + depth tracking 도입
+- 결과: 정적 분석 27 rule 정의 누락 0 ✅. DOM 발동 검증 18건 잔존 (preview 회복 후 Puppeteer 추천)
+
+### E — style_overlay_sweep.py 신설
+- 7 Style Overlay 정의: casual / formal / military / workwear / sport / minimal / romantic
+- baseline 정합: missing 0 / extra 0 ✅
+- i18n EN/KO 정합: EN 7 / KO 7 모두 일치 ✅
+- 각 style 완전성: deltas 비어있는 style 0 (minimal 예외 — 의도된 pure subtractive) / overrides 비어있는 style 0 ✅
+- 결과: OVERALL PASS ✅. 시각 매력도 검증 = 이람 검수 영역 (원칙 14)
+
+### 사고 자각
+- 사고 (l) 변형 회피: 4건 = 이람 "자율 영역 진행" 명시 응답 범위 내. 메인 작업 흡수 X.
+- 사고 (m) 떠넘기기 X: B/C/D/E 자율 결정 후 즉시 진행. 옵션 떠넘기기 0.
+- 사고 15 재발 방지: edit_block 5회 + write_file 신규 2개 (compat_sweep.py / style_overlay_sweep.py). 큰 파일 rewrite 0.
+- **C/D에서 새 발견 3건** (B6.4 spec 19→20 / 63→62 정정 + D regex 함정 정정) — 검증 없이 완료 판정 금지 (원칙 6) 자가 적용.
+
+### 산출물 (commit 대기)
+- `data/factory_terms.json` totalTerms 갱신 + Breakdown 명세 신설
+- `tools/audit/sync_check.py` 7 영역 확장 (check_params 신설)
+- `tools/audit/compat_sweep.py` 신설 (200+ lines, 6 system sweep)
+- `tools/audit/style_overlay_sweep.py` 신설 (130+ lines, 7 style sweep)
+- `docs/flat_data_separation_B6_4_parametric_spec.md` § 1 정정 (19→20 / 63→62)
+- `HANDOFF.md` 헤더 cont.72 Part 16 배치 3 갱신 + 🟡 TODO 4건 추가
+- `progress.md` 본 항목 prepend
+
+### Next Up
+- 이람 검수: B6.4 spec § 1 추가 정정 후 v0.2 확장 시점
+- DOM 발동 검증 18건 (compat sweep): preview 회복 후 Puppeteer
+- 시각 매력도 검증 (Style Overlay): 이람 검수 영역
+- S15 implement 게이트 — 이람 OK 후
+
+---
+
 ## 2026-05-15 (cont.72 Part 16 배치 2) — 자율 영역 4건 즉시 진행
 
 이람 응답: "Cowork/기획탭에 전달함- 자율 영역 시작하자."

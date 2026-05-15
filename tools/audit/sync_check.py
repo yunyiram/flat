@@ -235,9 +235,9 @@ def check_factory_terms(text):
     for cat, entries in ft.get('terms', {}).items():
         if isinstance(entries, (list, dict)):
             computed_total += len(entries)
-    BASELINE_TERMS = 60
-    # declared 60, computed 68 (메모리 source = 서울의류협동조합 60 + 확장 8). 양쪽 표시
-    terms_ok = declared_total >= BASELINE_TERMS
+    # cont.72 Part 16 자율 영역 B: declared 68 (base 60 + 확장 8) 정정
+    BASELINE_TERMS = 68
+    terms_ok = declared_total == BASELINE_TERMS and computed_total == BASELINE_TERMS
 
     mapping_count = 0
     mapping_ok = False
@@ -285,6 +285,76 @@ def check_factory_terms(text):
     }
 
 
+def check_params(text):
+    """7. params.json 19 top keys 인벤토리 + state_defaults 카운트 ↔ inline S 객체 비교
+
+    cont.72 Part 16 자율 영역 C — B6.4 spec § 3 후속 구현.
+    params.json v0.26 = 19 top keys / 200+ entries.
+    state_defaults 63 entries ↔ flat-v6.html S 객체 초기값 카운트 비교.
+    """
+    if not os.path.exists('data/params.json'):
+        return {'name': 'params (B6.4)', 'ok': False, 'note': 'data/params.json missing'}
+    with open('data/params.json') as f:
+        p = json.load(f)
+
+    # 1. top-level keys (메타 3 + 17 도메인 = 20 baseline)
+    # cont.72 Part 16 C 정정: B6.4 spec 초기 19 표기 → 실제 20 (svg_constants 포함)
+    top_keys = list(p.keys())
+    BASELINE_TOP_KEYS = 20
+
+    # 2. state_defaults 카운트 (description 제외)
+    state_defaults = p.get('state_defaults', {})
+    state_count = len([k for k in state_defaults if k != 'description'])
+
+    # 3. inline S 객체 (flat-v6.html const S = {...}) 카운트 추출
+    # 정확한 const S = { ... } 찾기 (3-line stretch)
+    s_match = re.search(r'const\s+S\s*=\s*\{', text)
+    inline_s_count = 0
+    if s_match:
+        open_pos = s_match.end() - 1
+        depth = 0
+        i = open_pos
+        while i < len(text):
+            if text[i] == '{':
+                depth += 1
+            elif text[i] == '}':
+                depth -= 1
+                if depth == 0:
+                    s_body = text[open_pos:i + 1]
+                    # 첫 레벨 키만 카운트 (nested object의 key는 제외)
+                    # 매칭: 줄 시작 또는 ,/{ 후의 식별자:
+                    inline_s_count = len(re.findall(
+                        r"[\{,]\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:",
+                        s_body
+                    ))
+                    # 첫 키 (const S = {x: ...) 누락 가능
+                    if not s_body.startswith('{,'):
+                        # skip — regex already covers '{...' pattern
+                        pass
+                    break
+            i += 1
+
+    # 4. collar_params 6 카테고리 ↔ collarTypeMap (대략 22 type 확인)
+    collar_params = p.get('collar_params', {})
+    collar_cat_count = len([k for k in collar_params if k != 'description'])
+
+    # baseline pass: top keys + state_defaults 양쪽 비어있지 않음
+    ok = (
+        len(top_keys) == BASELINE_TOP_KEYS
+        and state_count >= 50  # 메타 제외 63 - description 1 = 62, 보수적 50
+        and inline_s_count >= 30  # S 객체 최소 30 키
+    )
+    return {
+        'name': 'params (B6.4 cross-ref)',
+        'ok': ok,
+        'top_keys_count': len(top_keys),
+        'state_defaults_entries': state_count,
+        'inline_S_entries': inline_s_count,
+        'collar_params_categories': collar_cat_count,
+        'baseline': f'{BASELINE_TOP_KEYS} top keys (메타 3 + 16 도메인) / state_defaults ≥50 / inline S ≥30 (cont.72 Part 16 A3 인벤토리)',
+    }
+
+
 def main():
     if not os.path.exists('flat-v6.html'):
         print('ERR: must run from flat/ project root')
@@ -300,6 +370,7 @@ def main():
         check_card_data(text),
         check_seams(text),
         check_factory_terms(text),
+        check_params(text),
     ]
 
     print('# FLAT sync_check report')

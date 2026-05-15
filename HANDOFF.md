@@ -2,7 +2,7 @@
 > **모든 탭은 세션 시작 시 이 파일을 먼저 읽는다.**
 > 섹션 단위 수정만. 전체 덮어쓰기 금지 (원칙 7).
 
-마지막 수정: 2026-05-15 코드탭 cont.72 Part 16 (배치 2) — **자율 영역 4건 즉시 진행**: (1) **A7 plan.md "Current Status" 재검증** — data/ 도메인 분리 섹션 정정 (단일 파일 4 + 분할 3 + 추가 3 = 213KB 알맹이, sync_check.py 검증 정합 명시). (2) **A4 sync_check.py 확장 — 6 영역 모두 PASS** (preset 34/34 / fabric 41/41 / B6.1 sample 6/6 / CARD targetPresetName 5/5 / seams 27 area / factoryTerms 60+50 mapping+19 ko_factory). 새 발견: factoryTerms declared 60 vs computed 68 = base 60 + 확장 8 (ease 2 + stitch/fabric_cutting 등) 명시 후속. (3) **A3 B6.4 parametric 주석 spec v0.1 draft** (`docs/flat_data_separation_B6_4_parametric_spec.md` 신설, 7 섹션, 이람 brand voice 무관 영역만, sync_check.py check_params() 후속). (4) **A6 CLAUDE.md 토큰 절약 자가검증** (`docs/archive/cont72_token_savings_self_check.md` 신설, 9 규칙 7✅/2⚠️/0❌, 누락 방지 5단 4/5 적용, 사고 15 재발 방지 가이드라인 신설). 사고 자각: 사고 (l) 변형 회피 — 자율 영역 4건이 메인 작업 흡수 X, 이람 "자율 영역 시작하자" 명시 응답 범위 내. 이전: 2026-05-15 코드탭 cont.72 Part 16 — **Cowork/HANDOFF 정리 + 자율 영역 추가 발굴**: (1) **🟣 Cowork 섹션 cont.72 분담 7건 추가** (22 collar / Sleeve cap / 옵션 H 도메인 / M1-M7 / AI techpack 5 / 108→27 compat / 봉제용어 i18n) — `docs/cowork_validation_requests.md` § 5-11 append, cont.75 기획탭 § 1-4 와 연속, 누적 11건. (2) **🔴 기획→코드 cont.72 Part 16 신규 subsection** — 기획탭 분담 누적 16 항목 매트릭스 (S16/S17/S18 / 카테고리 분류 / 5 cat reorganize / enum / 32 preset / B6.4 / waist / CARD_DATA 검수 / 라벨 격상 / B6.1 hard/soft 검수 / 콘텐츠 자동화). (3) **코드탭 자율 영역 A1-A7 발굴 + 즉시 진행 가능 3건 실행**: A1 dead code sweep (0 dead, sleeveLenRatioToCm = S2/S5 future reserved 정상) / A2+A4 통합 `tools/audit/sync_check.py` 신설 (preset DB↔JSON 34/34 ✅ + fabric↔JSON 41/41 ✅ + B6.1 sample 6/6 ✅) / A5 GPL 자가검증 (Valentina/Seamly2D/GPL grep 0 흔적). (4) **🟡 TODO 표 cont.75 기획탭 push 4건 + cont.72 Part 16 신규 4건 추가** (누락 방지 #5 적용). (5) **사고 자각**: 사고 (l) 변형 (자율 영역 발굴이 메인 작업 흡수 가능성) 모니터 — 이람 명시 요청에 정확히 응답한 범위로 한정. 이전: 2026-05-12 기획탭 cont.75 — (1) **S15 spec 신설** (`docs/spec_S15_garment_vs_body_dual_measurement.md`) — Body measurement ↔ Garment spec 분리 + ease 명시적 변환 함수. 코드탭 implement = 이람 OK 후. (2) **Cowork validation requests 누적 문서 신설** (`docs/cowork_validation_requests.md`) — S14/S15 cowork 의존 영역 + factory validation 5월 통합. (3) **Project knowledge 진입 검증 ✅** — cont.74 영구 해결책 작동 확인 (4건 본문 직접 인용). (4) **Cowork / Code tab 분업 정리** — cowork = S14 도메인 깊이 + S15 ease 25개 값 + 27 vs 28 모호 + factory validation / code = S15 implement (이람 OK 후) + cont.72 Part 4-8 push + .gitignore 정책 + collar geometry cheatsheet 구현. (5) **사고 자각**: 본 cont 사고 l 변형 / m 잔존 모두 차단 (검증 매몰 회피 + 옵션 분산 회피 + 직진 추천).
+마지막 수정: 2026-05-15 코드탭 cont.72 Part 17 — **cascade_pattern.md #2 본체 적용 1차 (정적 분석 + dynamic verifier 신설)**: 이람 "docs/cascade_pattern.md 읽어줘" 진입 → 1급 타개점 3개 보고 → 이람 "#2부터" 결정 → 환경 점검 (Playwright/Chrome 본 세션 X) → 정적/동적 2분리 자율 진행 (이람 분담 컨펌 "A,B 진행 가능. 내가 해결할 수 있는 부분 넘겨줘"). (1) **정적 분석 보고서 `docs/inspect_flat_path_seq_static_analysis.md` 신설** — flat-v6.html BodyComp.outline (L2530~2629, lp 6+side 4+hem 7 분기 매트릭스, numeric 영향 거의 X) / NeckComp.path (L2637~2689, **★ 사고 의심 #1 — `S.neckCurve` numeric slider가 boundary 0.06/0.15에서 command 시퀀스 자체 분기**, square M+L×3 ↔ V M+L×2 ↔ curved M+C, cascade transition 직격 발견) / SleeveComp.draw (shape enum이 분기 흡수, sleeveLength<=2 early return만 numeric 분기). cascade_pattern.md #2 가설 정정 = "preset baseline" → "**option 조합 + numeric slider 불변**" (규칙 9 변형). (2) **`tools/audit/verify_path_seq.py` 신설** (~280 lines) — Playwright 기반 inspect_flat.py 자매. axis sweep + numeric-sweep + numeric-sweep-all 3 mode. 11 numeric slider × 사고 boundary 포함 값 매트릭스. 위반 시 `tools/audit/path_seq_violations/` JSON. **이람 환경 실행 분담** (본 세션 chrome X). (3) **본 세션 자가검증 PASS** — Python AST parse / cmd_seq regex 5 cases (square/V/curved/default/empty) / load_presets 16 preset top cat 정합 / 회귀 위험 0 (flat-v6.html 변경 0). (4) **사고 자각** — 사고 (l) 변형 회피 (#2 명시 응답 범위 내) / 사고 (m) 떠넘기기 X (환경 결과 후 정적/동적 2분리 자율 결정 + 청산 옵션 D 명시) / 규칙 8 환경 인식 (bash 직접 확인). (5) **Next:** 이람 환경 dynamic 실행 → 결과 회신 → 사고 #1/#2/#3 확정 → Phase 3A (iii) cascade transition (cascade_pattern.md #1) 진입 게이트 확보. 이전 마지막 수정: 2026-05-15 코드탭 cont.72 Part 16 (배치 3) — **재검 후 추가 자율 영역 4건 진행 (B/C/D/E)**: 이람 "빼먹은 부분 없는지 재검하고, 자율 영역 진행". A1-A7 자율 영역 표 완료 인지 후 새 자율 영역 4건 발굴 + 진행. (1) **B factoryTerms 60 → 68 정합 정정** — `data/factory_terms.json` totalTerms 갱신 + totalTermsBreakdown 8 카테고리 명세 신설. sync_check.py baseline 정정. (2) **C sync_check.py check_params() 신설** — B6.4 spec § 3 후속. params.json 20 top keys (메타 3 + 도메인 17) / state_defaults 62 ↔ inline S 객체 62 **정확 일치 발견** / collar_params 5 카테고리. spec § 1 "19 keys" → 실제 20 정정. **새 발견:** state_defaults 63 표기 → 실제 62. (3) **D compat_sweep.py 신설** — 6 system 27 rule 정적 sweep (NECKTYPE 3 / SHOULDER_NECKTYPE 3 / DETAIL_NECKTYPE 1 / SHOULDER_DETAIL 3 / COLLAR 8 / NECK_BC 9). COLLAR_COMPAT 8 neckShape × 5 collarGroup 매트릭스 (차단 12/40 cells = 30%). NECK_BC_BLOCKED 9 pair 인벤토리. (4) **E style_overlay_sweep.py 신설** — 7 Style Overlay (casual/formal/military/workwear/sport/minimal/romantic) 정의 누락 0 / i18n EN+KO 정합 / deltas + overrides 완전성 PASS. **모든 sweep tool 회귀 0 (read-only). 작업 정상 완료** — 사고 (l) 변형 회피 + 누락 방지 #2 inventory § 8 D-2 권장 영역 4건 모두 sweep 자동화. 이전: 2026-05-15 코드탭 cont.72 Part 16 (배치 2) — **자율 영역 4건 즉시 진행**: (1) **A7 plan.md "Current Status" 재검증** — data/ 도메인 분리 섹션 정정 (단일 파일 4 + 분할 3 + 추가 3 = 213KB 알맹이, sync_check.py 검증 정합 명시). (2) **A4 sync_check.py 확장 — 6 영역 모두 PASS** (preset 34/34 / fabric 41/41 / B6.1 sample 6/6 / CARD targetPresetName 5/5 / seams 27 area / factoryTerms 60+50 mapping+19 ko_factory). 새 발견: factoryTerms declared 60 vs computed 68 = base 60 + 확장 8 (ease 2 + stitch/fabric_cutting 등) 명시 후속. (3) **A3 B6.4 parametric 주석 spec v0.1 draft** (`docs/flat_data_separation_B6_4_parametric_spec.md` 신설, 7 섹션, 이람 brand voice 무관 영역만, sync_check.py check_params() 후속). (4) **A6 CLAUDE.md 토큰 절약 자가검증** (`docs/archive/cont72_token_savings_self_check.md` 신설, 9 규칙 7✅/2⚠️/0❌, 누락 방지 5단 4/5 적용, 사고 15 재발 방지 가이드라인 신설). 사고 자각: 사고 (l) 변형 회피 — 자율 영역 4건이 메인 작업 흡수 X, 이람 "자율 영역 시작하자" 명시 응답 범위 내. 이전: 2026-05-15 코드탭 cont.72 Part 16 — **Cowork/HANDOFF 정리 + 자율 영역 추가 발굴**: (1) **🟣 Cowork 섹션 cont.72 분담 7건 추가** (22 collar / Sleeve cap / 옵션 H 도메인 / M1-M7 / AI techpack 5 / 108→27 compat / 봉제용어 i18n) — `docs/cowork_validation_requests.md` § 5-11 append, cont.75 기획탭 § 1-4 와 연속, 누적 11건. (2) **🔴 기획→코드 cont.72 Part 16 신규 subsection** — 기획탭 분담 누적 16 항목 매트릭스 (S16/S17/S18 / 카테고리 분류 / 5 cat reorganize / enum / 32 preset / B6.4 / waist / CARD_DATA 검수 / 라벨 격상 / B6.1 hard/soft 검수 / 콘텐츠 자동화). (3) **코드탭 자율 영역 A1-A7 발굴 + 즉시 진행 가능 3건 실행**: A1 dead code sweep (0 dead, sleeveLenRatioToCm = S2/S5 future reserved 정상) / A2+A4 통합 `tools/audit/sync_check.py` 신설 (preset DB↔JSON 34/34 ✅ + fabric↔JSON 41/41 ✅ + B6.1 sample 6/6 ✅) / A5 GPL 자가검증 (Valentina/Seamly2D/GPL grep 0 흔적). (4) **🟡 TODO 표 cont.75 기획탭 push 4건 + cont.72 Part 16 신규 4건 추가** (누락 방지 #5 적용). (5) **사고 자각**: 사고 (l) 변형 (자율 영역 발굴이 메인 작업 흡수 가능성) 모니터 — 이람 명시 요청에 정확히 응답한 범위로 한정. 이전: 2026-05-12 기획탭 cont.75 — (1) **S15 spec 신설** (`docs/spec_S15_garment_vs_body_dual_measurement.md`) — Body measurement ↔ Garment spec 분리 + ease 명시적 변환 함수. 코드탭 implement = 이람 OK 후. (2) **Cowork validation requests 누적 문서 신설** (`docs/cowork_validation_requests.md`) — S14/S15 cowork 의존 영역 + factory validation 5월 통합. (3) **Project knowledge 진입 검증 ✅** — cont.74 영구 해결책 작동 확인 (4건 본문 직접 인용). (4) **Cowork / Code tab 분업 정리** — cowork = S14 도메인 깊이 + S15 ease 25개 값 + 27 vs 28 모호 + factory validation / code = S15 implement (이람 OK 후) + cont.72 Part 4-8 push + .gitignore 정책 + collar geometry cheatsheet 구현. (5) **사고 자각**: 본 cont 사고 l 변형 / m 잔존 모두 차단 (검증 매몰 회피 + 옵션 분산 회피 + 직진 추천).
 
 이전 마지막 수정: 2026-05-12 기획탭 cont.74 — (1) **SOP § 4.1 read fallback 사다리 명문화** (read_text_file → read_file head 5 → osascript do shell script → Project knowledge 첨부 + 인계서 brief). (2) **cont69_env_rca 행 13 추가** (사고 n cont.73 + n.1/n.2/n.3 cont.74 통합 — MCP 모든 채널 영구 4분 timeout, osascript 포함, 첫 호출 alive ≠ 영구 alive). (3) **메모리 #11 갱신** (osascript도 영구 채널 아님 영구 기록). (4) **env_matrix § 4 항목 5 + § 7 v1.2 + § 8 = cont.74 이전 통합 발견** (작업자 불명, 이람 수동 추정). (5) **사고 자각**: 사고 l 변형 재발 (환경 발견을 작업 정당화에 흡수 — 이람 push back "주객전도" 정정) + 사고 m 잔존 (옵션 표 2회 연속 — 이람 push back 후 직진). (6) **★ 시스템 영구 해결책 제안 — 이람 결정 대기**: HANDOFF / env_matrix / cont69_env_rca / spec sheet / S14 spec / SOP / self-check / handoff template / cont_audit template / B6.1 spec / B6.2 spec / content_handoff = Project knowledge 첨부 (이람 1회 수동, ~5분). 갱신 빈도 낮은 spec/RCA/template 우선. cont.75부터 MCP read 무관 context 자동 진입.
 
@@ -620,6 +620,82 @@ Q1 Phase 3-tier 동의 / Q2 Six Atomic (다) / Q3 b만
 ---
 
 ## 🔵 코드 → 기획
+
+### 🟢 cont.72 Part 17 — cascade_pattern.md #2 본체 적용 1차 (2026-05-15, commit 대기)
+
+**진입:** 이람 "docs/cascade_pattern.md 읽어줘" → POC 학습 1급 타개점 3개 보고 → 이람 "#2부터 (가장 안전)" 결정 → 환경 점검 (Playwright/Chrome 본 세션 X) → 정적/동적 2분리 자율 진행 (이람 분담 컨펌).
+
+#### 산출물 (commit 대기)
+
+| 파일 | 내용 |
+|---|---|
+| `docs/inspect_flat_path_seq_static_analysis.md` 신설 | 정적 분석 보고서 8 섹션. BodyComp.outline + NeckComp.path + SleeveComp.draw 분기 매트릭스. 사고 의심 #1/#2/#3 위치 표 |
+| `tools/audit/verify_path_seq.py` 신설 | Playwright 기반 dynamic verifier, ~280 lines. axis + numeric-sweep + numeric-sweep-all 3 mode. inspect_flat.py 자매 |
+| `tools/audit/path_seq_baselines/` | PASS 시 자동 생성 (이람 실행 후) |
+| `tools/audit/path_seq_violations/` | FAIL 시 자동 생성 (이람 실행 후) |
+
+#### ★ 핵심 발견 — NeckComp neckCurve numeric → command seq 분기 (사고 의심 #1)
+
+flat-v6.html L2674~2687:
+- `t = S.neckCurve / 100`
+- `if (t < 0.06)` → square zone `M + L×3`
+- `else if (t < 0.15)` → V zone `M + L×2`
+- `else` → curved zone `M + C`
+
+**의미:** numeric slider `neckCurve`가 boundary 6 / 15 를 넘는 순간 path command 시퀀스 종류 자체가 변함. **CSS `d` transition은 같은 command 시퀀스에서만 보간 가능** → boundary에서 path jump. cascade_pattern.md #1 cascade transition (Phase 3A (iii) 후보) 진입 시 NeckComp boundary에서 시각적 사고 발생.
+
+cont.63 자의적 90° 블렌딩과 같은 차원의 누적 사고 가능성. 본 정적 분석으로 사전 차단 layer 형성.
+
+#### cascade_pattern.md #2 가설 정정 (규칙 9 변형, 새 패턴 X)
+
+- 원본: "preset 그룹 안에서 command seq 불변"
+- 정정: "**option 조합** 그룹 안에서 **numeric slider** 변경 시 command seq 불변"
+
+위반 시 numeric slider가 분기 만든 것 = 의도치 않은 분기 = 사고 의심.
+
+#### 본 세션 자가검증 (chrome 의존 0 부분)
+
+- Python AST parse ✅
+- cmd_seq regex 5 cases (square M+L×3 / V M+L×2 / curved M+C / default M+L+C / empty) ✅
+- load_presets 16 preset top cat 정합 (HANDOFF 헤더 일치) ✅
+- 회귀 위험 0 (flat-v6.html 변경 0, 새 파일만 추가)
+
+#### 🟠 이람 분담 (dynamic 실행)
+
+본 세션 환경 = Linux sandbox, chrome/Playwright 부재. dynamic verifier 실행은 이람 환경 (Mac 또는 chrome 환경) 필수.
+
+```bash
+# 셋업 (1회)
+pip3 install playwright
+python3 -m playwright install chromium
+
+# 사고 의심 검증 (★ 우선순위)
+python3 tools/audit/verify_path_seq.py --numeric-sweep neckCurve --cat top    # 사고 #1
+python3 tools/audit/verify_path_seq.py --numeric-sweep hipFlare --cat top     # 사고 #2
+python3 tools/audit/verify_path_seq.py --numeric-sweep sleeveLength --cat top # 사고 #3
+
+# axis 분기 매트릭스 추출 (의도된 분기 보고)
+python3 tools/audit/verify_path_seq.py --axis neckShape --cat top
+python3 tools/audit/verify_path_seq.py --axis shoulderType --cat top
+```
+
+결과 회신: stdout + `tools/audit/path_seq_violations/*.json` 본 세션 또는 다음 코드탭에 paste.
+
+#### Next 게이트
+
+- 이람 결과 회신 → 사고 #1/#2/#3 확정
+- 확정 시 cascade_pattern.md #1 cascade transition (Phase 3A (iii) 후보) 진입 Option C (drag class toggle) 또는 Option B (command unify) 결정
+- cascade_pattern.md 적용 권장 순서 § 5.0 = #2 → #1 → #3, 본 cont에서 #2 정적 분석 완료, dynamic 검증 이람 분담
+
+#### 사고 자각
+
+- 사고 (l) 변형 회피: 이람 "#2부터" 명시 응답 범위 내. cascade_pattern.md 학습 #2 본체 적용 = 본 작업 정확 매핑.
+- 사고 (m) 떠넘기기 X: 환경 결과 (chrome X) 보고 후 정적/동적 2분리 자율 결정. 완전 청산 옵션 D 명시 (사용자 규칙 1). 이람 push "A+B 가능?" 분담 컨펌 후 진행.
+- 사고 9: cascade_pattern.md #2 가설 정정 = 변형 (RCA 통합 위치 = 본 sub-section + 정적 분석 보고서 § 7). 새 패턴 X.
+- 규칙 8 환경 인식: bash로 Playwright 미설치 + chromium 부재 직접 확인 후 자율 결정 (추측 평서문 X).
+- 규칙 5 self-check: 본 응답 각 단계에 명시.
+
+---
 
 ### 🔀 cont.72 Part 13 — 분업 자가검증 + 검증 부족 17 영역 분담 (2026-05-12)
 
@@ -2140,6 +2216,10 @@ P5=B 채택 시:
 | **cont.72 Part 16 배치 2 — A4 sync_check.py 6 영역 확장** | — | ✅ preset / fabric / B6.1 sample / CARD targetPresetName / seams / factoryTerms 모두 PASS. 새 발견: factoryTerms declared 60 vs computed 68 | factoryTerms 확장 8 명시 후속 |
 | **cont.72 Part 16 배치 2 — A3 B6.4 spec draft** | ✅ `docs/flat_data_separation_B6_4_parametric_spec.md` v0.1 (이람 brand voice 무관) | 코드탭 작성 | 이람 검수 후 v0.2 (이람 brand voice 결정 필요한 영역) |
 | **cont.72 Part 16 배치 2 — A6 토큰 절약 자가검증** | `docs/archive/cont72_token_savings_self_check.md` 신설 | 코드탭 메타 평가 | 9 규칙 7✅/2⚠️/0❌, 사고 15 재발 방지 가이드 신설 |
+| **cont.72 Part 16 배치 3 — B factoryTerms 60 → 68 정합** | — | ✅ data/factory_terms.json totalTerms 갱신 + Breakdown 8 카테고리 명세 + sync_check.py baseline 정정 | 완료 (declared 68 / computed 68 정확 일치) |
+| **cont.72 Part 16 배치 3 — C check_params() 신설** | — | ✅ sync_check.py 7 영역 확장 (params.json 20 keys / state_defaults 62 ↔ inline S 62 정확 일치 발견) | 완료 (PASS) / 새 발견: B6.4 spec "19 keys → 20" / "63 → 62" 정정 |
+| **cont.72 Part 16 배치 3 — D compat_sweep.py 신설** | — | ✅ tools/audit/compat_sweep.py (6 system 27 rule 정적 sweep + COLLAR_COMPAT 매트릭스 차단 12/40 cells + NECK_BC 9 pair 인벤토리) | 완료 (회귀 0) / DOM 발동 검증 = cont.72 Part 13 sample 9건 / 18건 잔존 (preview 회복 후 Puppeteer) |
+| **cont.72 Part 16 배치 3 — E style_overlay_sweep.py 신설** | — | ✅ tools/audit/style_overlay_sweep.py (7 style 정의 / i18n EN+KO / deltas+overrides 완전성 모두 PASS) | 완료 (회귀 0) / 시각 매력도 = 이람 검수 (원칙 14) |
 
 | 항목 | 상태 |
 |---|---|

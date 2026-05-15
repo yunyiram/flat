@@ -91,7 +91,18 @@
       "시아게": {"en": "Ironing", "ko_standard": "다림질", "category": "fabric"}
     }
   },
-  "totalTerms": 60,
+  "totalTerms": 68,
+  "totalTermsBreakdown": {
+    "_note": "cont.72 Part 16 자율 영역 B: declared 60 → 정정 68. base 60 (서울의류협동조합) + 확장 8 (stitch 일부 + fabric_cutting 일부 + ease 2)",
+    "structure": 9,
+    "sewing_technique": 7,
+    "pattern_cutting": 5,
+    "pocket": 4,
+    "closure": 6,
+    "ease": 2,
+    "stitch": 23,
+    "fabric_cutting": 12
+  },
   "FLAT_application_status": {
     "Construction_Notes_병기": "❌ 미적용 (PDF 작업지시서에 자동 병기 가능 — 후속 spec)",
     "Factory_Viewer_KO_mode": "❌ 미적용 (i18n KO label에 '표준어 (현장어)' 병기 — 후속 spec)",
