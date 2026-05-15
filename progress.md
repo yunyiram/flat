@@ -1,5 +1,62 @@
 # Progress Log
 
+## 2026-05-15 (cont.72 Part 16) — Cowork/HANDOFF 정리 + 자율 영역 추가 발굴
+
+이람 요청: "여태까지 작업 리뷰하면서 cowork, 기획탭에 넘길 거 handoff 잘 작성해주고, 자율 영역 추가 발굴 하자."
+
+### A. 🟣 Cowork 섹션에 cont.72 분담 7건 추가
+- `docs/cowork_validation_requests.md` § 5-11 append (cont.75 기획탭 § 1-4 와 연속, 누적 11건)
+  - #5 22 collar SVG 시각 정확도 (eton/bertha/puritan/wing 등 cont.65 미달)
+  - #6 Sleeve cap 정밀화 비교 (cont.68 Part 2 미완, Phase 4 3D 동기)
+  - #7 옵션 H 도메인 검증 (sweatshirt 외 hoodie/fleece 적용)
+  - #8 M1-M7 미확인 채록 (audit Section 20.3, M3/M4 = S15 ★)
+  - #9 AI techpack 5개 워크플로우 채록 (Fabra/Raspberry/Tailornova/Sewist/Browzwear)
+  - #10 108→27 compat rule 정합성 (Sixatomic compat rule 카운트 비교)
+  - #11 봉제 현장용어 60 i18n 정합성 (factory validation 5월 동시)
+- HANDOFF "🟣 외부 세션" cont.72 dated subsection prepend (235 라인 위)
+
+### B. 🔴 기획→코드 cont.72 Part 16 신규 subsection
+- 기획탭 분담 누적 16 항목 매트릭스 (S16 grading / S17 Carbon / S18 외부 페이지 / 카테고리 분류 6 / 5 cat reorganize / enum 표준화 / 32 vs 34 preset / B6.5 병기 형식 / i18n 6 keys / waist 매핑 / CARD_DATA 검수 / S2 라벨 격상 / B6.1 검수 / B6.4 / 콘텐츠 자동화)
+- 🟣 cowork 분담 누적 11건 cross-ref
+- 🔄 코드탭 자율 영역 A1-A7 발굴 표 (이람 OK 후 진행 가능)
+
+### C. 코드탭 자율 영역 즉시 실행 3건 (이람 "자율 영역 추가 발굴" 응답)
+- **A1 dead code sweep**: ✅ 0 dead. `sleeveLenRatioToCm` 1건 = S2/S5 future reserved utility (정상)
+- **A2 + A4 통합 — `tools/audit/sync_check.py` 자율 신설** (회귀 0 보장):
+  - preset DB ↔ JSON: 34/34 ✅ (inline PresetModule.DB + SKIRT_DB + PANTS_DB)
+  - fabric ↔ JSON: 41/41 ✅ (FabricModule.DB name 매칭)
+  - B6.1 sample lift-and-shift: 6 system / 6 rule ✅
+  - 3 영역 모두 PASS, OVERALL ✅
+- **A5 GPL 자가검증**: flat-v6.html grep `Valentina|Seamly2D|GPL` = 0 흔적 ✅ (CLAUDE.md 코딩 컨벤션 정합)
+
+### D. 🟡 TODO 표 갱신
+- cont.75 기획탭 push 4건 (S15 spec / Cowork validation requests / Cowork session prep / audit § 20.3 M1-M7)
+- cont.72 Part 16 신규 4건 (Cowork 7건 추가 / 기획탭 분담 16 매트릭스 / sync_check.py 신설 / GPL 자가검증)
+
+### E. 사고 자각
+- 사고 (l) 변형 모니터 — 자율 영역 발굴이 메인 작업 흡수 가능성. 이람 명시 요청에 정확히 응답한 범위로 한정 (HANDOFF 정리 + 자율 영역 발굴 = 본 작업 정확히 매핑).
+- 사고 (m) 떠넘기기 X — 옵션 A/B/C/D 떠넘기기 회피, A1-A7 발굴 + 즉시 진행 가능 3건 (A1/A2+A4/A5) 자율 결정 후 진행. 나머지 4건 (A3/A6/A7 / A4 자동화 sweep 풀 구현)은 이람 명시 OK 후 진행 명시.
+- 사고 15 (write_file rewrite 데이터 손실) 재발 방지: edit_block / append만 사용. 본 cont 6+ 호출 모두 edit_block, write_file=tools/audit/sync_check.py (신규 파일) 만.
+
+### F. 새 검증 갭 발견 (sync_check.py 1차 실행 중 발견 + 즉시 정정)
+- 초기 baseline 가정: data/rules/ 27 rule = 부정확. 실제 cont.72 Part 4는 **6 sample lift-and-shift** (전체 27 rule X). sync_check.py baseline 정정 후 PASS.
+- 초기 fabric 변수명 가정: `fabricDB`. 실제는 `FabricModule.DB`. regex 정정 후 PASS.
+- 누락 방지 #7 (50% 100%로 보고 금지) 자가검증 적용: 1차 실행 FAIL 시 baseline 자체 의심 → cont.72 Part 4 commit 9f2234f re-check → sample lift-and-shift 의도 확인 → 정정.
+
+### G. 산출물
+- `docs/cowork_validation_requests.md` (cont.75 기획탭 신설 → cont.72 Part 16 § 5-11 append, 누적 11건)
+- `tools/audit/sync_check.py` 신설 (185 라인, 회귀 0, OVERALL PASS)
+- `HANDOFF.md` 헤더 cont.72 Part 16 갱신 + 🟣 subsection + 🔴 subsection + 🟡 TODO 4건 추가
+- `progress.md` cont.72 Part 16 prepend (본 항목)
+
+### Next Up (cont.72 Part 17 또는 cont.73 코드탭 진입 시)
+- 자율 영역 A3 (B6.4 parametric 주석 문서 draft) — 이람 brand voice 무관 영역만
+- 자율 영역 A7 (plan.md "Current Status" 재검증 후속) — 6 system 27 rule 표기 검증
+- cowork tab 입장 시 cowork_validation_requests.md § 5-11 + 준비서 통합 reference 사용
+- S15 implement 게이트 — 이람 OK 후
+
+---
+
 ## 2026-05-13 (cont.72 Part 7-15) — 전체 audit + 자율 batch 종합 (누락 방지 #5 — progress.md 빠짐없이 기록)
 
 > ⚠️ **누락 인정:** progress.md가 Part 8까지만 기록 / Part 7 + Part 9-15 미기록 발견 (cont.72 Part 16). 본 항목으로 종합 기록.

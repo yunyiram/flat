@@ -2,7 +2,7 @@
 > **모든 탭은 세션 시작 시 이 파일을 먼저 읽는다.**
 > 섹션 단위 수정만. 전체 덮어쓰기 금지 (원칙 7).
 
-마지막 수정: 2026-05-12 기획탭 cont.75 — (1) **S15 spec 신설** (`docs/spec_S15_garment_vs_body_dual_measurement.md`) — Body measurement ↔ Garment spec 분리 + ease 명시적 변환 함수. 코드탭 implement = 이람 OK 후. (2) **Cowork validation requests 누적 문서 신설** (`docs/cowork_validation_requests.md`) — S14/S15 cowork 의존 영역 + factory validation 5월 통합. (3) **Project knowledge 진입 검증 ✅** — cont.74 영구 해결책 작동 확인 (4건 본문 직접 인용). (4) **Cowork / Code tab 분업 정리** — cowork = S14 도메인 깊이 + S15 ease 25개 값 + 27 vs 28 모호 + factory validation / code = S15 implement (이람 OK 후) + cont.72 Part 4-8 push + .gitignore 정책 + collar geometry cheatsheet 구현. (5) **사고 자각**: 본 cont 사고 l 변형 / m 잔존 모두 차단 (검증 매몰 회피 + 옵션 분산 회피 + 직진 추천).
+마지막 수정: 2026-05-15 코드탭 cont.72 Part 16 — **Cowork/HANDOFF 정리 + 자율 영역 추가 발굴**: (1) **🟣 Cowork 섹션 cont.72 분담 7건 추가** (22 collar / Sleeve cap / 옵션 H 도메인 / M1-M7 / AI techpack 5 / 108→27 compat / 봉제용어 i18n) — `docs/cowork_validation_requests.md` § 5-11 append, cont.75 기획탭 § 1-4 와 연속, 누적 11건. (2) **🔴 기획→코드 cont.72 Part 16 신규 subsection** — 기획탭 분담 누적 16 항목 매트릭스 (S16/S17/S18 / 카테고리 분류 / 5 cat reorganize / enum / 32 preset / B6.4 / waist / CARD_DATA 검수 / 라벨 격상 / B6.1 hard/soft 검수 / 콘텐츠 자동화). (3) **코드탭 자율 영역 A1-A7 발굴 + 즉시 진행 가능 3건 실행**: A1 dead code sweep (0 dead, sleeveLenRatioToCm = S2/S5 future reserved 정상) / A2+A4 통합 `tools/audit/sync_check.py` 신설 (preset DB↔JSON 34/34 ✅ + fabric↔JSON 41/41 ✅ + B6.1 sample 6/6 ✅) / A5 GPL 자가검증 (Valentina/Seamly2D/GPL grep 0 흔적). (4) **🟡 TODO 표 cont.75 기획탭 push 4건 + cont.72 Part 16 신규 4건 추가** (누락 방지 #5 적용). (5) **사고 자각**: 사고 (l) 변형 (자율 영역 발굴이 메인 작업 흡수 가능성) 모니터 — 이람 명시 요청에 정확히 응답한 범위로 한정. 이전: 2026-05-12 기획탭 cont.75 — (1) **S15 spec 신설** (`docs/spec_S15_garment_vs_body_dual_measurement.md`) — Body measurement ↔ Garment spec 분리 + ease 명시적 변환 함수. 코드탭 implement = 이람 OK 후. (2) **Cowork validation requests 누적 문서 신설** (`docs/cowork_validation_requests.md`) — S14/S15 cowork 의존 영역 + factory validation 5월 통합. (3) **Project knowledge 진입 검증 ✅** — cont.74 영구 해결책 작동 확인 (4건 본문 직접 인용). (4) **Cowork / Code tab 분업 정리** — cowork = S14 도메인 깊이 + S15 ease 25개 값 + 27 vs 28 모호 + factory validation / code = S15 implement (이람 OK 후) + cont.72 Part 4-8 push + .gitignore 정책 + collar geometry cheatsheet 구현. (5) **사고 자각**: 본 cont 사고 l 변형 / m 잔존 모두 차단 (검증 매몰 회피 + 옵션 분산 회피 + 직진 추천).
 
 이전 마지막 수정: 2026-05-12 기획탭 cont.74 — (1) **SOP § 4.1 read fallback 사다리 명문화** (read_text_file → read_file head 5 → osascript do shell script → Project knowledge 첨부 + 인계서 brief). (2) **cont69_env_rca 행 13 추가** (사고 n cont.73 + n.1/n.2/n.3 cont.74 통합 — MCP 모든 채널 영구 4분 timeout, osascript 포함, 첫 호출 alive ≠ 영구 alive). (3) **메모리 #11 갱신** (osascript도 영구 채널 아님 영구 기록). (4) **env_matrix § 4 항목 5 + § 7 v1.2 + § 8 = cont.74 이전 통합 발견** (작업자 불명, 이람 수동 추정). (5) **사고 자각**: 사고 l 변형 재발 (환경 발견을 작업 정당화에 흡수 — 이람 push back "주객전도" 정정) + 사고 m 잔존 (옵션 표 2회 연속 — 이람 push back 후 직진). (6) **★ 시스템 영구 해결책 제안 — 이람 결정 대기**: HANDOFF / env_matrix / cont69_env_rca / spec sheet / S14 spec / SOP / self-check / handoff template / cont_audit template / B6.1 spec / B6.2 spec / content_handoff = Project knowledge 첨부 (이람 1회 수동, ~5분). 갱신 빈도 낮은 spec/RCA/template 우선. cont.75부터 MCP read 무관 context 자동 진입.
 
@@ -232,6 +232,41 @@
 
 ## 🟣 외부 세션 (Cowork tab) 작업 알림
 
+### 2026-05-15 — cont.72 코드탭 Part 16 발굴 Cowork 분담 7건
+
+**환경:** 코드탭 cont.72 inventory § 8 D-2 검증부족 + § 8 E 메모리 적용 갭 + Part 7 self-audit 발굴. 정리 후 `docs/cowork_validation_requests.md` (cont.75 기획탭 신설) 에 코드탭 섹션 append.
+
+**발굴 7건 (cowork_validation_requests.md § 5-11 참조 — 코드탭 cont.72 Part 16):**
+
+| # | 분담 | 우선순위 | 의존 |
+|---|---|---|---|
+| 5 | **22 collar SVG 시각 정확도** (eton/bertha/puritan/wing 등 cont.65 미달 영역) | 중 | Szkutnicka 책 스캔본 + cowork 라이브 |
+| 6 | **Sleeve cap 정밀화 비교** (cont.68 Part 2 미완, Phase 4 3D 동기) | 저 | cowork 라이브 |
+| 7 | **옵션 H 도메인 검증** (sweatshirt 외 hoodie/fleece 적용 가능 여부) | 중 | factory validation 5월 + cowork 라이브 |
+| 8 | **M1-M7 미확인 채록** (audit Section 20.3, M3/M4 = S15 ★) | ★ critical | cowork tab v3 재방문 |
+| 9 | **AI techpack 5개 워크플로우 채록** (Fabra/Raspberry/Tailornova/Sewist/Browzwear) | 저 | trial 영상 + Phase 5 SaaS 시점 |
+| 10 | **108→27 compat rule 정합성** (Sixatomic compat rule 카운트 비교) | 저 | B6.1 v0.2 보강 input |
+| 11 | **봉제 현장용어 60 i18n 정합성** (factory validation 5월 동시) | 중 | factory validation + 6 확장 keys 매핑 |
+
+**산출:** `docs/cowork_validation_requests.md` § 5-11 (cont.72 코드탭 Part 16 append). cowork tab 입장 시 본 문서 참조 + 준비서 `docs/cowork_session_prep_cont75.md` 와 통합.
+
+**코드탭→cowork 채널:** 본 7건 + cont.75 기획탭 신설 4건 = **누적 11건** cowork 의존 영역. cowork tab 입장 시 단일 reference (`cowork_validation_requests.md`).
+
+**다음 cowork 세션 의제 (우선순위):**
+1. M3/M4 (Body measurement) — S11 / S15 critical input
+2. 27 vs 28 모호 정정 — S14 Phase 1 27 implement 후 정합
+3. 22 collar 시각 정확도 — cont.65 미달 영역 정정
+4. 108→27 compat rule 정합성 — B6.1 v0.2 보강
+
+**자체 self-check (원칙 4·6·11·15·16):**
+- ✅ 누적 single source of truth (cowork_validation_requests.md) 활용 — 새 문서 신설 X
+- ✅ § 5-11 번호 cont.75 § 1-4 와 연속 — 누락 방지
+- ✅ 우선순위 명시 (★ / 중 / 저) — 이람 cowork 입장 시 직진 의사결정
+- ✅ 의존 영역 spec/문서 cross-ref — DOM 실측 게이트와 분리된 cowork 의존 영역만 명시
+- ✅ cont.74 영구 해결책 (Project knowledge 첨부) 적용 가능 — cowork_validation_requests.md 첨부 후보
+
+---
+
 ### 2026-04-27 — Sixatomic Pattern Generator v2 라이브 감사 완료
 
 **환경:** Cowork tab (Chrome MCP + WebSearch). 코드/HANDOFF 본문 수정은 안 함, 학습 자료 신설만.
@@ -346,6 +381,53 @@ S1 (Sleeve length %) → S2/S3 묶음 (Recommended 배지 + 노란 highlight) �
 **이람 OK 전 implement 금지** (spec sheet 게이트 동일).
 
 **다음 spec 후보 (지금 작업 X):** S15 (Garment spec vs Body 이중 측정) / S16 (Multi-select grading XS-XL).
+
+---
+
+### cont.72 Part 16 → 기획탭 (코드탭 → 기획탭 인계, 2026-05-15) — 누적 분담 표 보강
+
+**컨텍스트:** 이람 "여태까지 작업 리뷰하면서 cowork, 기획탭에 넘길 거 handoff 잘 작성해주고, 자율 영역 추가 발굴 하자". cont.72 Part 1-15 누적 + cont.73-75 기획탭 push (S14/S15 spec / cowork_validation_requests.md / SOP § 4.1 / Project knowledge 영구 해결책) 인지 후 **기획탭 다음 세션 분담 누적 표** 갱신.
+
+#### 🔴 기획탭 분담 누적 (cont.72 코드탭 Part 1-16 발굴, cont.73-75 기획탭 push 반영)
+
+| # | 분담 항목 | 출처 | 상태 | 우선순위 |
+|---|---|---|---|---|
+| 1 | **S15 spec implement OK** (이람 검수 후 코드탭 진행) | cont.75 기획탭 신설 | ⏳ 이람 검수 대기 | ★ critical |
+| 2 | **S16 spec (Multi-select grading XS-XL)** | cont.72 코드탭 Part 7 audit | ❌ 미작성 | 중 (IR 시연) |
+| 3 | **S17 (Carbon Design System reference)** | cont.72 코드탭 Part 7 audit | ❌ 미작성 | 저 (옵션) |
+| 4 | **S18 (외부 페이지 링크 패턴)** | cont.72 코드탭 Part 7 audit | ❌ 미작성 | 저 (옵션) |
+| 5 | **카테고리 분류 6 코드 implement** (mock_neck / half_zip / vest_sweater / pullover_sweater rename) | cont.71 결정 완료 | ⏳ Phase 4 동기 | 중 |
+| 6 | **5 카테고리 reorganize 결정** (tops/dress/outerwear/skirt/pants 안 vs sixatomic 안) | cont.72 코드탭 Part 13 | ❌ 미결정 | 중 |
+| 7 | **enum 표준화** (sleeveType/fit/shoulderType/neckFinish 명명) | cont.72 코드탭 Part 13 / B6.2 spec v0.2 | ❌ 미결정 | 중 |
+| 8 | **32 vs 34 preset 카운트 통일** (cont.72 Part 13 발견: 9 cat × 34, plan.md 정정 후) | cont.72 코드탭 Part 13 | ⏳ B6.2 v0.3 갱신 | 저 |
+| 9 | **B6.5 병기 형식 brand voice** (표준어/현장어 괄호 vs 슬래시) | cont.72 코드탭 Part 15 | ⏳ 이람 선호 결정 | 저 |
+| 10 | **B6.5 i18n 확장 6 keys** (에리고시 / 에리구리 / 단작 / 마이깡 / 깡 / 우라 → ko_factory) | cont.72 코드탭 Part 15 | ⏳ factory validation 후 | 저 |
+| 11 | **Body waist 변수 매핑 결정** (hipFlare 정정 후 진짜 갭 = silhouette tapered 도메인) | cont.72 코드탭 Part 11 | ❌ 미결정 | 중 |
+| 12 | **CARD_DATA targetPresetName 5장 검수** (Card 0/1/2 crewTee / 3 hoodie / 4 sweatshirt 매핑 적정성) | cont.72 코드탭 Part 12 fix | ⏳ 이람 검수 | 저 |
+| 13 | **S2 Recommended 라벨 격상 결정** (dft dot → 'Default' 텍스트 / 'Recommended' 배지) | cont.69 Part 2 후속 메모 | ❌ 미결정 | 저 |
+| 14 | **B6.1 hard/soft 정합 검수** (6 system 27 rule 카테고리 분류 적정성) | cont.72 코드탭 Part 4 + Part 13 | ⏳ 이람 검수 | 중 |
+| 15 | **B6.4 parametric 주석 문서** (옵션, Phase 후순위) | cont.72 코드탭 Part 7 audit | ❌ 미작성 | 저 (옵션) |
+| 16 | **콘텐츠 자동화 라인 / 브랜드 톤** (`docs/flat_content_voice.md`) | cont.72 self-audit | ❌ 미작성 (이람 영역) | - |
+
+#### 🟣 cowork tab 분담 (cowork_validation_requests.md 참조, 누적 11건)
+
+- cont.75 기획탭: S14 시접 4건 / S15 Ease 25개 / S15 미보강 4건 / Factory validation 5월
+- cont.72 코드탭 Part 16: 22 collar / Sleeve cap / 옵션 H 도메인 / M1-M7 / AI techpack 5 / 108→27 compat / 봉제용어 i18n
+- **다음 cowork 세션 의제 우선순위:** M3/M4 (★ S11/S15 input) → 27 vs 28 모호 → 22 collar → 108→27 compat
+
+#### 🔄 코드탭 자율 영역 (cont.72 Part 16 추가 발굴) — 이람 OK 후 진행 가능
+
+| # | 자율 영역 | 의존 | 우선순위 |
+|---|---|---|---|
+| A1 | **deprecated code sweep** (cont.65-72 변경 후 남은 dead code / unused PresetModule.helpers) | 회귀 0 보장 | 저 |
+| A2 | **PresetModule.DB ↔ JSON sync 검증 도구** (data/presets/*.json ↔ inline DB 일치성) | data/presets/ 9 파일 | 저 |
+| A3 | **B6.4 parametric 주석 문서 1차 draft** (옵션, 이람 brand voice 무관 영역만) | flat-v6.html | 저 |
+| A4 | **inventory § 8 D-2 검증부족 17 자동화 sweep 작성** | tools/audit/ | 저 |
+| A5 | **GPL 경고 자가검증** (Valentina/Seamly2D 코드 복사 흔적 없는지 grep audit) | flat-v6.html + tools/ | 저 |
+| A6 | **CLAUDE.md 토큰 절약 규칙 자가검증** (현 세션 cont.72 Part 1-16 token usage 분석) | 메타 | 저 |
+| A7 | **plan.md "Current Status" 재검증 후속** (cont.72 Part 13 정정 후 추가 검증 영역) | plan.md | 저 |
+
+**코드탭 자율 진행 게이트:** 이람 OK 또는 명시적 "자율 진행" 후. 이람 검수 의존 영역은 미진행.
 
 ---
 
@@ -2050,10 +2132,10 @@ P5=B 채택 시:
 | **Cowork validation requests 누적 문서 (cont.75)** | ✅ `docs/cowork_validation_requests.md` 신설 + cross-ref 갱신 | — | 완료 (기획탭) |
 | **Cowork 라이브 준비서 (cont.75)** | ✅ `docs/cowork_session_prep_cont75.md` 신설 (단일 reference, A1-A5 + B1-B3 + C1-C4 + D1-D2 14 ID 매트릭스) | cowork tab 진입 시 reference | 완료 (기획탭, 진입 대기) |
 | **audit § 20.3 M1-M7 정확화 (cont.75)** | ✅ 준비서 § 2 A2 갱신 (M3/M4 S15 핵심, M6 A3 분기) | cowork 라이브 채록 | 완료 (기획탭) |
-
----
-
-## 🟢 cont.67 최종 완료 로그 (Part 1 + 2 + 3 완전 마무리)
+| **cont.72 Part 16 — Cowork 분담 7건 추가** | cowork_validation_requests.md § 5-11 append (22 collar / Sleeve cap / 옵션 H 도메인 / M1-M7 / AI techpack 5 / 108→27 compat / 봉제용어 i18n) | ✅ 코드탭 발굴 + 문서화 | 완료 (cowork tab 입장 대기) |
+| **cont.72 Part 16 — 기획탭 분담 누적 표 (16 항목)** | HANDOFF "🔴 기획→코드" cont.72 Part 16 신규 subsection (S16/S17/S18 / 5 카테고리 / enum / 32 preset / B6.4 / waist / 라벨 격상 등) | ✅ 코드탭 정리 | 분담 매트릭스 완료 |
+| **cont.72 Part 16 — sync_check.py 자율 신설** | — | ✅ tools/audit/sync_check.py (preset DB↔JSON 34/34 / fabric↔JSON 41/41 / B6.1 sample 6/6) | 회귀 0, CI/사람 양쪽 사용 가능 |
+| **cont.72 Part 16 — GPL 자가검증** | — | ✅ flat-v6.html grep Valentina/Seamly2D/GPL = 0 흔적 / Dead function = 0 (sleeveLenRatioToCm = S2/S5 future reserved) | 깨끗 (CLAUDE.md 코딩 컨벤션 정합) |
 
 | 항목 | 상태 |
 |---|---|
