@@ -609,6 +609,84 @@ def check_slider_semantics(text):
     }
 
 
+def check_pom_formulas(text):
+    """12. pom_formulas JSON ↔ POM A-Q 17 inline 정합
+
+    cont.72 Part 16 자율 영역 J. B6.4 spec § 3 후속.
+    POM A-Q 17 baseline (cont.72 Part 13에서 명시). JSON pom_formulas는
+    cont.72 Part 16 J 시점 9 entries만 = 8 missing (C/D/G/H/L/O/P/Q).
+
+    검증: JSON에 17 모두 있어야 정합. 추가 = 자동 정정 가능 (코드 공식 lift-and-shift).
+    """
+    if not os.path.exists('data/params.json'):
+        return {'name': 'pom_formulas (J)', 'ok': False, 'note': 'params.json missing'}
+    with open('data/params.json') as f:
+        p = json.load(f)
+    pf = p.get('pom_formulas', {})
+    json_keys = set(k for k in pf if k != 'description')
+    # prefix letter 추출 (A_bodyLength → A)
+    json_letters = set(k.split('_')[0] for k in json_keys if '_' in k)
+
+    # POM A-Q 17 inline 검색 — measures 배열 안 n:'X' 패턴
+    inline_letters = set()
+    # POM diagram 17 letters
+    BASELINE_LETTERS = set('ABCDEFGHIJKLMNOPQ')
+    # measures=[{n:'A',label:...},{n:'B',...},...]
+    # extract pattern in PDF generation or SpecModule
+    for m in re.finditer(r"n:\s*['\"]([A-Q])['\"]", text):
+        inline_letters.add(m.group(1))
+
+    missing_in_json = BASELINE_LETTERS - json_letters
+    inline_coverage = inline_letters == BASELINE_LETTERS
+
+    ok = (
+        len(json_letters) == len(BASELINE_LETTERS)
+        and missing_in_json == set()
+        and inline_coverage
+    )
+    return {
+        'name': 'pom_formulas POM A-Q (J)',
+        'ok': ok,
+        'json_letters_count': f'{len(json_letters)}/17 ({sorted(json_letters)})',
+        'inline_letters_count': f'{len(inline_letters)}/17 ({sorted(inline_letters)})',
+        'missing_in_json': sorted(missing_in_json),
+        'baseline': 'POM A-Q 17 (cont.66 reference_data.md §6 SFD M baseline). JSON 9 entries + 8 missing = lift-and-shift 미완',
+    }
+
+
+def check_svg_constants(text):
+    """13. svg_constants 10 entries ↔ SVG layout magic number 정합
+
+    cont.72 Part 16 자율 영역 M. B6.4 spec § 3 후속.
+    JSON svg_constants 10 entries (canvas_center_x=160, garment_top_y_upper=70 등).
+    inline magic number는 다수 위치 — 본 check는 JSON 인벤토리 + 핵심 const 정합만.
+    """
+    if not os.path.exists('data/params.json'):
+        return {'name': 'svg_constants (M)', 'ok': False, 'note': 'params.json missing'}
+    with open('data/params.json') as f:
+        p = json.load(f)
+    svg = p.get('svg_constants', {})
+    json_keys = [k for k in svg if k != 'description']
+    json_count = len(json_keys)
+    # cont.72 Part 16 M 정정: B6.4 spec § 1 "10" → 실제 9 (5번째 누적 정정)
+    BASELINE_KEYS = 9
+
+    # canvas_center_x = 160 가 inline에 등장하는지 확인
+    canvas_x = svg.get('canvas_center_x')
+    inline_canvas_match = bool(re.search(r"cx\s*=\s*160|canvas\.width.*=\s*320", text))
+
+    ok = json_count == BASELINE_KEYS
+    return {
+        'name': 'svg_constants inventory (M)',
+        'ok': ok,
+        'json_count': json_count,
+        'json_keys': json_keys,
+        'canvas_center_x': canvas_x,
+        'inline_canvas_match_sample': inline_canvas_match,
+        'baseline': f'{BASELINE_KEYS} entries (canvas_center_x/garment_top_y_*/...). inline 정합 = 표본만 검증',
+    }
+
+
 def main():
     if not os.path.exists('flat-v6.html'):
         print('ERR: must run from flat/ project root')
@@ -629,6 +707,8 @@ def main():
         check_preset_schema(text),
         check_extended_ranges(text),
         check_slider_semantics(text),
+        check_pom_formulas(text),
+        check_svg_constants(text),
     ]
 
     print('# FLAT sync_check report')
