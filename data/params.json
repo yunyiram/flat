@@ -531,7 +531,9 @@
     "bodyLen": { "0-19": "crop", "20-54": "standard", "55-79": "hip", "80+": "long" },
     "skirtLen": { "0-29": "mini", "30-44": "above knee", "45-59": "knee", "60-79": "midi", "80+": "maxi" },
     "pantsLen": { "0-19": "hot pants", "20-34": "shorts", "35-49": "bermuda", "50-69": "cropped", "70+": "full length" },
-    "pantsFit": { "0-19": "skinny", "20-39": "slim", "40-59": "regular", "60-79": "relaxed", "80+": "wide" }
+    "pantsFit": { "0-19": "skinny", "20-39": "slim", "40-59": "regular", "60-79": "relaxed", "80+": "wide" },
+    "skirtFlare": { "0-5": "pencil", "6-15": "slight A", "16-30": "flared", "31-50": "circular", "51+": "extreme" },
+    "pantsFlare": { "<-5": "tapered/skinny", "-5 to 4": "straight", "5-15": "slight wide", "16-30": "wide", "31+": "extreme flare" }
   },
 
   "body_size_mapping": {

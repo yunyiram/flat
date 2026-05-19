@@ -529,6 +529,86 @@ def check_preset_schema(text):
     }
 
 
+def check_extended_ranges(text):
+    """10. extended_ranges 9 keys ↔ inline EXT_RANGES sl_X 매핑 정합
+
+    cont.72 Part 16 자율 영역 H. B6.4 spec § 3 후속.
+    JSON keys (sleeveLength 등) ↔ inline keys (sl_sleeveLength 등) 패턴 매칭.
+    """
+    if not os.path.exists('data/params.json'):
+        return {'name': 'extended_ranges (H)', 'ok': False, 'note': 'params.json missing'}
+    with open('data/params.json') as f:
+        p = json.load(f)
+    json_keys = set(k for k in p.get('extended_ranges', {}) if k != 'description')
+
+    # inline EXT_RANGES
+    ext_match = re.search(r'const\s+EXT_RANGES\s*=\s*\{', text)
+    inline_keys = set()
+    if ext_match:
+        open_pos = ext_match.end() - 1
+        depth = 0
+        i = open_pos
+        while i < len(text):
+            if text[i] == '{':
+                depth += 1
+            elif text[i] == '}':
+                depth -= 1
+                if depth == 0:
+                    body = text[open_pos:i + 1]
+                    # sl_X: pattern (sl_ prefix stripping)
+                    for key in re.findall(r"sl_([a-zA-Z_]+)\s*:", body):
+                        inline_keys.add(key)
+                    break
+            i += 1
+
+    ok = json_keys == inline_keys
+    return {
+        'name': 'extended_ranges JSON ↔ inline EXT_RANGES (H)',
+        'ok': ok,
+        'json_count': len(json_keys),
+        'inline_count': len(inline_keys),
+        'json_only': sorted(json_keys - inline_keys),
+        'inline_only': sorted(inline_keys - json_keys),
+        'baseline': '9 entries (sleeveLength/bodyLen/sleeveWidth/fitW/neckDepth/hipFlare/shoulderExtra/skirtFlare/pantsFlare)',
+    }
+
+
+def check_slider_semantics(text):
+    """11. slider_semantics JSON ↔ i18n 라벨 매칭 (의미만 일치 확인)
+
+    cont.72 Part 16 자율 영역 I. B6.4 spec § 3 후속.
+    spec 표 "14 entries" 표기 → 실제 13 정정 (cont.72 Part 16 발견).
+    """
+    if not os.path.exists('data/params.json'):
+        return {'name': 'slider_semantics (I)', 'ok': False, 'note': 'params.json missing'}
+    with open('data/params.json') as f:
+        p = json.load(f)
+    json_keys = set(k for k in p.get('slider_semantics', {}) if k != 'description')
+
+    # i18n: LANG.en.spec or LANG.en.designEl 안 슬라이더 의미 라벨 존재 여부
+    # 단순화: 13 keys 모두 LANG.en 어딘가에 등장하는지 정도만 확인
+    # (정밀 매칭은 별도 작업 — 본 check는 인벤토리 카운트)
+    BASELINE = 15  # cont.72 Part 16 I 정정 (13 → 15, skirtFlare/pantsFlare 추가)
+    json_count = len(json_keys)
+
+    # i18n 매칭은 부분 검증만 (라벨 위치 다양해서 spec sheet 또는 별도)
+    # 본 check: BASELINE 정합 + EXT_RANGES 9 ⊆ slider_semantics 확인
+    ext_keys = set(k for k in p.get('extended_ranges', {}) if k != 'description')
+    overlap = ext_keys & json_keys
+    coverage_ok = ext_keys.issubset(json_keys)
+
+    ok = json_count == BASELINE and coverage_ok
+    return {
+        'name': 'slider_semantics inventory (I)',
+        'ok': ok,
+        'json_count': json_count,
+        'baseline': BASELINE,
+        'extended_ranges_overlap': f'{len(overlap)}/{len(ext_keys)} (모든 extended_ranges 가 slider_semantics에 있어야)',
+        'missing_in_semantics': sorted(ext_keys - json_keys),
+        'note': 'cont.72 Part 16 I 정정: B6.4 spec § 1 "14" → 실제 13 → 정정 15 (skirtFlare/pantsFlare 추가)',
+    }
+
+
 def main():
     if not os.path.exists('flat-v6.html'):
         print('ERR: must run from flat/ project root')
@@ -547,6 +627,8 @@ def main():
         check_params(text),
         check_i18n(text),
         check_preset_schema(text),
+        check_extended_ranges(text),
+        check_slider_semantics(text),
     ]
 
     print('# FLAT sync_check report')

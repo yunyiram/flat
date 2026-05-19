@@ -55,11 +55,115 @@ python3 tools/audit/verify_path_seq.py --numeric-sweep sleeveLength --cat top
 - `HANDOFF.md` 헤더 + 🔵 코드→기획 cont.72 Part 17 신규 subsection
 - `progress.md` 본 항목 prepend
 
-### Next Up
+### Dynamic 검증 결과 (이람 환경 실행 완료, 2026-05-15 13:28~13:32)
 
-- 이람 환경 dynamic verifier 실행 (이람 분담) → 결과 회신
-- 결과 PASS 시 Phase 3A (iii) cascade transition 진입 게이트 확보
-- 결과 FAIL 시 사고 #1/#2/#3 확정 위치 → NeckComp Option C (drag class toggle) 보강 또는 command unify 결정
+```bash
+cd ~/Claude/flat
+python3 tools/audit/verify_path_seq.py --numeric-sweep neckCurve --cat top
+python3 tools/audit/verify_path_seq.py --numeric-sweep hipFlare --cat top
+python3 tools/audit/verify_path_seq.py --numeric-sweep sleeveLength --cat top
+```
+
+| 사고 | 정적 예측 | Dynamic 결과 | 확정 |
+|---|---|---|---|
+| #1 neckCurve | square ↔ V ↔ curved 분기 | **720 violations** — 8/16 preset 위반 (`MLLL→MLL`), 8 preset PASS = `drawFinish()` layer 자연 회피 | ✅ HIGH 직격 |
+| #2 hipFlare | side seam cocB>0 | **8 violations** — shirtDress 단독 | low (단일 preset) |
+| #3 sleeveLength | element 출현/소실 | **1568 violations ★★★** — 16/16 preset 전수 | ✅ HIGH 최대 영향 |
+
+**총 2,296 violations** = cascade_pattern.md #1 cascade transition 그대로 적용 시 시각적 사고 보장 (cont.63 차원).
+
+PASS 그룹 자연 회피 패턴 (본체 강점): hoodie / blazer / trench / bomber / shirtDress / peterPanDress / drapeDress / funnelCoat = `NeckComp.drawFinish()` 가 base path 위에 collar/hood/lapel 덮어쓰기 → base 분기 영향 무화. **Phase 4 재구성 시 layer 분리 패턴 유지 필수.**
+
+baseline + violations JSON 저장: `tools/audit/path_seq_baselines/` + `tools/audit/path_seq_violations/`
+
+### 이람 결정 + D 청산 (Phase 3A iii cascade transition 보류)
+
+이람: **"D로 가되 놓치는 것 없이 최선의 작업 가능한지 반복 검토하고 조사한 뒤 진행"**
+
+D 청산 self-audit 9 항목 (정적 분석 보고서 § 9 통합):
+
+1. cont.72 Part 17 매몰비용 = **0%** — 모두 회귀 검사 인프라로 영구 활용
+2. cascade_pattern.md 전체 vs #1만 보류 = **#1만**, #2 본 cont 완료, #3 별도 진행 가능
+3. 사고 차단 layer 활용 = verify_path_seq.py = 큰 변경 push 전 수동 실행 fixture
+4. GitHub Pages vs 로컬 차이 = Part 16 commit 후 옵션 2 (`--url file://`) 재검 의무
+5. Phase 4 cross-ref = NeckComp/SleeveComp 전면 재구성 시 cascade transition 자연 통합
+6. PASS 그룹 자연 회피 패턴 = `drawFinish()` layering 보존 필수
+7. 본 cont 17 한계 = SleeveComp 4종 미독 / axis sweep 미실행 / top cat 16 preset만
+8. 사고 (l) 리스크 = NO (메인 작업 정상 완결, 후속 작업 보류)
+9. 다음 자율 영역 = a. inspect_spec.py / b. axis sweep / c. Part 16 commit / d. tools/audit README
+
+D 청산 사유 = 2,296 violations 정정 작업 ~3-5h vs Phase 4 옵션 H 재구성 = 자연 통합. **지금 정리하면 Phase 4 매몰 위험.**
+
+### 산출물 (commit 대기, 본 cont 후속 추가)
+
+- `docs/inspect_flat_path_seq_static_analysis.md` § 4 (사고 의심 표 + dynamic 결과 통합 + § 4.1 PASS 그룹 자연 회피 패턴 신설) + § 8 (D 결정 + 청산 사유 + Phase 4 cross-ref) + § 9 (D 청산 self-audit 9 항목 신설)
+- `tools/audit/path_seq_baselines/{neckCurve,hipFlare,sleeveLength}_top_*.json` 신설 (이람 환경에서 생성)
+- `tools/audit/path_seq_violations/{neckCurve,hipFlare,sleeveLength}_top_*.json` 신설 (이람 환경)
+- progress.md 본 항목 후속 추가
+- HANDOFF.md 헤더 + 🔵 코드→기획 cont.72 Part 17 sub-section 후속 갱신
+
+### Next Up (D 청산 후 자율 영역)
+
+- **a. inspect_spec.py 신설** (cascade_pattern.md #3, chrome 의존 0, 본 세션 가능) — 자율 추천 1순위
+- **b. axis sweep 이람 분담** — `verify_path_seq.py --axis neckShape --cat top` 등 실행 → 분기 매트릭스 추출
+- **c. Part 16 commit + push 이람** + 그 후 옵션 2 재검 (이람 + 본 세션 분담)
+- **d. tools/audit README 보강** — 본 세션 가능 (verify_path_seq.py / sync_check.py / sweep_matrix.py / inspect_flat.py 등 cross-ref)
+- Phase 3A 1순위 = 다른 후보 (i 카드피드 / ii 트레이싱 프리즈 / iv 대화 UX / v 컬러 전환 / vi 영상) 중 결정 — 이람 비주얼 디렉터 영역
+
+### 사고 자각 (후속)
+
+- 사고 (l) 잠재 회피: D 청산이 Part 17 매몰 X 명시. 사고 #1/#2/#3 차단 layer 영구 활용
+- 규칙 4 (첫 push back 청산 강제): dynamic 결과 = 정적 예측 ↑↑↑ violation = push back 신호로 해석 → D 청산 즉시 채택
+- 규칙 6 메타: 본 self-audit도 완벽 X — Phase 3A 1순위가 다시 (iii)로 결정되면 D 정정 필요
+
+---
+
+## 2026-05-15 (cont.72 Part 16 배치 5) — 자율 영역 2건 추가 (H/I) + 진짜 갭 2건 정정
+
+이람 복귀: "나 다시 왔어-"
+
+### H — extended_ranges JSON ↔ inline EXT_RANGES 정합
+- sync_check.py check_extended_ranges() 신설
+- JSON keys (sleeveLength~pantsFlare) ↔ inline keys (sl_X prefix 매핑) 9/9 ✅
+- B6.4 spec § 3 후속 영역 1차 구현
+
+### I — slider_semantics + 자동 정정
+- sync_check.py check_slider_semantics() 신설
+- **새 발견 1 (메타 정정)**: B6.4 spec § 1 표 "14 entries" 표기 → 실제 JSON 13 entries (cont.72 Part 16 누적 3번째 정정 — 19→20, 63→62, 14→13→15)
+- **새 발견 2 (진짜 갭)**: extended_ranges 9 keys 중 2 (skirtFlare/pantsFlare)가 slider_semantics 13 keys에 없음 = 누락
+- **자동 정정**: data/params.json slider_semantics에 skirtFlare 5 ranges + pantsFlare 5 ranges 추가 (총 13 → 15)
+- B6.4 spec § 1 표 갱신: 14 → 15 (skirtFlare/pantsFlare 명시)
+- 재검: extended_ranges 9 ⊆ slider_semantics 15 (모든 extended → 의미 있음) ✅
+
+### sync_check.py 11 영역 상태
+- ✅ 10건 PASS (preset / fabric / B6.1 sample / CARD / seams / factoryTerms / params / preset schema / extended_ranges / slider_semantics)
+- ❌ 1건 잔존: i18n specLabels 35 keys KO 누락 = **이람 brand voice 영역**
+
+### 사고 자각
+- 사고 (m) 떠넘기기 X: H/I 자율 결정 + 즉시 정정
+- 원칙 6 검증 게이트: 진짜 갭 vs 가짜 갭 구분 자가 발견 + 즉시 정정 (extended ⊆ semantics 정합 필요 인지)
+- 사고 15 재발 방지: edit_block 4회 + write_file rewrite 0
+
+### 산출물 (commit 대기)
+- `tools/audit/sync_check.py` 11 영역 확장 (check_extended_ranges + check_slider_semantics 신설)
+- `data/params.json` slider_semantics 13 → 15 (skirtFlare/pantsFlare 추가)
+- `docs/flat_data_separation_B6_4_parametric_spec.md` § 1 표 정정 (14 → 15)
+- `HANDOFF.md` 헤더 cont.72 Part 16 배치 5 갱신 + 🟡 TODO 2건 추가
+- `progress.md` 본 항목 prepend
+
+### 누적 cont.72 Part 16 자율 영역 = 18건 (배치 1-5)
+- 배치 1: A1/A2/A5 = 3건
+- 배치 2: A3/A4/A6/A7 = 4건
+- 배치 3: B/C/D/E = 4건
+- 배치 4: L/K/F/G = 4건 (F = 부분, specLabels 잔존)
+- 배치 5: H/I = 2건 + 진짜 갭 2건 자동 정정 (slider_semantics 누락)
+- **누적 18건 자율 영역 진행 / 1건 이람 brand voice 잔존**
+
+### Next Up
+- 이람 검수: specLabels 35 keys KO 한국어 표기 (brand voice)
+- J pom_formulas 10 ↔ POM A-Q 17 함수 정합 (자율 가능)
+- M svg_constants 10 ↔ SVG layout magic number 정합 (자율 가능)
+- compat_sweep.py DOM 발동 검증 18건 (Puppeteer + preview 회복 후)
 
 ---
 
