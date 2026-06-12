@@ -62,14 +62,16 @@
 | (예) gender 토글 spec | S1 후속 — Women's matrix 활성화 | 중 | 이람/spec |
 | (예) Loader 도입 | B6.2 후속 | 저 | Phase 5 SaaS |
 
-### 2.5 누락 방지 self-check (cont.72 신설 F 그룹)
+### 2.5 누락 방지 self-check (cont.72 신설 F 그룹, cont.75 v0.2 보강)
 
 매 cont 끝 응답에 명시 공개:
 - ✅/❌ F1 메모리 28+ 항목 cross-check
 - ✅/❌ F2 docs/ 안 관련 문서 cross-check
 - ✅/❌ F3 archive/ 사고 RCA 인지
-- ✅/❌ F4 cont.N 기획탭 작업 인지 (HANDOFF 헤더)
+- ✅/❌ F4 cont.N 기획탭 작업 인지 (HANDOFF 헤더 — **head 5 우선 read 의무 cont.75 합의**)
 - ✅/❌ F5 M1-M7 미확인 항목 영향 검토
+- ✅/❌ **F6 SOP 호출 횟수 + 단계 단축 매핑 명시** (cont.75 SOP enforcement Q4-A 합의 — 단계 1-8 중 몇 단계 호출 / 단축 시 § 3 복잡도 매핑 또는 사유 명시 / SKIP 시 사유 의무)
+- ✅/❌ **F7 다른 탭/세션 작업 인지 검증** (cont.75 사고 m 변형 재발 방지 — HANDOFF head 5 read 후 마지막 수정 일자가 본 세션 진입 시점보다 최근이면 다른 탭 작업 누락 가능성 검토)
 
 ---
 
@@ -108,6 +110,7 @@
 ## 4. 변경 이력
 
 - **2026-05-06 v0.1**: 코드탭 cont.72 Part 8 자율 신설. 누락 방지 시스템 #3 적용 (4/5 → 5/5 완료).
+- **2026-05-19 v0.2**: 기획탭 cont.75 보강. § 2.5 F 그룹 5 → 7 (F6 SOP 호출 횟수 + 단축 매핑 / F7 다른 탭/세션 작업 인지). 누락 방지 시스템 #1 SOP 강제 호출 합의 Q1-A/Q2-B/Q3-B/Q4-A 채택 + 사고 m 변형 재발 방지.
 
 ---
 

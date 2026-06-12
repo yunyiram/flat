@@ -21,3 +21,8 @@ apply_cont64_*.sh
 
 # 기획탭 sweep 결과 (로컬 /home/claude/ 에서만 의미)
 /home/claude/sweep/
+
+# 대용량 산출물 (별도 관리, git 부적합)
+sixatomic/
+flat_sweep_bundle/
+tools/audit/path_seq_violations/

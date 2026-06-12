@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>FLAT Visual Sweep Gallery — cont.66 초안</title>
+<style>
+  :root{
+    --bg:#FAFAF8; --border:#E5E3DD; --text:#2A2926; --sub:#777;
+    --ok:#4A8A5F; --reg:#C45252; --maybe:#C9A13F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:24px 32px;background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif}
+  header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px}
+  h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;margin:0;letter-spacing:0.01em}
+  h1 i{color:#C45252;font-style:italic}
+  .meta{font-size:12px;color:var(--sub);font-family:'JetBrains Mono',monospace}
+  .controls{display:flex;gap:12px;margin-bottom:20px;align-items:center;flex-wrap:wrap}
+  .controls label{font-size:13px;color:var(--sub)}
+  .controls select, .controls button{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer}
+  .controls button:hover{background:#f0ede8}
+  .controls .flag-btn{padding:6px 14px}
+  .stats{margin-left:auto;font-size:12px;color:var(--sub);font-family:'JetBrains Mono',monospace}
+  .stats b{color:var(--text)}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .tile{border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff;display:flex;flex-direction:column}
+  .tile-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .tile-name{font-weight:600;font-size:14px}
+  .tile-meta{font-size:10px;color:var(--sub);font-family:'JetBrains Mono',monospace}
+  .tile-compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  .tile-compare > div{position:relative;aspect-ratio:3/4;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg)}
+  .tile-compare img{width:100%;height:100%;object-fit:contain}
+  .tile-compare .label{position:absolute;top:4px;left:4px;font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.9);padding:2px 6px;border-radius:3px}
+  .tile-compare .missing{display:flex;align-items:center;justify-content:center;color:var(--sub);font-size:11px;height:100%;font-style:italic}
+  .flags{display:flex;gap:4px}
+  .flag{flex:1;padding:6px 0;border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer;font-size:11px;transition:all 0.15s;font-family:inherit}
+  .flag:hover{background:#f0ede8}
+  .flag.active.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+  .flag.active.reg{background:var(--reg);color:#fff;border-color:var(--reg)}
+  .flag.active.maybe{background:var(--maybe);color:#fff;border-color:var(--maybe)}
+  .note-input{margin-top:6px;width:100%;padding:4px 8px;font-size:11px;border:1px solid var(--border);border-radius:4px;font-family:inherit}
+  .export-area{position:fixed;bottom:20px;right:20px;padding:12px 18px;background:var(--text);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+  .export-area:hover{background:#000}
+  .empty-state{padding:60px;text-align:center;color:var(--sub);border:2px dashed var(--border);border-radius:12px;grid-column:1/-1}
+  code{font-family:'JetBrains Mono',monospace;font-size:11px;background:#f0ede8;padding:1px 4px;border-radius:3px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>FLAT Visual Sweep<i>.</i> Gallery</h1>
+    <div class="meta" style="margin-top:4px">원칙 10 시각 검수 — side-by-side regression viewer</div>
+  </div>
+  <div class="meta">
+    cont.66 초안<br>
+    PNG 경로: <code>./sweep/{preset}_{color}_{view}.png</code>
+  </div>
+</header>
+
+<div class="controls">
+  <label>Filter:</label>
+  <select id="filterView">
+    <option value="front">Front (svgF)</option>
+    <option value="back">Back (svgB)</option>
+    <option value="both">Both</option>
+  </select>
+  <select id="filterColor">
+    <option value="all">All colors</option>
+    <option value="white">White</option>
+    <option value="navy">Navy</option>
+    <option value="tan">Tan</option>
+  </select>
+  <select id="filterSleeveType">
+    <option value="all">All sleeve types</option>
+    <option value="setin">Set-in</option>
+    <option value="raglan">Raglan</option>
+  </select>
+  <select id="filterFlag">
+    <option value="all">All flags</option>
+    <option value="unflagged">Unflagged</option>
+    <option value="ok">✓ OK</option>
+    <option value="reg">✗ 퇴보</option>
+    <option value="maybe">? 모르겠음</option>
+  </select>
+  <button onclick="clearAllFlags()">Clear flags</button>
+  <div class="stats" id="stats">Loading…</div>
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<button class="export-area" onclick="exportFlags()">Export regression_list.md</button>
+
+<script>
+// 16 preset × 3 color matrix (기획탭 sweep_matrix.py가 생성할 PNG 이름과 매칭)
+const PRESETS = [
+  {idx:0, name:'crewTee', sleeveType:'setin', sleeveLen:'short', cat:'tops'},
+  {idx:1, name:'polo', sleeveType:'setin', sleeveLen:'short', cat:'polo'},
+  {idx:2, name:'shirt', sleeveType:'setin', sleeveLen:'long', cat:'shirts'},
+  {idx:3, name:'sweater', sleeveType:'setin', sleeveLen:'long', cat:'knit'},
+  {idx:4, name:'cardigan', sleeveType:'setin', sleeveLen:'long', cat:'knit'},
+  {idx:5, name:'sweatshirt', sleeveType:'raglan', sleeveLen:'long', cat:'sweats'},
+  {idx:6, name:'hoodie', sleeveType:'raglan', sleeveLen:'long', cat:'sweats'},
+  {idx:7, name:'volSleeveDress', sleeveType:'setin', sleeveLen:'elbow', cat:'dress'},
+  {idx:8, name:'shirtDress', sleeveType:'setin', sleeveLen:'short', cat:'dress'},
+  {idx:9, name:'peterPanDress', sleeveType:'setin', sleeveLen:'short', cat:'dress'},
+  {idx:10, name:'drapeDress', sleeveType:'setin', sleeveLen:'sleeveless', cat:'dress'},
+  {idx:11, name:'slipDress', sleeveType:'setin', sleeveLen:'sleeveless', cat:'dress'},
+  {idx:12, name:'funnelCoat', sleeveType:'setin', sleeveLen:'long', cat:'outer'},
+  {idx:13, name:'blazer', sleeveType:'setin', sleeveLen:'long', cat:'outer'},
+  {idx:14, name:'bomber', sleeveType:'raglan', sleeveLen:'long', cat:'outer'},
+  {idx:15, name:'trench', sleeveType:'raglan', sleeveLen:'long', cat:'outer'}
+];
+const COLORS = ['white','navy','tan'];
+const STORAGE_KEY = 'flat_sweep_flags_v1';
+
+function loadFlags() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch(e) { return {}; }
+}
+function saveFlags(f) { localStorage.setItem(STORAGE_KEY, JSON.stringify(f)); }
+
+function tileKey(preset, color) { return preset + '__' + color; }
+
+function setFlag(preset, color, flag) {
+  const flags = loadFlags();
+  const k = tileKey(preset, color);
+  flags[k] = flags[k] || {};
+  flags[k].flag = flag;
+  saveFlags(flags);
+  render();
+}
+
+function setNote(preset, color, note) {
+  const flags = loadFlags();
+  const k = tileKey(preset, color);
+  flags[k] = flags[k] || {};
+  flags[k].note = note;
+  saveFlags(flags);
+  updateStats();
+}
+
+function clearAllFlags() {
+  if (confirm('모든 플래그/노트를 지우시겠습니까?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    render();
+  }
+}
+
+function exportFlags() {
+  const flags = loadFlags();
+  let md = '# FLAT Regression List — ' + new Date().toISOString().split('T')[0] + '\n\n';
+  md += '> 코드탭이 이 리스트만 보면 고칠 곳 명확. 기획탭 원칙 10 시각 sweep 결과물.\n\n';
+
+  const byFlag = {ok:[], reg:[], maybe:[]};
+  Object.keys(flags).forEach(k => {
+    const [preset, color] = k.split('__');
+    const f = flags[k];
+    if (f.flag && byFlag[f.flag]) byFlag[f.flag].push({preset, color, note: f.note || ''});
+  });
+
+  md += '## ✗ 퇴보 (' + byFlag.reg.length + ')\n\n';
+  if (byFlag.reg.length) byFlag.reg.forEach(e => md += '- **' + e.preset + '** / ' + e.color + (e.note ? ' — ' + e.note : '') + '\n');
+  else md += '_none_\n';
+
+  md += '\n## ? 모르겠음 (' + byFlag.maybe.length + ')\n\n';
+  if (byFlag.maybe.length) byFlag.maybe.forEach(e => md += '- **' + e.preset + '** / ' + e.color + (e.note ? ' — ' + e.note : '') + '\n');
+  else md += '_none_\n';
+
+  md += '\n## ✓ OK (' + byFlag.ok.length + ')\n\n';
+  if (byFlag.ok.length) byFlag.ok.forEach(e => md += '- ' + e.preset + ' / ' + e.color + '\n');
+  else md += '_none_\n';
+
+  // Download as file
+  const blob = new Blob([md], {type:'text/markdown'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'regression_list.md';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function updateStats() {
+  const flags = loadFlags();
+  let ok=0, reg=0, maybe=0, total=PRESETS.length*COLORS.length;
+  Object.values(flags).forEach(f => {
+    if (f.flag === 'ok') ok++;
+    else if (f.flag === 'reg') reg++;
+    else if (f.flag === 'maybe') maybe++;
+  });
+  const done = ok + reg + maybe;
+  document.getElementById('stats').innerHTML =
+    '<b>' + done + '</b>/' + total + ' flagged · ' +
+    '<span style="color:var(--ok)">✓ ' + ok + '</span> · ' +
+    '<span style="color:var(--reg)">✗ ' + reg + '</span> · ' +
+    '<span style="color:var(--maybe)">? ' + maybe + '</span>';
+}
+
+function render() {
+  const gallery = document.getElementById('gallery');
+  const flags = loadFlags();
+  const viewFilter = document.getElementById('filterView').value;
+  const colorFilter = document.getElementById('filterColor').value;
+  const typeFilter = document.getElementById('filterSleeveType').value;
+  const flagFilter = document.getElementById('filterFlag').value;
+
+  const views = viewFilter === 'both' ? ['front','back'] : [viewFilter];
+
+  gallery.innerHTML = '';
+  let tileCount = 0;
+
+  PRESETS.forEach(p => {
+    if (typeFilter !== 'all' && p.sleeveType !== typeFilter) return;
+    COLORS.forEach(c => {
+      if (colorFilter !== 'all' && c !== colorFilter) return;
+      const k = tileKey(p.name, c);
+      const flag = (flags[k] || {}).flag;
+      if (flagFilter === 'unflagged' && flag) return;
+      if (flagFilter !== 'all' && flagFilter !== 'unflagged' && flag !== flagFilter) return;
+
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+
+      let compareHtml = '';
+      views.forEach(v => {
+        // production (pre-push baseline) + local (post-push) side by side
+        const prodPath = './sweep/prod/' + p.name + '_' + c + '_' + v + '.png';
+        const locPath = './sweep/local/' + p.name + '_' + c + '_' + v + '.png';
+        compareHtml +=
+          '<div><span class="label">prod · ' + v + '</span>' +
+          '<img src="' + prodPath + '" onerror="this.parentElement.innerHTML=\'<div class=missing>no PNG</div>\'" alt=""/></div>' +
+          '<div><span class="label">local · ' + v + '</span>' +
+          '<img src="' + locPath + '" onerror="this.parentElement.innerHTML=\'<div class=missing>no PNG</div>\'" alt=""/></div>';
+      });
+
+      const note = (flags[k] || {}).note || '';
+
+      tile.innerHTML =
+        '<div class="tile-header">' +
+          '<div class="tile-name">' + p.name + ' · ' + c + '</div>' +
+          '<div class="tile-meta">' + p.sleeveType + ' · ' + p.sleeveLen + '</div>' +
+        '</div>' +
+        '<div class="tile-compare">' + compareHtml + '</div>' +
+        '<div class="flags">' +
+          '<button class="flag ok' + (flag === 'ok' ? ' active' : '') + '" onclick="setFlag(\'' + p.name + '\',\'' + c + '\',\'ok\')">✓ OK</button>' +
+          '<button class="flag reg' + (flag === 'reg' ? ' active' : '') + '" onclick="setFlag(\'' + p.name + '\',\'' + c + '\',\'reg\')">✗ 퇴보</button>' +
+          '<button class="flag maybe' + (flag === 'maybe' ? ' active' : '') + '" onclick="setFlag(\'' + p.name + '\',\'' + c + '\',\'maybe\')">? 모르겠음</button>' +
+        '</div>' +
+        '<input class="note-input" placeholder="메모 (어디가 어떻게 이상한지)" value="' + note.replace(/"/g,'&quot;') + '" ' +
+          'onchange="setNote(\'' + p.name + '\',\'' + c + '\',this.value)">';
+
+      gallery.appendChild(tile);
+      tileCount++;
+    });
+  });
+
+  if (!tileCount) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = '필터 조건에 해당하는 조합 없음.';
+    gallery.appendChild(empty);
+  }
+
+  updateStats();
+}
+
+document.getElementById('filterView').addEventListener('change', render);
+document.getElementById('filterColor').addEventListener('change', render);
+document.getElementById('filterSleeveType').addEventListener('change', render);
+document.getElementById('filterFlag').addEventListener('change', render);
+
+render();
+</script>
+</body>
+</html>

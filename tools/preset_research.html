@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLAT Preset Research Helper</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --panel: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --border: #e0e0dc;
+    --accent: #2b2b2b;
+    --highlight: #f0ede4;
+    --warning: #b85c1c;
+  }
+  [data-theme="dark"] {
+    --bg: #1a1a1a;
+    --panel: #232320;
+    --text: #f0ede4;
+    --muted: #999999;
+    --border: #3a3a35;
+    --accent: #f0ede4;
+    --highlight: #2a2a25;
+    --warning: #ff9966;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { font-size: 18px; font-weight: 500; margin: 0; }
+  h2 { font-size: 14px; font-weight: 500; margin: 24px 0 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 4px;
+    font-family: inherit;
+  }
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 13px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .tab.active { color: var(--text); border-bottom-color: var(--text); }
+  .tab:hover { color: var(--text); }
+  .panel {
+    display: none;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .panel.active { display: block; }
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .filter-pill {
+    padding: 4px 12px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: inherit;
+  }
+  .filter-pill.active { background: var(--accent); color: var(--panel); border-color: var(--accent); }
+  .brand-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .brand-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .brand-card.selected { background: var(--highlight); border-color: var(--accent); }
+  .brand-name { font-weight: 500; font-size: 13px; display: flex; align-items: flex-start; gap: 8px; }
+  .brand-meta { font-size: 11px; color: var(--muted); }
+  .brand-link { font-size: 11px; color: var(--muted); word-break: break-all; }
+  .brand-link a { color: var(--muted); text-decoration: none; }
+  .brand-link a:hover { color: var(--text); text-decoration: underline; }
+  .link-type {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 4px;
+    color: var(--bg);
+  }
+  .link-type.direct { background: #4a7c4e; }
+  .link-type.search { background: #7c6a4a; }
+  .link-type.standard { background: #5a6a8c; }
+  button.primary {
+    background: var(--accent);
+    color: var(--panel);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+  }
+  button.secondary {
+    background: none;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+  input, select, textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .pom-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 8px 12px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .pom-grid input[type="number"] { font-family: ui-monospace, "SF Mono", Menlo, Monaco, monospace; }
+  .pom-row-label { font-size: 12px; }
+  .pom-row-label .star { color: var(--warning); margin-left: 4px; font-weight: bold; }
+  .ratios {
+    background: var(--highlight);
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .ratio-line { display: flex; justify-content: space-between; gap: 16px; }
+  .ratio-name { color: var(--muted); }
+  .saved-list { display: flex; flex-direction: column; gap: 8px; }
+  .saved-item {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  .saved-meta { color: var(--muted); font-size: 11px; }
+  .actions { display: flex; gap: 8px; }
+  .icon-btn {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: inherit;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--accent); }
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  textarea.export {
+    width: 100%;
+    min-height: 280px;
+    font-family: ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+    font-size: 11px;
+  }
+  .empty {
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+    padding: 40px;
+    font-style: italic;
+  }
+  .help {
+    background: var(--highlight);
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .help strong { color: var(--text); }
+  .footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>FLAT Preset Research Helper</h1>
+  <button class="theme-toggle" onclick="toggleTheme()">다크 모드</button>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-panel="catalog">1. 브랜드 카탈로그</button>
+  <button class="tab" data-panel="input">2. POM 입력</button>
+  <button class="tab" data-panel="saved">3. 저장된 데이터</button>
+  <button class="tab" data-panel="export">4. Export</button>
+</div>
+
+<!-- 1. 브랜드 카탈로그 -->
+<div class="panel active" id="panel-catalog">
+  <div class="help">
+    <strong>사용법:</strong> 카테고리 필터 → 브랜드 체크 → "선택 브랜드 열기" 클릭. 새 탭이 일괄 열림.
+    <br><strong>링크 종류:</strong>
+    <span class="link-type direct">직접</span>= 바로 사이즈 차트 페이지.
+    <span class="link-type search">검색</span>= Google 검색 (브랜드 size chart 검색 결과) — URL 변경에 내성.
+    <span class="link-type standard">표준</span>= 국제 표준 문서 (Layer 2).
+    <br><strong>주의:</strong> 브라우저 팝업 차단 해제 필요.
+  </div>
+
+  <h2>카테고리</h2>
+  <div class="filter-bar" id="categoryFilters"></div>
+
+  <h2>브랜드 (체크해서 선택)</h2>
+  <div class="brand-list" id="brandList"></div>
+
+  <div class="toolbar">
+    <button class="primary" onclick="openSelectedBrands()">선택 브랜드 열기</button>
+    <button class="secondary" onclick="clearBrandSelection()">선택 해제</button>
+    <span style="font-size:12px;color:var(--muted);align-self:center;" id="selectionCount">0개 선택됨</span>
+  </div>
+</div>
+
+<!-- 2. POM 입력 -->
+<div class="panel" id="panel-input">
+  <div class="help">
+    <strong>사용법:</strong> Preset 선택 → POM 항목 자동 표시 → 수치 입력 (cm 기준). 핵심 비율은 자동 계산. "저장" 누르면 localStorage에 보관 (3번 탭에서 확인). <strong>★</strong> 표시는 가장 중요한 POM.
+  </div>
+
+  <div class="form-row">
+    <div>
+      <label>Preset</label>
+      <select id="presetSelect" onchange="renderPomForm()"></select>
+    </div>
+    <div>
+      <label>Brand / Source (선택)</label>
+      <input type="text" id="brandSource" placeholder="예: Champion S149 M, 평균 (3 brands)">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div>
+      <label>Size (보통 M)</label>
+      <input type="text" id="sizeName" value="M">
+    </div>
+    <div>
+      <label>Fit Type</label>
+      <select id="fitType">
+        <option value="Regular">Regular Fit</option>
+        <option value="Slim">Slim Fit</option>
+        <option value="Relaxed">Relaxed Fit</option>
+        <option value="Oversized">Oversized</option>
+      </select>
+    </div>
+  </div>
+
+  <h2>POM 입력 (cm)</h2>
+  <div class="pom-grid" id="pomGrid"></div>
+
+  <h2>핵심 비율 (자동 계산)</h2>
+  <div class="ratios" id="ratiosBox">
+    <div class="empty" style="padding:16px;">POM 입력 시 비율이 자동 계산됩니다.</div>
+  </div>
+
+  <h2>메모 (선택)</h2>
+  <textarea id="presetNotes" rows="3" placeholder="원단/리브 특성, 드롭숄더 정도, 이람 디렉터 노트 등"></textarea>
+
+  <div class="toolbar" style="margin-top:16px;">
+    <button class="primary" onclick="savePresetData()">저장</button>
+    <button class="secondary" onclick="loadDefaults()">기본 SFD 불러오기</button>
+    <button class="secondary" onclick="clearPomForm()">전체 초기화</button>
+  </div>
+</div>
+
+<!-- 3. 저장된 데이터 -->
+<div class="panel" id="panel-saved">
+  <div class="help">
+    <strong>저장 위치:</strong> 브라우저 localStorage. 브라우저 데이터 삭제 시 사라짐. 영구 보존하려면 4번 탭 Export로 백업.
+  </div>
+  <div class="saved-list" id="savedList"></div>
+</div>
+
+<!-- 4. Export -->
+<div class="panel" id="panel-export">
+  <div class="help">
+    <strong>사용법:</strong> Markdown은 <code>docs/flat_{preset}_pom_proposal.md</code>에 붙여 넣기. JSON은 다른 도구 import용. 클립보드 복사 후 외부 파일 저장.
+  </div>
+
+  <div class="toolbar">
+    <button class="primary" onclick="exportFormat('md')">Markdown 형식 (전체)</button>
+    <button class="secondary" onclick="exportFormat('json')">JSON 형식 (전체)</button>
+    <button class="secondary" onclick="copyExport()">클립보드 복사</button>
+    <button class="secondary" onclick="downloadBackup()">백업 파일 다운로드</button>
+  </div>
+
+  <textarea class="export" id="exportArea" placeholder="Export 버튼 클릭 시 결과가 여기 표시됩니다."></textarea>
+</div>
+
+<div class="footer">
+  FLAT Preset Research Helper v1.1 · 2026-04-21 · 단일 HTML, 의존성 없음 · 데이터: 브라우저 localStorage
+</div>
+
+<script>
+// 링크 종류:
+//   linkType: "direct"   = 바로 사이즈 차트 (URL 검증 완료)
+//   linkType: "search"   = 브랜드 + "size chart" Google 검색 (URL 변경에 내성)
+//   linkType: "standard" = 국제 표준 문서 (Layer 2)
+//
+// 직접 URL은 이람이 cont.67에서 웹 검색으로 실측 확인된 것만 유지.
+// 나머지는 모두 검색 링크 — 사이트 변경돼도 Google이 최신 size chart 찾아줌.
+const BRANDS = [
+  // === 직접 URL (cont.67 검증됨) ===
+  { name: "Champion Reverse Weave Crewneck S149", category: ["sweatshirt","crewneck"], region: "US", linkType: "direct", url: "https://www.customink.com/items/sizing/341000_lineup/standard.htm", note: "Heavyweight reference (cont.67 검증)" },
+  { name: "Champion Reverse Weave Pullover Hoodie", category: ["sweatshirt","hoodie"], region: "US", linkType: "direct", url: "https://www.customink.com/items/sizing/295000_lineup/standards.htm", note: "Hoodie 버전 (cont.67 검증)" },
+  { name: "Gildan 18000 Heavy Blend Crewneck (PDF)", category: ["sweatshirt","crewneck"], region: "US", linkType: "direct", url: "https://www.printedshirts.ca/files/chart/size/gildan-heavyweight-blend-crewneck-sweatshirt-size-chart.pdf", note: "산업 표준 (cont.67 검증)" },
+  { name: "Gildan 18000 Size Chart (SellerMockups)", category: ["sweatshirt","crewneck"], region: "US", linkType: "direct", url: "https://www.sellermockups.com/blog/gildan-18000-size-chart", note: "cm 단위 full chart" },
+  { name: "Goodwear Heavyweight Jersey T", category: ["t-shirt","crewTee"], region: "US", linkType: "direct", url: "https://www.goodwear.com/pages/size-chart-heavyweight-jersey", note: "Heavyweight T reference (cont.67 검증)" },
+
+  // === Google 검색 링크 (URL 변동 커서) ===
+  { name: "Gildan 5000 Heavy Cotton T-shirt", category: ["t-shirt","crewTee"], region: "US", linkType: "search", searchQuery: "Gildan 5000 size chart inches", note: "산업 표준 T blank" },
+  { name: "Gildan 18500 Heavy Hoodie", category: ["sweatshirt","hoodie"], region: "US", linkType: "search", searchQuery: "Gildan 18500 hoodie size chart", note: "Hoodie 표준 blank" },
+  { name: "Uniqlo Men's T-shirt", category: ["t-shirt","crewTee"], region: "JP", linkType: "search", searchQuery: "Uniqlo men's T-shirt size chart cm", note: "표준 fit 베이스라인" },
+  { name: "Uniqlo Men's Oxford Shirt", category: ["shirt"], region: "JP", linkType: "search", searchQuery: "Uniqlo men's oxford shirt size chart", note: "베이직 woven shirt" },
+  { name: "Uniqlo Men's Polo / Pique", category: ["polo"], region: "JP", linkType: "search", searchQuery: "Uniqlo men's polo shirt size chart", note: "기본 polo" },
+  { name: "Uniqlo Men's Sweatshirt", category: ["sweatshirt","crewneck"], region: "JP", linkType: "search", searchQuery: "Uniqlo men's sweatshirt size chart cm", note: "아시아 사이즈 비교" },
+  { name: "Uniqlo Blazer / Jacket", category: ["blazer","outerwear"], region: "JP", linkType: "search", searchQuery: "Uniqlo men's blazer size chart", note: "기본 blazer" },
+  { name: "Uniqlo Women's Dress", category: ["dress"], region: "JP", linkType: "search", searchQuery: "Uniqlo women's dress size chart cm", note: "베이직 dress" },
+  { name: "MUJI Apparel Size Chart", category: ["t-shirt","sweatshirt","shirt"], region: "JP", linkType: "search", searchQuery: "MUJI apparel size chart men", note: "미니멀 / standard fit" },
+  { name: "Zara Men Size Guide", category: ["t-shirt","shirt","sweatshirt","outerwear"], region: "ES", linkType: "search", searchQuery: "Zara men size guide cm measurements", note: "트렌드 fit" },
+  { name: "Zara Women Size Guide", category: ["dress","t-shirt","shirt"], region: "ES", linkType: "search", searchQuery: "Zara women size guide cm measurements", note: "트렌드 fit (여성)" },
+  { name: "H&M Size Guide", category: ["t-shirt","shirt","sweatshirt","dress"], region: "SE", linkType: "search", searchQuery: "H&M size guide cm chart men", note: "Fast fashion 기본" },
+  { name: "Lacoste Polo Size Guide", category: ["polo"], region: "FR", linkType: "search", searchQuery: "Lacoste polo size chart men cm", note: "Polo 원조 reference" },
+  { name: "Ralph Lauren Polo Size", category: ["polo"], region: "US", linkType: "search", searchQuery: "Ralph Lauren polo size chart men measurements", note: "Classic polo" },
+  { name: "Carhartt Workwear Hoodie/Shirt", category: ["hoodie","sweatshirt","shirt"], region: "US", linkType: "search", searchQuery: "Carhartt men size chart measurements cm", note: "Workwear 표준" },
+  { name: "Alpha Industries MA-1 Bomber", category: ["bomber","outerwear"], region: "US", linkType: "search", searchQuery: "Alpha Industries MA-1 size chart measurements", note: "MA-1 originator" },
+  { name: "Burberry Trench Sizing", category: ["trench","outerwear"], region: "UK", linkType: "search", searchQuery: "Burberry trench coat size guide measurements", note: "Trench reference" },
+  { name: "Musinsa 사이즈 가이드 (한국)", category: ["t-shirt","sweatshirt","shirt","outerwear"], region: "KR", linkType: "search", searchQuery: "무신사 사이즈 가이드 cm 실측", note: "한국 브랜드 실측 기준" },
+
+  // === 국제 표준 (Layer 2) ===
+  { name: "NHANES Body Measurements (CDC, 무료)", category: ["standard","body-baseline"], region: "US", linkType: "standard", url: "https://www.cdc.gov/nchs/nhanes/index.htm", note: "Layer 2 — body baseline (ease 계산)" },
+  { name: "ISO 8559 Series (anthropometric)", category: ["standard","body-baseline"], region: "INT", linkType: "standard", url: "https://www.iso.org/standard/61686.html", note: "Layer 2 — body measurement 표준" },
+  { name: "ASTM D5585 (Female Misses 00-20)", category: ["standard","body-baseline"], region: "US", linkType: "standard", url: "https://store.astm.org/d5585-21.html", note: "Layer 2 — 여성 사이즈 표준" },
+  { name: "ASTM D6240 (Mature Men 34-52)", category: ["standard","body-baseline"], region: "US", linkType: "standard", url: "https://store.astm.org/d6240_d6240m-12r21e01.html", note: "Layer 2 — 남성 사이즈 표준" },
+  { name: "paromitadas.com POM 정의 (직접)", category: ["standard","pom-definition"], region: "INT", linkType: "direct", url: "https://www.paromitadas.com/clothing-designer/garment-measurement-specification-components/", note: "Layer 1 — POM 측정 방법론 (cont.67 검증)" },
+  { name: "Techpacker Tech Pack Guide", category: ["standard","pom-definition"], region: "INT", linkType: "search", searchQuery: "Techpacker tech pack spec sheet guide", note: "Layer 1 — tech pack 표준" },
+];
+
+// preset별 default POM 구조 (cm)
+const POM_TEMPLATES = {
+  sweatshirt: [
+    {key:"neckWidth", label:"A. Neck Width (HPS-HPS)", default: 21},
+    {key:"shoulderWidth", label:"B. Shoulder Width", default: 51},
+    {key:"acrossFront", label:"C. Across Front", default: 43},
+    {key:"acrossBack", label:"D. Across Back", default: 46},
+    {key:"chestHalf", label:"E. Chest Width (half, 1인치 below AH)", default: 58},
+    {key:"bodySweep", label:"F. Body Sweep (hem rib)", default: 56},
+    {key:"frontNeckDrop", label:"G. Front Neck Drop", default: 11},
+    {key:"backNeckDrop", label:"H. Back Neck Drop", default: 2.5},
+    {key:"armholeStraight", label:"I. Armhole Straight", default: 28},
+    {key:"bicepWidth", label:"J. Upper Sleeve (Bicep)", star: true, default: 25},
+    {key:"sleeveLength", label:"K. Sleeve Length (HPS->cuff)", default: 63},
+    {key:"sleeveOpening", label:"L. Sleeve Opening (rib inner)", star: true, default: 10},
+    {key:"cuffRibHeight", label:"M. Cuff Rib Height", default: 7.5},
+    {key:"hemRibHeight", label:"N. Hem Rib Height", default: 6.3},
+    {key:"bodyLength", label:"O. Body Length (HPS->hem)", default: 71},
+  ],
+  crewTee: [
+    {key:"neckWidth", label:"A. Neck Width (HPS-HPS)", default: 21},
+    {key:"shoulderWidth", label:"B. Shoulder Width", default: 47},
+    {key:"acrossFront", label:"C. Across Front", default: 41},
+    {key:"acrossBack", label:"D. Across Back", default: 43},
+    {key:"chestHalf", label:"E. Chest Width", default: 53},
+    {key:"bodySweep", label:"F. Body Sweep", default: 53},
+    {key:"frontNeckDrop", label:"G. Front Neck Drop", default: 10},
+    {key:"backNeckDrop", label:"H. Back Neck Drop", default: 2.5},
+    {key:"armholeStraight", label:"I. Armhole Straight", default: 24},
+    {key:"bicepWidth", label:"J. Upper Sleeve (Bicep)", star: true, default: 19},
+    {key:"sleeveLength", label:"K. Sleeve Length", default: 22},
+    {key:"sleeveOpening", label:"L. Sleeve Opening", default: 18},
+    {key:"sleeveHemFold", label:"M. Sleeve Hem Fold", default: 2},
+    {key:"hemFold", label:"N. Body Hem Fold", default: 2.5},
+    {key:"bodyLength", label:"O. Body Length", default: 71},
+  ],
+  hoodie: [
+    {key:"neckWidth", label:"A. Neck Width", default: 21},
+    {key:"shoulderWidth", label:"B. Shoulder Width", default: 53},
+    {key:"acrossFront", label:"C. Across Front", default: 43},
+    {key:"acrossBack", label:"D. Across Back", default: 46},
+    {key:"chestHalf", label:"E. Chest Width", default: 60},
+    {key:"bodySweep", label:"F. Body Sweep (hem rib)", default: 56},
+    {key:"frontNeckDrop", label:"G. Front Neck Drop", default: 11},
+    {key:"backNeckDrop", label:"H. Back Neck Drop", default: 2.5},
+    {key:"armholeStraight", label:"I. Armhole Straight", default: 30},
+    {key:"bicepWidth", label:"J. Upper Sleeve (Bicep)", star: true, default: 27},
+    {key:"sleeveLength", label:"K. Sleeve Length", default: 63},
+    {key:"sleeveOpening", label:"L. Sleeve Opening (rib inner)", star: true, default: 10},
+    {key:"cuffRibHeight", label:"M. Cuff Rib Height", default: 7.5},
+    {key:"hemRibHeight", label:"N. Hem Rib Height", default: 6.3},
+    {key:"hoodHeight", label:"P. Hood Height (CB to top)", star: true, default: 35},
+    {key:"hoodWidth", label:"Q. Hood Width (front opening)", star: true, default: 28},
+    {key:"bodyLength", label:"O. Body Length", default: 71},
+  ],
+  polo: [
+    {key:"neckWidth", label:"A. Neck Width", default: 19},
+    {key:"shoulderWidth", label:"B. Shoulder Width", default: 47},
+    {key:"chestHalf", label:"E. Chest Width", default: 54},
+    {key:"bodySweep", label:"F. Body Sweep", default: 54},
+    {key:"frontNeckDrop", label:"G. Front Neck Drop (placket bottom)", star: true, default: 18},
+    {key:"backNeckDrop", label:"H. Back Neck Drop", default: 2.5},
+    {key:"armholeStraight", label:"I. Armhole Straight", default: 25},
+    {key:"bicepWidth", label:"J. Upper Sleeve (Bicep)", default: 19},
+    {key:"sleeveLength", label:"K. Sleeve Length", default: 22},
+    {key:"sleeveOpening", label:"L. Sleeve Opening (rib cuff)", star: true, default: 14},
+    {key:"collarHeight", label:"M. Collar Height", star: true, default: 8},
+    {key:"placketLength", label:"N. Placket Length", star: true, default: 18},
+    {key:"placketWidth", label:"P. Placket Width", default: 3},
+    {key:"bodyLength", label:"O. Body Length", default: 71},
+  ],
+  shirt: [
+    {key:"neckGirth", label:"A. Neck Girth (collar 닫힘)", star: true, default: 38},
+    {key:"shoulderWidth", label:"B. Shoulder Width", default: 47},
+    {key:"chestHalf", label:"E. Chest Width", default: 56},
+    {key:"waistHalf", label:"E2. Waist Width", default: 50},
+    {key:"bodySweep", label:"F. Body Sweep", default: 56},
+    {key:"backLength", label:"O. Back Length (CB)", default: 76},
+    {key:"sleeveLength", label:"K. Sleeve Length (CB->cuff)", default: 84},
+    {key:"bicepWidth", label:"J. Upper Sleeve (Bicep)", default: 22},
+    {key:"cuffWidth", label:"L. Cuff Width", star: true, default: 11},
+    {key:"cuffHeight", label:"M. Cuff Height", default: 6.5},
+    {key:"collarPointLength", label:"P. Collar Point Length", star: true, default: 8.5},
+    {key:"collarStandHeight", label:"Q. Collar Stand Height", default: 3.8},
+    {key:"yokeWidth", label:"R. Yoke Width", default: 12},
+    {key:"placketWidth", label:"S. Front Placket Width", default: 3},
+  ],
+};
+
+const RATIOS_BY_PRESET = {
+  sweatshirt: [
+    { name: "sleeveOpening / bicep (rib 조임)", num: "sleeveOpening", den: "bicepWidth" },
+    { name: "bicep / chest(half)", num: "bicepWidth", den: "chestHalf" },
+    { name: "shoulder / bodyLength (드롭 정도)", num: "shoulderWidth", den: "bodyLength" },
+    { name: "hem / chest(half) (rib waistband 수축)", num: "bodySweep", den: "chestHalf" },
+    { name: "armhole / sleeveLength", num: "armholeStraight", den: "sleeveLength" },
+  ],
+  crewTee: [
+    { name: "sleeveOpening / bicep (taper 정도)", num: "sleeveOpening", den: "bicepWidth" },
+    { name: "bicep / chest(half)", num: "bicepWidth", den: "chestHalf" },
+    { name: "shoulder / bodyLength", num: "shoulderWidth", den: "bodyLength" },
+    { name: "armhole / sleeveLength (short sleeve cap)", num: "armholeStraight", den: "sleeveLength" },
+  ],
+  hoodie: [
+    { name: "sleeveOpening / bicep (rib 조임)", num: "sleeveOpening", den: "bicepWidth" },
+    { name: "shoulder / bodyLength (드롭)", num: "shoulderWidth", den: "bodyLength" },
+    { name: "hoodHeight / shoulderWidth", num: "hoodHeight", den: "shoulderWidth" },
+    { name: "hoodWidth / hoodHeight", num: "hoodWidth", den: "hoodHeight" },
+  ],
+  polo: [
+    { name: "sleeveOpening / bicep (rib cuff)", num: "sleeveOpening", den: "bicepWidth" },
+    { name: "placketLength / bodyLength", num: "placketLength", den: "bodyLength" },
+    { name: "collarHeight / shoulderWidth", num: "collarHeight", den: "shoulderWidth" },
+  ],
+  shirt: [
+    { name: "cuffWidth / bicep (woven taper)", num: "cuffWidth", den: "bicepWidth" },
+    { name: "collarPointLength / collarStandHeight", num: "collarPointLength", den: "collarStandHeight" },
+    { name: "waist / chest (taper)", num: "waistHalf", den: "chestHalf" },
+    { name: "shoulder / backLength", num: "shoulderWidth", den: "backLength" },
+  ],
+};
+
+let currentCategoryFilter = "all";
+const SELECTED_BRANDS = new Set();
+const STORAGE_KEY = "flat_preset_research";
+
+// 브랜드 URL 가져오기 (직접 URL 또는 Google 검색 URL)
+function getBrandUrl(brand) {
+  if (brand.url) return brand.url;
+  if (brand.searchQuery) {
+    return "https://www.google.com/search?q=" + encodeURIComponent(brand.searchQuery);
+  }
+  return "#";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initTabs();
+  initCategoryFilters();
+  renderBrandList();
+  initPresetSelect();
+  renderPomForm();
+  renderSavedList();
+  if (localStorage.getItem("flat_theme") === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+    document.querySelector(".theme-toggle").textContent = "라이트 모드";
+  }
+});
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute("data-theme") === "dark";
+  if (cur) {
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.setItem("flat_theme", "light");
+    document.querySelector(".theme-toggle").textContent = "다크 모드";
+  } else {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("flat_theme", "dark");
+    document.querySelector(".theme-toggle").textContent = "라이트 모드";
+  }
+}
+
+function initTabs() {
+  document.querySelectorAll(".tab").forEach(t => {
+    t.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(x => x.classList.remove("active"));
+      t.classList.add("active");
+      document.getElementById("panel-" + t.dataset.panel).classList.add("active");
+    });
+  });
+}
+
+function initCategoryFilters() {
+  const cats = new Set(["all"]);
+  BRANDS.forEach(b => b.category.forEach(c => cats.add(c)));
+  const bar = document.getElementById("categoryFilters");
+  bar.innerHTML = [...cats].map(c => 
+    `<span class="filter-pill ${c==='all'?'active':''}" data-cat="${c}" onclick="setCategoryFilter('${c}')">${c}</span>`
+  ).join("");
+}
+
+function setCategoryFilter(cat) {
+  currentCategoryFilter = cat;
+  document.querySelectorAll(".filter-pill").forEach(p => p.classList.toggle("active", p.dataset.cat === cat));
+  renderBrandList();
+}
+
+function renderBrandList() {
+  const list = document.getElementById("brandList");
+  const filtered = currentCategoryFilter === "all" 
+    ? BRANDS 
+    : BRANDS.filter(b => b.category.includes(currentCategoryFilter));
+  list.innerHTML = filtered.map(b => {
+    const id = "brand_" + btoa(unescape(encodeURIComponent(b.name))).replace(/=/g,"");
+    const sel = SELECTED_BRANDS.has(b.name) ? "selected" : "";
+    const url = getBrandUrl(b);
+    const typeLabel = b.linkType === "direct" ? "직접" : b.linkType === "search" ? "검색" : "표준";
+    return `
+      <div class="brand-card ${sel}" id="${id}">
+        <div class="brand-name">
+          <input type="checkbox" ${sel?"checked":""} onchange="toggleBrand(this.dataset.name, '${id}')" data-name="${b.name.replace(/"/g,'&quot;')}">
+          <div>
+            <span class="link-type ${b.linkType}">${typeLabel}</span>
+            ${b.name}
+          </div>
+        </div>
+        <div class="brand-meta">${b.category.join(" · ")} · ${b.region}</div>
+        <div class="brand-link"><a href="${url}" target="_blank" rel="noopener">${url.length > 60 ? url.slice(0,60) + "..." : url}</a></div>
+        <div style="font-size:11px;color:var(--muted);font-style:italic;">${b.note || ""}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+function toggleBrand(name, cardId) {
+  if (SELECTED_BRANDS.has(name)) SELECTED_BRANDS.delete(name);
+  else SELECTED_BRANDS.add(name);
+  const card = document.getElementById(cardId);
+  if (card) card.classList.toggle("selected");
+  document.getElementById("selectionCount").textContent = SELECTED_BRANDS.size + "개 선택됨";
+}
+
+function clearBrandSelection() {
+  SELECTED_BRANDS.clear();
+  document.getElementById("selectionCount").textContent = "0개 선택됨";
+  renderBrandList();
+}
+
+function openSelectedBrands() {
+  if (SELECTED_BRANDS.size === 0) {
+    alert("브랜드를 먼저 선택해주세요.");
+    return;
+  }
+  if (SELECTED_BRANDS.size > 10) {
+    if (!confirm(SELECTED_BRANDS.size + "개 탭을 한꺼번에 엽니다. 계속?")) return;
+  }
+  BRANDS.filter(b => SELECTED_BRANDS.has(b.name)).forEach(b => {
+    window.open(getBrandUrl(b), "_blank");
+  });
+}
+
+function initPresetSelect() {
+  const sel = document.getElementById("presetSelect");
+  sel.innerHTML = Object.keys(POM_TEMPLATES).map(p => 
+    `<option value="${p}">${p}</option>`
+  ).join("");
+}
+
+function renderPomForm() {
+  const preset = document.getElementById("presetSelect").value;
+  const grid = document.getElementById("pomGrid");
+  const tmpl = POM_TEMPLATES[preset] || [];
+  grid.innerHTML = tmpl.map(p => `
+    <div class="pom-row-label">${p.label}${p.star?'<span class="star">★</span>':''}</div>
+    <input type="number" step="0.1" data-key="${p.key}" placeholder="${p.default || ''}" 
+           oninput="updateRatios()" onfocus="if(!this.value)this.value=this.placeholder">
+    <input type="text" data-tol="${p.key}" placeholder="±TOL" style="font-size:11px;">
+  `).join("");
+  updateRatios();
+}
+
+function updateRatios() {
+  const preset = document.getElementById("presetSelect").value;
+  const ratios = RATIOS_BY_PRESET[preset] || [];
+  const values = {};
+  document.querySelectorAll('#pomGrid input[type="number"]').forEach(i => {
+    values[i.dataset.key] = parseFloat(i.value) || parseFloat(i.placeholder) || 0;
+  });
+  const box = document.getElementById("ratiosBox");
+  if (ratios.length === 0) { box.innerHTML = '<div class="empty" style="padding:16px;">이 preset에는 비율이 정의되어 있지 않음.</div>'; return; }
+  box.innerHTML = ratios.map(r => {
+    const num = values[r.num], den = values[r.den];
+    const v = (num && den) ? (num / den).toFixed(2) : "-";
+    return `<div class="ratio-line"><span class="ratio-name">${r.name}</span><span>${v}${num&&den?` (${num}/${den})`:""}</span></div>`;
+  }).join("");
+}
+
+function loadDefaults() {
+  document.querySelectorAll('#pomGrid input[type="number"]').forEach(i => {
+    i.value = i.placeholder;
+  });
+  updateRatios();
+}
+
+function clearPomForm() {
+  if (!confirm("입력한 값 모두 지웁니다. 계속?")) return;
+  document.querySelectorAll('#pomGrid input').forEach(i => i.value = "");
+  document.getElementById("brandSource").value = "";
+  document.getElementById("presetNotes").value = "";
+  updateRatios();
+}
+
+function getCurrentFormData() {
+  const preset = document.getElementById("presetSelect").value;
+  const data = {
+    preset,
+    size: document.getElementById("sizeName").value,
+    fit: document.getElementById("fitType").value,
+    source: document.getElementById("brandSource").value,
+    notes: document.getElementById("presetNotes").value,
+    pom: {},
+    tol: {},
+    timestamp: new Date().toISOString(),
+  };
+  document.querySelectorAll('#pomGrid input[type="number"]').forEach(i => {
+    if (i.value) data.pom[i.dataset.key] = parseFloat(i.value);
+  });
+  document.querySelectorAll('#pomGrid input[data-tol]').forEach(i => {
+    if (i.value) data.tol[i.dataset.tol] = i.value;
+  });
+  return data;
+}
+
+function savePresetData() {
+  const data = getCurrentFormData();
+  if (Object.keys(data.pom).length === 0) {
+    alert("POM 값을 하나 이상 입력해주세요.");
+    return;
+  }
+  if (!data.source) {
+    if (!confirm("Brand/Source가 비어있음. 계속?")) return;
+  }
+  const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  all.push(data);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  alert("저장됨: " + data.preset + " " + data.size + " (" + (data.source || 'no source') + ")");
+  renderSavedList();
+}
+
+function renderSavedList() {
+  const list = document.getElementById("savedList");
+  const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  if (all.length === 0) {
+    list.innerHTML = '<div class="empty">저장된 데이터 없음. 2번 탭에서 POM 입력 후 저장하세요.</div>';
+    return;
+  }
+  list.innerHTML = all.map((d, i) => `
+    <div class="saved-item">
+      <div>
+        <strong>${d.preset}</strong> ${d.size} · ${d.fit}
+        <div class="saved-meta">${d.source || 'no source'} · ${new Date(d.timestamp).toLocaleString('ko-KR')} · ${Object.keys(d.pom).length}개 POM</div>
+      </div>
+      <div class="actions">
+        <button class="icon-btn" onclick="loadSaved(${i})">불러오기</button>
+        <button class="icon-btn" onclick="deleteSaved(${i})">삭제</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function loadSaved(idx) {
+  const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  const d = all[idx];
+  document.getElementById("presetSelect").value = d.preset;
+  renderPomForm();
+  document.getElementById("sizeName").value = d.size || "M";
+  document.getElementById("fitType").value = d.fit || "Regular";
+  document.getElementById("brandSource").value = d.source || "";
+  document.getElementById("presetNotes").value = d.notes || "";
+  Object.keys(d.pom).forEach(k => {
+    const i = document.querySelector('#pomGrid input[data-key="' + k + '"]');
+    if (i) i.value = d.pom[k];
+  });
+  Object.keys(d.tol || {}).forEach(k => {
+    const i = document.querySelector('#pomGrid input[data-tol="' + k + '"]');
+    if (i) i.value = d.tol[k];
+  });
+  updateRatios();
+  document.querySelector('.tab[data-panel="input"]').click();
+}
+
+function deleteSaved(idx) {
+  if (!confirm("이 항목을 삭제합니다.")) return;
+  const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  all.splice(idx, 1);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  renderSavedList();
+}
+
+function exportFormat(fmt) {
+  const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  const out = document.getElementById("exportArea");
+  if (all.length === 0) {
+    out.value = "저장된 데이터 없음.";
+    return;
+  }
+  if (fmt === "json") {
+    out.value = JSON.stringify(all, null, 2);
+  } else if (fmt === "md") {
+    out.value = all.map(d => {
+      const ratios = RATIOS_BY_PRESET[d.preset] || [];
+      const tmpl = POM_TEMPLATES[d.preset] || [];
+      const labelMap = Object.fromEntries(tmpl.map(t => [t.key, t.label]));
+      let md = "## " + d.preset + " " + d.size + " (" + d.fit + ")\n";
+      md += "\n**Source:** " + (d.source || '-') + "  \n";
+      md += "**Saved:** " + new Date(d.timestamp).toLocaleString('ko-KR') + "\n\n";
+      md += "| POM | 값 (cm) | TOL |\n|---|---|---|\n";
+      Object.keys(d.pom).forEach(k => {
+        md += "| " + (labelMap[k] || k) + " | " + d.pom[k] + " | " + (d.tol?.[k] || '-') + " |\n";
+      });
+      md += "\n**핵심 비율:**\n\n```\n";
+      ratios.forEach(r => {
+        const num = d.pom[r.num], den = d.pom[r.den];
+        if (num && den) md += r.name.padEnd(45) + " = " + num + "/" + den + " = " + (num/den).toFixed(2) + "\n";
+      });
+      md += "```\n";
+      if (d.notes) md += "\n**메모:** " + d.notes + "\n";
+      return md + "\n---\n";
+    }).join("\n");
+  }
+}
+
+function copyExport() {
+  const out = document.getElementById("exportArea");
+  if (!out.value) {
+    alert("Export 버튼을 먼저 누르세요.");
+    return;
+  }
+  out.select();
+  navigator.clipboard.writeText(out.value).then(() => {
+    alert("클립보드에 복사됨.");
+  });
+}
+
+function downloadBackup() {
+  const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  if (all.length === 0) { alert("저장된 데이터 없음."); return; }
+  const blob = new Blob([JSON.stringify(all, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "flat_preset_research_backup_" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>

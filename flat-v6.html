@@ -270,6 +270,26 @@ header.engine-out{animation:engineFadeOut 0.3s ease both;}
   .card-inner{gap:10px;}
   .card-title{font-size:26px;}
 }
+/* ── 트레이싱 프리즈 (Phase 3A, ?demo=tracing) ── */
+body.tracing-mode{ background:#0D0D0D !important; }
+body.tracing-mode header,
+body.tracing-mode .zoom-ctrl,
+body.tracing-mode .color-bar,
+body.tracing-mode #cascadeBtn,
+body.tracing-mode .canvas-hint,
+body.tracing-mode #svgB,
+body.tracing-mode .view-tag{ display:none !important; }
+body.tracing-mode .canvas,
+body.tracing-mode #canvasArea,
+body.tracing-mode .sketch-wrap,
+body.tracing-mode .sketch-col{ background:#0D0D0D !important; }
+body.tracing-mode #svgF{ width:min(460px,78vh) !important; height:auto !important; }
+body.tracing-mode .cascade-label{ top:auto !important; bottom:9% !important; }
+.tracing-sketch{ fill:none; stroke:#4A9DE8; stroke-width:2.4; stroke-linejoin:round; stroke-linecap:round; }
+.tracing-dim-line,.tracing-dim-tick{ stroke:#999; stroke-width:1; opacity:.55; }
+.tracing-dim-txt{ fill:#999; font:11px "JetBrains Mono",monospace; opacity:.85; }
+.tracing-dims{ opacity:0; transition:opacity 1s ease; }
+.tracing-dims.show{ opacity:1; }
 </style>
 </head>
 <body>
@@ -6750,6 +6770,54 @@ const CascadeVis={
 };
 
 // ═══════════════════════════════════════════════════════════════
+// TRACING FREEZE — Phase 3A 데모 (?demo=tracing). 기존 도식 렌더와 격리.
+// 문구는 placeholder('FLAT') — 카피는 철학 딥리서치(flat_essence) 기반 후속 확정.
+// ═══════════════════════════════════════════════════════════════
+const TracingFreeze={
+  play(){
+    document.body.classList.add('tracing-mode','demo-mode');
+    const svg=document.getElementById('svgF'); if(!svg) return;
+    const cx=(typeof CX!=='undefined')?CX:160;
+    const g=BodyComp.geometry();
+    const geo=BodyComp.outline(cx,g,false);
+    svg.innerHTML=`<path class="tracing-sketch" d="${geo.path} Z"></path><g class="tracing-dims" id="tracingDims"></g>`;
+    const outline=svg.querySelector('.tracing-sketch');
+    const len=outline.getTotalLength();
+    outline.style.strokeDasharray=len; outline.style.strokeDashoffset=len;
+    const dur=2400,delay=600,t0=performance.now(),self=this;
+    function tick(now){
+      const p=Math.max(0,Math.min(1,(now-t0-delay)/dur));
+      outline.style.strokeDashoffset=len*(1-p);
+      if(p<1) requestAnimationFrame(tick); else self._showDims(svg,cx,geo);
+    }
+    requestAnimationFrame(tick);
+  },
+  _showDims(svg,cx,geo){
+    const r=Math.round;
+    const shoulderW=r(47+S.shoulderExtra*1.0+(S.fitW-50)*0.12);
+    const chestHalf=r((85+S.chest*0.42)/2);
+    const bodyLen=r(40+S.bodyLen*0.69);
+    const sleeveLen=r(S.sleeveLength*0.69);
+    const bicep=r(14+S.fitW*0.06+S.chest*0.02);
+    const hL=(x1,x2,y,t)=>`<line class="tracing-dim-line" x1="${x1}" y1="${y}" x2="${x2}" y2="${y}"/>`+
+      `<line class="tracing-dim-tick" x1="${x1}" y1="${y-5}" x2="${x1}" y2="${y+5}"/>`+
+      `<line class="tracing-dim-tick" x1="${x2}" y1="${y-5}" x2="${x2}" y2="${y+5}"/>`+
+      `<text class="tracing-dim-txt" x="${(x1+x2)/2}" y="${y-7}" text-anchor="middle">${t}</text>`;
+    const dimsX=cx+geo.hipHalf+20;
+    let s='';
+    s+=hL(geo.sL,geo.sR,geo.sY-16,`어깨 ${shoulderW}`);
+    s+=hL(cx-geo.hipHalf,cx+geo.hipHalf,geo.uaY,`가슴½ ${chestHalf}`);
+    s+=`<line class="tracing-dim-line" x1="${dimsX}" y1="${geo.sY}" x2="${dimsX}" y2="${geo.botY}"/>`+
+       `<text class="tracing-dim-txt" x="${dimsX+7}" y="${(geo.sY+geo.botY)/2}" transform="rotate(90 ${dimsX+7} ${(geo.sY+geo.botY)/2})" text-anchor="middle">기장 ${bodyLen}</text>`;
+    // 소매 2개 — 숫자만 (측정선 좌표는 SleeveComp 내부라 v1.1에서 노출)
+    s+=`<text class="tracing-dim-txt" x="${cx-geo.hipHalf-12}" y="${geo.uaY+2}" text-anchor="end">소매 ${sleeveLen}</text>`;
+    s+=`<text class="tracing-dim-txt" x="${cx-geo.hipHalf-12}" y="${geo.uaY+18}" text-anchor="end">소매폭 ${bicep}</text>`;
+    const dims=svg.querySelector('#tracingDims'); if(dims){ dims.innerHTML=s; requestAnimationFrame(()=>dims.classList.add('show')); }
+    CascadeVis.showLabel('FLAT','sketch · spec · pattern');
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════
 // FACTORY VIEWER — read-only mode via URL parameter
 // ═══════════════════════════════════════════════════════════════
 const FactoryViewer={
@@ -7403,9 +7471,17 @@ FactoryViewer.check(); // URL param → factory mode
 // (기존: CardFeed.init이 hide하고 return → S 기본값만 남고 Crew Tee 명시 적용 없음.
 // CascadeVis 재생 중 step 7 Shirt에 도달하면 스냅샷 타이밍에 따라 Shirt state로 관측됨.)
 // 주의: 스크린샷/DOM 실측 시 `?demo` 대신 inspect_flat.py의 카드 피드 경로 사용 권장.
-if(new URLSearchParams(location.search).has('demo')){
-  try { if(typeof PresetModule!=='undefined' && PresetModule.DB && PresetModule.DB[0]) PresetModule.apply(0); } catch(e){}
-  setTimeout(()=>CascadeVis.toggle(),800);
+{
+  const _dp=new URLSearchParams(location.search);
+  if(_dp.has('demo')){
+    if(_dp.get('demo')==='tracing'){
+      try { if(typeof PresetModule!=='undefined' && PresetModule.DB && PresetModule.DB[0]) PresetModule.apply(0); } catch(e){}
+      setTimeout(()=>TracingFreeze.play(),600);
+    } else {
+      try { if(typeof PresetModule!=='undefined' && PresetModule.DB && PresetModule.DB[0]) PresetModule.apply(0); } catch(e){}
+      setTimeout(()=>CascadeVis.toggle(),800);
+    }
+  }
 }
 // cont.69 S8: 메타-그룹 init (페이지 init 시점, panel 진입 전이라도 1회 실행)
 if(typeof initMetaGroups==='function') initMetaGroups();

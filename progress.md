@@ -1,5 +1,80 @@
 # Progress Log
 
+## 2026-05-15 (cont.72 Part 17 + 18 종료 인계) — self-audit 12 항목 + 누락 부분 + 학습 지점
+
+이람 push: *"누락된 부분은 채울 수 있게 꼭 기억해주고. 본 세션 인계하자. 본 세션에서 빼먹은 지점이나 학습 지점 있는지 반복 재검해주고"*
+
+### Self-audit 12 항목 (본 세션 종료 시점)
+
+| # | 점검 | 상태 |
+|---|---|---|
+| i | CLAUDE.md 세션 종료 4단계 | ✅ + 기획탭 명시 push HANDOFF 인계 sub-section 신설로 보강 |
+| ii | commit 미실행 | ⚠️ Part 16/17/18 누적 commit 대기 — **이람 git 권한 필요** |
+| iii | 메모리 갱신 | ⚠️ 학습 지점 7건 영구 후보 — 본 cont 미진행 |
+| iv | `/cost` 토큰 셀프체크 | ❌ 본 cont 미호출 (cont.72 Part 16 배치 2 동일 갭) |
+| v | flat_session_sop.md 호출 | ❌ 본 cont 미호출 (cont.72 Part 16 배치 5 합의 미적용) |
+| vi | flat_self_check_template.md F 그룹 5 항목 | ⚠️ 부분 적용 (self-check 보고했으나 양식 정합 부분) |
+| vii | inspect_spec.py 한계 (reference_data.md MD 파싱 + S-시리즈 정합 미포함) | ⚠️ B3 후속 명시 ✅ |
+| viii | Part 17 § 9 자율 영역 b/c/d 미진행 | ⚠️ 정상 (a만 본 cont 18 진행) |
+| ix | **tools/audit/README.md 갱신 누락** | ✅ **본 인계 시점 정정** (inspect_spec.py 추가 + 분담 원칙 명시) |
+| x | **사고 9 판정 정정** Part 18 = 새 패턴 → 변형 | ✅ **정정** (Part 7 self-audit "Quality-Insufficient" RCA와 동일 근본 원인 — 검증 갭 발굴. 기존 RCA 통합 의무) |
+| xi | **inspect_spec.py 18 violations ↔ cont.72 Part 16 배치 5 extended_ranges cross-ref** | ✅ **확인** (별개 source — params.json slider_semantics vs hardcode SLIDER_BOUNDS. B4 진행 시 통합 가능) |
+| xii | 규칙 8 환경 인식 + 검증 사이클 | ✅ Part 17 (chrome X, 이람 분담), Part 18 (chrome 0, 본 세션 닫음) 모두 적용 |
+
+### 누락 부분 (다음 세션 채우기, HANDOFF 🟡 sub-section 통합)
+
+**A. Part 18 18 violations 해소 — 자율 영역 B1-B4 (chrome 의존 0)**
+- B1. ENUM_VALUES 보강 (flat-v6.html grep)
+- B2. skirt/pants prefix 패턴 흡수
+- B3. inspect_spec.py 검증 영역 확장 (reference_data.md MD 파싱 + S-시리즈 정합)
+- B4. flat-v6.html slider min/max 자동 추출 (hardcode → single source of truth)
+
+**B. Part 17 산출물 활용 — B5-B8**
+- B5. path_seq_baselines/*.json git commit (이람 mac 생성 완료)
+- B6. path_seq_violations/*.json Phase 4 diff baseline 보존
+- B7. SleeveComp 4종 (dolman/lantern/peasant/legmutton/pagoda) 정적 분석 미독 영역 보강
+- B8. verify_path_seq.py top cat 16 → `--cat all` skirt/pants 검증
+
+**C. 기획탭 push (이람 brand voice 영역)**
+- C1. `cowl` / `collar_cowl` / `collar_peter` / `rolled` / `chest_one` 공식 spec catalog 승격 여부
+- C2. skirt/pants prefix 정식 분리 vs 통일
+- C3. Phase 3A iii cascade transition D 청산 재검토 여부
+- C4. Phase 3A 1순위 후보 (i/ii/iv/v/vi) 선택
+
+### 학습 지점 (메모리 후보, 영구 가치)
+
+1. **cascade_pattern.md POC → 본체 적용 가설 정정** — 단순 baseline 비교 X, option 조합 + numeric slider 그룹화 (cont 17 § 2.3)
+2. **PASS 그룹 자연 회피 패턴 = 본체 강점** — `drawFinish()` layering이 base 분기 무화 (cont 17 § 4.1, Phase 4 보존 필수)
+3. **"검증 완료" 라벨 신뢰 위험** — cascade_pattern.md #3 본질. cont.72 Part 7 + cont 18 동일 근본 원인 (Quality-Insufficient 발굴 패턴)
+4. **2분리 패턴 (정적 / 동적)** — 환경 의존 부재 시 정적 보고서 + 동적 도구 + 이람 환경 분담 표준화
+5. **자율 도구 신설 표준 (chrome 0)** — sync_check/inspect_spec/compat_sweep/style_overlay_sweep/verify_path_seq 5 도구 패턴
+6. **사고 (l) 정상 회피** — D 청산 후 자율 영역 즉시 진입 = 메인 작업 흡수 X (cont 17 → 18 직진)
+7. **규칙 4 첫 push back 청산 강제** — dynamic 2,296 violation → D 즉시 채택
+
+### 다음 세션 진입 의무 (HANDOFF 🟡 인계 sub-section 표 cross-ref)
+
+1. Part 16/17/18 commit + push (이람) ★★★
+2. Part 17 후속 옵션 2 재검 (이람 환경) ★★
+3. Part 17 axis sweep 실행 (이람 환경) ★
+4. flat_session_sop.md 호출 매 세션 시작 의무 ★★
+5. `/cost` 토큰 셀프체크 매 cont ★
+
+### 정정 작업 (본 cont 종료 시점)
+
+- `tools/audit/README.md` 갱신 — inspect_spec.py 추가 + sync_check ↔ inspect_spec 분담 원칙 명시
+- HANDOFF.md 🔵 Part 18 sub-section "사고 9 판정 정정" 추가 (변형으로 정정 + Part 7 RCA 통합 의무)
+- HANDOFF.md 🔵 "🟡 다음 세션 인계" sub-section 신설 (Part 17 + 18 통합 + self-audit 12 + 누락 B1-B8 + 기획탭 push C1-C4)
+- progress.md 본 항목 prepend
+
+### 사고 자각
+
+- 사고 (l) 회피: self-audit 자체가 메인 작업 흡수 X (이람 명시 요청, 인계 의무 100%)
+- 사고 (m) 떠넘기기 X: 12 항목 + 7 학습 + 8 누락 모두 자율 정리 + 즉시 정정 가능 영역 (ix/x/xi) 본 cont 처리
+- 규칙 9 변형 vs 새 패턴 정정: Part 18 = 변형으로 정정 (항목 x). 의심 시 새 패턴 → 정확히 의심 후 변형 판정 = 정상
+- 규칙 6 메타: 본 self-audit 자체도 완벽 X — 12 항목 외 미발견 갭 가능. 다음 세션 진입 시 추가 self-audit 권장
+
+---
+
 ## 2026-05-15 (cont.72 Part 18) — cascade_pattern.md #3 본체 적용 (inspect_spec.py 신설)
 
 이람 "진행하자" → cont.72 Part 17 후속 자율 영역 a 진입 = cascade_pattern.md #3 PRD/spec validation 자동화.

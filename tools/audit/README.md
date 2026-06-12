@@ -1,6 +1,6 @@
 # tools/audit/ — FLAT 검증 자동화 도구 인덱스
 
-> **cont.72 Part 16 자율 영역 K 신설.** 누적 7 도구, 모두 회귀 0 (read-only).
+> **cont.72 Part 16 자율 영역 K 신설 + Part 17/18 보강.** 누적 8 도구, 모두 회귀 0 (read-only).
 > **목적:** "검증 없이 완료 판정 금지" (원칙 6) + "시각 검수는 샘플이 아닌 전수 자동" (원칙 10) 구현.
 
 ---
@@ -9,13 +9,19 @@
 
 | 도구 | 검증 영역 | 회귀 | 의존 | cont |
 |---|---|---|---|---|
-| `sync_check.py` | 7 영역 (preset DB↔JSON / fabric↔JSON / B6.1 sample rules / CARD targetPresetName / seams / factoryTerms / params) | 0 | Python 3 (stdlib only) | cont.72 Part 16 A2/A4/C |
+| `sync_check.py` | 11 영역 (preset DB↔JSON / fabric↔JSON / B6.1 sample rules / CARD targetPresetName / seams / factoryTerms / params / i18n / preset schema / extended_ranges / slider_semantics) | 0 | Python 3 (stdlib only) | cont.72 Part 16 A2/A4/C/F/G/H/I |
 | `compat_sweep.py` | 6 system 27 rule 정적 sweep + COLLAR_COMPAT 8×5 매트릭스 + NECK_BC 9 pair | 0 | Python 3 | cont.72 Part 16 D |
 | `style_overlay_sweep.py` | 7 Style Overlay 정의/i18n EN+KO/deltas+overrides 완전성 | 0 | Python 3 | cont.72 Part 16 E |
 | `sweep_matrix.py` | sleeve length 5 axes / 96 case JSON (cont.65 부재 정정 1차 minimal) | 0 | Python 3 | cont.72 Part 14 |
 | `inspect_flat.py` | DOM 실측 (Playwright 기반, cont.65) | 0 | Playwright | cont.65 |
-| `verify_path_seq.py` | path 빌더 sequence 검증 (cascade_pattern.md #2 본체 적용 dynamic verifier) | 0 | Playwright | cont.72 Part 17 |
+| `verify_path_seq.py` ★ | path command sequence 불변성 검증 (cascade_pattern.md #2 본체 적용 dynamic verifier). axis/numeric-sweep/numeric-sweep-all 3 mode | 0 | Playwright | cont.72 Part 17 |
+| `inspect_spec.py` ★ | spec 안 수치의 수학적 정합성 검증 (cascade_pattern.md #3 본체 적용). 5 영역: preset bounds / rules matrix / sleeve_length_ratios / seams count / cross-spec | 0 | Python 3 | cont.72 Part 18 |
 | `gallery.html` | sweep 결과 시각 검수 갤러리 (이람 검수) | 0 | 브라우저 | cont.67 |
+
+### 분담 원칙 (sync_check ↔ inspect_spec)
+
+- **sync_check.py** = data/ JSON ↔ flat-v6.html inline **동기화** 검증 (한쪽 변경 시 다른 쪽 누락 발견)
+- **inspect_spec.py** = spec 안 수치 자체의 **수학적 정합성** (bounds / 범위 / 단위 / cross-spec 관계식) — cascade_pattern.md POC 사례 "검증 완료 라벨 신뢰 자체가 위험"
 
 ## 실행 패턴
 
@@ -23,9 +29,10 @@
 
 ```bash
 cd /Users/yiram/Claude/flat
-python3 tools/audit/sync_check.py
-python3 tools/audit/compat_sweep.py
-python3 tools/audit/style_overlay_sweep.py
+python3 tools/audit/sync_check.py            # JSON ↔ inline 동기화
+python3 tools/audit/compat_sweep.py          # 6 system 27 rule
+python3 tools/audit/style_overlay_sweep.py   # 7 Style Overlay
+python3 tools/audit/inspect_spec.py          # spec 수학적 정합성 (cont.72 Part 18 ★)
 ```
 
 각 도구 종료 코드: 0 = PASS, 1 = FAIL. CI 게이트 가능.
